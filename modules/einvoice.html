@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loyalty - tích điểm - App.vn</title>
+    <title>Hóa đơn điện tử - App.vn</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -41,8 +41,12 @@
             @apply px-4 py-3 text-left text-xs font-semibold text-gray-500 bg-white whitespace-nowrap border-b border-gray-100;
         }
         .table-cell {
-            @apply px-4 py-4 whitespace-nowrap border-b border-gray-50 align-top;
+            @apply px-4 py-3 text-xs border-b border-gray-50 align-top; /* Condensed vertical padding */
         }
+        
+        .badge-gray { @apply px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-500 uppercase; }
+        .badge-green { @apply px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-600 uppercase; }
+        .badge-red { @apply px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-500 uppercase; }
     </style>
 </head>
 
@@ -58,7 +62,7 @@
                 class="h-10 w-10 min-w-[2.5rem] bg-white rounded-lg flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-lg shadow-black/10 z-10 cursor-pointer">
                 <img src="../logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
             </div>
-            <span class="sidebar-text ml-3 font-bold text-xl text-white pl-1">App.vn</span>
+            <span class="sidebar-text ml-3 font-bold text-xl text-white pl-1 logo-text">App.vn</span>
 
             <!-- Mega Menu -->
             <div
@@ -213,54 +217,22 @@
             </div>
         </div>
 
-        <!-- Sidebar Navigation (Loyalty Items) -->
+        <!-- Sidebar Navigation (E-Invoice Items) -->
         <nav class="w-full flex-1 flex flex-col gap-2 px-3">
-            <!-- Tích điểm (Active) -->
+            <!-- Hóa đơn (Active) -->
             <a href="#" class="flex items-center h-10 px-2 rounded-lg sidebar-icon-active transition duration-200 group"
-                title="Tích điểm">
-                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-coins"></i></div>
-                <span class="sidebar-text ml-3 text-sm font-semibold">Tích điểm</span>
-            </a>
-
-            <!-- Khách hàng -->
-            <a href="#"
-                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
-                title="Khách hàng">
-                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-user-group"></i>
+                title="Hóa đơn">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-file-invoice"></i>
                 </div>
-                <span class="sidebar-text ml-3 text-sm font-medium">Khách hàng</span>
+                <span class="sidebar-text ml-3 text-sm font-semibold">Hóa đơn</span>
             </a>
 
-            <!-- Hạng thành viên -->
+            <!-- Kết nối -->
             <a href="#"
                 class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
-                title="Hạng thành viên">
-                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-medal"></i></div>
-                <span class="sidebar-text ml-3 text-sm font-medium">Hạng thành viên</span>
-            </a>
-
-            <!-- Tùy chỉnh giá -->
-            <a href="#"
-                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
-                title="Tùy chỉnh giá">
-                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-tag"></i></div>
-                <span class="sidebar-text ml-3 text-sm font-medium">Tùy chỉnh giá</span>
-            </a>
-
-            <!-- Đổi quà -->
-            <a href="#"
-                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
-                title="Đổi quà">
-                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-gift"></i></div>
-                <span class="sidebar-text ml-3 text-sm font-medium">Đổi quà</span>
-            </a>
-
-            <!-- Cấu hình -->
-            <a href="#"
-                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
-                title="Cấu hình">
-                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-gear"></i></div>
-                <span class="sidebar-text ml-3 text-sm font-medium">Cấu hình</span>
+                title="Kết nối">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-link"></i></div>
+                <span class="sidebar-text ml-3 text-sm font-medium">Kết nối</span>
             </a>
         </nav>
 
@@ -279,299 +251,266 @@
         <!-- Top Header (White) -->
         <div class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-40">
             <div class="flex items-center gap-4 text-gray-500">
-                <h1 class="font-bold text-xl text-[#1B3DA1]">Loyalty - tích điểm</h1>
+                <h1 class="font-bold text-xl text-[#1B3DA1]">Hóa đơn điện tử</h1>
             </div>
 
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2 cursor-pointer">
-                    <span class="text-sm font-medium text-gray-700">Admin</span>
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100&auto=format&fit=crop"
-                        class="w-8 h-8 rounded-full border border-gray-200 object-cover">
+            <!-- Filter Bar in Header or Separated? Image shows it top right aligned with header often or just below -->
+            <div class="flex items-center gap-2">
+                <!-- Search -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" placeholder="Tìm kiếm"
+                        class="pl-9 pr-3 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm w-48 bg-white">
                 </div>
+
+                <button
+                    class="flex items-center justify-center w-8 h-8 bg-white rounded-md border border-gray-200 shadow-sm hover:bg-gray-50 text-gray-600">
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+
+                <button
+                    class="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-md border border-gray-200 shadow-sm hover:bg-gray-50 text-sm text-gray-600">
+                    <i class="fa-solid fa-arrows-rotate"></i> Reload
+                </button>
             </div>
-        </div>
-
-        <!-- Filter Bar -->
-        <div class="px-6 py-4 flex items-center justify-end gap-2">
-            <!-- Search -->
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="text" placeholder="Mã ĐH, Tên, SĐT khách..."
-                    class="pl-9 pr-3 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm w-64 bg-white">
-            </div>
-
-            <!-- Type Filter -->
-            <div class="relative">
-                <select
-                    class="pl-3 pr-8 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm bg-white appearance-none cursor-pointer min-w-[130px] text-gray-500">
-                    <option>Loại tích điểm</option>
-                    <option>Cộng điểm</option>
-                    <option>Giảm điểm</option>
-                </select>
-                <i
-                    class="fa-solid fa-caret-down absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-            </div>
-
-            <!-- Date Picker -->
-            <div class="relative">
-                <input type="text" placeholder="Tạo từ - đến ngày"
-                    class="pl-3 pr-8 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm bg-white min-w-[150px] text-gray-500">
-                <i
-                    class="fa-regular fa-calendar absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-            </div>
-
-            <!-- Reload Btn -->
-            <button
-                class="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-md border border-gray-200 shadow-sm hover:bg-gray-50 text-sm text-gray-600">
-                <i class="fa-solid fa-arrows-rotate"></i> Reload
-            </button>
-
-            <!-- Primary Action -->
-            <button
-                class="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 text-sm text-white font-medium ml-2">
-                <i class="fa-solid fa-plus"></i> Tích điểm thủ công
-            </button>
         </div>
 
         <!-- Scrollable Table Container -->
-        <div class="flex-1 overflow-auto px-6 pb-6">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                <table class="w-full">
+        <div class="flex-1 overflow-auto px-6 pb-6 pt-4">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                <table class="w-full text-xs">
                     <thead>
                         <tr>
-                            <th class="table-header w-10">#</th>
-                            <th class="table-header w-24">Thời gian</th>
-                            <th class="table-header">Loại</th>
-                            <th class="table-header text-blue-600">Đơn hàng</th>
-                            <th class="table-header text-right">Số tiền tích điểm</th>
-                            <th class="table-header">Khách hàng</th>
-                            <th class="table-header">Người tác động</th>
-                            <th class="table-header text-right">Điểm hạng</th>
-                            <th class="table-header text-right">Điểm tích lũy</th>
+                            <th class="table-header w-8"><input type="checkbox" class="rounded text-blue-600"></th>
+                            <th class="table-header px-4">Ngày phát hành</th>
+                            <th class="table-header">Số hóa đơn</th>
+                            <th class="table-header">CQT</th>
+                            <th class="table-header w-24">Đơn hàng</th>
+                            <th class="table-header w-40">Khách hàng</th>
+                            <th class="table-header w-32">Sản phẩm</th>
+                            <th class="table-header text-right">TT trước thuế</th>
+                            <th class="table-header text-right w-16">Thuế</th>
+                            <th class="table-header text-right">TT sau thuế</th>
+                            <th class="table-header w-24">Mã CQT cấp</th>
+                            <th class="table-header w-24 text-right">Trạng thái</th>
+                            <th class="table-header w-10"></th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-50">
+                    <tbody class="divide-y divide-gray-50 text-gray-700">
                         <!-- Row 1 -->
-                        <tr class="hover:bg-blue-50/50 transition duration-150">
-                            <td class="table-cell text-gray-500">1</td>
-                            <td class="table-cell text-gray-900 font-medium">10:35</td>
+                        <tr class="hover:bg-blue-50/50 transition">
+                            <td class="table-cell"><input type="checkbox" class="rounded text-blue-600"></td>
+                            <td class="table-cell whitespace-nowrap">26/01/2026 21:15</td>
+                            <td class="table-cell font-medium">0</td>
+                            <td class="table-cell"><span class="badge-gray">CHƯA GỬI</span></td>
+                            <td class="table-cell text-blue-600 hover:underline cursor-pointer">DH1143</td>
                             <td class="table-cell">
-                                <div class="font-bold text-gray-900">Giảm điểm</div>
-                                <div class="text-xs text-gray-500 mt-0.5">Hoàn điểm do trả hàng</div>
-                            </td>
-                            <td class="table-cell text-blue-600 hover:underline cursor-pointer font-medium">DH1175</td>
-                            <td class="table-cell text-right text-gray-900 font-medium">122,000đ</td>
-                            <td class="table-cell">
-                                <div class="flex items-start gap-2">
+                                <div class="flex items-center gap-2">
                                     <div
-                                        class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                        <i class="fa-solid fa-user text-xs"></i>
+                                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-[10px]">
+                                        <i class="fa-solid fa-user"></i>
                                     </div>
                                     <div>
-                                        <div class="text-blue-600 font-medium">Tri Ân</div>
-                                        <div class="text-xs text-gray-500">0972272654</div>
+                                        <div class="font-bold">04227 3888</div>
+                                        <div class="text-[10px] text-blue-500">04227 3888</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="table-cell text-gray-900">Hệ thống</td>
-                            <td class="table-cell text-right text-gray-900">13,150</td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">3,028</span>
-                                <span class="text-xs text-red-500 ml-1">(-122)</span>
-                            </td>
+                            <td class="table-cell text-gray-500"><i class="fa-solid fa-box mr-1"></i> x1 SP 0%</td>
+                            <td class="table-cell text-right font-medium">131,000</td>
+                            <td class="table-cell text-right">0</td>
+                            <td class="table-cell text-right font-bold">131,000</td>
+                            <td class="table-cell text-gray-400 text-center">-</td>
+                            <td class="table-cell text-right">Phát hành</td>
+                            <td class="table-cell text-center"><i
+                                    class="fa-regular fa-copyright text-blue-600 cursor-pointer"></i></td>
                         </tr>
 
                         <!-- Row 2 -->
-                        <tr class="hover:bg-blue-50/50 transition duration-150">
-                            <td class="table-cell text-gray-500">2</td>
-                            <td class="table-cell text-gray-900 font-medium">10:35</td>
+                        <tr class="hover:bg-blue-50/50 transition">
+                            <td class="table-cell"><input type="checkbox" class="rounded text-blue-600"></td>
+                            <td class="table-cell whitespace-nowrap">26/01/2026 21:13</td>
+                            <td class="table-cell font-medium">0</td>
+                            <td class="table-cell"><span class="badge-gray">CHƯA GỬI</span></td>
+                            <td class="table-cell text-blue-600 hover:underline cursor-pointer">DH1142</td>
                             <td class="table-cell">
-                                <div class="font-bold text-gray-900">Cộng điểm</div>
-                                <div class="text-xs text-gray-500 mt-0.5">Tích điểm cho đơn hàng thành công</div>
-                            </td>
-                            <td class="table-cell text-blue-600 hover:underline cursor-pointer font-medium">DH1175</td>
-                            <td class="table-cell text-right text-gray-900 font-medium">152,000đ</td>
-                            <td class="table-cell">
-                                <div class="flex items-start gap-2">
+                                <div class="flex items-center gap-2">
                                     <div
-                                        class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                        <i class="fa-solid fa-user text-xs"></i>
+                                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-[10px]">
+                                        <i class="fa-solid fa-user"></i>
                                     </div>
                                     <div>
-                                        <div class="text-blue-600 font-medium">Tri Ân</div>
-                                        <div class="text-xs text-gray-500">0972272654</div>
+                                        <div class="font-bold">04227 3888</div>
+                                        <div class="text-[10px] text-blue-500">04227 3888</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="table-cell text-gray-900">Hệ thống</td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">13,150</span>
-                                <span class="text-xs text-green-500 ml-1">(+174) <i class="fa-solid fa-gift"></i></span>
-                            </td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">3,150</span>
-                                <span class="text-xs text-green-500 ml-1">(+174) <i class="fa-solid fa-gift"></i></span>
-                            </td>
+                            <td class="table-cell text-gray-500"><i class="fa-solid fa-box mr-1"></i> x1 SP 0%</td>
+                            <td class="table-cell text-right font-medium">130,000</td>
+                            <td class="table-cell text-right">0</td>
+                            <td class="table-cell text-right font-bold">130,000</td>
+                            <td class="table-cell text-gray-400 text-center">-</td>
+                            <td class="table-cell text-right">Phát hành</td>
+                            <td class="table-cell text-center"><i
+                                    class="fa-regular fa-copyright text-blue-600 cursor-pointer"></i></td>
                         </tr>
 
-                        <!-- Row 3 -->
-                        <tr class="hover:bg-blue-50/50 transition duration-150">
-                            <td class="table-cell text-gray-500">3</td>
-                            <td class="table-cell text-gray-900 font-medium">10:34</td>
+                        <!-- Row 5 (Da duyet) -->
+                        <tr class="hover:bg-blue-50/50 transition">
+                            <td class="table-cell"><input type="checkbox" class="rounded text-blue-600"></td>
+                            <td class="table-cell whitespace-nowrap">26/01/2026 20:48</td>
+                            <td class="table-cell font-medium">3</td>
+                            <td class="table-cell"><span class="badge-green">ĐÃ DUYỆT</span></td>
+                            <td class="table-cell text-blue-600 hover:underline cursor-pointer">DH1135</td>
                             <td class="table-cell">
-                                <div class="font-bold text-gray-900">Giảm điểm</div>
-                                <div class="text-xs text-gray-500 mt-0.5">Hoàn điểm do trả hàng</div>
-                            </td>
-                            <td class="table-cell text-blue-600 hover:underline cursor-pointer font-medium">DH1174</td>
-                            <td class="table-cell text-right text-gray-900 font-medium">10,000,000đ</td>
-                            <td class="table-cell">
-                                <div class="flex items-start gap-2">
+                                <div class="flex items-center gap-2">
                                     <div
-                                        class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                        <i class="fa-solid fa-user text-xs"></i>
+                                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-[10px]">
+                                        <i class="fa-solid fa-user"></i>
                                     </div>
                                     <div>
-                                        <div class="text-blue-600 font-medium">Tri Ân</div>
-                                        <div class="text-xs text-gray-500">0972272654</div>
+                                        <div class="font-bold">0936121987</div>
+                                        <div class="text-[10px] text-blue-500">0936121987</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="table-cell text-gray-900">Hệ thống</td>
-                            <td class="table-cell text-right text-gray-900">12,976</td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">2,976</span>
-                                <span class="text-xs text-red-500 ml-1">(-10,000)</span>
-                            </td>
+                            <td class="table-cell text-gray-500"><i class="fa-solid fa-box mr-1"></i> x1 SP 0%</td>
+                            <td class="table-cell text-right font-medium">115,000</td>
+                            <td class="table-cell text-right">0</td>
+                            <td class="table-cell text-right font-bold">115,000</td>
+                            <td class="table-cell text-[10px] text-gray-600">M2-26-T2W07-00000358007</td>
+                            <td class="table-cell text-right">Phát hành</td>
+                            <td class="table-cell text-center"><i
+                                    class="fa-regular fa-copyright text-blue-600 cursor-pointer"></i></td>
                         </tr>
 
-                        <!-- Row 4 -->
-                        <tr class="hover:bg-blue-50/50 transition duration-150">
-                            <td class="table-cell text-gray-500">4</td>
-                            <td class="table-cell text-gray-900 font-medium">10:34</td>
+                        <!-- Row 8 (Bi tu choi) -->
+                        <tr class="hover:bg-blue-50/50 transition">
+                            <td class="table-cell"><input type="checkbox" class="rounded text-blue-600"></td>
+                            <td class="table-cell whitespace-nowrap">26/01/2026 20:38</td>
+                            <td class="table-cell font-medium">123</td>
+                            <td class="table-cell"><span class="badge-red">BỊ TỪ CHỐI <i
+                                        class="fa-solid fa-triangle-exclamation ml-1"></i></span></td>
+                            <td class="table-cell text-blue-600 hover:underline cursor-pointer">DH1131</td>
                             <td class="table-cell">
-                                <div class="font-bold text-gray-900">Cộng điểm</div>
-                                <div class="text-xs text-gray-500 mt-0.5">Tích điểm cho đơn hàng thành công</div>
-                            </td>
-                            <td class="table-cell text-blue-600 hover:underline cursor-pointer font-medium">DH1174</td>
-                            <td class="table-cell text-right text-gray-900 font-medium">11,590,000đ</td>
-                            <td class="table-cell">
-                                <div class="flex items-start gap-2">
+                                <div class="flex items-center gap-2">
                                     <div
-                                        class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                        <i class="fa-solid fa-user text-xs"></i>
+                                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-[10px]">
+                                        <i class="fa-solid fa-user"></i>
                                     </div>
                                     <div>
-                                        <div class="text-blue-600 font-medium">Tri Ân</div>
-                                        <div class="text-xs text-gray-500">0972272654</div>
+                                        <div class="font-bold">0972272654</div>
+                                        <div class="text-[10px] text-blue-500">0972272654</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="table-cell text-gray-900">Hệ thống</td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">12,976</span>
-                                <span class="text-xs text-green-500 ml-1">(+12,738) <i
-                                        class="fa-solid fa-gift"></i></span>
-                            </td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">12,976</span>
-                                <span class="text-xs text-green-500 ml-1">(+12,738) <i
-                                        class="fa-solid fa-gift"></i></span>
-                            </td>
+                            <td class="table-cell text-gray-500"><i class="fa-solid fa-box mr-1"></i> x1 SP 0%</td>
+                            <td class="table-cell text-right font-medium">117,000</td>
+                            <td class="table-cell text-right">0</td>
+                            <td class="table-cell text-right font-bold">117,000</td>
+                            <td class="table-cell text-gray-400 text-center">-</td>
+                            <td class="table-cell text-right">Phát hành</td>
+                            <td class="table-cell text-center"><i
+                                    class="fa-regular fa-copyright text-blue-600 cursor-pointer"></i></td>
                         </tr>
 
-                        <!-- Row 5 -->
-                        <tr class="hover:bg-blue-50/50 transition duration-150">
-                            <td class="table-cell text-gray-500">5</td>
-                            <td class="table-cell text-gray-900 font-medium">17:05 27/01</td>
+                        <!-- Row 9 (Bi tu choi) -->
+                        <tr class="hover:bg-blue-50/50 transition">
+                            <td class="table-cell"><input type="checkbox" class="rounded text-blue-600"></td>
+                            <td class="table-cell whitespace-nowrap">26/01/2026 18:14</td>
+                            <td class="table-cell font-medium">120</td>
+                            <td class="table-cell"><span class="badge-red">BỊ TỪ CHỐI <i
+                                        class="fa-solid fa-triangle-exclamation ml-1"></i></span></td>
+                            <td class="table-cell text-blue-600 hover:underline cursor-pointer">DH0053</td>
                             <td class="table-cell">
-                                <div class="font-bold text-gray-900">Giảm điểm</div>
-                                <div class="text-xs text-gray-500 mt-0.5">Hoàn điểm do trả hàng</div>
-                            </td>
-                            <td class="table-cell text-blue-600 hover:underline cursor-pointer font-medium">DH1134</td>
-                            <td class="table-cell text-right text-gray-900 font-medium">110,000đ</td>
-                            <td class="table-cell">
-                                <div class="flex items-start gap-2">
+                                <div class="flex items-center gap-2">
                                     <div
-                                        class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                        <i class="fa-solid fa-user text-xs"></i>
+                                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-[10px]">
+                                        <i class="fa-solid fa-user"></i>
                                     </div>
                                     <div>
-                                        <div class="text-blue-600 font-medium">0968569668</div>
-                                        <div class="text-xs text-gray-500">0968569668</div>
+                                        <div class="font-bold">Dương Nt</div>
+                                        <div class="text-[10px] text-blue-500">0356760999</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="table-cell text-gray-900">Hệ thống</td>
-                            <td class="table-cell text-right text-gray-900">100</td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">0</span>
-                                <span class="text-xs text-red-500 ml-1">(-100)</span>
-                            </td>
+                            <td class="table-cell text-gray-500"><i class="fa-solid fa-box mr-1"></i> x1 Sản phẩm
+                                IMEI...</td>
+                            <td class="table-cell text-right font-medium">0</td>
+                            <td class="table-cell text-right">0</td>
+                            <td class="table-cell text-right font-bold">0</td>
+                            <td class="table-cell text-gray-400 text-center">-</td>
+                            <td class="table-cell text-right">Phát hành</td>
+                            <td class="table-cell text-center"><i
+                                    class="fa-regular fa-copyright text-blue-600 cursor-pointer"></i></td>
                         </tr>
 
-                        <!-- Row 6 -->
-                        <tr class="hover:bg-blue-50/50 transition duration-150">
-                            <td class="table-cell text-gray-500">6</td>
-                            <td class="table-cell text-gray-900 font-medium">16:59 27/01</td>
-                            <td class="table-cell">
-                                <div class="font-bold text-gray-900">Cộng điểm</div>
-                                <div class="text-xs text-gray-500 mt-0.5">Tích điểm cho đơn hàng thành công</div>
+                        <!-- Row 10 (Bi tu choi) -->
+                        <tr class="hover:bg-blue-50/50 transition bg-red-50/30">
+                            <td class="table-cell"><input type="checkbox" class="rounded text-blue-600"></td>
+                            <td class="table-cell whitespace-nowrap">26/01/2026 16:04</td>
+                            <td class="table-cell font-medium">110 <i
+                                    class="fa-solid fa-circle-exclamation text-orange-400 text-[10px] ml-1"></i></td>
+                            <td class="table-cell"><span class="badge-red">BỊ TỪ CHỐI <i
+                                        class="fa-solid fa-triangle-exclamation ml-1"></i></span></td>
+                            <td class="table-cell text-blue-600 hover:underline cursor-pointer">DH1115<div
+                                    class="text-[10px] text-orange-500">Đơn hoàn</div>
                             </td>
-                            <td class="table-cell text-blue-600 hover:underline cursor-pointer font-medium">DH1171</td>
-                            <td class="table-cell text-right text-gray-900 font-medium">152,000đ</td>
                             <td class="table-cell">
-                                <div class="flex items-start gap-2">
+                                <div class="flex items-center gap-2">
                                     <div
-                                        class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                        <i class="fa-solid fa-user text-xs"></i>
+                                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-[10px]">
+                                        <i class="fa-solid fa-user"></i>
                                     </div>
                                     <div>
-                                        <div class="text-blue-600 font-medium">Trang xóa 2</div>
-                                        <div class="text-xs text-gray-500">0346745674</div>
+                                        <div class="font-bold">Hạnh</div>
+                                        <div class="text-[10px] text-blue-500">0398675363</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="table-cell text-gray-900">Hệ thống</td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">152</span>
-                                <span class="text-xs text-green-500 ml-1">(+152)</span>
-                            </td>
-                            <td class="table-cell text-right">
-                                <span class="font-medium text-gray-900">152</span>
-                                <span class="text-xs text-green-500 ml-1">(+152)</span>
-                            </td>
+                            <td class="table-cell text-gray-500"><i class="fa-solid fa-box mr-1"></i> x1 Áo 110</td>
+                            <td class="table-cell text-right font-medium">-15,000</td>
+                            <td class="table-cell text-right">15,000</td>
+                            <td class="table-cell text-right font-bold">0</td>
+                            <td class="table-cell text-gray-400 text-center">-</td>
+                            <td class="table-cell text-right">Điều chỉnh</td>
+                            <td class="table-cell text-center"><i
+                                    class="fa-regular fa-copyright text-blue-600 cursor-pointer"></i></td>
                         </tr>
+
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination (Fixed) -->
-            <div class="flex items-center justify-end gap-2 py-4 text-xs text-gray-500">
+            <div class="flex items-center justify-end gap-2 py-4 text-xs text-gray-500 mt-2">
                 <span>Hiển thị</span>
                 <select class="border border-gray-200 rounded p-1 bg-white focus:outline-none focus:border-blue-500">
                     <option>20</option>
                     <option>50</option>
                 </select>
-                <span>của 473</span>
+                <span>of 652</span>
 
                 <div class="flex items-center gap-1 ml-4">
                     <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-400"><i
+                            class="fa-solid fa-angles-left"></i></button>
+                    <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-400"><i
                             class="fa-solid fa-chevron-left"></i></button>
                     <button
-                        class="w-6 h-6 flex items-center justify-center rounded bg-[#1B3DA1] text-white font-bold">1</button>
+                        class="w-6 h-6 flex items-center justify-center rounded bg-blue-600 text-white font-bold">1</button>
                     <button
                         class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600">2</button>
                     <button
                         class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600">3</button>
                     <button
                         class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600">4</button>
-                    <span class="px-1">...</span>
                     <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600"><i
                             class="fa-solid fa-chevron-right"></i></button>
-                    <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600"><i
+                    <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-400"><i
                             class="fa-solid fa-angles-right"></i></button>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -580,6 +519,7 @@
         const sidebar = document.getElementById('sidebar');
         const toggleIcon = document.getElementById('toggle-icon');
         const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        const logoText = document.querySelector('.logo-text');
         let isExpanded = true;
 
         function toggleSidebar() {

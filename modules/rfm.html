@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFM - App.vn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-[#F3F4F6] text-sm text-gray-700;
+        }
+
+        /* Sidebar & Design System Tokens */
+        :root {
+            --primary-blue: #1B3DA1;
+        }
+
+        .sidebar-pro-style {
+            background-color: var(--primary-blue);
+            background-image:
+                radial-gradient(80% 40% at 100% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+                radial-gradient(60% 40% at 0% 100%, rgba(255, 255, 255, 0.1) 0%, transparent 100%),
+                linear-gradient(160deg, #1B3DA1 0%, #0b2060 100%);
+        }
+
+        .sidebar-icon-active {
+            @apply text-white bg-white/15;
+        }
+
+        .sidebar-text {
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        /* Table Styles */
+        .table-header {
+            @apply px-4 py-3 text-left text-xs font-semibold text-gray-500 bg-white whitespace-nowrap border-b border-gray-100;
+        }
+        .table-cell {
+            @apply px-4 py-4 whitespace-nowrap border-b border-gray-50 align-middle;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden">
+
+    <!-- 1. Global Sidebar (Merged) -->
+    <div id="sidebar"
+        class="w-64 sidebar-pro-style text-white flex flex-col pt-3 border-r border-[#1B3DA1] z-[60] shadow-lg shadow-blue-900/20 transition-all duration-300 ease-in-out relative flex-shrink-0">
+
+        <!-- Logo -->
+        <div class="px-3 mb-6 flex items-center h-10 w-full relative group">
+            <div onclick="window.location.href='../index.html'"
+                class="h-10 w-10 min-w-[2.5rem] bg-white rounded-lg flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-lg shadow-black/10 z-10 cursor-pointer">
+                <img src="../logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
+            </div>
+            <span class="sidebar-text ml-3 font-bold text-xl text-white pl-1 logo-text">App.vn</span>
+
+            <!-- Mega Menu -->
+            <div
+                class="absolute top-0 left-14 w-60 bg-white shadow-2xl rounded-xl border border-blue-100 p-2 hidden group-hover:block z-[9999] origin-top-left transition-all duration-200">
+                <div class="space-y-1">
+                    <!-- Standard Modules -->
+                    <a href="sales.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+                            <i class="fa-solid fa-cart-shopping text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Quản lý bán
+                            hàng</span>
+                    </a>
+
+                    <a href="automation.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-purple-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-purple-100/50 flex items-center justify-center text-purple-600 group-hover/item:bg-purple-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-robot text-xs"></i>
+                        </div>
+                        <span
+                            class="text-sm font-semibold text-gray-700 group-hover/item:text-purple-600">Automation</span>
+                    </a>
+
+                    <a href="customer.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-green-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-green-100/50 flex items-center justify-center text-green-600 group-hover/item:bg-green-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-user-tie text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-green-600">Khách
+                            hàng</span>
+                    </a>
+
+                    <a href="workchat.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-pink-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-pink-100/50 flex items-center justify-center text-pink-500 group-hover/item:bg-pink-500 group-hover/item:text-white transition">
+                            <i class="fa-regular fa-comments text-xs"></i>
+                        </div>
+                        <span
+                            class="text-sm font-semibold text-gray-700 group-hover/item:text-pink-500">WorkChatV2</span>
+                    </a>
+
+                    <a href="product.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-amber-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-amber-100/50 flex items-center justify-center text-amber-500 group-hover/item:bg-amber-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-box text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-amber-500">Sản
+                            phẩm</span>
+                    </a>
+
+                    <a href="crm.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-rose-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-rose-100/50 flex items-center justify-center text-rose-500 group-hover/item:bg-rose-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-filter text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-rose-500">CRM</span>
+                    </a>
+
+                    <!-- New Modules -->
+                    <a href="promotions.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-red-100/50 flex items-center justify-center text-red-500 group-hover/item:bg-red-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-tags text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-red-500">Ưu đãi</span>
+                    </a>
+
+                    <a href="loyalty.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-yellow-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-yellow-100/50 flex items-center justify-center text-yellow-600 group-hover/item:bg-yellow-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-crown text-xs"></i>
+                        </div>
+                        <span
+                            class="text-sm font-semibold text-gray-700 group-hover/item:text-yellow-600">Loyalty</span>
+                    </a>
+
+                    <a href="collaborator.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-cyan-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-cyan-100/50 flex items-center justify-center text-cyan-600 group-hover/item:bg-cyan-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-users text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-cyan-600">Cộng tác
+                            viên</span>
+                    </a>
+
+                    <a href="combo.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-orange-100/50 flex items-center justify-center text-orange-500 group-hover/item:bg-orange-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-layer-group text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-orange-500">Combo</span>
+                    </a>
+
+                    <a href="warehouse.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gray-200/50 flex items-center justify-center text-gray-600 group-hover/item:bg-gray-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-warehouse text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-gray-600">Kho hàng</span>
+                    </a>
+
+                    <a href="rfm.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-violet-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-violet-100/50 flex items-center justify-center text-violet-600 group-hover/item:bg-violet-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-chart-pie text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-violet-600">RFM</span>
+                    </a>
+
+                    <a href="debt.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-indigo-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-indigo-100/50 flex items-center justify-center text-indigo-600 group-hover/item:bg-indigo-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-file-invoice-dollar text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-indigo-600">Công
+                            nợ</span>
+                    </a>
+
+                    <a href="einvoice.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-blue-500 group-hover/item:bg-blue-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-receipt text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-blue-500">Hóa đơn điện
+                            tử</span>
+                    </a>
+
+                    <a href="warranty.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-teal-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-teal-100/50 flex items-center justify-center text-teal-600 group-hover/item:bg-teal-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-shield-halved text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-teal-600">Bảo hành</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation (RFM Items) -->
+        <nav class="w-full flex-1 flex flex-col gap-2 px-3">
+            <!-- Danh sách nhóm RFM (Active) -->
+            <a href="#" class="flex items-center h-10 px-2 rounded-lg sidebar-icon-active transition duration-200 group"
+                title="Danh sách nhóm RFM">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-chart-pie"></i></div>
+                <span class="sidebar-text ml-3 text-sm font-semibold">Danh sách nhóm RFM</span>
+            </a>
+
+            <!-- Thiết lập điểm -->
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
+                title="Thiết lập điểm">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-calculator"></i>
+                </div>
+                <span class="sidebar-text ml-3 text-sm font-medium">Thiết lập điểm</span>
+            </a>
+
+            <!-- Thiết lập nhóm RFM -->
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
+                title="Thiết lập nhóm RFM">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-sliders"></i></div>
+                <span class="sidebar-text ml-3 text-sm font-medium">Thiết lập nhóm RFM</span>
+            </a>
+
+            <!-- Automation -->
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
+                title="Automation">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-robot"></i></div>
+                <span class="sidebar-text ml-3 text-sm font-medium">Automation</span>
+            </a>
+        </nav>
+
+        <!-- Collapsible Toggle -->
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <button onclick="toggleSidebar()"
+                class="w-full flex items-center justify-center h-10 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition">
+                <i class="fa-solid fa-chevron-left" id="toggle-icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 bg-[#F3F4F6]">
+
+        <!-- Top Header (White) -->
+        <div class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-40">
+            <div class="flex items-center gap-4 text-gray-500">
+                <h1 class="font-bold text-xl text-[#1B3DA1]">Danh sách nhóm RFM</h1>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button
+                    class="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded border border-gray-300 shadow-sm hover:bg-gray-50 text-sm text-gray-700">
+                    <i class="fa-solid fa-arrows-rotate"></i> Tải lại
+                </button>
+                <button
+                    class="flex items-center gap-1.5 px-4 py-1.5 bg-violet-600 rounded shadow-sm hover:bg-violet-700 text-sm text-white font-medium ml-2">
+                    <i class="fa-solid fa-plus"></i> Thêm nhóm
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="px-6 py-4 flex flex-col md:flex-row md:items-center gap-3 bg-white mx-6 mt-4 rounded-lg shadow-sm">
+            <!-- Search -->
+            <div class="relative flex-1 max-w-lg">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" placeholder="Tìm kiếm nhóm RFM..."
+                    class="pl-9 pr-3 py-2 rounded bg-gray-100 border-none focus:outline-none focus:ring-1 focus:ring-violet-500 text-sm w-full">
+            </div>
+        </div>
+
+        <!-- Grid Cards for RFM Segments -->
+        <div class="flex-1 overflow-auto px-6 pb-6 pt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                <!-- Champion -->
+                <div
+                    class="bg-white rounded-lg shadow-sm border border-violet-100 p-4 relative overflow-hidden group hover:shadow-md transition">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-violet-50 rounded-bl-full -mr-4 -mt-4"></div>
+                    <div class="flex justify-between items-start mb-4 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-violet-100 text-violet-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-800">125</div>
+                            <div class="text-xs text-gray-500">Khách hàng</div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-base mb-1">Champions</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Khách hàng mua gần đây, mua thường xuyên và chi
+                        tiêu nhiều nhất.</p>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Recency (Gần đây)</span>
+                            <span class="font-semibold text-gray-700">5 - 5</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Frequency (Tần suất)</span>
+                            <span class="font-semibold text-gray-700">4 - 5</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Monetary (Giá trị)</span>
+                            <span class="font-semibold text-gray-700">4 - 5</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-3 flex gap-2">
+                        <button
+                            class="flex-1 py-1.5 rounded bg-violet-50 text-violet-600 text-xs font-semibold hover:bg-violet-100">Chi
+                            tiết</button>
+                        <button
+                            class="flex-1 py-1.5 rounded border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50">Automation</button>
+                    </div>
+                </div>
+
+                <!-- Loyal Customers -->
+                <div
+                    class="bg-white rounded-lg shadow-sm border border-blue-100 p-4 relative overflow-hidden group hover:shadow-md transition">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-blue-50 rounded-bl-full -mr-4 -mt-4"></div>
+                    <div class="flex justify-between items-start mb-4 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-800">842</div>
+                            <div class="text-xs text-gray-500">Khách hàng</div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-base mb-1">Loyal Customers</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Mua hàng thường xuyên. Đáp ứng tốt với các chương
+                        trình khuyến mãi.</p>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Recency</span>
+                            <span class="font-semibold text-gray-700">3 - 5</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Frequency</span>
+                            <span class="font-semibold text-gray-700">3 - 5</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Monetary</span>
+                            <span class="font-semibold text-gray-700">3 - 5</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-3 flex gap-2">
+                        <button
+                            class="flex-1 py-1.5 rounded bg-blue-50 text-blue-600 text-xs font-semibold hover:bg-blue-100">Chi
+                            tiết</button>
+                        <button
+                            class="flex-1 py-1.5 rounded border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50">Automation</button>
+                    </div>
+                </div>
+
+                <!-- Potential Loyalist -->
+                <div
+                    class="bg-white rounded-lg shadow-sm border border-emerald-100 p-4 relative overflow-hidden group hover:shadow-md transition">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-bl-full -mr-4 -mt-4"></div>
+                    <div class="flex justify-between items-start mb-4 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-800">340</div>
+                            <div class="text-xs text-gray-500">Khách hàng</div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-base mb-1">Potential Loyalist</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Khách hàng tiềm năng, cần nuôi dưỡng để trở thành
+                        khách hàng trung thành.</p>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Recency</span>
+                            <span class="font-semibold text-gray-700">3 - 5</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Frequency</span>
+                            <span class="font-semibold text-gray-700">2 - 3</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Monetary</span>
+                            <span class="font-semibold text-gray-700">2 - 3</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-3 flex gap-2">
+                        <button
+                            class="flex-1 py-1.5 rounded bg-emerald-50 text-emerald-600 text-xs font-semibold hover:bg-emerald-100">Chi
+                            tiết</button>
+                        <button
+                            class="flex-1 py-1.5 rounded border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50">Automation</button>
+                    </div>
+                </div>
+
+                <!-- New Customers -->
+                <div
+                    class="bg-white rounded-lg shadow-sm border border-orange-100 p-4 relative overflow-hidden group hover:shadow-md transition">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-orange-50 rounded-bl-full -mr-4 -mt-4"></div>
+                    <div class="flex justify-between items-start mb-4 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-800">56</div>
+                            <div class="text-xs text-gray-500">Khách hàng</div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-base mb-1">New Customers</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Khách hàng mới mua lần đầu, cần tạo ấn tượng tốt
+                        để quay lại.</p>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Recency</span>
+                            <span class="font-semibold text-gray-700">4 - 5</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Frequency</span>
+                            <span class="font-semibold text-gray-700">0 - 1</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Monetary</span>
+                            <span class="font-semibold text-gray-700">0 - 1</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-3 flex gap-2">
+                        <button
+                            class="flex-1 py-1.5 rounded bg-orange-50 text-orange-600 text-xs font-semibold hover:bg-orange-100">Chi
+                            tiết</button>
+                        <button
+                            class="flex-1 py-1.5 rounded border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50">Automation</button>
+                    </div>
+                </div>
+
+                <!-- At Risk -->
+                <div
+                    class="bg-white rounded-lg shadow-sm border border-red-100 p-4 relative overflow-hidden group hover:shadow-md transition">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-red-50 rounded-bl-full -mr-4 -mt-4"></div>
+                    <div class="flex justify-between items-start mb-4 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-800">89</div>
+                            <div class="text-xs text-gray-500">Khách hàng</div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-base mb-1">At Risk</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Đã từng mua nhiều nhưng lâu không quay lại. Cần
+                        kích hoạt lại ngay.</p>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Recency</span>
+                            <span class="font-semibold text-gray-700">1 - 2</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Frequency</span>
+                            <span class="font-semibold text-gray-700">3 - 5</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Monetary</span>
+                            <span class="font-semibold text-gray-700">3 - 5</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-3 flex gap-2">
+                        <button
+                            class="flex-1 py-1.5 rounded bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-100">Chi
+                            tiết</button>
+                        <button
+                            class="flex-1 py-1.5 rounded border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50">Automation</button>
+                    </div>
+                </div>
+
+                <!-- Lost -->
+                <div
+                    class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 relative overflow-hidden group hover:shadow-md transition">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-gray-50 rounded-bl-full -mr-4 -mt-4"></div>
+                    <div class="flex justify-between items-start mb-4 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-user-xmark"></i>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-800">412</div>
+                            <div class="text-xs text-gray-500">Khách hàng</div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-base mb-1">Lost</h3>
+                    <p class="text-xs text-gray-500 mb-4 line-clamp-2">Đã lâu không mua hàng. Nhóm khách hàng đã rời bỏ
+                        doanh nghiệp.</p>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Recency</span>
+                            <span class="font-semibold text-gray-700">0 - 1</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Frequency</span>
+                            <span class="font-semibold text-gray-700">0 - 5</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-500">Monetary</span>
+                            <span class="font-semibold text-gray-700">0 - 5</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-3 flex gap-2">
+                        <button
+                            class="flex-1 py-1.5 rounded bg-gray-50 text-gray-600 text-xs font-semibold hover:bg-gray-100">Chi
+                            tiết</button>
+                        <button
+                            class="flex-1 py-1.5 rounded border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50">Automation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleIcon = document.getElementById('toggle-icon');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        const logoText = document.querySelector('.logo-text');
+        let isExpanded = true;
+
+        function toggleSidebar() {
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                sidebar.classList.remove('w-16');
+                sidebar.classList.add('w-64');
+                toggleIcon.classList.remove('rotate-180');
+
+                setTimeout(() => {
+                    sidebarTexts.forEach(text => text.classList.remove('hidden'));
+                }, 100);
+            } else {
+                sidebarTexts.forEach(text => text.classList.add('hidden'));
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-16');
+                toggleIcon.classList.add('rotate-180');
+            }
+        }
+
+        function toggleSubmenu(id, btn) {
+            if (!isExpanded) toggleSidebar();
+
+            const submenu = document.getElementById(id);
+            const icon = btn.querySelector('.fa-chevron-down');
+
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                submenu.classList.add('hidden');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+
+</html>

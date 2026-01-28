@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảo hành - App.vn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-[#F3F4F6] text-sm text-gray-700;
+        }
+
+        /* Sidebar & Design System Tokens */
+        :root {
+            --primary-blue: #1B3DA1;
+        }
+
+        .sidebar-pro-style {
+            background-color: var(--primary-blue);
+            background-image:
+                radial-gradient(80% 40% at 100% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+                radial-gradient(60% 40% at 0% 100%, rgba(255, 255, 255, 0.1) 0%, transparent 100%),
+                linear-gradient(160deg, #1B3DA1 0%, #0b2060 100%);
+        }
+
+        .sidebar-icon-active {
+            @apply text-white bg-white/15;
+        }
+
+        .sidebar-text {
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        /* Table Styles */
+        .table-header {
+            @apply px-4 py-3 text-left text-xs font-semibold text-gray-500 bg-white whitespace-nowrap border-b border-gray-100;
+        }
+        .table-cell {
+            @apply px-4 py-3 text-xs border-gray-50 align-top; 
+        }
+        
+        .badge-status-green { @apply px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-700; }
+        .badge-status-orange { @apply px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-600; }
+        .badge-status-red { @apply px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600; }
+
+        .nested-row td {
+            @apply bg-gray-50/50 border-b border-gray-100;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden">
+
+    <!-- 1. Global Sidebar (Merged) -->
+    <div id="sidebar"
+        class="w-64 sidebar-pro-style text-white flex flex-col pt-3 border-r border-[#1B3DA1] z-[60] shadow-lg shadow-blue-900/20 transition-all duration-300 ease-in-out relative flex-shrink-0">
+
+        <!-- Logo -->
+        <div class="px-3 mb-6 flex items-center h-10 w-full relative group">
+            <div onclick="window.location.href='../index.html'"
+                class="h-10 w-10 min-w-[2.5rem] bg-white rounded-lg flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-lg shadow-black/10 z-10 cursor-pointer">
+                <img src="../logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
+            </div>
+            <span class="sidebar-text ml-3 font-bold text-xl text-white pl-1 logo-text">App.vn</span>
+
+            <!-- Mega Menu -->
+            <div
+                class="absolute top-0 left-14 w-60 bg-white shadow-2xl rounded-xl border border-blue-100 p-2 hidden group-hover:block z-[9999] origin-top-left transition-all duration-200">
+                <div class="space-y-1">
+                    <!-- Standard Modules -->
+                    <a href="sales.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+                            <i class="fa-solid fa-cart-shopping text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Quản lý bán
+                            hàng</span>
+                    </a>
+
+                    <a href="automation.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-purple-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-purple-100/50 flex items-center justify-center text-purple-600 group-hover/item:bg-purple-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-robot text-xs"></i>
+                        </div>
+                        <span
+                            class="text-sm font-semibold text-gray-700 group-hover/item:text-purple-600">Automation</span>
+                    </a>
+
+                    <a href="customer.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-green-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-green-100/50 flex items-center justify-center text-green-600 group-hover/item:bg-green-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-user-tie text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-green-600">Khách
+                            hàng</span>
+                    </a>
+
+                    <a href="workchat.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-pink-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-pink-100/50 flex items-center justify-center text-pink-500 group-hover/item:bg-pink-500 group-hover/item:text-white transition">
+                            <i class="fa-regular fa-comments text-xs"></i>
+                        </div>
+                        <span
+                            class="text-sm font-semibold text-gray-700 group-hover/item:text-pink-500">WorkChatV2</span>
+                    </a>
+
+                    <a href="product.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-amber-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-amber-100/50 flex items-center justify-center text-amber-500 group-hover/item:bg-amber-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-box text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-amber-500">Sản
+                            phẩm</span>
+                    </a>
+
+                    <a href="crm.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-rose-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-rose-100/50 flex items-center justify-center text-rose-500 group-hover/item:bg-rose-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-filter text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-rose-500">CRM</span>
+                    </a>
+
+                    <!-- New Modules -->
+                    <a href="promotions.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-red-100/50 flex items-center justify-center text-red-500 group-hover/item:bg-red-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-tags text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-red-500">Ưu đãi</span>
+                    </a>
+
+                    <a href="loyalty.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-yellow-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-yellow-100/50 flex items-center justify-center text-yellow-600 group-hover/item:bg-yellow-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-crown text-xs"></i>
+                        </div>
+                        <span
+                            class="text-sm font-semibold text-gray-700 group-hover/item:text-yellow-600">Loyalty</span>
+                    </a>
+
+                    <a href="collaborator.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-cyan-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-cyan-100/50 flex items-center justify-center text-cyan-600 group-hover/item:bg-cyan-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-users text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-cyan-600">Cộng tác
+                            viên</span>
+                    </a>
+
+                    <a href="combo.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-orange-100/50 flex items-center justify-center text-orange-500 group-hover/item:bg-orange-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-layer-group text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-orange-500">Combo</span>
+                    </a>
+
+                    <a href="warehouse.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gray-200/50 flex items-center justify-center text-gray-600 group-hover/item:bg-gray-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-warehouse text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-gray-600">Kho hàng</span>
+                    </a>
+
+                    <a href="rfm.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-violet-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-violet-100/50 flex items-center justify-center text-violet-600 group-hover/item:bg-violet-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-chart-pie text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-violet-600">RFM</span>
+                    </a>
+
+                    <a href="debt.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-indigo-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-indigo-100/50 flex items-center justify-center text-indigo-600 group-hover/item:bg-indigo-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-file-invoice-dollar text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-indigo-600">Công
+                            nợ</span>
+                    </a>
+
+                    <a href="einvoice.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-blue-500 group-hover/item:bg-blue-500 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-receipt text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-blue-500">Hóa đơn điện
+                            tử</span>
+                    </a>
+
+                    <a href="warranty.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-teal-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-teal-100/50 flex items-center justify-center text-teal-600 group-hover/item:bg-teal-600 group-hover/item:text-white transition">
+                            <i class="fa-solid fa-shield-halved text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-teal-600">Bảo hành</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation (Warranty Items) -->
+        <nav class="w-full flex-1 flex flex-col gap-2 px-3">
+            <!-- Đơn hàng bảo hành (Active) -->
+            <a href="#" class="flex items-center h-10 px-2 rounded-lg sidebar-icon-active transition duration-200 group"
+                title="Đơn hàng bảo hành">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-file-shield"></i>
+                </div>
+                <span class="sidebar-text ml-3 text-sm font-semibold">Đơn hàng bảo hành</span>
+            </a>
+
+            <!-- Cấu hình sản phẩm -->
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
+                title="Cấu hình sản phẩm">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i
+                        class="fa-solid fa-screwdriver-wrench"></i></div>
+                <span class="sidebar-text ml-3 text-sm font-medium">Cấu hình sản phẩm</span>
+            </a>
+
+            <!-- Cấu hình chung -->
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
+                title="Cấu hình chung">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-gear"></i></div>
+                <span class="sidebar-text ml-3 text-sm font-medium">Cấu hình chung</span>
+            </a>
+
+            <!-- Automation -->
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
+                title="Automation">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-robot"></i></div>
+                <span class="sidebar-text ml-3 text-sm font-medium">Automation</span>
+            </a>
+        </nav>
+
+        <!-- Collapsible Toggle -->
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <button onclick="toggleSidebar()"
+                class="w-full flex items-center justify-center h-10 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition">
+                <i class="fa-solid fa-chevron-left" id="toggle-icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 bg-[#F3F4F6]">
+
+        <!-- Top Header (White) -->
+        <div class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-40">
+            <div class="flex items-center gap-4 text-gray-500">
+                <h1 class="font-bold text-xl text-[#1B3DA1]">Đơn hàng bảo hành</h1>
+            </div>
+
+            <!-- Filter Bar in Header or Separated? Image shows it top right aligned with header often or just below -->
+            <div class="flex items-center gap-2">
+                <!-- Search -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" placeholder="Lọc theo mã ĐH, mã SP..."
+                        class="pl-9 pr-3 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm w-64 bg-white">
+                </div>
+
+                <!-- Date Pcker -->
+                <div class="relative">
+                    <input type="text" placeholder="Tạo từ - đến ngày"
+                        class="pl-3 pr-8 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm w-40 bg-white">
+                    <i class="fa-regular fa-calendar absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+
+                <button
+                    class="flex items-center justify-center w-8 h-8 bg-[#1B3DA1] rounded-md border border-gray-200 shadow-sm text-white">
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+
+                <button
+                    class="flex items-center justify-center w-8 h-8 bg-[#1B3DA1] rounded-md border border-gray-200 shadow-sm text-white">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Scrollable Table Container -->
+        <div class="flex-1 overflow-auto px-6 pb-6 pt-4 bg-[#F3F4F6]">
+
+            <table class="w-full text-sm border-separate border-spacing-y-4">
+                <thead class="hidden md:table-header-group">
+                    <tr class="text-xs font-semibold text-gray-500 text-left">
+                        <th class="px-4 pb-2">Thông tin đơn hàng</th>
+                        <th class="px-4 pb-2 w-1/3">Sản phẩm & Bảo hành</th>
+                        <th class="px-4 pb-2 w-48">Khách hàng</th>
+                        <th class="px-4 pb-2 w-24 text-right">Thao tác</th>
+                    </tr>
+                </thead>
+
+                <!-- Order Group 1: DH0956 -->
+                <tbody
+                    class="bg-white rounded-lg shadow-sm group hover:shadow-md transition-all duration-200 block md:table-row-group border border-gray-200">
+                    <!-- Parent Row: Order Summary -->
+                    <tr class="border-b border-gray-100 bg-gray-50/50">
+                        <td
+                            class="px-4 py-3 rounded-tl-lg rounded-bl-lg md:rounded-bl-none border-t border-l border-r md:border-r-0 border-gray-200 md:border-gray-100 align-top">
+                            <div class="flex items-start gap-3">
+                                <input type="checkbox" class="rounded text-blue-600 mt-1">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span
+                                            class="font-bold text-[#1B3DA1] text-base hover:underline cursor-pointer">DH0956</span>
+                                        <span class="badge-status-green">Đã nhận</span>
+                                    </div>
+                                    <div class="text-xs text-gray-500"><i class="fa-regular fa-clock mr-1"></i>10:03
+                                        15/01/2026</div>
+                                    <div class="text-xs text-gray-500 mt-1">4 Sản phẩm</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Actions / Customer (Mobile optimized logic would go here, but focusing on desktop table structure per image) -->
+                        <td class="hidden md:table-cell px-4 py-3 border-t border-gray-100 align-middle">
+                            <!-- Spacer or High level status -->
+                            <div class="h-full w-[1px] bg-gray-200 mx-auto hidden"></div>
+                        </td>
+
+                        <td class="hidden md:table-cell px-4 py-3 border-t border-gray-100 align-top">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
+                                    TC</div>
+                                <div>
+                                    <div class="font-bold text-gray-800 text-sm">Test combo</div>
+                                    <div class="text-xs text-gray-500">0980655234</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td
+                            class="px-4 py-3 rounded-tr-lg rounded-br-lg md:rounded-br-none border-t border-r md:border-l-0 border-gray-200 md:border-gray-100 align-top text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-gray-200 text-gray-500 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-print"></i></button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-gray-200 text-gray-500 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-plus"></i></button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-gray-200 text-blue-600 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-chevron-up"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Child Row: Detailed Products Table (Nested) -->
+                    <tr>
+                        <td colspan="4"
+                            class="p-0 border-l border-r border-b border-gray-200 rounded-b-lg overflow-hidden">
+                            <div class="bg-white">
+                                <table class="w-full text-xs">
+                                    <thead class="bg-gray-50 text-gray-500 font-medium">
+                                        <tr>
+                                            <th class="px-12 py-2 text-left w-24">Mã SP</th>
+                                            <th class="px-4 py-2 text-left">Sản phẩm</th>
+                                            <th class="px-4 py-2 text-left w-32">Thành phần</th>
+                                            <th class="px-4 py-2 text-left w-32">Bảo hành</th>
+                                            <th class="px-4 py-2 text-left w-32">Hết hạn</th>
+                                            <th class="px-4 py-2 text-left w-40">IMEI</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50">
+                                        <!-- Product 1 -->
+                                        <tr class="hover:bg-blue-50/30 transition">
+                                            <td class="px-12 py-3 text-gray-500 font-medium align-middle">SP0005</td>
+                                            <td class="px-4 py-3 align-middle">
+                                                <div class="flex items-center gap-3">
+                                                    <div
+                                                        class="w-10 h-10 rounded bg-gray-100 border border-gray-200 flex-shrink-0">
+                                                        <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=40&auto=format&fit=crop"
+                                                            class="w-full h-full object-cover rounded">
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-medium text-gray-900">Bánh mỳ</div>
+                                                        <div class="text-[10px] text-gray-500">Số lượng: x1</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-gray-400 text-center">-</td>
+                                            <td class="px-4 py-3 text-gray-400">-</td>
+                                            <td class="px-4 py-3 text-gray-400">-</td>
+                                            <td class="px-4 py-3 text-gray-400">-</td>
+                                        </tr>
+                                        <!-- Product 2 -->
+                                        <tr class="hover:bg-blue-50/30 transition">
+                                            <td class="px-12 py-3 text-gray-500 font-medium align-middle">QT2-1</td>
+                                            <td class="px-4 py-3 align-middle">
+                                                <div class="flex items-center gap-3">
+                                                    <div
+                                                        class="w-10 h-10 rounded bg-gray-100 border border-gray-200 flex-shrink-0">
+                                                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=40&auto=format&fit=crop"
+                                                            class="w-full h-full object-cover rounded">
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-medium text-gray-900">Quantity biến thể</div>
+                                                        <div class="text-[10px] text-gray-500">Màu: Vàng | Size: 10
+                                                        </div>
+                                                        <div class="text-[10px] text-blue-600 font-medium">x2</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 align-middle text-green-600 font-medium"><i
+                                                    class="fa-solid fa-check mr-1"></i>3 TP</td>
+                                            <td class="px-4 py-3 align-middle">
+                                                <span class="block text-gray-700">1 tháng</span>
+                                                <span class="text-[10px] text-gray-400">đến 5 tháng</span>
+                                            </td>
+                                            <td class="px-4 py-3 align-middle text-orange-600 font-medium">14/02/2026
+                                            </td>
+                                            <td class="px-4 py-3 align-middle text-gray-400">-</td>
+                                        </tr>
+                                        <!-- Product 3 -->
+                                        <tr class="hover:bg-blue-50/30 transition">
+                                            <td class="px-12 py-3 text-gray-500 font-medium align-middle">QT2-3</td>
+                                            <td class="px-4 py-3 align-middle">
+                                                <div class="flex items-center gap-3">
+                                                    <div
+                                                        class="w-10 h-10 rounded bg-gray-100 border border-gray-200 flex-shrink-0">
+                                                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=40&auto=format&fit=crop"
+                                                            class="w-full h-full object-cover rounded">
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-medium text-gray-900">Quantity biến thể</div>
+                                                        <div class="text-[10px] text-gray-500">Màu: Xanh | Size: 10
+                                                        </div>
+                                                        <div class="text-[10px] text-blue-600 font-medium">x2</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 align-middle text-green-600 font-medium"><i
+                                                    class="fa-solid fa-check mr-1"></i>1 TP</td>
+                                            <td class="px-4 py-3 align-middle">
+                                                <span class="block text-gray-700">1 ngày</span>
+                                                <span class="text-[10px] text-gray-400">đến 365 ngày</span>
+                                            </td>
+                                            <td class="px-4 py-3 align-middle text-orange-600 font-medium">15/01/2027
+                                            </td>
+                                            <td class="px-4 py-3 align-middle text-gray-400">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <!-- Order Group 2: DH0955 (Collapsed Style - can expand) -->
+                <tbody
+                    class="bg-white rounded-lg shadow-sm group hover:shadow-md transition-all duration-200 block md:table-row-group border border-gray-200">
+                    <tr class="border-b-0">
+                        <td
+                            class="px-4 py-3 rounded-lg md:rounded-r-none border-t border-l border-b border-r md:border-r-0 border-gray-200 align-top">
+                            <div class="flex items-start gap-3">
+                                <input type="checkbox" class="rounded text-blue-600 mt-1">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span
+                                            class="font-bold text-gray-800 text-base hover:underline cursor-pointer">DH0955</span>
+                                        <span class="badge-status-orange">Chờ</span>
+                                    </div>
+                                    <div class="text-xs text-gray-500"><i class="fa-regular fa-clock mr-1"></i>10:00
+                                        15/01/2026</div>
+                                    <div class="text-xs text-gray-500 mt-1">2 Sản phẩm</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="hidden md:table-cell px-4 py-3 border-t border-b border-gray-200 align-middle">
+                            <!-- Preview of products in collapsed state -->
+                            <div class="flex -space-x-2 overflow-hidden">
+                                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                    src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=40&auto=format&fit=crop"
+                                    alt="" />
+                                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                    src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=40&auto=format&fit=crop"
+                                    alt="" />
+                            </div>
+                        </td>
+
+                        <td class="hidden md:table-cell px-4 py-3 border-t border-b border-gray-200 align-top">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xs">
+                                    HD</div>
+                                <div>
+                                    <div class="font-bold text-gray-800 text-sm">Harley Duong</div>
+                                    <div class="text-xs text-gray-500">0912473211</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td
+                            class="px-4 py-3 rounded-lg md:rounded-l-none border-t border-r border-b md:border-l-0 border-gray-200 align-top text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-print"></i></button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-plus"></i></button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <!-- Order Group 3: DH0954 -->
+                <tbody
+                    class="bg-white rounded-lg shadow-sm group hover:shadow-md transition-all duration-200 block md:table-row-group border border-gray-200">
+                    <tr class="border-b-0">
+                        <td
+                            class="px-4 py-3 rounded-lg md:rounded-r-none border-t border-l border-b border-r md:border-r-0 border-gray-200 align-top">
+                            <div class="flex items-start gap-3">
+                                <input type="checkbox" class="rounded text-blue-600 mt-1">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span
+                                            class="font-bold text-gray-800 text-base hover:underline cursor-pointer">DH0954</span>
+                                        <span class="badge-status-orange">Chờ</span>
+                                    </div>
+                                    <div class="text-xs text-gray-500"><i class="fa-regular fa-clock mr-1"></i>09:59
+                                        15/01/2026</div>
+                                    <div class="text-xs text-gray-500 mt-1">3 Sản phẩm</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="hidden md:table-cell px-4 py-3 border-t border-b border-gray-200 align-middle">
+                            <div class="flex -space-x-2 overflow-hidden">
+                                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                    src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=40&auto=format&fit=crop"
+                                    alt="" />
+                                <div
+                                    class="h-6 w-6 rounded-full ring-2 ring-white bg-gray-100 flex items-center justify-center text-[10px] text-gray-500 font-medium">
+                                    +2</div>
+                            </div>
+                        </td>
+
+                        <td class="hidden md:table-cell px-4 py-3 border-t border-b border-gray-200 align-top">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xs">
+                                    HD</div>
+                                <div>
+                                    <div class="font-bold text-gray-800 text-sm">Harley Duong</div>
+                                    <div class="text-xs text-gray-500">0912473211</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td
+                            class="px-4 py-3 rounded-lg md:rounded-l-none border-t border-r border-b md:border-l-0 border-gray-200 align-top text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-print"></i></button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-plus"></i></button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <!-- Order Group 4: DH0897 -->
+                <tbody
+                    class="bg-white rounded-lg shadow-sm group hover:shadow-md transition-all duration-200 block md:table-row-group border border-gray-200">
+                    <tr class="border-b-0">
+                        <td
+                            class="px-4 py-3 rounded-lg md:rounded-r-none border-t border-l border-b border-r md:border-r-0 border-gray-200 align-top">
+                            <div class="flex items-start gap-3">
+                                <input type="checkbox" class="rounded text-blue-600 mt-1">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span
+                                            class="font-bold text-gray-800 text-base hover:underline cursor-pointer">DH0897</span>
+                                        <span class="badge-status-red">Đơn mới</span>
+                                    </div>
+                                    <div class="text-xs text-gray-500"><i class="fa-regular fa-clock mr-1"></i>16:53
+                                        31/12/2025</div>
+                                    <div class="text-xs text-gray-500 mt-1">3 Sản phẩm</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="hidden md:table-cell px-4 py-3 border-t border-b border-gray-200 align-middle">
+                            <div class="flex -space-x-2 overflow-hidden">
+                                <div
+                                    class="h-6 w-6 rounded-full ring-2 ring-white bg-gray-100 flex items-center justify-center text-[10px] text-gray-500 font-medium">
+                                    +3</div>
+                            </div>
+                        </td>
+
+                        <td class="hidden md:table-cell px-4 py-3 border-t border-b border-gray-200 align-top">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-xs">
+                                    T</div>
+                                <div>
+                                    <div class="font-bold text-gray-800 text-sm">Thảo</div>
+                                    <div class="text-xs text-gray-500">0356760222</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td
+                            class="px-4 py-3 rounded-lg md:rounded-l-none border-t border-r border-b md:border-l-0 border-gray-200 align-top text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-print"></i></button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-plus"></i></button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-50 text-gray-400 flex items-center justify-center transition"><i
+                                        class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <!-- Pagination (Fixed) -->
+            <div class="flex items-center justify-end gap-2 py-4 text-xs text-gray-500 mt-2">
+                <span>Hiển thị</span>
+                <select class="border border-gray-200 rounded p-1 bg-white focus:outline-none focus:border-blue-500">
+                    <option>20</option>
+                    <option>50</option>
+                </select>
+                <span>of 153</span>
+
+                <div class="flex items-center gap-1 ml-4">
+                    <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-400"><i
+                            class="fa-solid fa-angles-left"></i></button>
+                    <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-400"><i
+                            class="fa-solid fa-chevron-left"></i></button>
+                    <button
+                        class="w-6 h-6 flex items-center justify-center rounded bg-blue-600 text-white font-bold">1</button>
+                    <button
+                        class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600">2</button>
+                    <button
+                        class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600">3</button>
+                    <button
+                        class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600">4</button>
+                    <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600"><i
+                            class="fa-solid fa-chevron-right"></i></button>
+                    <button class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-200 text-gray-400"><i
+                            class="fa-solid fa-angles-right"></i></button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleIcon = document.getElementById('toggle-icon');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        const logoText = document.querySelector('.logo-text');
+        let isExpanded = true;
+
+        function toggleSidebar() {
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                sidebar.classList.remove('w-16');
+                sidebar.classList.add('w-64');
+                toggleIcon.classList.remove('rotate-180');
+
+                setTimeout(() => {
+                    sidebarTexts.forEach(text => text.classList.remove('hidden'));
+                }, 100);
+            } else {
+                sidebarTexts.forEach(text => text.classList.add('hidden'));
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-16');
+                toggleIcon.classList.add('rotate-180');
+            }
+        }
+
+        function toggleSubmenu(id, btn) {
+            if (!isExpanded) toggleSidebar();
+
+            const submenu = document.getElementById(id);
+            const icon = btn.querySelector('.fa-chevron-down');
+
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                submenu.classList.add('hidden');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+
+</html>
