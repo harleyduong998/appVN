@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Appvn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+        }
+
+        .gradient-header {
+            background: linear-gradient(135deg, #1B3DA1 0%, #0F256E 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <!-- Horizontal Header -->
+    <header
+        class="gradient-header h-16 text-white px-6 flex items-center justify-between shadow-lg z-50 fixed w-full top-0">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+            <div onclick="window.location.href='index.html'"
+                class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-md cursor-pointer">
+                <img src="logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
+            </div>
+            <span class="text-xl font-bold tracking-tight">App.vn</span>
+        </div>
+
+        <!-- Right Side: Notifications & Profile -->
+        <div class="flex items-center gap-4">
+            <button
+                class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition relative">
+                <i class="fa-regular fa-bell text-lg"></i>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-[#1B3DA1]"></span>
+            </button>
+            <div
+                class="flex items-center gap-3 pl-4 border-l border-white/10 cursor-pointer hover:opacity-90 transition">
+                <div class="text-right hidden sm:block">
+                    <div class="text-sm font-semibold">Harley</div>
+                    <div class="text-xs text-blue-200">Owner</div>
+                </div>
+                <div
+                    class="w-10 h-10 rounded-full bg-blue-400 border-2 border-white flex items-center justify-center shadow-sm text-white font-bold text-sm">
+                    HA
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 pt-24 pb-12 px-6 max-w-7xl mx-auto w-full">
+
+        <!-- Welcome Section -->
+        <div class="mb-10 animate-fade-in-up">
+            <h1 class="text-3xl font-bold text-slate-800 mb-2">Xin chào, Harley! 👋</h1>
+            <p class="text-slate-500 text-lg">Chào mừng bạn quay trở lại. Hãy chọn một module để bắt đầu làm việc.</p>
+        </div>
+
+        <!-- Modules Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- 1. Quản lý bán hàng (Order) -->
+            <a href="modules/sales.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-blue-100/80 flex items-center justify-center text-[#1B3DA1] shadow-sm flex-shrink-0 group-hover:bg-[#1B3DA1] group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-cart-shopping text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-[#1B3DA1] transition-colors">Quản
+                        lý bán hàng</h3>
+                    <div class="flex items-center text-sm font-semibold text-[#1B3DA1]">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 2. Automation -->
+            <a href="modules/automation.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-purple-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-purple-100/80 flex items-center justify-center text-purple-600 shadow-sm flex-shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-robot text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-purple-600 transition-colors">
+                        Automation</h3>
+                    <div class="flex items-center text-sm font-semibold text-purple-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 3. Khách hàng (Customer) -->
+            <a href="modules/customer.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-green-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-green-100/80 flex items-center justify-center text-green-600 shadow-sm flex-shrink-0 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-user-tie text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-green-600 transition-colors">Khách
+                        hàng</h3>
+                    <div class="flex items-center text-sm font-semibold text-green-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 4. WorkChatV2 -->
+            <a href="modules/workchat.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-pink-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-pink-100/80 flex items-center justify-center text-pink-500 shadow-sm flex-shrink-0 group-hover:bg-pink-500 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-regular fa-comments text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-pink-500 transition-colors">
+                        WorkChatV2</h3>
+                    <div class="flex items-center text-sm font-semibold text-pink-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 5. Sản phẩm (Product) -->
+            <a href="modules/product.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-amber-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-amber-100/80 flex items-center justify-center text-amber-500 shadow-sm flex-shrink-0 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-box-open text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-amber-500 transition-colors">Sản
+                        phẩm</h3>
+                    <div class="flex items-center text-sm font-semibold text-amber-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 6. CRM -->
+            <a href="modules/crm.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-rose-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-rose-100/80 flex items-center justify-center text-rose-500 shadow-sm flex-shrink-0 group-hover:bg-rose-500 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-chart-pie text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-rose-500 transition-colors">CRM
+                    </h3>
+                    <div class="flex items-center text-sm font-semibold text-rose-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 7. Ưu đãi -->
+            <a href="modules/promotions.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-red-100/80 flex items-center justify-center text-red-500 shadow-sm flex-shrink-0 group-hover:bg-red-500 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-tags text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-red-500 transition-colors">Ưu đãi
+                    </h3>
+                    <div class="flex items-center text-sm font-semibold text-red-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 8. Loyalty -->
+            <a href="modules/loyalty.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-yellow-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-yellow-100/80 flex items-center justify-center text-yellow-600 shadow-sm flex-shrink-0 group-hover:bg-yellow-600 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-crown text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-yellow-600 transition-colors">
+                        Loyalty</h3>
+                    <div class="flex items-center text-sm font-semibold text-yellow-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 9. Cộng tác viên -->
+            <a href="modules/agents.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-cyan-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-cyan-100/80 flex items-center justify-center text-cyan-600 shadow-sm flex-shrink-0 group-hover:bg-cyan-600 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-handshake text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-cyan-600 transition-colors">Cộng
+                        tác viên</h3>
+                    <div class="flex items-center text-sm font-semibold text-cyan-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 10. Combo -->
+            <a href="modules/combo.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-orange-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-orange-100/80 flex items-center justify-center text-orange-500 shadow-sm flex-shrink-0 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-layer-group text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-orange-500 transition-colors">
+                        Combo</h3>
+                    <div class="flex items-center text-sm font-semibold text-orange-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 11. Kho hàng -->
+            <a href="modules/warehouse.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-gray-100 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-gray-200/80 flex items-center justify-center text-gray-600 shadow-sm flex-shrink-0 group-hover:bg-gray-600 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-warehouse text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-gray-600 transition-colors">Kho
+                        hàng</h3>
+                    <div class="flex items-center text-sm font-semibold text-gray-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 12. Cổng thanh toán -->
+            <a href="modules/payment.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-emerald-100/80 flex items-center justify-center text-emerald-600 shadow-sm flex-shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-regular fa-credit-card text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-emerald-600 transition-colors">
+                        Cổng thanh toán</h3>
+                    <div class="flex items-center text-sm font-semibold text-emerald-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 13. Công nợ -->
+            <a href="modules/debt.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-indigo-100/80 flex items-center justify-center text-indigo-600 shadow-sm flex-shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-file-invoice-dollar text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-indigo-600 transition-colors">Công
+                        nợ</h3>
+                    <div class="flex items-center text-sm font-semibold text-indigo-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 14. Hóa đơn điện tử -->
+            <a href="modules/einvoice.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-blue-100/80 flex items-center justify-center text-blue-500 shadow-sm flex-shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-file-invoice text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-blue-500 transition-colors">Hóa
+                        đơn điện tử</h3>
+                    <div class="flex items-center text-sm font-semibold text-blue-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 15. Bảo hành -->
+            <a href="modules/warranty.html"
+                class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-hover group relative overflow-hidden flex items-center gap-5">
+                <div
+                    class="absolute top-0 right-0 w-24 h-24 bg-teal-50 rounded-bl-full -mr-6 -mt-6 transition-transform group-hover:scale-110">
+                </div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-teal-100/80 flex items-center justify-center text-teal-600 shadow-sm flex-shrink-0 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300 z-10">
+                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-teal-600 transition-colors">Bảo
+                        hành</h3>
+                    <div class="flex items-center text-sm font-semibold text-teal-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="mt-auto py-6 text-center text-slate-400 text-sm">
+        <p>&copy; 2026 Appvn. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,2247 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Management - Blue Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/vi.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f8;
+    }
+
+    :root {
+      --sidebar-width: 4rem;
+      /* Giá trị mặc định khi sidebar collapsed */
+    }
+
+    .footer-adaptive {
+      transition: left 0.3s ease-in-out;
+    }
+
+    /* Cập nhật màu active cho sidebar bằng mã màu mới #1B3DA1 */
+    .sidebar-icon-active {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .soft-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Custom scrollbar cho đẹp */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #e5e7eb;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d1d5db;
+    }
+
+    /* Sidebar Transition Classes */
+    .sidebar-text {
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+
+    .submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .submenu.open {
+      max-height: 500px;
+      /* Arbitrary large height for animation */
+      transition: max-height 0.3s ease-in;
+    }
+
+    .rotate-chevron {
+      transform: rotate(180deg);
+    }
+
+    .btn-add-gradient {
+      background: linear-gradient(135deg, #1b3da1 0%, #2d4fb8 50%, #3558d8 100%);
+    }
+
+    .btn-add-gradient:hover {
+      background: linear-gradient(135deg, #1b3da1 0%, #3558d8 50%, #4a6ce8 100%);
+    }
+
+    .sidebar-pro-style {
+      background-color: #1b3da1;
+      background-image: radial-gradient(80% 40% at 100% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+        radial-gradient(60% 40% at 0% 100%, rgba(255, 255, 255, 0.1) 0%, transparent 100%),
+        linear-gradient(160deg, #1b3da1 0%, #0b2060 100%);
+    }
+  </style>
+</head>
+
+<body class="flex h-screen overflow-hidden text-gray-700">
+  <!-- Sidebar Container -->
+  <div id="sidebar"
+    class="w-16 sidebar-pro-style text-white flex flex-col pt-3 border-r border-[#1B3DA1] z-50 shadow-lg shadow-blue-900/20 transition-all duration-300 ease-in-out relative flex-shrink-0">
+    <!-- Logo Area with Mega Menu -->
+    <div class="px-3 mb-8 flex items-center h-10 w-full relative group">
+      <div onclick="window.location.href='index.html'"
+        class="h-10 w-10 min-w-[2.5rem] bg-white rounded-lg flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-lg shadow-black/10 z-10 cursor-pointer">
+        <img style="width: 70%" src="./LOGO APP VN BTHE 12.7-03.svg" alt="Appvn" />
+      </div>
+      <span class="sidebar-text ml-3 font-bold text-xl text-white opacity-0 pl-1">Automation</span>
+
+      <!-- Mega Menu -->
+      <div
+        class="absolute top-0 left-14 w-60 bg-white shadow-2xl rounded-lg border border-blue-100 p-2 hidden group-hover:block z-[9999] origin-top-left transition-all duration-200">
+        <div class="space-y-1">
+          <!-- Sales -->
+          <a href="Order.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+            <div
+              class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+              <i class="fa-solid fa-cart-shopping text-xs"></i>
+            </div>
+            <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Quản lý bán hàng</span>
+          </a>
+
+          <!-- Automation -->
+          <a href="Automation.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+            <div
+              class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+              <i class="fa-solid fa-robot text-xs"></i>
+            </div>
+            <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Automation</span>
+          </a>
+
+          <!-- Customer -->
+          <a href="Customer.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+            <div
+              class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+              <i class="fa-solid fa-user-tie text-xs"></i>
+            </div>
+            <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Khách hàng</span>
+          </a>
+
+          <!-- Workchat -->
+          <a href="workchat.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+            <div
+              class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+              <i class="fa-regular fa-comments text-xs"></i>
+            </div>
+            <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">WorkChatV2</span>
+          </a>
+
+          <!-- Products -->
+          <a href="Product.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+            <div
+              class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+              <i class="fa-solid fa-box text-xs"></i>
+            </div>
+            <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Sản phẩm</span>
+          </a>
+
+          <!-- CRM -->
+          <a href="CRM.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+            <div
+              class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+              <i class="fa-solid fa-filter text-xs"></i>
+            </div>
+            <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">CRM</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Items -->
+    <nav class="w-full flex-1 flex flex-col gap-2 px-3 overflow-y-auto overflow-x-hidden pb-4">
+      <!-- Trigger -->
+      <div class="group">
+        <a href="#" onclick="switchView(event, 'trigger')"
+          class="flex items-center h-10 px-2 rounded-lg sidebar-icon-active transition cursor-pointer text-white"
+          title="Trigger" id="global-nav-trigger">
+          <div class="min-w-[1.5rem] flex items-center justify-center">
+            <!-- <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                ></path>
+              </svg> -->
+            <i class="fa-solid fa-bolt-lightning"></i>
+          </div>
+          <span class="sidebar-text ml-3 font-medium text-sm opacity-0">Trigger</span>
+        </a>
+      </div>
+
+      <!-- Block -->
+      <div class="group">
+        <a href="#" onclick="switchView(event, 'block')"
+          class="flex items-center h-10 px-2 rounded-lg hover:text-white hover:bg-white/10 transition cursor-pointer text-blue-200"
+          title="Block" id="global-nav-block">
+          <div class="min-w-[1.5rem] flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+              </path>
+            </svg>
+          </div>
+          <span class="sidebar-text ml-3 font-medium text-sm opacity-0">Block</span>
+        </a>
+      </div>
+
+      <!-- Sequence -->
+      <div class="group">
+        <a href="#" onclick="switchView(event, 'sequence')"
+          class="flex items-center h-10 px-2 rounded-lg hover:text-white hover:bg-white/10 transition cursor-pointer text-blue-200"
+          title="Sequence" id="global-nav-sequence">
+          <div class="min-w-[1.5rem] flex items-center justify-center">
+            <i class="fa-solid fa-diagram-predecessor"></i>
+          </div>
+          <span class="sidebar-text ml-3 font-medium text-sm opacity-0">Sequence</span>
+        </a>
+      </div>
+
+      <!-- Remarketing -->
+      <div class="group">
+        <a href="#" onclick="switchView(event, 'remarketing')"
+          class="flex items-center h-10 px-2 rounded-lg hover:text-white hover:bg-white/10 transition cursor-pointer text-blue-200"
+          title="Remarketing" id="global-nav-remarketing">
+          <div class="min-w-[1.5rem] flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+              </path>
+            </svg>
+          </div>
+          <span class="sidebar-text ml-3 font-medium text-sm opacity-0">Remarketing</span>
+        </a>
+      </div>
+
+      <!-- Log -->
+      <div class="group">
+        <a href="#" onclick="switchView(event, 'log')"
+          class="flex items-center h-10 px-2 rounded-lg hover:text-white hover:bg-white/10 transition cursor-pointer text-blue-200"
+          title="Log" id="global-nav-log">
+          <div class="min-w-[1.5rem] flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+              </path>
+            </svg>
+          </div>
+          <span class="sidebar-text ml-3 font-medium text-sm opacity-0">Log</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Toggle Button Footer -->
+    <div class="p-4 border-t border-white/10 mt-auto">
+      <button onclick="toggleSidebar()"
+        class="w-full flex items-center justify-center h-10 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition">
+        <svg id="toggle-icon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7">
+          </path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Automation Flows Sidebars -->
+  <!-- Sidebar TRIGGER -->
+  <div id="sidebar-trigger"
+    class="sidebar-section w-[300px] bg-white border-r border-gray-200 flex flex-col z-10 transition-all duration-300 flex-shrink-0">
+    <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+      <div>
+        <h2 class="font-bold text-lg text-gray-800">Trigger Flows</h2>
+        <div class="flex items-center gap-2 mt-3">
+          <div class="relative flex-1">
+            <i
+              class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#516294] text-[10px]"></i>
+            <input
+              class="w-full bg-[#f8f9fb] border border-[#eef2f7] rounded-lg pl-8 py-2 text-xs focus:ring-2 focus:ring-[#1B3DA1]/10 focus:border-[#1B3DA1] outline-none transition-all placeholder:text-gray-400"
+              placeholder="Tìm kiếm..." type="text" />
+          </div>
+          <button
+            class="px-3 py-2 bg-[#1B3DA1] hover:bg-blue-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition shadow-sm hover:shadow-md shrink-0">
+            <i class="fa-solid fa-plus text-[10px]"></i>
+            Thêm
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav id="nav-trigger" class="flex-1 overflow-y-auto p-3 space-y-2">
+      <!-- Dynamic content -->
+    </nav>
+  </div>
+
+  <!-- Sidebar BLOCK -->
+  <div id="sidebar-block"
+    class="sidebar-section hidden w-[300px] bg-white border-r border-gray-200 flex flex-col z-10 transition-all duration-300 flex-shrink-0">
+    <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+      <div>
+        <h2 class="font-bold text-lg text-gray-800">Block Manager</h2>
+        <div class="flex items-center gap-2 mt-3">
+          <div class="relative flex-1">
+            <i
+              class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#516294] text-[10px]"></i>
+            <input
+              class="w-full bg-[#f8f9fb] border border-[#eef2f7] rounded-lg pl-8 py-2 text-xs focus:ring-2 focus:ring-[#1B3DA1]/10 focus:border-[#1B3DA1] outline-none transition-all placeholder:text-gray-400"
+              placeholder="Tìm kiếm..." type="text" />
+          </div>
+          <button
+            class="px-3 py-2 bg-[#1B3DA1] hover:bg-blue-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition shadow-sm hover:shadow-md shrink-0">
+            <i class="fa-solid fa-plus text-[10px]"></i>
+            Thêm
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav id="nav-block" class="flex-1 overflow-y-auto p-3 space-y-2">
+      <!-- Dynamic content -->
+    </nav>
+  </div>
+
+  <!-- Sidebar SEQUENCE -->
+  <div id="sidebar-sequence"
+    class="sidebar-section hidden w-[300px] bg-white border-r border-gray-200 flex flex-col z-10 transition-all duration-300 flex-shrink-0">
+    <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+      <div>
+        <h2 class="font-bold text-lg text-gray-800">Sequence Mindmap</h2>
+        <div class="flex items-center gap-2 mt-3">
+          <div class="relative flex-1">
+            <i
+              class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#516294] text-[10px]"></i>
+            <input
+              class="w-full bg-[#f8f9fb] border border-[#eef2f7] rounded-lg pl-8 py-2 text-xs focus:ring-2 focus:ring-[#1B3DA1]/10 focus:border-[#1B3DA1] outline-none transition-all placeholder:text-gray-400"
+              placeholder="Tìm kiếm..." type="text" />
+          </div>
+          <button
+            class="px-3 py-2 bg-[#1B3DA1] hover:bg-blue-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition shadow-sm hover:shadow-md shrink-0">
+            <i class="fa-solid fa-plus text-[10px]"></i>
+            Thêm
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav id="nav-sequence" class="flex-1 overflow-y-auto p-3 space-y-2">
+      <!-- Dynamic content -->
+    </nav>
+  </div>
+
+  <!-- Sidebar REMARKETING -->
+  <div id="sidebar-remarketing"
+    class="sidebar-section hidden w-[300px] bg-white border-r border-gray-200 flex flex-col z-10 transition-all duration-300 flex-shrink-0">
+    <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+      <div>
+        <h2 class="font-bold text-lg text-gray-800">Remarketing</h2>
+        <div class="flex items-center gap-2 mt-3">
+          <div class="relative flex-1">
+            <i
+              class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#516294] text-[10px]"></i>
+            <input
+              class="w-full bg-[#f8f9fb] border border-[#eef2f7] rounded-lg pl-8 py-2 text-xs focus:ring-2 focus:ring-[#1B3DA1]/10 focus:border-[#1B3DA1] outline-none transition-all placeholder:text-gray-400"
+              placeholder="Tìm kiếm..." type="text" />
+          </div>
+          <button
+            class="px-3 py-2 bg-[#1B3DA1] hover:bg-blue-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition shadow-sm hover:shadow-md shrink-0">
+            <i class="fa-solid fa-plus text-[10px]"></i>
+            Thêm
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav id="nav-remarketing" class="flex-1 overflow-y-auto p-3 space-y-2">
+      <!-- Dynamic content -->
+    </nav>
+  </div>
+
+  <!-- Sidebar LOG -->
+  <div id="sidebar-log"
+    class="sidebar-section hidden w-[300px] bg-white border-r border-gray-200 flex flex-col z-10 transition-all duration-300 flex-shrink-0">
+    <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+      <div>
+        <h2 class="font-bold text-lg text-gray-800">System Logs</h2>
+        <div class="flex items-center gap-2 mt-3">
+          <div class="relative flex-1">
+            <i
+              class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#516294] text-[10px]"></i>
+            <input
+              class="w-full bg-[#f8f9fb] border border-[#eef2f7] rounded-lg pl-8 py-2 text-xs focus:ring-2 focus:ring-[#1B3DA1]/10 focus:border-[#1B3DA1] outline-none transition-all placeholder:text-gray-400"
+              placeholder="Tìm kiếm..." type="text" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav id="nav-log" class="flex-1 overflow-y-auto p-3 space-y-2">
+      <!-- Dynamic content -->
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col h-screen overflow-hidden bg-[#F3F4F8] relative">
+    <!-- Trigger View (Default) -->
+    <div id="view-trigger" class="view-section flex-1 relative overflow-hidden bg-gray-50 flex flex-col">
+      <!-- Canvas Controls -->
+      <div class="absolute top-4 left-4 z-20 flex items-center gap-2">
+        <button class="bg-white p-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </button>
+        <button
+          class="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-sm font-semibold text-gray-700 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          New block
+        </button>
+      </div>
+
+      <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 flex items-center px-2 py-1">
+          <button class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600">-</button>
+          <span class="text-sm font-bold mx-2 text-gray-700 w-12 text-center">56 %</span>
+          <button class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600">+</button>
+        </div>
+        <button class="bg-white p-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Flowchart Canvas Area -->
+      <header
+        class="h-16 bg-white dark:bg-background-dark border-b border-[#e8ebf2] dark:border-white/10 flex items-center justify-between px-6 shrink-0 z-20">
+        <div class="flex items-center gap-4">
+          <nav class="flex items-center gap-2 text-sm">
+            <a class="text-[#516294] hover:text-[#1B3DA1] transition-colors" href="#">Flows</a>
+            <i class="fa-solid fa-chevron-right text-[10px] text-[#516294]"></i>
+            <span class="font-bold text-[#0e111a] dark:text-white">Summer Sale Promo</span>
+          </nav>
+          <span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded uppercase">Draft</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center bg-[#f8f9fb] dark:bg-white/5 rounded-lg p-1 mr-2 border border-[#eef2f7]">
+            <button class="px-5 py-1.5 text-xs font-bold bg-white dark:bg-white/10 shadow-sm rounded-lg text-[#1B3DA1]">
+              Editor
+            </button>
+            <button class="px-5 py-1.5 text-xs font-bold text-[#516294] hover:text-[#1B3DA1] transition-colors">
+              Settings
+            </button>
+            <button class="px-5 py-1.5 text-xs font-bold text-[#516294] hover:text-[#1B3DA1] transition-colors">
+              Stats
+            </button>
+          </div>
+          <button
+            class="flex items-center gap-2 px-4 py-2 text-[#0e111a] dark:text-white text-sm font-bold bg-white dark:bg-white/5 rounded-lg border border-[#e8ebf2] dark:border-white/10 hover:bg-[#f8f9fb] transition-colors shadow-sm">
+            <i class="fa-regular fa-floppy-disk text-[#516294]"></i>
+            Save Draft
+          </button>
+          <button
+            class="flex items-center gap-2 px-4 py-2 bg-[#1B3DA1] text-white text-sm font-bold rounded-lg shadow-lg shadow-[#1B3DA1]/20 hover:opacity-90 transition-all">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            Publish Flow
+          </button>
+        </div>
+      </header>
+      <div
+        class="flex-1 overflow-auto custom-scrollbar cursor-grab active:cursor-grabbing bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+        <div id="flow-canvas"
+          class="relative w-[1500px] h-[1000px] scale-90 origin-top-left p-20 transform translate-x-10 translate-y-10">
+          <!-- Dynamic Nodes Container -->
+          <div id="nodes-container"></div>
+
+          <!-- SVG Connections -->
+          <svg id="connections-svg" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 0">
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#9ca3af" />
+              </marker>
+            </defs>
+            <!-- Dynamic Paths -->
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Remarketing View -->
+    <div id="view-remarketing" class="view-section hidden flex-1 relative overflow-hidden bg-gray-50 flex flex-col">
+      <!-- Canvas Controls -->
+      <div class="absolute top-4 left-4 z-20 flex items-center gap-2">
+        <button class="bg-white p-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </button>
+        <button
+          class="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-sm font-semibold text-gray-700 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          New block
+        </button>
+      </div>
+
+      <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 flex items-center px-2 py-1">
+          <button class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600">-</button>
+          <span class="text-sm font-bold mx-2 text-gray-700 w-12 text-center">100%</span>
+          <button class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600">+</button>
+        </div>
+        <button class="bg-white p-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Header for Remarketing -->
+      <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 shrink-0 z-20">
+        <div class="flex items-center gap-4">
+          <nav class="flex items-center gap-2 text-sm">
+            <a class="text-[#516294] hover:text-[#1B3DA1] transition-colors" href="#">Flows</a>
+            <i class="fa-solid fa-chevron-right text-[10px] text-[#516294]"></i>
+            <span class="font-bold text-[#0e111a] dark:text-white">Marketing Campaign</span>
+          </nav>
+          <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded uppercase">Active</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button
+            class="flex items-center gap-2 px-4 py-2 text-[#0e111a] dark:text-white text-sm font-bold bg-white dark:bg-white/5 rounded-lg border border-[#e8ebf2] dark:border-white/10 hover:bg-[#f8f9fb] transition-colors shadow-sm">
+            <i class="fa-regular fa-floppy-disk text-[#516294]"></i>
+            Save
+          </button>
+          <button
+            class="bg-[#1B3DA1] text-white px-4 py-2 rounded-lg text-sm font-bold hover:opacity-90 transition shadow-lg shadow-[#1B3DA1]/20 flex items-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            Send Campaign
+          </button>
+        </div>
+      </header>
+
+      <!-- Flow Canvas -->
+      <div
+        class="flex-1 overflow-auto custom-scrollbar cursor-grab active:cursor-grabbing bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+        <div id="flow-canvas-remarketing"
+          class="relative w-[1500px] h-[1000px] scale-90 origin-top-left p-20 transform translate-x-10 translate-y-10">
+          <!-- Dynamic Nodes Container -->
+          <div id="nodes-container-remarketing"></div>
+
+          <!-- SVG Connections -->
+          <svg id="connections-svg-remarketing" class="absolute inset-0 w-full h-full pointer-events-none"
+            style="z-index: 0">
+            <defs>
+              <marker id="arrowhead-remarketing" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#9ca3af" />
+              </marker>
+            </defs>
+            <!-- Dynamic Paths -->
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block View (Placeholder) -->
+    <div id="view-block" class="view-section hidden flex-1 flex flex-col items-center justify-center text-gray-400">
+      <div class="p-8 rounded-full bg-white shadow-sm mb-4">
+        <svg class="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-gray-600">Block Manager</h3>
+      <p class="text-sm">Manage your reusable automation blocks here.</p>
+    </div>
+    <!-- Sequence View -->
+    <div id="view-sequence" class="view-section hidden flex-1 relative overflow-hidden bg-gray-50 flex flex-col">
+      <!-- Canvas Controls -->
+      <div class="absolute top-4 left-4 z-20 flex items-center gap-2">
+        <button class="bg-white p-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </button>
+        <button
+          class="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-sm font-semibold text-gray-700 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          New Step
+        </button>
+      </div>
+
+      <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 flex items-center px-2 py-1">
+          <button class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600">-</button>
+          <span class="text-sm font-bold mx-2 text-gray-700 w-12 text-center">100%</span>
+          <button class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600">+</button>
+        </div>
+        <button class="bg-white p-2 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Header for Sequence -->
+      <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 shrink-0 z-20">
+        <div class="flex items-center gap-4">
+          <nav class="flex items-center gap-2 text-sm">
+            <a class="text-[#516294] hover:text-[#1B3DA1] transition-colors" href="#">Flows</a>
+            <i class="fa-solid fa-chevron-right text-[10px] text-[#516294]"></i>
+            <span class="font-bold text-[#0e111a] dark:text-white">Onboarding Sequence</span>
+          </nav>
+          <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded uppercase">Active</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button
+            class="flex items-center gap-2 px-4 py-2 text-[#0e111a] dark:text-white text-sm font-bold bg-white dark:bg-white/5 rounded-lg border border-[#e8ebf2] dark:border-white/10 hover:bg-[#f8f9fb] transition-colors shadow-sm">
+            <i class="fa-regular fa-floppy-disk text-[#516294]"></i>
+            Save
+          </button>
+          <button
+            class="bg-[#1B3DA1] text-white px-4 py-2 rounded-lg text-sm font-bold hover:opacity-90 transition shadow-lg shadow-[#1B3DA1]/20 flex items-center gap-2">
+            <i class="fa-solid fa-play"></i>
+            Start Sequence
+          </button>
+        </div>
+      </header>
+
+      <!-- Flow Canvas -->
+      <div
+        class="flex-1 overflow-auto custom-scrollbar cursor-grab active:cursor-grabbing bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+        <div id="flow-canvas-sequence"
+          class="relative w-[1500px] h-[1000px] scale-90 origin-top-left p-20 transform translate-x-10 translate-y-10">
+          <!-- Dynamic Nodes Container -->
+          <div id="nodes-container-sequence"></div>
+
+          <!-- SVG Connections -->
+          <svg id="connections-svg-sequence" class="absolute inset-0 w-full h-full pointer-events-none"
+            style="z-index: 0">
+            <defs>
+              <marker id="arrowhead-sequence" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#9ca3af" />
+              </marker>
+            </defs>
+            <!-- Dynamic Paths -->
+          </svg>
+        </div>
+      </div>
+    </div>
+    <!-- Log View (Placeholder) -->
+    <div id="view-log" class="view-section hidden flex-1 flex flex-col items-center justify-center text-gray-400">
+      <div class="p-8 rounded-full bg-white shadow-sm mb-4">
+        <svg class="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-gray-600">System Logs</h3>
+      <p class="text-sm">View system activity and execution logs.</p>
+    </div>
+  </div>
+
+  <!-- Script to Handle Toggles -->
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const sidebarTexts = document.querySelectorAll('.sidebar-text');
+    const toggleIcon = document.getElementById('toggle-icon');
+    const buttonText = document.getElementById('button-text');
+    const buttonAdd = document.getElementById('button-add');
+    let isExpanded = false;
+
+    function toggleSidebar() {
+      isExpanded = !isExpanded;
+
+      if (isExpanded) {
+        // Expand
+        sidebar.classList.remove('w-16');
+        sidebar.classList.add('w-64');
+        document.documentElement.style.setProperty('--sidebar-width', '16rem');
+
+        // Rotate toggle icon
+        toggleIcon.classList.add('rotate-180');
+
+        // Show texts and chevrons
+        setTimeout(() => {
+          sidebarTexts.forEach((text) => {
+            text.classList.remove('opacity-0');
+          });
+        }, 100); // Small delay for smooth effect during width transition
+
+        // Ẩn chữ "Thêm" trong button khi sidebar expanded
+        if (buttonText) {
+          buttonText.classList.add('opacity-0');
+          buttonText.classList.add('hidden');
+        }
+
+        // Loại bỏ class khi ẩn text trong btn
+        if (buttonAdd) {
+          buttonAdd.classList.remove('mb-1');
+        }
+      } else {
+        // Collapse
+        sidebar.classList.remove('w-64');
+        sidebar.classList.add('w-16');
+        document.documentElement.style.setProperty('--sidebar-width', '4rem');
+
+        // Reset toggle icon
+        toggleIcon.classList.remove('rotate-180');
+
+        // Hide texts
+        sidebarTexts.forEach((text) => {
+          text.classList.add('opacity-0');
+        });
+
+        // Close all submenus when collapsing sidebar
+        document.querySelectorAll('.submenu').forEach((sub) => {
+          sub.classList.remove('open');
+        });
+        document.querySelectorAll('.chevron').forEach((chev) => {
+          chev.classList.remove('rotate-chevron');
+        });
+
+        // Hiện chữ "Thêm" trong button khi sidebar collapsed
+        if (buttonText) {
+          buttonText.classList.remove('opacity-0');
+          buttonText.classList.remove('hidden');
+        }
+        // Thêm class khi hiện text trong btn
+        if (buttonAdd) {
+          buttonAdd.classList.add('mb-1');
+        }
+      }
+    }
+
+    function toggleSubmenu(id, headerElement) {
+      // Auto expand sidebar if clicked while collapsed
+      if (!isExpanded) {
+        toggleSidebar();
+      }
+
+      const submenu = document.getElementById(id);
+      const chevron = headerElement.querySelector('.chevron');
+
+      submenu.classList.toggle('open');
+      if (chevron) {
+        chevron.classList.toggle('rotate-chevron');
+      }
+    }
+
+    // Hierarchical Flow Structure (Ông -> Cha -> Cháu)
+    const flowHierarchy = [
+      {
+        id: 'customer',
+        name: 'Customer',
+        nameVi: 'Customer',
+        icon: `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14" fill="none">
+  <g clip-path="url(#clip0_1207_3521)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M3.88512 4.55957C2.18397 5.62277 1.0498 7.53079 1.0498 9.70779C1.0498 13.4749 1.99521 14.0001 6.9998 14.0001C11.7952 14.0001 12.9498 13.4749 12.9498 9.70779C12.9498 7.53079 11.8156 5.6228 10.1145 4.55961C9.47784 5.62259 8.32112 6.33327 6.9998 6.33327C5.67848 6.33327 4.5218 5.62259 3.88512 4.55957Z" fill="#1B3DA1"></path>
+    <path d="M9.64435 2.66667C9.64435 4.13942 8.46041 5.33334 6.99993 5.33334C5.53945 5.33334 4.35547 4.13942 4.35547 2.66667C4.35547 1.19391 5.53945 0 6.99993 0C8.46041 0 9.64435 1.19391 9.64435 2.66667Z" fill="url(#paint0_linear_1207_3521)"></path>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.26735 7.85715C7.3776 7.85715 7.48138 7.80521 7.54749 7.71698L7.9754 7.1457C7.99661 7.11634 7.99773 7.07934 7.97831 7.04907C7.95888 7.01879 7.92203 7 7.88195 7H6.11897C6.07889 7 6.04204 7.01879 6.02261 7.04907C6.00319 7.07934 6.00431 7.11634 6.02552 7.1457L6.45343 7.71698C6.51954 7.80521 6.62332 7.85715 6.73357 7.85715H6.84966C6.68089 7.85809 6.53669 7.97944 6.50708 8.1458L6.1203 10.3189C6.11449 10.3514 6.12859 10.3842 6.15747 10.4056L6.92876 10.9771C6.94945 10.9924 6.97493 11 7.00048 11C7.02606 11 7.05154 10.9924 7.07219 10.9771L7.84352 10.4056C7.8724 10.3842 7.8865 10.3514 7.88069 10.3189L7.49391 8.1458C7.4643 7.97944 7.3201 7.85809 7.15133 7.85715H7.26735Z" fill="white"></path>
+    <path d="M9.1709 8.04998C9.1709 7.66337 9.48429 7.34998 9.8709 7.34998H10.5709C10.9575 7.34998 11.2709 7.66337 11.2709 8.04998H9.1709Z" fill="white"></path>
+    <path d="M9.1709 8.40002H11.2709V9.10002C11.2709 9.48663 10.9575 9.80002 10.5709 9.80002H9.8709C9.48429 9.80002 9.1709 9.48663 9.1709 9.10002V8.40002Z" fill="white"></path>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_1207_3521" x1="6.99991" y1="0" x2="6.99991" y2="5.33334" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9E0FF"></stop>
+      <stop offset="0.605769" stop-color="#6DABFF"></stop>
+      <stop offset="1" stop-color="#3C8FFF"></stop>
+    </linearGradient>
+    <clipPath id="clip0_1207_3521">
+      <rect width="14" height="14" fill="white"></rect>
+    </clipPath>
+  </defs>
+</svg>`,
+        subcategories: [
+          {
+            id: 'new-customer',
+            name: 'Khách hàng mới',
+            flows: [
+              {
+                flowId: 'welcome',
+                name: 'Welcome Flow',
+                description: 'Chào mừng khách hàng mới',
+                status: 'active',
+                blocks: 4,
+                runs: 1234,
+              },
+              {
+                flowId: 'onboarding',
+                name: 'Onboarding Campaign',
+                description: 'Hướng dẫn sử dụng',
+                status: 'new',
+                blocks: 3,
+                runs: 0,
+              },
+            ],
+          },
+          {
+            id: 'existing-customer',
+            name: 'Khách hàng hiện tại',
+            flows: [
+              {
+                flowId: 'reengagement',
+                name: 'Re-engagement',
+                description: 'Kích hoạt lại khách cũ',
+                status: 'paused',
+                blocks: 7,
+                runs: 543,
+              },
+              {
+                flowId: 'loyalty',
+                name: 'Loyalty Reward',
+                description: 'Tặng điểm thưởng',
+                status: 'active',
+                blocks: 5,
+                runs: 892,
+              },
+            ],
+          },
+          {
+            id: 'customer-care',
+            name: 'Chăm sóc khách hàng',
+            flows: [
+              {
+                flowId: 'support',
+                name: 'Customer Support',
+                description: 'Hỗ trợ khách hàng',
+                status: 'draft',
+                blocks: 5,
+                runs: 0,
+              },
+              {
+                flowId: 'feedback',
+                name: 'Feedback Collection',
+                description: 'Thu thập phản hồi',
+                status: 'active',
+                blocks: 3,
+                runs: 421,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'order',
+        name: 'Order',
+        nameVi: 'Order',
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14" fill="none">
+  <path d="M9.47982 13.1252C10.0436 13.1252 10.5007 12.6681 10.5007 12.1043C10.5007 11.5405 10.0436 11.0835 9.47982 11.0835C8.91603 11.0835 8.45898 11.5405 8.45898 12.1043C8.45898 12.6681 8.91603 13.1252 9.47982 13.1252Z" fill="url(#paint0_linear_1207_2330)"></path>
+  <path d="M4.81478 13.1252C5.37857 13.1252 5.83561 12.6681 5.83561 12.1043C5.83561 11.5405 5.37857 11.0835 4.81478 11.0835C4.25099 11.0835 3.79395 11.5405 3.79395 12.1043C3.79395 12.6681 4.25099 13.1252 4.81478 13.1252Z" fill="url(#paint1_linear_1207_2330)"></path>
+  <path d="M2.82561 2.29817L2.70894 3.72734C2.68561 4.0015 2.90144 4.229 3.17561 4.229H12.1064C12.3514 4.229 12.5556 4.04234 12.5731 3.79734C12.6489 2.76484 11.8614 1.92484 10.8289 1.92484H3.65978C3.60144 1.66817 3.48478 1.42317 3.30394 1.219C3.01228 0.909837 2.60394 0.729004 2.18394 0.729004H1.16895C0.929779 0.729004 0.731445 0.927337 0.731445 1.1665C0.731445 1.40567 0.929779 1.604 1.16895 1.604H2.18394C2.36478 1.604 2.53394 1.67984 2.65644 1.80817C2.77894 1.94234 2.83728 2.11734 2.82561 2.29817Z" fill="url(#paint2_linear_1207_2330)"></path>
+  <path d="M11.9658 5.104H3.01749C2.77249 5.104 2.57416 5.29067 2.55083 5.52984L2.34083 8.06734C2.25916 9.06484 3.04083 9.9165 4.03832 9.9165H10.525C11.4 9.9165 12.17 9.199 12.2342 8.324L12.4267 5.59984C12.45 5.3315 12.24 5.104 11.9658 5.104Z" fill="#1B3DA1"></path>
+  <defs>
+    <linearGradient id="paint0_linear_1207_2330" x1="9.47982" y1="11.0835" x2="9.47982" y2="13.1252" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9E0FF"></stop>
+      <stop offset="0.605769" stop-color="#6DABFF"></stop>
+      <stop offset="1" stop-color="#3C8FFF"></stop>
+    </linearGradient>
+    <linearGradient id="paint1_linear_1207_2330" x1="4.81478" y1="11.0835" x2="4.81478" y2="13.1252" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9E0FF"></stop>
+      <stop offset="0.605769" stop-color="#6DABFF"></stop>
+      <stop offset="1" stop-color="#3C8FFF"></stop>
+    </linearGradient>
+    <linearGradient id="paint2_linear_1207_2330" x1="6.6548" y1="0.729004" x2="6.6548" y2="4.229" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9E0FF"></stop>
+      <stop offset="0.605769" stop-color="#6DABFF"></stop>
+      <stop offset="1" stop-color="#3C8FFF"></stop>
+    </linearGradient>
+  </defs>
+</svg>
+          `,
+        subcategories: [
+          {
+            id: 'shopping-cart',
+            name: 'Giỏ hàng',
+            flows: [
+              {
+                flowId: 'abandoned-cart',
+                name: 'Abandoned Cart',
+                description: 'Nhắc nhở giỏ hàng bỏ quên',
+                status: 'active',
+                blocks: 6,
+                runs: 856,
+              },
+              {
+                flowId: 'cart-reminder',
+                name: 'Cart Reminder',
+                description: 'Nhắc nhở sau 24h',
+                status: 'active',
+                blocks: 4,
+                runs: 623,
+              },
+            ],
+          },
+          {
+            id: 'order-processing',
+            name: 'Xử lý đơn hàng',
+            flows: [
+              {
+                flowId: 'order-confirmation',
+                name: 'Order Confirmation',
+                description: 'Xác nhận đơn hàng',
+                status: 'active',
+                blocks: 3,
+                runs: 2103,
+              },
+              {
+                flowId: 'shipping-update',
+                name: 'Shipping Update',
+                description: 'Cập nhật vận chuyển',
+                status: 'active',
+                blocks: 4,
+                runs: 1876,
+              },
+            ],
+          },
+          {
+            id: 'marketing-upsell',
+            name: 'Marketing & Upsell',
+            flows: [
+              {
+                flowId: 'fashion',
+                name: "Women's Fashion",
+                description: 'Tặng voucher & upsell',
+                status: 'new',
+                blocks: 3,
+                runs: 0,
+              },
+              {
+                flowId: 'remarketing',
+                name: 'Marketing Campaign',
+                description: 'Remarketing đa kênh',
+                status: 'active',
+                blocks: 2,
+                runs: 'Now',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'sequence-cat',
+        name: 'Sequence',
+        nameVi: 'Sequence',
+        icon: '<i class="fa-solid fa-diagram-predecessor text-[#1B3DA1]"></i>',
+        subcategories: [
+          {
+            id: 'marketing-sequence',
+            name: 'Marketing Sequence',
+            flows: [
+              {
+                flowId: 'sequence',
+                name: 'Onboarding Sequence',
+                description: 'Chuỗi tin nhắn chào mừng',
+                status: 'active',
+                blocks: 3,
+                runs: 125,
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    // Status badge styling
+    const statusStyles = {
+      active: 'bg-green-100 text-green-700',
+      new: 'bg-purple-100 text-purple-700',
+      draft: 'bg-gray-100 text-gray-600',
+      paused: 'bg-yellow-100 text-yellow-700',
+    };
+
+    const statusLabels = {
+      active: 'Active',
+      new: 'New',
+      draft: 'Draft',
+      paused: 'Paused',
+    };
+
+    // Status configuration for Remarketing sidebar
+    const remarketingSidebarConfig = [
+      {
+        id: 'draft',
+        name: 'Bản nháp',
+        color: '#ffb300',
+        bg: '#fff9e6',
+        icon: 'fa-regular fa-file-lines',
+        flows: [
+          {
+            flowId: 'rmk-draft-1',
+            name: 'Chiến dịch tháng 1',
+            description: 'Nội dung đang soạn thảo',
+            status: 'draft',
+            blocks: 2,
+            runs: 0,
+          },
+        ],
+      },
+      {
+        id: 'scheduled',
+        name: 'Lên lịch',
+        color: '#ff5722',
+        bg: '#fff2ee',
+        icon: 'fa-regular fa-calendar-check',
+        flows: [
+          {
+            flowId: 'rmk-sch-1',
+            name: 'Flash Sale Cuối Tuần',
+            description: 'Gửi vào 09:00 Thứ 7',
+            status: 'paused',
+            blocks: 4,
+            runs: 0,
+          },
+        ],
+      },
+      {
+        id: 'processing',
+        name: 'Đang xử lý',
+        color: '#2962ff',
+        bg: '#ebf2ff',
+        icon: 'fa-regular fa-clock',
+        flows: [
+          {
+            flowId: 'remarketing',
+            name: 'Marketing Campaign',
+            description: 'Remarketing đa kênh',
+            status: 'active',
+            blocks: 2,
+            runs: 'Now',
+          },
+        ],
+      },
+      {
+        id: 'completed',
+        name: 'Hoàn thành',
+        color: '#00c853',
+        bg: '#e8f9f0',
+        icon: 'fa-regular fa-circle-check',
+        flows: [
+          {
+            flowId: 'rmk-comp-1',
+            name: 'Tri ân khách hàng cũ',
+            description: 'Đã hoàn thành gửi 5000 tin',
+            status: 'active',
+            blocks: 3,
+            runs: 5000,
+          },
+        ],
+      },
+      {
+        id: 'paused',
+        name: 'Tạm dừng',
+        color: '#7c4dff',
+        bg: '#f3e8ff',
+        icon: 'fa-solid fa-gear',
+        flows: [
+          {
+            flowId: 'rmk-pau-1',
+            name: 'Khảo sát dịch vụ',
+            description: 'Đang tạm dừng bảo trì',
+            status: 'paused',
+            blocks: 5,
+            runs: 120,
+          },
+        ],
+      },
+    ];
+
+    // Render sidebar with hierarchical structure
+    function renderFlowSidebar(viewId = 'trigger') {
+      const nav = document.getElementById('nav-' + viewId);
+      if (!nav) return;
+
+      let html = '';
+
+      if (viewId === 'remarketing') {
+        remarketingSidebarConfig.forEach((subcategory, subIndex) => {
+          const subcategoryId = `subcategory-${viewId}-${subcategory.id}`;
+          const isSubOpen = subIndex === 2; // "Đang xử lý" open by default
+
+          html += `
+              <div class="mb-3">
+                <button
+                  onclick="toggleSubcategory('${subcategoryId}')"
+                  class="w-full flex items-center justify-between px-4 h-[42px] transition-all group border border-transparent hover:border-[#e5e7eb]"
+                  style="background-color: ${subcategory.bg}; border-radius: 0.75rem;"
+                >
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-center w-9 h-9 rounded-xl shadow-sm" style="background-color: ${subcategory.color
+            }">
+                      <i class="${subcategory.icon} text-white text-base"></i>
+                    </div>
+                    <span class="text-sm font-bold" style="color: ${subcategory.color}">${subcategory.name}</span>
+                  </div>
+                  <div class="flex items-center justify-center w-7 h-7 bg-white rounded-lg shadow-sm border border-[#f0f0f0]">
+                    <i id="${subcategoryId}-chevron" class="fa-solid fa-chevron-right text-[10px] transition-transform ${isSubOpen ? 'rotate-90' : ''
+            }" style="color: ${subcategory.color}"></i>
+                  </div>
+                </button>
+                
+                <div id="${subcategoryId}" class="space-y-2 mt-2 ${isSubOpen ? '' : 'hidden'}">
+            `;
+
+          subcategory.flows.forEach((flow) => {
+            const statusClass = statusStyles[flow.status] || statusStyles.draft;
+            const statusLabel = statusLabels[flow.status] || 'Draft';
+            const hasFlowConfig = flow.flowId === 'remarketing';
+
+            html += `
+                <div
+                  onclick="loadFlow('${flow.flowId}')"
+                  class="group flex flex-col p-3 rounded-lg border border-gray-100 bg-white hover:border-blue-400 hover:shadow-md transition-all cursor-pointer relative ${hasFlowConfig ? 'ring-1 ring-blue-100' : ''
+              }"
+                >
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-gray-800 truncate pr-12">${flow.name}</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${statusClass} whitespace-nowrap">
+                      ${statusLabel}
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-3 border-gray-50">
+                    <div class="flex items-center gap-1">
+                      <i class="fa-solid fa-layer-group text-[10px] text-gray-400"></i>
+                      <span class="text-[10px] font-medium text-gray-600">${flow.blocks} blocks</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <i class="fa-solid fa-play text-[10px] text-gray-400"></i>
+                      <span class="text-[10px] font-medium text-gray-600">${flow.runs} runs</span>
+                    </div>
+                  </div>
+                </div>
+              `;
+          });
+
+          html += `</div></div>`;
+        });
+        nav.innerHTML = html;
+        return;
+      }
+
+      flowHierarchy.forEach((category, catIndex) => {
+        const categoryId = `category-${viewId}-${category.id}`;
+        const isOpen = catIndex === 0; // First category open by default
+
+        // Category Header (Ông) - Only for trigger view
+        if (viewId === 'trigger') {
+          html += `
+              <div class="mb-3">
+                <button
+                  onclick="toggleCategory('${categoryId}')"
+                  class="w-full flex items-center justify-between px-4 h-[42px] bg-[#ebf2ff] transition-colors hover:bg-[#dce7ff] group"
+                  style="border-radius: 0.5rem"
+                >
+                  <div class="flex items-center gap-3">
+                    <div class="text-[#2d4a9e]">${category.icon}</div>
+                    <span class="text-sm font-bold text-[#2d4a9e]">${category.nameVi}</span>
+                  </div>
+                  <svg
+                    id="${categoryId}-chevron"
+                    class="w-4 h-4 transition-transform text-[#2d4a9e] ${isOpen ? 'rotate-90' : ''}"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                <div id="${categoryId}" class="space-y-2 mt-2 ${isOpen ? '' : 'hidden'}">
+            `;
+        }
+
+        // Subcategories (Cha) - Enhanced UI from test.html
+        category.subcategories.forEach((subcategory, subIndex) => {
+          const subcategoryId = `subcategory-${viewId}-${category.id}-${subcategory.id}`;
+          const isSubOpen = catIndex === 0 && subIndex === 0; // First subcategory of first category open
+
+          html += `
+              <div class="ml-0 ${viewId !== 'trigger' ? 'mb-2' : ''}">
+                <button
+                  onclick="toggleSubcategory('${subcategoryId}')"
+                  class="w-full flex items-center justify-between px-4 h-[42px] bg-[#f8f9fb] border border-[#eef2f7] text-[#2d3a5e] transition-colors hover:bg-[#f0f2f6]"
+                  style="border-radius: 0.5rem"
+                >
+                  <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center w-6 h-6 bg-white border border-[#e8ebf2] rounded shadow-sm">
+                      <i 
+                        id="${subcategoryId}-chevron"
+                        class="fa-solid fa-chevron-right text-[10px] text-[#1B3DA1] transition-transform ${isSubOpen ? 'rotate-90' : ''
+            }"
+                      ></i>
+                    </div>
+                    <span class="text-sm font-semibold">${subcategory.name}</span>
+                  </div>
+                </button>
+                <div id="${subcategoryId}" class="space-y-2 mt-2 ${isSubOpen ? '' : 'hidden'}">
+            `;
+
+          // Flows (Cháu)
+          subcategory.flows.forEach((flow) => {
+            const statusClass = statusStyles[flow.status] || statusStyles.draft;
+            const statusLabel = statusLabels[flow.status] || 'Draft';
+            const hasFlowConfig =
+              flow.flowId === 'welcome' ||
+              flow.flowId === 'fashion' ||
+              flow.flowId === 'remarketing' ||
+              flow.flowId === 'sequence';
+
+            html += `
+                <div
+                  ${hasFlowConfig ? `onclick="loadFlow('${flow.flowId}')"` : ''}
+                  class="flow-item p-2.5 border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 ${hasFlowConfig ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
+              } transition group"
+                  style="border-radius: 0.5rem"
+                >
+                  <div class="flex items-start justify-between">
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-semibold text-xs text-gray-800 group-hover:text-[#1B3DA1] truncate">${flow.name
+              }</h3>
+                    </div>
+                    <span class="px-1.5 py-0.5 ${statusClass} text-[9px] font-semibold rounded-full ml-1 flex-shrink-0">${statusLabel}</span>
+                  </div>
+                  <div class="flex items-center gap-2 mt-1.5 text-[10px] text-gray-400">
+                    <span class="flex items-center gap-1">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                      ${flow.blocks} blocks
+                    </span>
+                    <span>•</span>
+                    <span>${flow.runs} runs</span>
+                  </div>
+                </div>
+              `;
+          });
+
+          html += `
+                </div>
+              </div>
+            `;
+        });
+
+        if (viewId === 'trigger') {
+          html += `
+                </div>
+              </div>
+            `;
+        }
+      });
+
+      nav.innerHTML = html;
+    }
+
+    // Toggle functions
+    function toggleCategory(categoryId) {
+      const content = document.getElementById(categoryId);
+      const chevron = document.getElementById(`${categoryId}-chevron`);
+      content.classList.toggle('hidden');
+      chevron.classList.toggle('rotate-90');
+    }
+
+    function toggleSubcategory(subcategoryId) {
+      const content = document.getElementById(subcategoryId);
+      const chevron = document.getElementById(`${subcategoryId}-chevron`);
+      content.classList.toggle('hidden');
+      chevron.classList.toggle('rotate-90');
+    }
+
+    // Data for Automation Flows
+    const flowConfig = {
+      welcome: {
+        nodes: [
+          {
+            id: 'node-0',
+            type: 'trigger',
+            title: 'Clicked "Start"',
+            x: 40,
+            y: 160,
+            content: `
+                            <div class="p-4 space-y-3">
+                                <div class="bg-gray-50 p-3 rounded-lg text-sm text-gray-700 leading-relaxed border border-gray-100">
+                                    Hello! 👋 Do you want to learn more about the company?</div>
+                                <div class="flex flex-col gap-2">
+                                    ${['Chat with a person', 'Pricing', 'Offers', 'About us']
+                .map(
+                  (btn) => `
+                                    <button class="w-full border border-gray-200 rounded-lg py-2 text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition text-left px-3 relative group">
+                                        ${btn}
+                                        <div class="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white border border-gray-300 rounded-full group-hover:border-blue-400"></div>
+                                    </button>`,
+                )
+                .join('')}
+                                </div>
+                            </div>`,
+            color: 'bg-[#1B3DA1]',
+            icon: `<div class="w-2 h-2 rounded-full bg-white"></div>`,
+          },
+          {
+            id: 'node-1',
+            type: 'message',
+            subtitle: 'Facebook',
+            title: 'Send Messenger',
+            x: 420,
+            y: 160,
+            content: `
+                            <div class="p-4 space-y-3">
+                                <!-- Stats Row -->
+                                <div class="border-2 border-dashed border-blue-300 rounded-lg p-3 bg-blue-50/30">
+                                    <div class="grid grid-cols-4 gap-2 text-center">
+                                        <div>
+                                            <div class="text-blue-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">10.000</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-green-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">800</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-yellow-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">500</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-pink-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">300</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Message Text -->
+                                <div class="bg-gray-50 p-3 rounded-lg text-xs text-gray-700 leading-relaxed border border-gray-100">
+                                    Chúc mừng anh/chị đã nhận được mã ưu đãi đặt biệt 🎉<br>
+                                    Cảm ơn anh/chị rất nhiều vì đã lựa chọn sản phẩm của chúng tôi. Hy vọng món quà này sẽ mang lại niềm vui và sự hài lòng tuyệt vời 💝
+                                </div>
+
+                                <!-- Product Cards -->
+                                <div class="grid grid-cols-2 gap-2">
+                                    <!-- Card 1 -->
+                                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                                        <div class="relative">
+                                            <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=300&auto=format&fit=crop" class="w-full h-32 object-cover" alt="Áo sơ mi">
+                                            <div class="absolute bottom-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-gray-800">
+                                                Áo sơ mi 345K
+                                            </div>
+                                        </div>
+                                        <div class="p-2 space-y-1.5">
+                                            <div class="text-[10px] text-gray-500">Đặt mua ngay</div>
+                                            <button class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 text-[10px] font-bold py-1.5 rounded border border-gray-200 flex items-center justify-between px-2">
+                                                XEM GIÁ
+                                                <span class="text-blue-500">30% 📊</span>
+                                            </button>
+                                            <button class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 text-[10px] font-bold py-1.5 rounded border border-gray-200 flex items-center justify-between px-2">
+                                                NHẬN KHUYẾN MÃI
+                                                <span class="text-blue-500">70% 🔵</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card 2 -->
+                                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                                        <div class="relative">
+                                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=300&auto=format&fit=crop" class="w-full h-32 object-cover" alt="Combo">
+                                            <div class="absolute bottom-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-gray-800">
+                                                Combo 695K
+                                            </div>
+                                        </div>
+                                        <div class="p-2 space-y-1.5">
+                                            <div class="text-[10px] text-gray-500">Đặt mua ngay</div>
+                                            <button class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 text-[10px] font-bold py-1.5 rounded border border-gray-200 flex items-center justify-between px-2">
+                                                XEM GIÁ
+                                                <span class="text-blue-500">40% 🔵</span>
+                                            </button>
+                                            <button class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 text-[10px] font-bold py-1.5 rounded border border-gray-200 flex items-center justify-between px-2">
+                                                NHẬN KHUYẾN MÃI
+                                                <span class="text-blue-500">60% 🔵</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Add Card Button -->
+                                <button class="w-full bg-white hover:bg-gray-50 text-blue-600 text-sm font-semibold py-2.5 rounded-lg border-2 border-dashed border-blue-300 flex items-center justify-center gap-2 transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                    Thêm Thẻ
+                                </button>
+                            </div>`,
+            color: 'bg-white',
+            headerTextColor: 'text-gray-800',
+            icon: 'https://dev.smax.app/demo/automation/assets/images/card/messenger.svg',
+          },
+          {
+            id: 'node-2',
+            type: 'zalo',
+            subtitle: 'Zalo OA',
+            title: 'Send ZNS',
+            x: 800,
+            y: 100,
+            content: `
+                            <div class="p-4 space-y-3">
+                                <!-- Stats Row -->
+                                <div class="border-2 border-dashed border-blue-300 rounded-lg p-3 bg-blue-50/30">
+                                    <div class="grid grid-cols-4 gap-2 text-center">
+                                        <div>
+                                            <div class="text-blue-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">10.000</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-green-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">800</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-yellow-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">500</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-pink-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">300</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Gift Banner -->
+                                <div class="rounded-lg overflow-hidden">
+                                    <img src="https://app-vn.vercel.app/assets/image-sample.svg" />
+                                </div>
+
+                                <!-- BILUXURY Content Card -->
+                                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                                    <!-- Logo -->
+                                    <div class="p-3 border-b border-gray-100">
+                                        <div class="text-xl font-bold text-gray-800">BILUXURY<sup class="text-xs">®</sup></div>
+                                    </div>
+
+                                    <!-- Content -->
+                                    <div class="p-3 space-y-2">
+                                        <div class="text-sm font-semibold text-gray-800">
+                                            Biluxury - Gởi Tặng Mã Ưu Đãi Đặc Biệt!
+                                        </div>
+
+                                        <div class="text-xs text-gray-700 leading-relaxed space-y-1.5">
+                                            <p>Cảm ơn Quý Khách <span class="font-semibold">&lt;Customer_name&gt;</span> đã yêu mến và mua hàng tại BILUXURY. Mã Ưu Đãi Đặc Biệt dành riêng cho Quý Khách. Vui lòng nhận thông báo qua dịch vụ <span class="font-semibold">&lt;_Ngay_Mua_&gt;</span>. Với đơn hàng tiếp theo, BILUXURY xin dành tặng Quý Khách ưu đãi đặc biệt trị giá 200K.</p>
+
+                                            <p>Hy vọng món quà này sẽ mang lại niềm vui và sự hài lòng tuyệt vời đến Quý Khách!</p>
+
+                                            <p class="text-gray-600">Truy cập Ví Ưu Đãi để nhận Voucher và thông tin chi tiết chương trình Quý Khách nhé!</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Button -->
+                                    <div class="p-3">
+                                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-3 rounded-lg transition">
+                                            XEM VÍ ƯU ĐÃI
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>`,
+            color: 'bg-white',
+            headerTextColor: 'text-gray-800',
+            icon: 'https://app-vn.vercel.app/assets/zalo.svg',
+          },
+          {
+            id: 'node-3',
+            type: 'webview',
+            subtitle: 'chuyển tới nội dung khác',
+            title: 'Xem Mini Web',
+            x: 1150,
+            y: 100,
+            content: `
+                            <div class="p-4 space-y-3">
+                                <!-- Stats Row -->
+                                <div class="border-2 border-dashed border-blue-300 rounded-lg p-3 bg-blue-50/30">
+                                    <div class="grid grid-cols-4 gap-2 text-center">
+                                        <div>
+                                            <div class="text-blue-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">10.000</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-green-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">800</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-yellow-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">500</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-pink-500 mb-1">
+                                                <svg class="w-4 h-4 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-700">300</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mobile Frame Preview -->
+                                <div class="flex justify-center items-center py-2">
+                                    <div class="relative bg-gray-900 rounded-[32px] shadow-2xl" style="width: 210px; height: 420px; padding: 4px;">
+                                        <!-- Notch -->
+                                        <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-gray-900 rounded-b-2xl" style="width: 100px; height: 20px; z-index: 20;"></div>
+
+                                        <!-- Screen Content -->
+                                        <div class="relative bg-white rounded-[28px] overflow-hidden" style="width: 202px; height: 412px;">
+                                            <!-- Status Bar -->
+                                            <div class="bg-blue-500 px-3 py-1 flex items-center justify-between text-white text-[8px]">
+                                                <span class="font-medium">24:12</span>
+                                                <div class="flex items-center gap-1">
+                                                    <svg class="w-2 h-2" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+                                                    <svg class="w-2.5 h-2" fill="currentColor" viewBox="0 0 24 24"><rect x="1" y="4" width="21" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="23" y="8" width="1" height="6" fill="currentColor"/></svg>
+                                                </div>
+                                            </div>
+
+                                            <!-- Navigation Bar -->
+                                            <div class="bg-blue-500 px-3 py-1.5 flex items-center justify-between text-white">
+                                                <div class="flex items-center gap-1.5">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
+                                                    <div class="flex flex-col">
+                                                        <span class="font-bold text-[10px]">BILUXURY 🔥</span>
+                                                        <span class="text-[7px] opacity-90">Đăng được 90 bài</span>
+                                                    </div>
+                                                </div>
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                                            </div>
+
+                                            <!-- Content Area -->
+                                            <div class="overflow-y-auto bg-gray-50" style="height: 360px;">
+                                                <!-- Image Banner -->
+                                                <div class="p-3">
+                                                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                                                        <img src="https://app-vn.vercel.app/assets/image-sample.svg" alt="Banner" class="w-full h-auto" />
+                                                    </div>
+                                                </div>
+
+                                                <!-- BILUXURY Card -->
+                                                <div class="px-3 pb-2">
+                                                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                                        <div class="px-3 py-1.5 border-b border-gray-100">
+                                                            <div class="text-[11px] font-bold text-gray-800">BILUXURY<sup class="text-[7px]">®</sup></div>
+                                                        </div>
+                                                        <div class="px-3 py-2 text-[8px] text-gray-700 leading-relaxed space-y-1">
+                                                            <p class="font-bold text-gray-900">BILUXURY - GỬI TẶNG MÃ ƯU ĐÃI ĐẶC BIỆT!</p>
+                                                            <p>Cảm ơn Quý Khách <span class="font-semibold">&lt;Customer_name&gt;</span> đã yêu mến và mua hàng tại BILUXURY. Mã Ưu Đãi Đặc Biệt dành riêng cho Quý Khách. Vui lòng nhận thông báo qua dịch vụ <span class="font-semibold">&lt;_ID_Don_Hang_&gt;</span>, ngay giao dịch <span class="font-semibold">&lt;_Ngay_Mua_&gt;</span>. Với đơn hàng tiếp theo, BILUXURY xin dành tặng Quý Khách ưu đãi đặc biệt trị giá 200K.</p>
+                                                            <p>Hy vọng món quà này sẽ mang lại niềm vui và sự hài lòng tuyệt vời đến Quý Khách!</p>
+                                                            <p class="text-gray-600 text-[7px]">Truy cập Ví Ưu Đãi để nhận Voucher và thông tin chi tiết chương trình Quý Khách nhé!</p>
+                                                        </div>
+                                                        <div class="px-3 pb-2.5">
+                                                            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white text-[9px] font-bold py-2 rounded shadow-sm">XEM VÍ ƯU ĐÃI</button>
+                                                        </div>
+                                                    </div>
+                                                    <button class="w-full mt-2 bg-white hover:bg-gray-50 text-gray-700 text-[9px] font-medium py-2 rounded border border-gray-300 shadow-sm">XEM TRƯỚC MENU</button>
+                                                </div>
+
+                                                <!-- Bottom Toolbar -->
+                                                <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-3 py-1.5 flex items-center justify-between">
+                                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                    <div class="text-[8px] text-gray-400">Tin nhắn</div>
+                                                    <div class="text-gray-400 text-sm">...</div>
+                                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+                                                    <svg class="w-3 h-3 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+            color: 'bg-white',
+            headerTextColor: 'text-gray-800',
+            icon: 'https://dev.smax.app/assets/images/app-webviews.svg',
+          },
+        ],
+        connections: [
+          { from: 'node-0', to: 'node-1' },
+          { from: 'node-1', to: 'node-2' }, // Working hours path
+          { from: 'node-1', to: 'node-3' }, // Non-working path
+        ],
+      },
+      fashion: {
+        nodes: [
+          {
+            id: 'node-f1',
+            type: 'trigger',
+            title: 'Order Successful',
+            x: 50,
+            y: 150,
+            content: `
+                             <div class="p-4">
+                                <div class="bg-green-50 p-3 rounded-lg text-sm text-green-800 border border-green-100 flex items-center gap-2">
+                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                     Trigger when an order is marked as "Completed"
+                                </div>
+                            </div>`,
+            color: 'bg-green-600',
+            icon: `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`,
+          },
+          {
+            id: 'node-f2',
+            type: 'message',
+            title: 'Send Messenger (Carousel)',
+            x: 450,
+            y: 150,
+            content: `
+                             <div class="p-4 space-y-3">
+                                 <div class="text-xs text-gray-500 mb-2 font-medium">Carousel Gallery (3 cards)</div>
+                                 <div class="flex overflow-x-auto gap-3 pb-2 scrollbar-thin scrollbar-thumb-gray-200">
+                                     <!-- Card 1 -->
+                                     <div class="min-w-[180px] w-[180px] bg-white rounded-lg border border-gray-200 overflow-hidden flex-shrink-0">
+                                         <div class="h-24 bg-purple-100 flex items-center justify-center text-purple-300">
+                                              <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                                         </div>
+                                         <div class="p-2">
+                                             <div class="font-bold text-xs text-gray-800">Cảm ơn bạn! ❤️</div>
+                                             <div class="text-[10px] text-gray-500 mt-1">Tặng bạn voucher 10%</div>
+                                             <button class="w-full mt-2 bg-[#1B3DA1] text-white text-[10px] font-bold py-1.5 rounded">Lấy mã ngay</button>
+                                         </div>
+                                     </div>
+                                      <!-- Card 2 -->
+                                     <div class="min-w-[180px] w-[180px] bg-white rounded-lg border border-gray-200 overflow-hidden flex-shrink-0">
+                                         <div class="h-24 bg-gray-100 flex items-center justify-center text-gray-300">
+                                              <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80">
+                                         </div>
+                                         <div class="p-2">
+                                             <div class="font-bold text-xs text-gray-800">Floral Dress</div>
+                                             <div class="text-[10px] text-gray-500 mt-1">Hot Trend 2026</div>
+                                             <button class="w-full mt-2 bg-white border border-gray-200 text-gray-600 text-[10px] font-bold py-1.5 rounded">Xem chi tiết</button>
+                                         </div>
+                                     </div>
+                                      <!-- Card 3 -->
+                                     <div class="min-w-[180px] w-[180px] bg-white rounded-lg border border-gray-200 overflow-hidden flex-shrink-0">
+                                         <div class="h-24 bg-gray-100 flex items-center justify-center text-gray-300">
+                                               <img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80">
+                                         </div>
+                                         <div class="p-2">
+                                             <div class="font-bold text-xs text-gray-800">Velvet Gown</div>
+                                             <div class="text-[10px] text-gray-500 mt-1">New Collection</div>
+                                             <button class="w-full mt-2 bg-white border border-gray-200 text-gray-600 text-[10px] font-bold py-1.5 rounded">Xem chi tiết</button>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>`,
+            color: 'bg-blue-600',
+            icon: `<svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.52 5.43 3.89 7.05V22L9.6 19.98c.78.22 1.6.33 2.4.33 5.52 0 10-4.03 10-9S17.52 2 12 2z"/></svg>`,
+          },
+          {
+            id: 'node-f3',
+            type: 'webview',
+            title: 'Selling Page (Hot)',
+            x: 950,
+            y: 150,
+            content: `
+                             <div class="p-4 space-y-3">
+                                <div class="bg-gray-50 p-2 text-xs text-blue-600 rounded border border-gray-200 truncate flex items-center gap-2">
+                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                    ./SellingPage.html
+                                </div>
+
+                                <!-- Iframe Embed -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-inner">
+                                    <iframe src="./SellingPage.html" class="w-full h-[500px] border-none" title="Selling Page Preview"></iframe>
+                                </div>
+                            </div>`,
+            color: 'bg-indigo-600',
+            icon: `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>`,
+          },
+        ],
+        connections: [
+          { from: 'node-f1', to: 'node-f2' },
+          { from: 'node-f2', to: 'node-f3' },
+        ],
+      },
+      remarketing: {
+        nodes: [
+          {
+            id: 'node-r1',
+            type: 'broadcast',
+            title: 'Report Broadcast',
+            subtitle: 'Chăm Sóc Khách Hàng Cũ',
+            x: 50,
+            y: 100,
+            content: `
+                            <div class="p-3">
+                                <!-- Stats Group 1 -->
+                                <div class="border border-dashed border-blue-200 rounded-lg p-2 mb-2 bg-blue-50/30">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <div class="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                                            <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                                            Dự Tính Gửi
+                                        </div>
+                                        <span class="text-sm font-bold text-blue-500">15.896</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                         <div class="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                                            <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                                            Thực Tế
+                                        </div>
+                                        <span class="text-sm font-bold text-blue-500">15.132</span>
+                                    </div>
+                                </div>
+
+                                <!-- Stats Group 2 -->
+                                <div class="border border-dashed border-green-200 rounded-lg p-2 mb-2 bg-green-50/30">
+                                    <div class="flex justify-between items-center mb-1">
+                                         <div class="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                                            <svg class="w-3 h-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                            Chờ Gửi
+                                        </div>
+                                        <span class="text-sm font-bold text-green-500">0</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                         <div class="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                                            <svg class="w-3 h-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                            Đã Gửi
+                                        </div>
+                                        <span class="text-sm font-bold text-green-500">15.090</span>
+                                    </div>
+                                </div>
+
+                                <!-- Stats Group 3 -->
+                                <div class="border border-dashed border-red-200 rounded-lg p-2 mb-2 bg-red-50/30">
+                                    <div class="flex justify-between items-center mb-1">
+                                         <div class="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                                            <svg class="w-3 h-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                                            Gửi Thất Bại
+                                        </div>
+                                        <span class="text-sm font-bold text-red-500">42</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                         <div class="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                                            <svg class="w-3 h-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                                            Thẻ Lỗi
+                                        </div>
+                                        <span class="text-sm font-bold text-red-500">42</span>
+                                    </div>
+                                </div>
+
+                                <button class="w-full mt-1 bg-gray-50 hover:bg-gray-100 text-[#1B3DA1] text-sm font-semibold py-2 rounded-lg border border-gray-100 flex items-center justify-center gap-2 transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                                    Go to Block
+                                </button>
+                            </div>`,
+            color: 'bg-[#2CD889]',
+            icon: `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>`,
+          },
+          {
+            id: 'node-r2',
+            type: 'router',
+            title: 'AI Router',
+            x: 450,
+            y: 50,
+            content: `
+                            <div class="p-4 bg-[#F2F0FF]">
+                                <select class="w-full mb-3 text-sm border border-gray-200 rounded p-2 text-gray-700 focus:outline-none focus:border-purple-400">
+                                    <option>Ưu Tiên Theo Hành Vi Mua Hàng</option>
+                                    <option>Ưu Tiên Chi Phí Thấp Nhất</option>
+                                    <option>Ưu Tiên Tỷ Lệ Đọc Cao Nhất</option>
+                                </select>
+                                <div class="space-y-2">
+                                    <!-- Item -->
+                                    <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded flex items-center justify-center bg-blue-50 text-blue-600"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg></span> <!-- Lock Icon simulated -->
+                                            <span class="text-sm font-medium text-gray-700">Zalo Cá Nhân</span>
+                                        </div>
+                                        <span class="text-xs text-[#8B5CF6] border border-[#8B5CF6] rounded px-1.5 py-0.5">Miễn phí</span>
+                                    </div>
+                                    <!-- Item -->
+                                    <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded flex items-center justify-center bg-blue-50 text-blue-600"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg></span>
+                                            <span class="text-sm font-medium text-gray-700">Zalo OA Follow</span>
+                                        </div>
+                                        <span class="text-xs text-[#8B5CF6] border border-[#8B5CF6] rounded px-1.5 py-0.5">Miễn phí</span>
+                                    </div>
+                                    <!-- Item -->
+                                    <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded flex items-center justify-center bg-blue-50 text-blue-600"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" /></svg></span>
+                                            <span class="text-sm font-medium text-gray-700">Zalo OA UI</span>
+                                        </div>
+                                        <span class="text-xs text-orange-500 border border-orange-500 rounded px-1.5 py-0.5">165đ</span>
+                                    </div>
+                                     <!-- Item -->
+                                    <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded flex items-center justify-center bg-blue-50 text-blue-600"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg></span>
+                                            <span class="text-sm font-medium text-gray-700">Zalo ZNS</span>
+                                        </div>
+                                        <span class="text-xs text-orange-500 border border-orange-500 rounded px-1.5 py-0.5">250đ</span>
+                                    </div>
+                                    <div class="my-2 border-t border-gray-200"></div>
+                                     <!-- Item -->
+                                    <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded flex items-center justify-center bg-blue-50 text-blue-600"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></span>
+                                            <span class="text-sm font-medium text-gray-700">Facebook 7 Days</span>
+                                        </div>
+                                        <span class="text-xs text-[#8B5CF6] border border-[#8B5CF6] rounded px-1.5 py-0.5">Miễn phí</span>
+                                    </div>
+                                     <!-- Item -->
+                                    <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded flex items-center justify-center bg-blue-50 text-blue-600"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></span>
+                                            <span class="text-sm font-medium text-gray-700">Facebook FMM</span>
+                                        </div>
+                                        <span class="text-xs text-orange-500 border border-orange-500 rounded px-1.5 py-0.5">250đ</span>
+                                    </div>
+                                    <!-- Item -->
+                                    <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded flex items-center justify-center bg-indigo-50 text-indigo-600"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg></span>
+                                            <span class="text-sm font-medium text-gray-700">Facebook FUM</span>
+                                        </div>
+                                        <span class="text-xs text-[#8B5CF6] border border-[#8B5CF6] rounded px-1.5 py-0.5">Miễn phí</span>
+                                    </div>
+                                    <!-- Item -->
+                                    <div class="flex items-center justify-between bg-white p-2 rounded border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded flex items-center justify-center bg-blue-50 text-blue-600"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg></span>
+                                            <span class="text-sm font-medium text-gray-700">Facebook FUN</span>
+                                        </div>
+                                        <span class="text-xs text-[#8B5CF6] border border-[#8B5CF6] rounded px-1.5 py-0.5">Miễn phí</span>
+                                    </div>
+
+                                </div>
+                                <button class="w-full mt-3 bg-[#4F86F7] hover:bg-blue-600 text-white text-sm font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition">
+                                    Bước tiếp theo
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                                </button>
+                            </div>`,
+            color: 'bg-[#8B5CF6]',
+            icon: `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>`,
+          },
+        ],
+        connections: [{ from: 'node-r1', to: 'node-r2' }],
+      },
+      sequence: {
+        nodes: [
+          {
+            id: 'node-s1',
+            type: 'sequence-container',
+            title: 'Check request friend',
+            x: 100,
+            y: 100,
+            content: `
+                            <div class="p-4 bg-white rounded-b-xl space-y-4">
+                                <!-- Row 1 -->
+                                <div class="flex items-center gap-4 group">
+                                    <div class="flex items-center gap-2 px-3 py-2.5 border border-[#e5e7eb] rounded-lg bg-white min-w-[110px] shadow-sm">
+                                        <i class="fa-regular fa-clock text-[#1b3da1] text-xs opacity-70"></i>
+                                        <span class="text-[10px] font-bold text-[#1b3da1] uppercase tracking-wider">3 MINUTE</span>
+                                    </div>
+                                    <div class="flex-1 flex items-center gap-3 px-4 py-2.5 border border-dashed border-[#e5e7eb] rounded-lg bg-slate-50/50 relative hover:border-[#1b3da1] hover:bg-white transition-all cursor-pointer">
+                                        <div class="w-6 h-6 flex items-center justify-center text-[#1b3da1]">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 15v-3h-2v3h-3v2h3v3h2v-3h3v-2h-3zM11 3h2v2h-2V3zm0 4h2v2h-2V7zm0 4h2v2h-2v-2zm-4 0h2v2H7v-2zm-4 0h2v2H3v-2zm0-4h2v2H3V7zm0-4h2v2H3V3zm4 0h2v2H7V3zm0 4h2v2H7V7zm0 8h2v2H7v-2zm-4 0h2v2H3v-2zm0 4h2v2H3v-2zm4 0h2v2H7v-2z"/></svg>
+                                        </div>
+                                        <span class="text-xs font-semibold text-slate-600">step 1</span>
+                                        <!-- Connection point anchor -->
+                                        <div class="absolute -right-1.5 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white border-2 border-[#1b3da1] rounded-full z-20 shadow-sm"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2 -->
+                                <div class="flex items-center gap-4 group">
+                                    <div class="flex items-center gap-2 px-3 py-2.5 border border-[#e5e7eb] rounded-lg bg-white min-w-[110px] shadow-sm">
+                                        <i class="fa-regular fa-clock text-[#1b3da1] text-xs opacity-70"></i>
+                                        <span class="text-[10px] font-bold text-[#1b3da1] uppercase tracking-wider">1 HOUR</span>
+                                    </div>
+                                    <div class="flex-1 flex items-center gap-3 px-4 py-2.5 border border-dashed border-[#e5e7eb] rounded-lg bg-slate-50/50 relative hover:border-[#1b3da1] hover:bg-white transition-all cursor-pointer">
+                                        <div class="w-6 h-6 flex items-center justify-center text-[#1b3da1]">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 15v-3h-2v3h-3v2h3v3h2v-3h3v-2h-3zM11 3h2v2h-2V3zm0 4h2v2h-2V7zm0 4h2v2h-2v-2zm-4 0h2v2H7v-2zm-4 0h2v2H3v-2zm0-4h2v2H3V7zm0-4h2v2H3V3zm4 0h2v2H7V3zm0 4h2v2H7V7zm0 8h2v2H7v-2zm-4 0h2v2H3v-2zm0 4h2v2H3v-2zm4 0h2v2H7v-2z"/></svg>
+                                        </div>
+                                        <span class="text-xs font-semibold text-slate-600">step 2</span>
+                                        <!-- Connection point anchor -->
+                                        <div class="absolute -right-1.5 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white border-2 border-[#1b3da1] rounded-full z-20 shadow-sm"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Row 3 -->
+                                <div class="flex items-center gap-4 group">
+                                    <div class="flex items-center gap-2 px-3 py-2.5 border border-[#e5e7eb] rounded-lg bg-white min-w-[110px] shadow-sm">
+                                        <i class="fa-regular fa-clock text-[#1b3da1] text-xs opacity-70"></i>
+                                        <span class="text-[10px] font-bold text-[#1b3da1] uppercase tracking-wider">1 DAY</span>
+                                    </div>
+                                    <div class="flex-1 flex items-center gap-3 px-4 py-2.5 border border-dashed border-[#e5e7eb] rounded-lg bg-slate-50/50 relative hover:border-[#1b3da1] hover:bg-white transition-all cursor-pointer">
+                                        <div class="w-6 h-6 flex items-center justify-center text-[#1b3da1]">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 15v-3h-2v3h-3v2h3v3h2v-3h3v-2h-3zM11 3h2v2h-2V3zm0 4h2v2h-2V7zm0 4h2v2h-2v-2zm-4 0h2v2H7v-2zm-4 0h2v2H3v-2zm0-4h2v2H3V7zm0-4h2v2H3V3zm4 0h2v2H7V3zm0 4h2v2H7V7zm0 8h2v2H7v-2zm-4 0h2v2H3v-2zm0 4h2v2H3v-2zm4 0h2v2H7v-2z"/></svg>
+                                        </div>
+                                        <span class="text-xs font-semibold text-slate-600">step n</span>
+                                        <!-- Connection point anchor -->
+                                        <div class="absolute -right-1.5 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white border-2 border-[#1b3da1] rounded-full z-20 shadow-sm"></div>
+                                    </div>
+                                </div>
+                            </div>`,
+            color: 'bg-[#1b3da1]',
+            icon: `
+                            <div class="bg-white p-1.5 rounded-lg shadow-sm">
+                                <svg class="w-5 h-5 text-[#1b3da1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </div>`,
+          },
+        ],
+        connections: [],
+      },
+    };
+
+    let currentFlowId = null;
+    let nodeData = new Map(); // Stores live position data
+    let currentContainerId = 'nodes-container';
+    let currentSvgId = 'connections-svg';
+    let currentCanvasId = 'flow-canvas';
+
+    function loadFlow(flowId) {
+      currentFlowId = flowId;
+      const flow = flowConfig[flowId];
+      if (!flow) return;
+
+      renderFlow(flow);
+
+      // Highlight sidebar item logic can be added here
+    }
+
+    function renderFlow(flow, containerId = 'nodes-container', svgId = 'connections-svg', canvasId = 'flow-canvas') {
+      const container = document.getElementById(containerId);
+      const svgContainer = document.getElementById(svgId);
+
+      if (!container || !svgContainer) return;
+
+      // Update current IDs
+      currentContainerId = containerId;
+      currentSvgId = svgId;
+      currentCanvasId = canvasId;
+
+      container.innerHTML = '';
+      // keep defs in svg
+      const defs = svgContainer.querySelector('defs').outerHTML;
+      svgContainer.innerHTML = defs;
+
+      nodeData.clear();
+
+      // Render Nodes
+      flow.nodes.forEach((node) => {
+        const el = document.createElement('div');
+        el.className = 'absolute bg-white rounded-lg shadow-xl border border-gray-100 ring-1 ring-black/5 z-10'; // removed default w-64
+
+        // Width logic based on type
+        if (node.type === 'trigger') {
+          el.classList.add('w-72');
+        } else if (node.type === 'message') {
+          // Carousel needs more space
+          el.classList.add('w-[320px]');
+        } else if (node.type === 'webview') {
+          // Iframe needs more space
+          el.classList.add('w-[280px]');
+        } else if (node.type === 'broadcast') {
+          el.classList.add('w-[350px]');
+        } else if (node.type === 'sequence-container') {
+          el.classList.add('w-[450px]');
+        } else if (node.type === 'router') {
+          el.classList.add('w-[350px]');
+        } else {
+          el.classList.add('w-[320px]'); // Default for condition, action etc.
+        }
+
+        el.style.left = node.x + 'px';
+        el.style.top = node.y + 'px';
+        el.setAttribute('data-node-id', node.id);
+
+        const headerColorClass = node.headerTextColor ? node.headerTextColor : 'text-white';
+
+        // Determine text color based on background color
+        // If background is white, use blue text; otherwise use white text
+        const isWhiteBackground = node.color === 'bg-white' || node.color === 'bg-white/';
+        const textColor = isWhiteBackground ? '#1B3DA1' : '#fff';
+
+        // Subtitle handling
+        const subtitleHtml = node.subtitle
+          ? `<div style="color: ${textColor}; font-family: 'Roboto', sans-serif; font-size: 10px; font-style: normal; font-weight: 300; line-height: normal; text-transform: capitalize;">${node.subtitle}</div>`
+          : '';
+
+        // Title styling
+        const titleStyle = `color: ${textColor}; font-family: 'Roboto', sans-serif; font-size: 14px; font-style: normal; font-weight: 500; line-height: normal; text-transform: capitalize;`;
+
+        // Icon handling - check if icon is a URL/path or HTML string
+        let iconHtml = node.icon || '';
+        if (
+          iconHtml &&
+          (iconHtml.startsWith('http://') ||
+            iconHtml.startsWith('https://') ||
+            iconHtml.startsWith('./') ||
+            iconHtml.startsWith('/'))
+        ) {
+          iconHtml = `<img src="${iconHtml}" alt="" width="32" height="32" />`;
+        }
+
+        el.innerHTML = `
+                    <div class="${node.color} ${headerColorClass} px-4 py-3 rounded-t-lg font-bold flex justify-between items-center text-sm shadow-sm handle cursor-move">
+                        <div class="flex items-center gap-2">
+                             <div class="mt-0.5">${iconHtml}</div>
+                              <div style="${titleStyle}">${node.title}</div>
+                        </div>
+                    </div>
+                    ${node.content}
+                `;
+
+        container.appendChild(el);
+
+        // Store initial data
+        nodeData.set(node.id, { element: el, x: node.x, y: node.y });
+
+        // Make draggable
+        makeDraggable(el);
+      });
+
+      // Render Connections
+      flow.connections.forEach((conn) => {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('stroke', '#cbd5e1');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('marker-end', 'url(#arrowhead)');
+        path.setAttribute('data-from', conn.from);
+        path.setAttribute('data-to', conn.to);
+        svgContainer.appendChild(path);
+      });
+
+      updateConnections();
+    }
+
+    function updateConnections() {
+      const svgContainer = document.getElementById(currentSvgId);
+      if (!svgContainer) return;
+      const paths = svgContainer.querySelectorAll('path[data-from]');
+      const canvas = document.getElementById(currentCanvasId);
+      if (!canvas) return;
+      const canvasRect = canvas.getBoundingClientRect();
+      // Scaling factor
+      const scale = 0.9;
+
+      paths.forEach((path) => {
+        const fromId = path.getAttribute('data-from');
+        const toId = path.getAttribute('data-to');
+
+        const fromNode = nodeData.get(fromId)?.element;
+        const toNode = nodeData.get(toId)?.element;
+
+        if (!fromNode || !toNode) return;
+
+        const fromRect = fromNode.getBoundingClientRect();
+        const toRect = toNode.getBoundingClientRect();
+
+        // Calculate relative positions inside the scaled container
+        // We need to divide by scale because the container is scaled down,
+        // but getBoundingClientRect returns actual screen pixels.
+
+        // Alternative approach: Use the stored X/Y which are relative to the container (before scale)
+        // This is much more stable than reverse-engineering the rects.
+
+        const fromData = nodeData.get(fromId);
+        const toData = nodeData.get(toId);
+
+        // Simple anchor points: Right side of Source -> Left side of Target
+        const startX = fromData.x + fromNode.offsetWidth; // Right edge
+        const startY = fromData.y + fromNode.offsetHeight / 2; // Vertical center
+
+        const endX = toData.x; // Left edge
+        const endY = toData.y + toNode.offsetHeight / 2; // Vertical center
+
+        // Bezier Curve
+        const midX = (startX + endX) / 2;
+        const d = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
+
+        path.setAttribute('d', d);
+      });
+    }
+
+    function makeDraggable(element) {
+      const handle = element.querySelector('.handle');
+      let isDragging = false;
+      let startX, startY, initialLeft, initialTop;
+      const scale = 0.9; // Defined in CSS
+
+      handle.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+
+        const style = window.getComputedStyle(element);
+        initialLeft = parseFloat(style.left);
+        initialTop = parseFloat(style.top);
+
+        element.classList.add('z-50'); // Bring to front
+        element.style.cursor = 'grabbing';
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      });
+
+      function onMouseMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const dx = (e.clientX - startX) / scale; // Adjust for scale
+        const dy = (e.clientY - startY) / scale;
+
+        let newLeft = initialLeft + dx;
+        let newTop = initialTop + dy;
+
+        element.style.left = `${newLeft}px`;
+        element.style.top = `${newTop}px`;
+
+        // Update stored position
+        const nodeId = element.getAttribute('data-node-id');
+        const data = nodeData.get(nodeId);
+        if (data) {
+          data.x = newLeft;
+          data.y = newTop;
+        }
+
+        updateConnections();
+      }
+
+      function onMouseUp() {
+        isDragging = false;
+        element.classList.remove('z-50');
+        element.style.cursor = 'grab';
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function () {
+      const dateRangeInput = document.getElementById('date-range-input');
+      const dateRangeDisplay = document.getElementById('date-range-display');
+      const button = document.getElementById('date-range-button');
+
+      // Initial load
+      renderFlowSidebar('trigger');
+      loadFlow('welcome');
+
+      if (dateRangeInput && button) {
+        const fp = flatpickr(dateRangeInput, {
+          mode: 'range',
+          dateFormat: 'd/m/Y',
+          defaultDate: ['2025-12-13', '2026-01-12'],
+          locale: 'vi',
+          position: 'below',
+          appendTo: button.parentElement,
+          static: false,
+          onChange: function (selectedDates, dateStr) {
+            if (dateRangeDisplay) dateRangeDisplay.textContent = dateStr || 'Chọn khoảng thời gian';
+          },
+        });
+
+        button.addEventListener('click', function () {
+          fp.open();
+        });
+      }
+    });
+
+    // Helper function for view switching (existing logic preserved/modified)
+    function switchView(event, viewId) {
+      event.preventDefault();
+
+      // Hide all views and sidebars
+      document.querySelectorAll('.view-section').forEach((el) => el.classList.add('hidden'));
+      document.querySelectorAll('.sidebar-section').forEach((el) => el.classList.add('hidden'));
+
+      // Show selected view and its corresponding sidebar
+      const view = document.getElementById('view-' + viewId);
+      if (view) view.classList.remove('hidden');
+
+      const sidebar = document.getElementById('sidebar-' + viewId);
+      if (sidebar) sidebar.classList.remove('hidden');
+
+      // Render sidebar content based on view
+      renderFlowSidebar(viewId);
+
+      // Load flow for remarketing view
+      if (viewId === 'remarketing') {
+        const flow = flowConfig['remarketing'];
+        if (flow) {
+          renderFlow(flow, 'nodes-container-remarketing', 'connections-svg-remarketing', 'flow-canvas-remarketing');
+        }
+      } else if (viewId === 'sequence') {
+        const flow = flowConfig['sequence'];
+        if (flow) {
+          renderFlow(flow, 'nodes-container-sequence', 'connections-svg-sequence', 'flow-canvas-sequence');
+        }
+      } else if (viewId === 'trigger') {
+        // Reload trigger view flow
+        const flow = flowConfig['welcome'];
+        if (flow) {
+          renderFlow(flow, 'nodes-container', 'connections-svg', 'flow-canvas');
+        }
+      }
+
+      // Update active state in GLOBAL sidebar
+      const globalNavItems = document.querySelectorAll('#sidebar a[id^="global-nav-"]');
+      globalNavItems.forEach((el) => {
+        el.classList.remove('sidebar-icon-active', 'text-white');
+        el.classList.add('text-blue-200', 'hover:text-white', 'hover:bg-white/10');
+      });
+
+      const globalNavItem = document.getElementById('global-nav-' + viewId);
+      if (globalNavItem) {
+        globalNavItem.classList.remove('text-blue-200', 'hover:text-white', 'hover:bg-white/10');
+        globalNavItem.classList.add('sidebar-icon-active', 'text-white');
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM - Quản lý Lead</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+        }
+
+        /* Sidebar Styles */
+        :root {
+            --sidebar-width: 4rem;
+        }
+        .sidebar-pro-style {
+            background-color: #1B3DA1;
+            background-image:
+                radial-gradient(80% 40% at 100% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+                radial-gradient(60% 40% at 0% 100%, rgba(255, 255, 255, 0.1) 0%, transparent 100%),
+                linear-gradient(160deg, #1B3DA1 0%, #0b2060 100%);
+        }
+
+        .sidebar-icon-active {
+            color: #FFFFFF;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar-text {
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D1D5DB;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* Folder/Filter Item Hover */
+        .filter-item {
+            @apply flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-[#1B3DA1] hover:bg-blue-50 cursor-pointer rounded-xl transition-colors text-sm font-medium;
+        }
+        .filter-item.active {
+            @apply bg-blue-50 text-[#1B3DA1];
+        }
+
+        /* Kanban Columns */
+        .kanban-col {
+            min-width: 320px;
+            @apply flex flex-col rounded-xl overflow-hidden h-full;
+        }
+        
+        /* Drag & Drop Styles */
+        .dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+            background-color: #f3f4f6;
+        }
+
+        .kanban-col-content {
+            min-height: 100px; /* Drop target area */
+        }
+        
+        .kanban-col.drag-over {
+            background-color: rgba(229, 231, 235, 0.7); /* Slightly darker gray to indicate drop zone */
+            border: 2px dashed #1B3DA1;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+             transition: opacity 0.3s ease;
+        }
+        
+        .pipeline-step {
+            position: relative;
+            clip-path: polygon(0% 0%, 95% 0%, 100% 50%, 95% 100%, 0% 100%);
+            margin-right: -10px;
+            padding-right: 20px;
+        }
+        .pipeline-step:not(:first-child) {
+            clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 10% 50%);
+            padding-left: 20px;
+        }
+        .pipeline-step:last-child {
+            clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 5% 100%, 10% 50%);
+            margin-right: 0;
+        }
+        .tag-badge {
+            @apply px-2 py-0.5 rounded text-[10px] font-bold uppercase;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden text-gray-700">
+
+    <!-- 1. Global Sidebar (Dark Blue) -->
+    <div id="sidebar"
+        class="w-16 sidebar-pro-style text-white flex flex-col pt-3 border-r border-[#1B3DA1] z-50 shadow-lg shadow-blue-900/20 transition-all duration-300 ease-in-out relative flex-shrink-0">
+
+        <!-- Logo Area with Mega Menu -->
+        <div class="px-3 mb-6 flex items-center h-10 w-full relative group">
+            <div onclick="window.location.href='index.html'"
+                class="h-10 w-10 min-w-[2.5rem] bg-white rounded-lg flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-lg shadow-black/10 z-10 cursor-pointer">
+                <img style="width: 70%;" src="./LOGO APP VN BTHE 12.7-03.svg" alt="Appvn">
+            </div>
+            <span class="sidebar-text ml-3 font-bold text-xl text-white opacity-0 pl-1">App.vn</span>
+
+            <!-- Mega Menu -->
+            <div
+                class="absolute top-0 left-14 w-60 bg-white shadow-2xl rounded-xl border border-blue-100 p-2 hidden group-hover:block z-[9999] origin-top-left transition-all duration-200">
+                <div class="space-y-1">
+                    <!-- Sales -->
+                    <a href="Order.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+                            <i class="fa-solid fa-cart-shopping text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Quản lý bán
+                            hàng</span>
+                    </a>
+
+                    <!-- Automation -->
+                    <a href="Automation.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+                            <i class="fa-solid fa-robot text-xs"></i>
+                        </div>
+                        <span
+                            class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Automation</span>
+                    </a>
+
+                    <!-- Customer -->
+                    <a href="Customer.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+                            <i class="fa-solid fa-user-tie text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Khách
+                            hàng</span>
+                    </a>
+
+                    <!-- Workchat -->
+                    <a href="workchat.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+                            <i class="fa-regular fa-comments text-xs"></i>
+                        </div>
+                        <span
+                            class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">WorkChatV2</span>
+                    </a>
+
+                    <!-- Products -->
+                    <a href="Product.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+                            <i class="fa-solid fa-box text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">Sản
+                            phẩm</span>
+                    </a>
+
+                    <!-- CRM -->
+                    <a href="CRM.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 transition group/item">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100/50 flex items-center justify-center text-[#1B3DA1] group-hover/item:bg-[#1B3DA1] group-hover/item:text-white transition">
+                            <i class="fa-solid fa-filter text-xs"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700 group-hover/item:text-[#1B3DA1]">CRM</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Items -->
+        <nav class="w-full flex-1 flex flex-col gap-2 px-3 overflow-y-auto overflow-x-hidden">
+            <!-- CRM (Active) -->
+            <div id="nav-crm" onclick="switchView('crm')"
+                class="flex items-center h-10 px-2 rounded-lg sidebar-icon-active text-white transition group cursor-pointer"
+                title="Quản lý Lead">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-filter"></i></div>
+                <span class="sidebar-text ml-3 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Quản lý
+                    Lead</span>
+            </div>
+
+            <div id="nav-task" onclick="switchView('task')"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition group cursor-pointer"
+                title="Quản lý Task">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-list-check"></i>
+                </div>
+                <span class="sidebar-text ml-3 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Quản lý
+                    Task</span>
+            </div>
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition group"
+                title="Quản lý Lịch hẹn">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-regular fa-calendar"></i>
+                </div>
+                <span class="sidebar-text ml-3 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Quản lý
+                    Lịch hẹn</span>
+            </a>
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition group"
+                title="Quản lý Nhân Viên">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-users-gear"></i>
+                </div>
+                <span class="sidebar-text ml-3 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Quản lý
+                    Nhân Viên</span>
+            </a>
+            <a href="#"
+                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition group"
+                title="Workflow Automation">
+                <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-robot"></i></div>
+                <span class="sidebar-text ml-3 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Workflow
+                    Automation</span>
+            </a>
+        </nav>
+
+        <!-- Toggle Footer -->
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <button onclick="toggleSidebar()"
+                class="w-full flex items-center justify-center h-10 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition">
+                <i class="fa-solid fa-chevron-left" id="toggle-icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. Secondary Filter Sidebar (White) -->
+    <div class="w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0 z-20">
+        <!-- Search -->
+        <div class="p-3 border-b border-gray-100">
+            <div class="relative">
+                <i
+                    class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                <input type="text" placeholder="Tìm kiếm..."
+                    class="w-full pl-8 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition-colors">
+                <button
+                    class="absolute right-2 top-1/2 -translate-y-1/2 w-5 h-5 bg-[#1B3DA1] text-white rounded flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Folders -->
+        <div class="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+
+            <!-- Folder Group: Khác -->
+            <div class="filter-item justify-between bg-blue-50/50 rounded-xl">
+                <div class="flex items-center gap-3">
+                    <i class="fa-regular fa-folder-open text-[#1B3DA1]"></i>
+                    <span>Khác</span>
+                </div>
+            </div>
+
+            <!-- Folder Group: Mặc định -->
+            <div class="pt-2 pb-2">
+                <button
+                    class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-gray-500 w-full hover:bg-gray-50 rounded">
+                    <i class="fa-solid fa-chevron-down text-[10px]"></i> Mặc định
+                </button>
+            </div>
+
+            <!-- Folder Group: Khác 2 -->
+            <div class="filter-item justify-between">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-filter text-blue-400"></i>
+                    <span>Khác</span>
+                </div>
+            </div>
+
+            <!-- Lead Sự kiện (Active) -->
+            <div class="filter-item active rounded-xl">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Lead Sự kiện</span>
+            </div>
+
+            <div class="pl-4 space-y-2 mt-2">
+                <div
+                    class="flex items-center gap-2 px-3 py-1.5 text-sm text-blue-600 font-medium bg-blue-50 rounded-lg">
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i> Phễu 1
+                </div>
+                <div
+                    class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-800 cursor-pointer">
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i> Sự kiện phễu
+                </div>
+                <div
+                    class="flex items-center gap-2 px-3 py-1.5 text-sm text-[#1B3DA1] bg-white border border-blue-200 rounded-lg shadow-sm">
+                    <i class="fa-solid fa-filter text-xs"></i> Phễu tháng 1/26
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 3. Main Content Area -->
+    <div class="flex-1 flex flex-col min-w-0 bg-white">
+
+        <!-- Top Navigation Bar -->
+        <div class="h-14 border-b border-gray-200 flex items-center justify-between px-4 bg-white">
+            <div class="flex items-center gap-4">
+                <div
+                    class="flex items-center gap-2 text-gray-500 text-sm border border-gray-200 px-3 py-1.5 rounded-lg bg-gray-50">
+                    <i class="fa-solid fa-location-dot"></i> 7 chi nhánh
+                </div>
+                <div
+                    class="flex items-center gap-2 text-gray-500 text-sm border border-gray-200 px-3 py-1.5 rounded-lg bg-gray-50">
+                    <i class="fa-solid fa-sliders"></i> Vai trò
+                </div>
+                <div
+                    class="flex items-center gap-2 text-gray-500 text-sm border border-gray-200 px-3 py-1.5 rounded-lg bg-gray-50">
+                    <i class="fa-solid fa-users"></i> Thành viên
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="relative w-64">
+                    <i
+                        class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input type="text" placeholder="Tìm kiếm..."
+                        class="w-full pl-9 pr-4 py-1.5 bg-gray-100 border-none rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                </div>
+                <div
+                    class="w-8 h-8 bg-[#8BC34A] text-white rounded-full flex items-center justify-center font-bold text-sm cursor-pointer border-2 border-white shadow-sm">
+                    H
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 1: CRM LEAD MANAGEMENT (Visible by default) -->
+        <div id="crm-view" class="flex flex-col h-full">
+            <!-- Action Toolbar -->
+            <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-white shadow-sm z-10">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <i
+                            class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" placeholder="Tìm kiếm Lead..." oninput="filterLeads(this.value)"
+                            class="w-64 pl-9 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+
+                    <div class="h-8 w-px bg-gray-300 mx-1"></div>
+
+                    <button onclick="openAddModal()"
+                        class="bg-[#1B3DA1] hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-sm transition">
+                        <i class="fa-solid fa-plus"></i> Thêm Lead
+                    </button>
+                    <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg border border-gray-200">
+                        <i class="fa-solid fa-filter"></i>
+                    </button>
+                    <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg border border-gray-200"
+                        onclick="window.location.reload()">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button class="p-2 text-[#1B3DA1] bg-blue-50 border border-blue-200 rounded-lg">
+                        <i class="fa-solid fa-table-columns"></i>
+                    </button>
+                    <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg">
+                        <i class="fa-solid fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kanban Board Area -->
+            <div class="flex-1 overflow-x-auto overflow-y-hidden p-4 bg-gray-50">
+                <div class="flex h-full gap-4 w-max" id="kanban-board">
+                    <!-- Columns will be generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: TASK MANAGEMENT (Hidden by default) -->
+        <div id="task-view" class="hidden flex-col h-full bg-white">
+            <!-- Task Toolbar -->
+            <div class="px-4 py-3 border-b border-gray-200 flex items-center justify-between bg-gray-50/50">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                    <button
+                        class="bg-[#1B3DA1] text-white px-4 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm hover:bg-blue-800 transition whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Thêm
+                    </button>
+
+                    <button
+                        class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-md text-sm font-medium transition whitespace-nowrap">Chế
+                        độ xem 8</button>
+                    <button
+                        class="px-3 py-1.5 hover:bg-gray-100 text-gray-600 rounded-md text-sm font-medium transition whitespace-nowrap">Chế
+                        độ xem 2</button>
+                    <button
+                        class="px-3 py-1.5 bg-[#1B3DA1] text-white rounded-md text-sm font-bold shadow-md transition whitespace-nowrap">519.543</button>
+                    <button class="px-1 text-gray-400 hover:text-gray-600"><i
+                            class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <button
+                        class="px-3 py-1.5 hover:bg-gray-100 text-gray-600 rounded-md text-sm font-medium transition whitespace-nowrap">Chế
+                        độ xem 3</button>
+                    <button
+                        class="px-3 py-1.5 hover:bg-gray-100 text-gray-600 rounded-md text-sm font-medium transition whitespace-nowrap">Chế
+                        độ xem 4</button>
+                    <button
+                        class="px-3 py-1.5 hover:bg-gray-100 text-gray-600 rounded-md text-sm font-medium transition whitespace-nowrap">Chế
+                        độ xem 5</button>
+                    <div class="h-5 w-px bg-gray-300 mx-1"></div>
+                    <button
+                        class="px-3 py-1.5 hover:bg-gray-100 text-gray-700 font-bold rounded-md text-sm transition whitespace-nowrap">Tất
+                        cả</button>
+                    <button class="px-1 text-gray-600 hover:text-gray-800"><i
+                            class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center bg-[#1B3DA1] text-white rounded-md hover:bg-blue-800 shadow-sm ml-2">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2 pl-4 shrink-0">
+                    <button
+                        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-md"><i
+                            class="fa-solid fa-filter"></i></button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-md"><i
+                            class="fa-solid fa-arrows-rotate"></i></button>
+                    <div class="relative w-48">
+                        <i
+                            class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                        <input type="text" placeholder="Tìm kiếm..."
+                            class="w-full pl-8 pr-3 py-1.5 bg-white border border-gray-200 rounded-md text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+                    <button
+                        class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 bg-white rounded-md text-xs font-medium text-gray-600 hover:bg-gray-50">
+                        <i class="fa-solid fa-arrow-down-short-wide"></i> Ngày tạo: Mới -> Cũ
+                    </button>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-md"><i
+                            class="fa-regular fa-bell"></i></button>
+                    <div
+                        class="w-8 h-8 bg-[#8BC34A] text-white rounded-full flex items-center justify-center font-bold text-xs cursor-pointer border shadow-sm">
+                        H</div>
+                </div>
+            </div>
+
+            <!-- Task Table -->
+            <div class="flex-1 overflow-auto bg-white">
+                <table class="w-full min-w-[1200px]">
+                    <thead class="bg-white sticky top-0 z-10">
+                        <tr class="border-b border-gray-100 text-gray-500 text-xs text-left">
+                            <th class="py-3 px-4 w-10 text-center"><input type="checkbox"
+                                    class="rounded border-gray-300"></th>
+                            <th class="py-3 px-4 font-medium min-w-[250px]">Tác vụ</th>
+                            <th class="py-3 px-4 font-medium min-w-[200px]">Chuỗi chăm sóc</th>
+                            <th class="py-3 px-4 font-medium min-w-[200px]">Khách hàng</th>
+                            <th class="py-3 px-4 font-medium">Sản phẩm</th>
+                            <th class="py-3 px-4 font-medium">Đơn hàng</th>
+                            <th class="py-3 px-4 font-medium">Nhân viên</th>
+                            <th class="py-3 px-4 font-medium">Facebook Ads ID</th>
+                            <th class="py-3 px-4 font-medium">Thông tin UTM</th>
+                            <th class="py-3 px-4 font-medium text-right">Ngày tạo <i
+                                    class="fa-regular fa-calendar ml-1"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm text-gray-700 divide-y divide-gray-50">
+                        <!-- Row 1 -->
+                        <tr class="hover:bg-blue-50/30 transition group">
+                            <td class="py-3 px-4 text-center"><input type="checkbox" class="rounded border-gray-300">
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="font-bold text-[#1B3DA1] mb-1">Tác vụ mới</div>
+                                <div class="text-xs text-blue-500">TV528571</div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-gray-800">Tester 1112223331111</div>
+                                        <div class="text-xs text-blue-500">0111333222111</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium">10:00 17/01</div>
+                            </td>
+                        </tr>
+
+                        <!-- Row 2 -->
+                        <tr class="hover:bg-blue-50/30 transition group">
+                            <td class="py-3 px-4 text-center"><input type="checkbox" class="rounded border-gray-300">
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="font-bold text-[#1B3DA1] mb-1">Tác vụ mới</div>
+                                <div class="text-xs text-blue-500">TV528570</div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-gray-800">Hanh Do</div>
+                                        <div class="text-xs text-blue-500">0398789098</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium">10:00 17/01</div>
+                            </td>
+                        </tr>
+
+                        <!-- Row 3 (Auto Task) -->
+                        <tr class="hover:bg-blue-50/30 transition group bg-blue-50/10">
+                            <td class="py-3 px-4 text-center"><input type="checkbox" class="rounded border-gray-300">
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="font-bold text-gray-800 mb-1">Tác vụ tự động tạo cho lead 0988764542</div>
+                                <div class="text-xs text-blue-500">TV528569</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-1 text-xs text-gray-600">
+                                    <span class="font-bold text-gray-700">#1 - </span> <i
+                                        class="fa-solid fa-triangle-exclamation text-red-500"></i> <span
+                                        class="text-red-500 font-bold">3d 7h 13m</span> <span class="font-bold">Test tạo
+                                        búc kinh</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-0.5">Chuỗi test tạo đơn</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-gray-800">0988764542</div>
+                                        <div class="text-xs text-blue-500">0988764542</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium">14:54 16/01</div>
+                            </td>
+                        </tr>
+
+                        <!-- Row 4 (Auto Task) -->
+                        <tr class="hover:bg-blue-50/30 transition group bg-blue-50/10">
+                            <td class="py-3 px-4 text-center"><input type="checkbox" class="rounded border-gray-300">
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="font-bold text-gray-800 mb-1">Tác vụ tự động tạo cho lead 0988764542</div>
+                                <div class="text-xs text-blue-500">TV528568</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-1 text-xs text-gray-600">
+                                    <span class="font-bold text-gray-700">#1 - </span> <i
+                                        class="fa-solid fa-triangle-exclamation text-red-500"></i> <span
+                                        class="text-red-500 font-bold">3d 7h 13m</span> <span class="font-bold">Test tạo
+                                        búc kinh</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-0.5">Chuỗi test tạo đơn</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-gray-800">0988764542</div>
+                                        <div class="text-xs text-blue-500">0988764542</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium">14:54 16/01</div>
+                            </td>
+                        </tr>
+
+                        <!-- Row 5 (Auto Task) -->
+                        <tr class="hover:bg-blue-50/30 transition group bg-blue-50/10">
+                            <td class="py-3 px-4 text-center"><input type="checkbox" class="rounded border-gray-300">
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="font-bold text-gray-800 mb-1">Tác vụ tự động tạo cho lead 0988764542</div>
+                                <div class="text-xs text-blue-500">TV528567</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-1 text-xs text-gray-600">
+                                    <span class="font-bold text-gray-700">#1 - </span> <i
+                                        class="fa-solid fa-triangle-exclamation text-red-500"></i> <span
+                                        class="text-red-500 font-bold">3d 7h 13m</span> <span class="font-bold">Test tạo
+                                        búc kinh</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-0.5">Chuỗi test tạo đơn</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-gray-800">0988764542</div>
+                                        <div class="text-xs text-blue-500">0988764542</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium">14:54 16/01</div>
+                            </td>
+                        </tr>
+
+                        <!-- Row 6 (Auto Task) -->
+                        <tr class="hover:bg-blue-50/30 transition group bg-blue-50/10">
+                            <td class="py-3 px-4 text-center"><input type="checkbox" class="rounded border-gray-300">
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="font-bold text-gray-800 mb-1">Tác vụ tự động tạo cho lead 0988764542</div>
+                                <div class="text-xs text-blue-500">TV528566</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-1 text-xs text-gray-600">
+                                    <span class="font-bold text-gray-700">#1 - </span> <i
+                                        class="fa-solid fa-triangle-exclamation text-red-500"></i> <span
+                                        class="text-red-500 font-bold">3d 7h 13m</span> <span class="font-bold">Test tạo
+                                        búc kinh</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-0.5">Chuỗi test tạo đơn</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-gray-800">0988764542</div>
+                                        <div class="text-xs text-blue-500">0988764542</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium">14:54 16/01</div>
+                            </td>
+                        </tr>
+
+                        <!-- Row 7 (Auto Task) -->
+                        <tr class="hover:bg-blue-50/30 transition group bg-blue-50/10">
+                            <td class="py-3 px-4 text-center"><input type="checkbox" class="rounded border-gray-300">
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="font-bold text-gray-800 mb-1">Tác vụ tự động tạo cho lead 0988764542</div>
+                                <div class="text-xs text-blue-500">TV528565</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-1 text-xs text-gray-600">
+                                    <span class="font-bold text-gray-700">#1 - </span> <i
+                                        class="fa-solid fa-triangle-exclamation text-red-500"></i> <span
+                                        class="text-red-500 font-bold">3d 7h 13m</span> <span class="font-bold">Test tạo
+                                        búc kinh</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-0.5">Chuỗi test tạo đơn</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-gray-800">0988764542</div>
+                                        <div class="text-xs text-blue-500">0988764542</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400">-</td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-gray-400"></td>
+                            <td class="py-3 px-4 text-right">
+                                <div class="font-medium">14:54 16/01</div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="px-4 py-3 border-t border-gray-200 flex items-center justify-end bg-gray-50 gap-2">
+                <span class="text-sm text-gray-500 mr-2">Hiển thị</span>
+                <select
+                    class="bg-white border border-gray-300 text-gray-700 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block p-1">
+                    <option>20</option>
+                    <option>50</option>
+                    <option>100</option>
+                </select>
+                <span class="text-sm text-gray-500 ml-2">of 519543</span>
+                <div class="flex items-center gap-1 ml-4">
+                    <button class="px-2 py-1 bg-gray-100 rounded text-gray-400 text-xs hover:bg-gray-200"><i
+                            class="fa-solid fa-backward-step"></i></button>
+                    <button class="px-2 py-1 bg-gray-100 rounded text-gray-400 text-xs hover:bg-gray-200"><i
+                            class="fa-solid fa-chevron-left"></i></button>
+                    <button class="px-3 py-1 bg-[#1B3DA1] text-white rounded text-sm font-bold">1</button>
+                    <button class="px-3 py-1 hover:bg-gray-100 text-gray-600 rounded text-sm font-medium">2</button>
+                    <button class="px-3 py-1 hover:bg-gray-100 text-gray-600 rounded text-sm font-medium">3</button>
+                    <span class="px-2 text-gray-400">...</span>
+                    <button class="px-2 py-1 bg-gray-100 rounded text-gray-600 text-xs hover:bg-gray-200"><i
+                            class="fa-solid fa-chevron-right"></i></button>
+                    <button class="px-2 py-1 bg-gray-100 rounded text-gray-600 text-xs hover:bg-gray-200"><i
+                            class="fa-solid fa-forward-step"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button (Phone) -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button
+            class="w-12 h-12 bg-[#1B2C56] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-900 transition">
+            <i class="fa-solid fa-phone-volume text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Add Lead Modal -->
+    <div id="add-lead-modal" class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transform transition-all scale-100">
+            <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800">Thêm Lead Mới</h3>
+                <button onclick="closeAddModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-gray-600">Họ và tên <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="new-lead-name"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-gray-600">Số điện thoại <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="new-lead-phone"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-600">Email</label>
+                    <input type="email" id="new-lead-email"
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-gray-600">Nguồn</label>
+                        <select id="new-lead-source"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 bg-white">
+                            <option>Facebook Ads</option>
+                            <option>Google Search</option>
+                            <option>Giới thiệu</option>
+                            <option>Trực tiếp</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-gray-600">Nhãn (Tag)</label>
+                        <select id="new-lead-tag"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 bg-white">
+                            <option value="HOT">HOT</option>
+                            <option value="VIP">VIP</option>
+                            <option value="NEW">NEW</option>
+                            <option value="CALLBACK">GỌI LẠI</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-600">Ghi chú</label>
+                    <textarea id="new-lead-note" rows="3"
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-600">Mô tả ngắn (hiển thị ngoài danh sách)</label>
+                    <input type="text" id="new-lead-desc"
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+                        placeholder="VD: Khách cần gấp, Đang so sánh giá...">
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-100 flex justify-end gap-3 bg-gray-50 rounded-b-xl">
+                <button onclick="closeAddModal()"
+                    class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg transition">Hủy
+                    bỏ</button>
+                <button onclick="saveNewLead()"
+                    class="px-4 py-2 text-sm font-bold text-white bg-[#1B3DA1] hover:bg-blue-800 rounded-lg shadow transition">Lưu
+                    Lead</button>
+            </div>
+        </div>
+    </div>
+    <!-- Lead Detail Modal (Redesigned) -->
+    <div id="lead-detail-modal"
+        class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center backdrop-blur-sm bg-black/40">
+        <div class="bg-[#F3F4F6] rounded-xl shadow-2xl w-full max-w-[95vw] h-[90vh] flex flex-col overflow-hidden">
+
+            <!-- 1. Header & Pipeline -->
+            <div class="bg-white px-6 py-3 border-b border-gray-200 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-4 flex-1">
+                    <button class="text-gray-400 hover:text-blue-600"><i class="fa-solid fa-filter"></i></button>
+                    <div class="relative flex-1 max-w-sm">
+                        <i class="fa-solid fa-pen absolute right-3 top-1/2 -translate-y-1/2 text-blue-600 text-xs"></i>
+                        <input type="text" value="Phễu Từ Facebook"
+                            class="font-bold text-gray-700 bg-transparent border-none focus:ring-0 text-lg w-full">
+                    </div>
+                </div>
+
+                <!-- Pipeline Steps -->
+                <div class="flex items-center flex-[2] justify-center px-4" id="pipeline-steps">
+                    <!-- Steps will be injected by JS -->
+                    <div
+                        class="pipeline-step bg-[#1B3DA1] text-white h-10 flex items-center justify-center font-semibold text-sm flex-1 z-50">
+                        Lead Nóng</div>
+                    <div
+                        class="pipeline-step bg-white text-gray-500 h-10 flex items-center justify-center font-semibold text-sm flex-1 z-40">
+                        Đang Liên Hệ</div>
+                    <div
+                        class="pipeline-step bg-white text-gray-500 h-10 flex items-center justify-center font-semibold text-sm flex-1 z-30">
+                        Đã Điền Form</div>
+                    <div
+                        class="pipeline-step bg-white text-gray-500 h-10 flex items-center justify-center font-semibold text-sm flex-1 z-20">
+                        Hẹn Lịch Demo</div>
+                    <div
+                        class="pipeline-step bg-white text-gray-500 h-10 flex items-center justify-center font-semibold text-sm flex-1 z-10">
+                        Chờ Ký Hợp Đồng</div>
+                </div>
+
+                <div class="flex items-center gap-3 flex-1 justify-end">
+                    <button onclick="closeDetailModal()"
+                        class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <button
+                        class="w-8 h-8 rounded bg-[#1B3DA1] text-white flex items-center justify-center hover:bg-blue-800 shadow-md">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Main Scrollable Content -->
+            <div class="flex-1 overflow-y-auto p-6 bg-[#F3F4F6]">
+                <div class="grid grid-cols-12 gap-6 h-full">
+
+                    <!-- LEFT COLUMN (Lead Info, Customer, Chat) -->
+                    <div class="col-span-9 flex flex-col gap-6">
+                        <!-- Top Row: Lead Info & Customer Info -->
+                        <div class="grid grid-cols-12 gap-6 shrink-0">
+                            <!-- Lead Info -->
+                            <div class="col-span-5 bg-white p-5 rounded-xl shadow-sm border border-gray-100 h-full">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-layer-group text-[#1B3DA1]"></i>
+                                        <span class="font-bold text-gray-700">Qualified Lead</span>
+                                        <i class="fa-solid fa-caret-down text-gray-400 text-xs"></i>
+                                    </div>
+                                    <span class="text-blue-600 font-bold text-sm">#1987564</span>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-y-6 gap-x-4">
+                                    <div>
+                                        <p class="text-xs text-blue-500 font-semibold mb-1">Nguồn Lead:</p>
+                                        <div class="flex items-center gap-2 text-sm text-gray-700 font-medium">
+                                            <i class="fa-brands fa-facebook text-blue-600"></i>
+                                            <span>Ads Facebook Smax</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-blue-500 font-semibold mb-1">Thẻ Tags:</p>
+                                        <div class="flex flex-wrap gap-1" id="modal-tags-display">
+                                            <!-- Tags -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-blue-500 font-semibold mb-1">Phễu:</p>
+                                        <div class="flex items-center gap-2 text-sm text-gray-700 font-medium">
+                                            <i class="fa-solid fa-filter text-gray-400"></i>
+                                            <span>Facebook</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-blue-500 font-semibold mb-1">Nhân Sự Phụ Trách:</p>
+                                        <div class="flex items-center gap-1 mt-1">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-[10px] text-gray-500">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </div>
+                                            <img src="https://i.pravatar.cc/150?u=1"
+                                                class="w-6 h-6 rounded-full border-2 border-white" title="Creator">
+                                            <img src="https://i.pravatar.cc/150?u=2"
+                                                class="w-6 h-6 rounded-full border-2 border-white" title="CSKH">
+                                            <img src="https://i.pravatar.cc/150?u=3"
+                                                class="w-6 h-6 rounded-full border-2 border-white" title="Sale">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Customer Info -->
+                            <div class="col-span-7 bg-white p-5 rounded-xl shadow-sm border border-gray-100 h-full">
+                                <div class="mb-4">
+                                    <h4 class="font-bold text-gray-700">Khách Hàng</h4>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 shrink-0">
+                                        <div class="w-full h-full flex items-center justify-center bg-gray-300 text-gray-500 text-xl font-bold"
+                                            id="customer-avatar">
+                                            A
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 grid grid-cols-3 gap-y-4 gap-x-6">
+                                        <h3 class="font-bold text-gray-800 text-lg col-span-3" id="customer-name">Trần
+                                            Như Ý
+                                        </h3>
+
+                                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                                            <i class="fa-regular fa-envelope text-blue-500"></i>
+                                            <span class="truncate" id="customer-email">email@example.com</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                                            <i class="fa-solid fa-phone text-blue-500"></i>
+                                            <span id="customer-phone">0968752654</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                                            <i class="fa-brands fa-facebook text-blue-600"></i>
+                                            <span>Trần Nuy</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-sm text-gray-600 col-span-2">
+                                            <i class="fa-solid fa-location-dot text-blue-500"></i>
+                                            <span>Chi Nhánh Hồ Chí Minh</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                                            <i class="fa-solid fa-user-tag text-blue-500"></i>
+                                            <span>Lẻ Thanh Vi</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                                            <i class="fa-solid fa-bag-shopping text-blue-500"></i>
+                                            <span>Nuy Le Parfum</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat / Discussion Area -->
+                        <div
+                            class="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col flex-1 h-[600px]">
+                            <div class="flex items-center gap-6 px-6 border-b border-gray-200 shrink-0">
+                                <button
+                                    class="py-4 text-sm font-bold text-gray-800 border-b-2 border-gray-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-comments"></i> Thảo Luận
+                                </button>
+                                <button class="py-4 text-sm font-medium text-gray-500 hover:text-gray-700 transition">
+                                    <i class="fa-solid fa-check"></i> Tác Vụ
+                                </button>
+                                <button class="py-4 text-sm font-medium text-gray-500 hover:text-gray-700 transition">
+                                    <i class="fa-solid fa-sliders"></i> Attribute
+                                </button>
+                                <button class="py-4 text-sm font-medium text-gray-500 hover:text-gray-700 transition">
+                                    <i class="fa-solid fa-box"></i> Sản Phẩm
+                                </button>
+                                <button class="py-4 text-sm font-medium text-gray-500 hover:text-gray-700 transition">
+                                    <i class="fa-solid fa-money-bill"></i> Gói Cước
+                                </button>
+                                <div class="flex-1 text-right py-3">
+                                    <button
+                                        class="w-8 h-8 rounded bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Chat Content -->
+                            <div class="flex-1 p-6 overflow-y-auto bg-gray-50 space-y-6" id="discussion-area">
+                                <div class="flex gap-4">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-[#1B3DA1] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                                        SYS</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="font-bold text-sm text-gray-700">Thông Báo Từ Hệ Thống</span>
+                                            <span class="text-xs text-gray-400">11/04/2024 - 20:25</span>
+                                        </div>
+                                        <div
+                                            class="bg-white p-4 rounded-xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700">
+                                            <p class="font-bold mb-2"><span class="text-blue-600"
+                                                    id="detail-log-name">Trần
+                                                    Như Ý</span> đã điền Form Đăng Ký Sử Dụng Phần Mềm</p>
+                                            <ul class="list-disc list-inside space-y-1 text-gray-600 pl-2">
+                                                <li>Lĩnh vực: Nhà hàng</li>
+                                                <li>Nhu cầu: Tư vấn AI</li>
+                                                <li>Doanh số: 2 tỷ/tháng</li>
+                                                <li>Kênh bán: Facebook, Shopee, Tiktok, Zalo</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <img src="https://i.pravatar.cc/150?u=3"
+                                        class="w-8 h-8 rounded-full border border-gray-200 shrink-0">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="font-bold text-sm text-gray-700">Lê Thanh Vi</span>
+                                            <span class="text-xs text-gray-400">11/04/2024 - 20:25</span>
+                                        </div>
+                                        <div
+                                            class="bg-white p-3 rounded-xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700 inline-block">
+                                            Đã Nhận Khách
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN (Full Height Timeline) -->
+                    <div
+                        class="col-span-3 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col h-full border-t-4 border-t-red-500 relative">
+                        <!-- Sidebar Tabs -->
+                        <div class="flex items-center p-2 m-2 bg-gray-100 rounded-lg shrink-0">
+                            <button
+                                class="flex-1 py-1.5 bg-white rounded shadow-sm text-xs font-bold text-gray-800">Thảo
+                                Luận</button>
+                            <button class="flex-1 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700">Tác
+                                Vụ</button>
+                            <button
+                                class="flex-1 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700">Attribute</button>
+                        </div>
+
+                        <!-- Timeline Content -->
+                        <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                            <div class="mb-6">
+                                <h5 class="text-xs font-bold text-blue-600 mb-3 flex items-center gap-2">
+                                    <i class="fa-regular fa-calendar"></i> Hôm Nay
+                                </h5>
+                                <div class="space-y-4 border-l border-gray-200 ml-1.5 pl-4 relative">
+                                    <!-- Item -->
+                                    <div class="relative">
+                                        <div
+                                            class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 ring-2 ring-white">
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <span class="font-bold text-xs text-gray-800">Trần Như Ý</span>
+                                            <span class="text-[10px] text-gray-400">20:25</span>
+                                        </div>
+                                        <p class="text-xs text-gray-600 mt-1">Đã đặt 1 đơn hàng DH3282</p>
+                                    </div>
+                                    <!-- Item -->
+                                    <div class="relative">
+                                        <div
+                                            class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#1B3DA1] ring-2 ring-white">
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <span class="font-bold text-xs text-gray-800">Hệ Thống</span>
+                                            <span class="text-[10px] text-gray-400">10:24</span>
+                                        </div>
+                                        <p class="text-xs text-gray-600 mt-1">Đã gửi 1 tin ZNS</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h5 class="text-xs font-bold text-blue-400 mb-3 flex items-center gap-2">
+                                    <i class="fa-regular fa-calendar"></i> Hôm Qua
+                                </h5>
+                                <div class="space-y-4 border-l border-gray-200 ml-1.5 pl-4">
+                                    <div class="relative">
+                                        <div
+                                            class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-orange-500 ring-2 ring-white">
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <span class="font-bold text-xs text-gray-800">Sale Vi</span>
+                                            <span class="text-[10px] text-gray-400">20:25</span>
+                                        </div>
+                                        <p class="text-xs text-gray-600 mt-1">Đã hỗ trợ báo giá sản phẩm SKU191200</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="p-4 border-t border-gray-100 bg-gray-50 rounded-b-xl flex justify-between items-center">
+                <button class="text-red-500 text-sm font-medium hover:underline">Xóa Lead</button>
+                <div class="flex gap-2">
+                    <button
+                        class="px-4 py-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-medium rounded-lg shadow-sm">Gọi
+                        điện</button>
+                    <button
+                        class="px-4 py-2 bg-[#1B3DA1] hover:bg-blue-800 text-white text-sm font-medium rounded-lg shadow-sm">Gửi
+                        tin nhắn</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        // View Switching Logic
+        function switchView(viewName) {
+            const crmView = document.getElementById('crm-view');
+            const taskView = document.getElementById('task-view');
+            const navCrm = document.getElementById('nav-crm');
+            const navTask = document.getElementById('nav-task');
+
+            // Reset all active states
+            navCrm.className = navCrm.className.replace('sidebar-icon-active', '').replace('hover:bg-white/10 text-blue-200 hover:text-white', '');
+            navTask.className = navTask.className.replace('sidebar-icon-active', '').replace('hover:bg-white/10 text-blue-200 hover:text-white', '');
+
+            // Add default inactive classes
+            navCrm.classList.add('hover:bg-white/10', 'text-blue-200', 'hover:text-white');
+            navTask.classList.add('hover:bg-white/10', 'text-blue-200', 'hover:text-white');
+
+
+            if (viewName === 'crm') {
+                crmView.classList.remove('hidden');
+                taskView.classList.add('hidden');
+                taskView.classList.remove('flex');
+
+                navCrm.classList.remove('hover:bg-white/10', 'text-blue-200', 'hover:text-white');
+                navCrm.classList.add('sidebar-icon-active', 'text-white');
+            } else if (viewName === 'task') {
+                crmView.classList.add('hidden');
+                taskView.classList.remove('hidden');
+                taskView.classList.add('flex');
+
+                navTask.classList.remove('hover:bg-white/10', 'text-blue-200', 'hover:text-white');
+                navTask.classList.add('sidebar-icon-active', 'text-white');
+            }
+        }
+
+        // --- DATA & CONFIG ---
+        const COLUMNS = [
+            { id: 'lead-moi', title: 'Lead mới', color: 'gray', countBg: 'bg-gray-100' },
+            { id: 'dang-lien-he', title: 'Đang liên hệ', color: 'red', countBg: 'bg-red-50' },
+            { id: 'dang-tu-van', title: 'Đang tư vấn', color: 'orange', countBg: 'bg-orange-50' },
+            { id: 'chot-hop-dong', title: 'Chốt hợp đồng', color: 'green', countBg: 'bg-green-50' }
+        ];
+
+        const TAGS = {
+            'HOT': { class: 'bg-red-100 text-red-700' },
+            'VIP': { class: 'bg-purple-100 text-purple-700' },
+            'NEW': { class: 'bg-blue-100 text-blue-700' },
+            'CALLBACK': { class: 'bg-yellow-100 text-yellow-700' }
+        };
+
+        const FIRST_NAMES = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Huỳnh', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý'];
+        const MIDDLE_NAMES = ['Văn', 'Thị', 'Hữu', 'Đức', 'Thanh', 'Minh', 'Ngọc', 'Quốc', 'Tuấn', 'Hoài'];
+        const LAST_NAMES = ['Anh', 'Bình', 'Châu', 'Dũng', 'Em', 'Giang', 'Hải', 'Hùng', 'Hương', 'Khánh', 'Linh', 'Long', 'Mai', 'Nam', 'Nga', 'Oanh', 'Phúc', 'Quân', 'Sơn', 'Tài', 'Tâm', 'Thảo', 'Thịnh', 'Trang', 'Tú', 'Uyên', 'Việt', 'Vinh', 'Yến'];
+
+        let leadsData = [];
+        let draggedItem = null;
+
+        // --- MOCK DATA GENERATION ---
+        function generateRandomPhone() {
+            const prefixes = ['09', '03', '08', '07', '05'];
+            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const suffix = Math.floor(Math.random() * 90000000) + 10000000;
+            return prefix + suffix.toString().substring(1);
+        }
+
+        function generateRandomName() {
+            const first = FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
+            const middle = MIDDLE_NAMES[Math.floor(Math.random() * MIDDLE_NAMES.length)];
+            const last = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
+            return `${first} ${middle} ${last}`;
+        }
+
+        function generateLeads() {
+            const leads = [];
+            const tagKeys = Object.keys(TAGS);
+
+            COLUMNS.forEach(col => {
+                const count = 18 + Math.floor(Math.random() * 5); // 18-22 leads
+                for (let i = 0; i < count; i++) {
+                    const hasTag = Math.random() > 0.4;
+                    const tag = hasTag ? tagKeys[Math.floor(Math.random() * tagKeys.length)] : null;
+
+                    leads.push({
+                        id: 'lead-' + Math.random().toString(36).substr(2, 9),
+                        name: generateRandomName(),
+                        phone: generateRandomPhone(),
+                        email: 'user' + Math.floor(Math.random() * 1000) + '@gmail.com',
+                        status: col.id,
+                        tag: tag,
+                        time: `${Math.floor(Math.random() * 23)}:${Math.floor(Math.random() * 59)} ${Math.floor(Math.random() * 30) + 1}/01`,
+                        source: Math.random() > 0.5 ? 'Facebook Ads' : 'Google Search',
+                        note: 'Khách hàng quan tâm sản phẩm...',
+                        description: ['Cần tư vấn gói 1 năm', 'Đang so sánh giá', 'Muốn demo trực tiếp', 'Khách khó tính', 'Chưa có nhu cầu ngay'][Math.floor(Math.random() * 5)]
+                    });
+                }
+            });
+            return leads;
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function renderBoard() {
+            const board = document.getElementById('kanban-board');
+            if (!board) return;
+            board.innerHTML = '';
+
+            COLUMNS.forEach(col => {
+                const colLeads = leadsData.filter(l => l.status === col.id);
+
+                // Column HTML
+                const colHTML = `
+            <div class="kanban-col ${col.countBg} border border-gray-200 w-[340px] flex flex-col"
+                data-status="${col.id}"
+                ondragover="handleDragOver(event)"
+                ondrop="handleDrop(event)">
+
+                <div class="p-3 flex items-center justify-between bg-white border-b border-gray-200 rounded-t-xl sticky top-0 z-10">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-${col.color}-500"></span>
+                        <span class="font-bold text-gray-700 text-sm">${col.title}</span>
+                    </div>
+                    <span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[11px] font-bold ring-1 ring-gray-200" id="count-${col.id}">
+                        ${colLeads.length}
+                    </span>
+                </div>
+
+                <div class="p-3 space-y-3 overflow-y-auto flex-1 custom-scrollbar kanban-col-content" id="col-${col.id}">
+                    ${colLeads.length > 0 ? colLeads.map(lead => renderCard(lead)).join('') : renderEmptyState()}
+                </div>
+            </div>
+            `;
+                board.innerHTML += colHTML;
+            });
+        }
+
+        function renderCard(lead) {
+            const tagBadge = lead.tag ?
+                `<span class="${TAGS[lead.tag].class} tag-badge">${lead.tag}</span>` : '';
+
+            return `
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 cursor-grab hover:shadow-md transition group relative"
+                draggable="true"
+                id="${lead.id}"
+                onclick="openDetailModal('${lead.id}')"
+                ondragstart="handleDragStart(event)">
+
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gray-100 overflow-hidden flex-shrink-0 relative flex items-center justify-center text-gray-400">
+                        <i class="fa-solid fa-user text-xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="font-bold text-sm text-gray-800 group-hover:text-[#1B3DA1] truncate pr-2">${lead.name}</h4>
+                            ${tagBadge}
+                        </div>
+
+                        <div class="flex items-center gap-4 text-xs text-blue-600 mb-2">
+                            <span class="flex items-center gap-1 hover:underline stop-propag" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> ${lead.phone}</span>
+                        </div>
+
+                        <div class="flex items-center justify-between text-[11px] text-gray-400">
+                            <span class="flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${lead.time}</span>
+                            <span class="group-hover:opacity-100 opacity-0 transition-opacity text-[#1B3DA1] cursor-pointer"><i class="fa-solid fa-pen"></i></span>
+                        </div>
+
+                        <div class="mt-2 text-xs text-gray-500 bg-gray-50 p-2 rounded border border-gray-100 italic line-clamp-2">
+                            ${lead.description}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderEmptyState() {
+            return `
+            <div class="h-32 flex flex-col items-center justify-center text-gray-400 gap-2 opacity-50">
+                <i class="fa-solid fa-inbox text-3xl"></i>
+                <span class="text-xs">Không có lead nào</span>
+            </div>
+            `;
+        }
+
+        function filterLeads(query) {
+            const normalizedQuery = query.toLowerCase();
+
+            document.querySelectorAll('[draggable="true"]').forEach(card => {
+                const name = card.querySelector('h4').textContent.toLowerCase();
+                // Safe check for phone, assuming structure
+                const phoneIcon = card.querySelector('.fa-phone');
+                const phone = phoneIcon ? phoneIcon.closest('span').textContent.toLowerCase() : '';
+
+                if (name.includes(normalizedQuery) || phone.includes(normalizedQuery)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- DRAG & DROP LOGIC ---
+        function handleDragStart(e) {
+            draggedItem = leadsData.find(l => l.id === e.target.id);
+            if (draggedItem) {
+                e.target.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', e.target.id);
+                // Optional: set drag image or hide original
+            }
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault(); // Necessary for allow drop
+            e.dataTransfer.dropEffect = 'move';
+
+            const col = e.currentTarget;
+            if (!col.classList.contains('drag-over')) {
+                col.classList.add('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const col = e.currentTarget;
+            col.classList.remove('drag-over');
+
+            const newStatus = col.getAttribute('data-status');
+            const leadId = e.dataTransfer.getData('text/plain');
+
+            const draggedElement = document.getElementById(leadId);
+            if (draggedElement) {
+                draggedElement.classList.remove('dragging');
+                draggedElement.style.opacity = '1';
+            }
+
+            if (draggedItem && draggedItem.status !== newStatus) {
+                // Update Data
+                draggedItem.status = newStatus;
+
+                // Re-render Board to update counts and order
+                renderBoard();
+            }
+        }
+
+        // Global Drag End listener to cleanup styles if dropped outside
+        document.addEventListener('dragend', (e) => {
+            if (e.target.classList.contains('dragging')) {
+                e.target.classList.remove('dragging');
+                e.target.style.opacity = '1';
+            }
+            document.querySelectorAll('.kanban-col').forEach(c => c.classList.remove('drag-over'));
+        });
+
+
+        // --- MODAL LOGIC ---
+        function openAddModal() {
+            document.getElementById('add-lead-modal').classList.remove('hidden');
+            document.getElementById('add-lead-modal').classList.add('flex');
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-lead-modal').classList.add('hidden');
+            document.getElementById('add-lead-modal').classList.remove('flex');
+            // Clear inputs
+            document.getElementById('new-lead-name').value = '';
+            document.getElementById('new-lead-phone').value = '';
+        }
+
+        function saveNewLead() {
+            const name = document.getElementById('new-lead-name').value;
+            const phone = document.getElementById('new-lead-phone').value;
+            const email = document.getElementById('new-lead-email').value;
+            const source = document.getElementById('new-lead-source').value;
+            const note = document.getElementById('new-lead-note').value;
+            const description = document.getElementById('new-lead-desc').value;
+            const tag = document.getElementById('new-lead-tag').value;
+
+            if (!name || !phone) {
+                alert('Vui lòng nhập Họ tên và Số điện thoại');
+                return;
+            }
+
+            const newLead = {
+                id: 'lead-' + Math.random().toString(36).substr(2, 9),
+                name,
+                phone,
+                email,
+                status: 'lead-moi', // Default column
+                tag: tag,
+                time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' ' + new Date().toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }),
+                source,
+                note,
+                description: description || 'Chưa có mô tả'
+            };
+
+            leadsData.unshift(newLead); // Add to top
+            renderBoard();
+            closeAddModal();
+        }
+
+        function openDetailModal(id) {
+            const lead = leadsData.find(l => l.id === id);
+            if (!lead) return;
+
+            // 1. Populate Customer / Lead Info
+            document.getElementById('customer-name').textContent = lead.name;
+            document.getElementById('customer-phone').textContent = lead.phone;
+            document.getElementById('customer-email').textContent = lead.email;
+            document.getElementById('customer-avatar').textContent = lead.name.charAt(0).toUpperCase();
+
+            // 2. Populate Tags
+            const tagContainer = document.getElementById('modal-tags-display');
+            tagContainer.innerHTML = '';
+            if (lead.tag) {
+                tagContainer.innerHTML = `<span class="${TAGS[lead.tag].class} px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-white shadow-sm">${lead.tag}</span>`;
+            } else {
+                tagContainer.innerHTML = '<span class="text-gray-300 text-xs italic">--</span>';
+            }
+
+            // 3. Highlight Pipeline Step (Dynamic Rendering)
+            const pipelineContainer = document.getElementById('pipeline-steps');
+            pipelineContainer.innerHTML = ''; // Clear hardcoded
+
+            // Find index of current status
+            const statusIndex = COLUMNS.findIndex(c => c.id === lead.status);
+
+            COLUMNS.forEach((col, index) => {
+                const step = document.createElement('div');
+                // Common classes
+                let classes = 'pipeline-step h-10 flex items-center justify-center font-semibold text-sm flex-1 transition-colors duration-300 ';
+
+                // Z-Index for arrow overlap effect (decreasing z-index)
+                step.style.zIndex = COLUMNS.length - index;
+
+                // State styles
+                if (index < statusIndex) {
+                    // Completed (Past)
+                    classes += 'bg-blue-50 text-[#1B3DA1]';
+                } else if (index === statusIndex) {
+                    // Active (Current)
+                    classes += 'bg-[#1B3DA1] text-white shadow-md';
+                } else {
+                    // Future
+                    classes += 'bg-white text-gray-500';
+                }
+
+                step.className = classes;
+                step.textContent = col.title;
+                pipelineContainer.appendChild(step);
+            });
+
+            // 4. Inject Note into Chat if exists
+            // const discussionArea = document.getElementById('discussion-area');
+            // (Mock data remains for now)
+
+            // Show Modal
+            document.getElementById('lead-detail-modal').classList.remove('hidden');
+            document.getElementById('lead-detail-modal').classList.add('flex');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('lead-detail-modal').classList.add('hidden');
+            document.getElementById('lead-detail-modal').classList.remove('flex');
+        }
+
+        // --- INIT ---
+        const sidebar = document.getElementById('sidebar');
+        const toggleIcon = document.getElementById('toggle-icon');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        let isExpanded = false;
+
+        function toggleSidebar() {
+            isExpanded = !isExpanded;
+
+            if (isExpanded) {
+                sidebar.classList.remove('w-16');
+                sidebar.classList.add('w-64');
+                toggleIcon.classList.add('rotate-180');
+                setTimeout(() => {
+                    sidebarTexts.forEach(text => {
+                        text.classList.remove('opacity-0');
+                    });
+                }, 100);
+            } else {
+                sidebarTexts.forEach(text => {
+                    text.classList.add('opacity-0');
+                });
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-16');
+                toggleIcon.classList.remove('rotate-180');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            leadsData = generateLeads();
+            renderBoard();
+        });
+    </script>
+</body>
+
+</html>
