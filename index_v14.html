@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard V14 - Appvn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F8F9;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease-out;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #cbd5e1;
+        }
+
+        /* Lucide Icons - Stroke width */
+        [data-lucide] {
+            stroke-width: 2.0;
+        }
+
+        /* Gradient cho icon stroke */
+        .icon-gradient-blue {
+            stroke: url(#gradient-blue);
+        }
+
+        .icon-gradient-amber {
+            stroke: url(#gradient-amber);
+        }
+
+        .icon-gradient-emerald {
+            stroke: url(#gradient-emerald);
+        }
+
+        .icon-gradient-gray {
+            stroke: url(#gradient-gray);
+        }
+
+        .icon-gradient-indigo {
+            stroke: url(#gradient-indigo);
+        }
+
+        .icon-gradient-rose {
+            stroke: url(#gradient-rose);
+        }
+
+        .icon-gradient-purple {
+            stroke: url(#gradient-purple);
+        }
+
+        .icon-gradient-red {
+            stroke: url(#gradient-red);
+        }
+
+        .icon-gradient-yellow {
+            stroke: url(#gradient-yellow);
+        }
+
+        .icon-gradient-orange {
+            stroke: url(#gradient-orange);
+        }
+
+        .icon-gradient-violet {
+            stroke: url(#gradient-violet);
+        }
+
+        .icon-gradient-pink {
+            stroke: url(#gradient-pink);
+        }
+
+        .icon-gradient-green {
+            stroke: url(#gradient-green);
+        }
+
+        .icon-gradient-teal {
+            stroke: url(#gradient-teal);
+        }
+
+        .icon-gradient-cyan {
+            stroke: url(#gradient-cyan);
+        }
+
+        .icon-gradient-fuchsia {
+            stroke: url(#gradient-fuchsia);
+        }
+
+        .icon-gradient-sky {
+            stroke: url(#gradient-sky);
+        }
+
+        .icon-gradient-slate {
+            stroke: url(#gradient-slate);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<!-- SVG Gradient Definitions -->
+<svg width="0" height="0" style="position: absolute;">
+    <defs>
+        <linearGradient id="gradient-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-amber" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-gray" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#6b7280;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#475569;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-indigo" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-rose" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f43f5e;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#d946ef;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-red" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f43f5e;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#eab308;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-violet" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f43f5e;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-green" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#16a34a;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#14b8a6;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-fuchsia" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#d946ef;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-sky" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="gradient-slate" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#475569;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#64748b;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+</svg>
+
+<body class="min-h-screen flex flex-col text-slate-800 relative">
+
+    <!-- Header (Deep Blue) -->
+    <header style="background: linear-gradient(135deg, #1B3DA1 0%, #0F256E 100%);"
+        class=" h-16 text-white px-6 flex items-center justify-between shadow-lg z-50 fixed w-full top-0">
+        <!-- Left Section -->
+        <div class="flex items-center gap-8">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div onclick="window.location.href='index.html'"
+                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-md cursor-pointer">
+                    <img src="logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
+                </div>
+                <span class="text-xl font-bold tracking-tight">App.vn</span>
+            </div>
+
+            
+            <!-- Version Switcher -->
+            <div class="flex items-center gap-2">
+                <!-- Prev Button -->
+                <a href="index_v13.html"
+                    class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
+                    title="Phiên bản trước">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </a>
+
+<div class="relative">
+                <button
+                    onclick="document.getElementById('versionDropdown').classList.toggle('hidden'); event.stopPropagation();"
+                    class="flex items-center gap-2 text-white/90 hover:text-white font-medium bg-white/10 px-3 py-1.5 rounded-lg transition-all border border-white/10 hover:bg-white/20 cursor-pointer h-9">
+                    <span class="text-sm">Phiên bản giao diện</span>
+                    <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                </button>
+                <!-- Dropdown Menu -->
+                                <div id="versionDropdown"
+                    class="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+                    onclick="event.stopPropagation()">
+                    <div class="p-1 max-h-80 overflow-y-auto">
+                        <a href="index.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
+                                V1</div>
+                            <div class="text-sm font-medium text-slate-700">Original</div>
+                        </a>
+                        <a href="index_v2.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">
+                                V2</div>
+                            <div class="text-sm font-medium text-slate-700">Clean White</div>
+                        </a>
+                        <a href="index_v3.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs">
+                                V3</div>
+                            <div class="text-sm font-medium text-slate-700">Colorful Waves</div>
+                        </a>
+                        <a href="index_v4.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xs">
+                                V4</div>
+                            <div class="text-sm font-medium text-slate-700">Network</div>
+                        </a>
+                        <a href="index_v5.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">
+                                V5</div>
+                            <div class="text-sm font-medium text-slate-700">Minimalist</div>
+                        </a>
+                        <a href="index_v6.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-slate-800 text-white flex items-center justify-center font-bold text-xs">
+                                V6</div>
+                            <div class="text-sm font-medium text-slate-700">Professional</div>
+                        </a>
+                        <a href="index_v7.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-cyan-700 text-white flex items-center justify-center font-bold text-xs">
+                                V7</div>
+                            <div class="text-sm font-medium text-slate-700">Compact</div>
+                        </a>
+                        <a href="index_v8.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-white text-slate-800 flex items-center justify-center font-bold text-xs ring-1 ring-slate-200 shadow-sm">
+                                V8</div>
+                            <div class="text-sm font-medium text-slate-700">White & Shadow</div>
+                        </a>
+                        <a href="index_v9.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-[#F7F8F9] text-slate-800 flex items-center justify-center font-bold text-xs ring-1 ring-slate-200 shadow-sm">
+                                V9</div>
+                            <div class="text-sm font-medium text-slate-700">Colored Box</div>
+                        </a>
+                        <a href="index_v10.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-white text-amber-500 flex items-center justify-center font-bold text-xs ring-1 ring-slate-200 shadow-sm">
+                                V10</div>
+                            <div class="text-sm font-medium text-slate-700">Icon Box</div>
+                        </a>
+                        <a href="index_v11.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-gradient-to-br from-emerald-500 to-teal-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                V11</div>
+                            <div class="text-sm font-medium text-slate-700">Icon Box V2</div>
+                        </a>
+                        <a href="index_v12.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-gradient-to-br from-teal-500 to-cyan-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                V12</div>
+                            <div class="text-sm font-medium text-slate-700">Refined</div>
+                        </a>
+                        <a href="index_v13.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-gradient-to-br from-indigo-500 to-violet-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                V13</div>
+                            <div class="text-sm font-medium text-slate-700">Gradient Icon</div>
+                        </a>
+                        <a href="index_v14.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors bg-slate-50">
+                            <div
+                                class="w-8 h-8 rounded bg-gradient-to-br from-rose-500 to-pink-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                V14</div>
+                            <div class="text-sm font-medium text-slate-700">Quarter Circle</div>
+                        </a>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('click', function (event) {
+                    var dropdown = document.getElementById('versionDropdown');
+                    if (dropdown && !dropdown.classList.contains('hidden')) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            </script>
+        </div>
+
+                <!-- Next Button -->
+                <a href="index.html"
+                    class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
+                    title="Phiên bản tiếp theo">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </a>
+            </div>
+
+
+        <!-- Right Side -->
+        <div class="flex items-center gap-5">
+            <button class="relative hover:opacity-80 transition">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span
+                    class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#172B85]"></span>
+            </button>
+            <div class="flex items-center gap-3 pl-4 border-l border-white/20">
+                <div class="text-right hidden sm:block leading-tight">
+                    <div class="text-sm font-semibold">Harley</div>
+                    <div class="text-[11px] text-blue-200 opacity-80">Owner</div>
+                </div>
+                <div
+                    class="w-9 h-9 rounded-full bg-blue-400 border border-white/20 flex items-center justify-center shadow-md text-white font-bold text-xs">
+                    HA
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 pt-28 pb-12 px-6 max-w-[1400px] mx-auto w-full relative z-10">
+
+        <!-- Welcome Section -->
+        <div class="mb-10">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">Xin chào, Harley!</h1>
+            <p class="text-slate-500">Hệ thống quản trị doanh nghiệp</p>
+        </div>
+
+        <!-- Modules Grid - COMPACT LAYOUT (5-6 cols) -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+
+            <!-- 1. Quản lý bán hàng -->
+            <a href="modules/sales.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-blue-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-blue-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-blue-500 to-blue-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="shopping-cart" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-blue-700 transition-colors">
+                        Bán hàng</h3>
+                </div>
+            </a>
+
+            <!-- 2. Sản phẩm -->
+            <a href="modules/product.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-amber-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-amber-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-amber-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-amber-500 to-orange-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="package-open" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-amber-600 transition-colors">
+                        Sản phẩm</h3>
+                </div>
+            </a>
+
+            <!-- 3. Khách hàng -->
+            <a href="modules/customer.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-emerald-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-emerald-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-emerald-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-emerald-500 to-teal-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="users" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3
+                        class="font-semibold text-slate-800 text-sm truncate group-hover:text-emerald-700 transition-colors">
+                        Khách hàng</h3>
+                </div>
+            </a>
+
+            <!-- 4. Kho hàng -->
+            <a href="modules/warehouse.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-gray-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-gray-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-gray-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-gray-500 to-slate-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="warehouse" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-gray-700 transition-colors">
+                        Kho hàng</h3>
+                </div>
+            </a>
+
+            <!-- 5. Báo cáo -->
+            <a href="modules/report.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-indigo-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-indigo-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-indigo-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-indigo-500 to-purple-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="bar-chart-3" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-indigo-700 transition-colors">
+                        Báo cáo</h3>
+                </div>
+            </a>
+
+            <!-- 6. CRM -->
+            <a href="modules/crm.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-rose-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-rose-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-rose-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-rose-500 to-pink-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="pie-chart" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-rose-600 transition-colors">
+                        CRM</h3>
+                </div>
+            </a>
+
+            <!-- 7. Automation -->
+            <a href="modules/automation.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-purple-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-purple-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-purple-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-purple-500 to-fuchsia-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="bot" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-purple-700 transition-colors">
+                        Automation</h3>
+                </div>
+            </a>
+
+            <!-- 8. Ưu đãi -->
+            <a href="modules/promotions.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-red-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-red-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-red-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-red-500 to-rose-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="tags" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-red-600 transition-colors">Ưu
+                        đãi</h3>
+                </div>
+            </a>
+
+            <!-- 9. Flash Sale -->
+            <a href="modules/flashsale.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-red-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-red-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-red-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-red-600 to-rose-700 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="zap" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-red-700 transition-colors">
+                        Flash Sale</h3>
+                </div>
+            </a>
+
+            <!-- 10. Loyalty -->
+            <a href="modules/loyalty.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-yellow-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-yellow-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-yellow-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-yellow-500 to-amber-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="crown" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-yellow-700 transition-colors">
+                        Loyalty</h3>
+                </div>
+            </a>
+
+            <!-- 11. Combo -->
+            <a href="modules/combo.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-orange-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-orange-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-orange-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-orange-500 to-red-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="layers" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-orange-600 transition-colors">
+                        Combo</h3>
+                </div>
+            </a>
+
+            <!-- 12. RFM -->
+            <a href="modules/rfm.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-violet-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-violet-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-violet-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-violet-500 to-purple-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="area-chart" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-violet-700 transition-colors">
+                        RFM</h3>
+                </div>
+            </a>
+
+            <!-- 13. WorkChatV2 -->
+            <a href="modules/workchat.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-pink-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-pink-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-pink-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-pink-500 to-rose-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="messages-square" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-pink-600 transition-colors">
+                        WorkChatV2</h3>
+                </div>
+            </a>
+
+            <!-- 14. Tổng đài - SMS - ZNS -->
+            <a href="modules/callcenter.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-green-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-green-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-green-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-green-600 to-emerald-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="headphones" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-green-700 transition-colors">
+                        Tổng đài</h3>
+                </div>
+            </a>
+
+            <!-- 15. Feedback -->
+            <a href="modules/feedback.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-yellow-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-yellow-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-yellow-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-yellow-600 to-orange-500 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="message-circle" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-yellow-700 transition-colors">
+                        Feedback</h3>
+                </div>
+            </a>
+
+            <!-- 16. Booking -->
+            <a href="modules/booking.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-blue-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-blue-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-blue-600 to-indigo-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="calendar-check" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-blue-700 transition-colors">
+                        Booking</h3>
+                </div>
+            </a>
+
+            <!-- 17. Khóa học - Sự kiện -->
+            <a href="modules/events.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-orange-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-orange-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-orange-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-orange-600 to-red-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="calendar-days" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-orange-700 transition-colors">
+                        Sự kiện</h3>
+                </div>
+            </a>
+
+            <!-- 18. Bảo hành -->
+            <a href="modules/warranty.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-teal-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-teal-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-teal-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-teal-500 to-cyan-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="shield" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-teal-700 transition-colors">
+                        Bảo hành</h3>
+                </div>
+            </a>
+
+            <!-- 19. Hóa đơn điện tử -->
+            <a href="modules/einvoice.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-blue-500 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-blue-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-500 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-blue-500 to-blue-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="file-text" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-blue-600 transition-colors">
+                        Hóa đơn</h3>
+                </div>
+            </a>
+
+            <!-- 20. Công nợ -->
+            <a href="modules/debt.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-indigo-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-indigo-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-indigo-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-indigo-600 to-purple-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="receipt" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-indigo-700 transition-colors">
+                        Công nợ</h3>
+                </div>
+            </a>
+
+            <!-- 21. Cổng thanh toán -->
+            <a href="modules/payment.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-emerald-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-emerald-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-emerald-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-emerald-600 to-teal-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="credit-card" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3
+                        class="font-semibold text-slate-800 text-sm truncate group-hover:text-emerald-700 transition-colors">
+                        Thanh toán</h3>
+                </div>
+            </a>
+
+            <!-- 22. Thẻ trả trước -->
+            <a href="modules/prepaid.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-emerald-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-emerald-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-emerald-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-emerald-600 to-teal-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="banknote" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3
+                        class="font-semibold text-slate-800 text-sm truncate group-hover:text-emerald-700 transition-colors">
+                        Thẻ trả trước</h3>
+                </div>
+            </a>
+
+            <!-- 23. Mini App Builder -->
+            <a href="modules/miniapp.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-blue-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-blue-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-blue-600 to-indigo-600 group-hover:text-white transition-colors duration-300">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo"
+                        class="w-6 h-6">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-blue-700 transition-colors">
+                        Mini App</h3>
+                </div>
+            </a>
+
+            <!-- 24. Webview -->
+            <a href="modules/webview.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-purple-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-purple-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-purple-600 flex-shrink-0 z-10 mr-2 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="globe" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-purple-700 transition-colors">
+                        Webview</h3>
+                </div>
+            </a>
+
+            <!-- 25. Cộng tác viên -->
+            <a href="modules/agents.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-cyan-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-cyan-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-cyan-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-cyan-600 to-blue-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="handshake" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-cyan-700 transition-colors">
+                        Cộng tác viên</h3>
+                </div>
+            </a>
+
+            <!-- 26. Tích hợp -->
+            <a href="modules/integration.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-cyan-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-cyan-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-cyan-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-cyan-600 to-blue-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="plug" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-cyan-700 transition-colors">
+                        Tích hợp</h3>
+                </div>
+            </a>
+
+            <!-- 27. Vận chuyển nội bộ -->
+            <a href="modules/shipping.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-amber-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-amber-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-amber-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-amber-600 to-orange-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="truck" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-amber-700 transition-colors">
+                        Vận chuyển</h3>
+                </div>
+            </a>
+
+            <!-- 28. Thiết kế ảnh -->
+            <a href="modules/imagedesign.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-rose-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-rose-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-rose-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-rose-600 to-pink-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="palette" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-rose-700 transition-colors">
+                        Thiết kế ảnh</h3>
+                </div>
+            </a>
+
+            <!-- 29. Thiết kế Email -->
+            <a href="modules/emaildesign.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-fuchsia-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-fuchsia-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-fuchsia-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-fuchsia-600 to-purple-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="mail-open" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3
+                        class="font-semibold text-slate-800 text-sm truncate group-hover:text-fuchsia-700 transition-colors">
+                        Thiết kế Email</h3>
+                </div>
+            </a>
+
+            <!-- 30. Mẫu in -->
+            <a href="modules/templates.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-gray-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-gray-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-gray-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-gray-600 to-slate-700 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="printer" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-gray-700 transition-colors">
+                        Mẫu in</h3>
+                </div>
+            </a>
+
+            <!-- 31. Lưu trữ -->
+            <a href="modules/storage.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-stone-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-stone-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-stone-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-stone-600 to-gray-700 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="hard-drive" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-stone-700 transition-colors">
+                        Lưu trữ</h3>
+                </div>
+            </a>
+
+            <!-- 32. Cài đặt -->
+            <a href="modules/settings.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-slate-200/300 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-slate-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-slate-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-slate-600 to-gray-700 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="settings" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-slate-700 transition-colors">
+                        Cài đặt</h3>
+                </div>
+            </a>
+
+            <!-- 33. Bất động sản -->
+            <a href="modules/realestate.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-sky-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-sky-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-sky-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-sky-600 to-blue-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="building" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-sky-700 transition-colors">Bất
+                        động sản</h3>
+                </div>
+            </a>
+
+            <!-- 34. Zalo OA -->
+            <a href="modules/zalo-oa.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-blue-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-blue-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-blue-600 to-indigo-600 group-hover:text-white transition-colors duration-300">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo"
+                        class="w-6 h-6">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-blue-700 transition-colors">
+                        Zalo OA</h3>
+                </div>
+            </a>
+
+            <!-- 35. Thiết kế Website -->
+            <a href="modules/web-design.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-indigo-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-indigo-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-indigo-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-indigo-600 to-purple-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="code" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-indigo-700 transition-colors">
+                        Thiết kế Website</h3>
+                </div>
+            </a>
+
+            <!-- 36. Bảng dữ liệu -->
+            <a href="modules/datatables.html"
+                class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-2 h-[85px] hover:border-slate-600 relative overflow-hidden transition-all">
+                <div class="absolute bottom-0 right-0 w-12 h-12 bg-slate-500/5 rounded-tl-full z-0 pointer-events-none"></div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-slate-600 flex-shrink-0 z-10 mr-2 group-hover:bg-gradient-to-br from-slate-600 to-gray-700 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="table" class="text-2xl"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-slate-800 text-sm truncate group-hover:text-slate-700 transition-colors">
+                        Bảng dữ liệu</h3>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="mt-auto py-6 text-center text-slate-400 text-xs">
+        <p>&copy; 2026 Appvn. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Khởi tạo Lucide Icons
+        lucide.createIcons();
+
+        // Apply gradient cho icon stroke sau khi render
+        setTimeout(() => {
+            // Mapping class to gradient ID
+            const gradientMap = {
+                'icon-gradient-blue': 'gradient-blue',
+                'icon-gradient-amber': 'gradient-amber',
+                'icon-gradient-emerald': 'gradient-emerald',
+                'icon-gradient-gray': 'gradient-gray',
+                'icon-gradient-indigo': 'gradient-indigo',
+                'icon-gradient-rose': 'gradient-rose',
+                'icon-gradient-purple': 'gradient-purple',
+                'icon-gradient-red': 'gradient-red',
+                'icon-gradient-yellow': 'gradient-yellow',
+                'icon-gradient-orange': 'gradient-orange',
+                'icon-gradient-violet': 'gradient-violet',
+                'icon-gradient-pink': 'gradient-pink',
+                'icon-gradient-green': 'gradient-green',
+                'icon-gradient-teal': 'gradient-teal',
+                'icon-gradient-cyan': 'gradient-cyan',
+                'icon-gradient-fuchsia': 'gradient-fuchsia',
+                'icon-gradient-sky': 'gradient-sky',
+                'icon-gradient-slate': 'gradient-slate'
+            };
+
+            // Tìm tất cả icon elements
+            Object.keys(gradientMap).forEach(className => {
+                const icons = document.querySelectorAll(`svg.${className}`);
+                icons.forEach(icon => {
+                    // Set stroke attribute trực tiếp vào SVG
+                    icon.setAttribute('stroke', `url(#${gradientMap[className]})`);
+                    icon.style.strokeWidth = '2.0';
+                });
+            });
+        }, 100);
+    </script>
+</body>
+
+</html>

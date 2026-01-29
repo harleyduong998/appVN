@@ -42,31 +42,41 @@
     <div class="bg-pattern"></div>
 
     <!-- Header (Deep Blue) -->
-    <header
-        class="h-16 bg-[#172B85] text-white px-6 flex items-center justify-between shadow-md z-50 fixed w-full top-0">
+    <header style="background: linear-gradient(135deg, #1B3DA1 0%, #0F256E 100%);"
+        class=" h-16 text-white px-6 flex items-center justify-between shadow-lg z-50 fixed w-full top-0">
         <!-- Left Section -->
         <div class="flex items-center gap-8">
             <!-- Logo -->
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-white rounded flex items-center justify-center text-[#172B85] font-bold text-lg">
-                    <i class="fa-solid fa-a"></i>
+                <div onclick="window.location.href='index.html'"
+                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-md cursor-pointer">
+                    <img src="logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
                 </div>
                 <span class="text-xl font-bold tracking-tight">App.vn</span>
             </div>
 
+            
             <!-- Version Switcher -->
-            <div class="relative">
+            <div class="flex items-center gap-2">
+                <!-- Prev Button -->
+                <a href="index_v7.html"
+                    class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
+                    title="Phiên bản trước">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </a>
+
+<div class="relative">
                 <button
                     onclick="document.getElementById('versionDropdown').classList.toggle('hidden'); event.stopPropagation();"
-                    class="flex items-center gap-2 text-white/90 hover:text-white font-medium bg-white/10 px-3 py-1.5 rounded-md transition-all border border-white/10 hover:bg-white/20 text-sm cursor-pointer">
-                    <span>Phiên bản giao diện</span>
+                    class="flex items-center gap-2 text-white/90 hover:text-white font-medium bg-white/10 px-3 py-1.5 rounded-lg transition-all border border-white/10 hover:bg-white/20 cursor-pointer h-9">
+                    <span class="text-sm">Phiên bản giao diện</span>
                     <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
                 </button>
                 <!-- Dropdown Menu -->
-                <div id="versionDropdown"
+                                <div id="versionDropdown"
                     class="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
                     onclick="event.stopPropagation()">
-                    <div class="p-1">
+                    <div class="p-1 max-h-80 overflow-y-auto">
                         <a href="index.html"
                             class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
                             <div
@@ -123,6 +133,51 @@
                                 V8</div>
                             <div class="text-sm font-medium text-slate-700">White & Shadow</div>
                         </a>
+                        <a href="index_v9.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-[#F7F8F9] text-slate-800 flex items-center justify-center font-bold text-xs ring-1 ring-slate-200 shadow-sm">
+                                V9</div>
+                            <div class="text-sm font-medium text-slate-700">Colored Box</div>
+                        </a>
+                        <a href="index_v10.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-white text-amber-500 flex items-center justify-center font-bold text-xs ring-1 ring-slate-200 shadow-sm">
+                                V10</div>
+                            <div class="text-sm font-medium text-slate-700">Icon Box</div>
+                        </a>
+                        <a href="index_v11.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-gradient-to-br from-emerald-500 to-teal-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                V11</div>
+                            <div class="text-sm font-medium text-slate-700">Icon Box V2</div>
+                        </a>
+                        <a href="index_v12.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-gradient-to-br from-teal-500 to-cyan-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                V12</div>
+                            <div class="text-sm font-medium text-slate-700">Refined</div>
+                        </a>
+                        <a href="index_v13.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-gradient-to-br from-indigo-500 to-violet-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                V13</div>
+                            <div class="text-sm font-medium text-slate-700">Gradient Icon</div>
+                        </a>
+                        <a href="index_v14.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded bg-gradient-to-br from-rose-500 to-pink-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                V14</div>
+                            <div class="text-sm font-medium text-slate-700">Quarter Circle</div>
+                        </a>
+
+
+
                     </div>
                 </div>
             </div>
@@ -136,6 +191,15 @@
                 });
             </script>
         </div>
+
+                <!-- Next Button -->
+                <a href="index_v9.html"
+                    class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
+                    title="Phiên bản tiếp theo">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </a>
+            </div>
+
 
         <!-- Right Side -->
         <div class="flex items-center gap-5">
