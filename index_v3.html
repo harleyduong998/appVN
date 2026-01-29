@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard V3 - Appvn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1), 0 8px 8px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Wave Pattern Animation */
+        @keyframes waveMove {
+            0% {
+                transform: translateX(0) translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateX(5px) translateY(-5px) scale(1.02);
+            }
+
+            100% {
+                transform: translateX(0) translateY(0) scale(1);
+            }
+        }
+
+        .card-hover:hover .wave-pattern {
+            animation: waveMove 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <!-- Header (Deep Blue) -->
+    <header
+        class="h-16 bg-[#172B85] text-white px-6 flex items-center justify-between shadow-lg z-50 fixed w-full top-0">
+        <!-- Left Section -->
+        <div class="flex items-center gap-8">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-9 h-9 bg-white rounded-lg flex items-center justify-center text-[#172B85] font-bold text-lg">
+                    <i class="fa-solid fa-a"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight">App.vn</span>
+            </div>
+
+            <!-- Version Switcher -->
+            <div class="relative">
+                <button
+                    onclick="document.getElementById('versionDropdown').classList.toggle('hidden'); event.stopPropagation();"
+                    class="flex items-center gap-2 text-white/90 hover:text-white font-medium bg-white/10 px-3 py-1.5 rounded-lg transition-all border border-white/10 hover:bg-white/20 cursor-pointer">
+                    <span class="text-sm">Phiên bản giao diện</span>
+                    <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="versionDropdown"
+                    class="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+                    onclick="event.stopPropagation()">
+                    <div class="p-1">
+                        <a href="index.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs group-hover/item:bg-blue-600 group-hover/item:text-white transition-colors">
+                                V1</div>
+                            <div>
+                                <span class="font-semibold text-slate-800 text-sm block">Dashboard V1</span>
+                                <span class="text-xs text-slate-500">Original Design</span>
+                            </div>
+                        </a>
+                        <a href="index_v2.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs group-hover/item:bg-[#172B85] group-hover/item:text-white transition-colors">
+                                V2</div>
+                            <div>
+                                <span class="font-semibold text-slate-800 text-sm block">Dashboard V2</span>
+                                <span class="text-xs text-slate-500">Clean White</span>
+                            </div>
+                        </a>
+                        <a href="index_v3.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs group-hover/item:bg-amber-600 group-hover/item:text-white transition-colors">
+                                V3</div>
+                            <div>
+                                <span class="font-semibold text-slate-800 text-sm block">Dashboard V3</span>
+                                <span class="text-xs text-slate-500">Colorful Waves</span>
+                            </div>
+                        </a>
+                        <a href="index_v4.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xs group-hover/item:bg-purple-600 group-hover/item:text-white transition-colors">
+                                V4</div>
+                            <div>
+                                <span class="font-semibold text-slate-800 text-sm block">Dashboard V4</span>
+                                <span class="text-xs text-slate-500">Network + Boxed Icons</span>
+                            </div>
+                        </a>
+                        <a href="index_v5.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs group-hover/item:bg-emerald-600 group-hover/item:text-white transition-colors">
+                                V5</div>
+                            <div>
+                                <span class="font-semibold text-slate-800 text-sm block">Dashboard V5</span>
+                                <span class="text-xs text-slate-500">Minimalist</span>
+                            </div>
+                        </a>
+                        <a href="index_v6.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-slate-800 text-white flex items-center justify-center font-bold text-xs group-hover/item:bg-slate-700 transition-colors">
+                                V6</div>
+                            <div>
+                                <span class="font-semibold text-slate-800 text-sm block">Dashboard V6</span>
+                                <span class="text-xs text-slate-500">Professional</span>
+                            </div>
+                        </a>
+                        <a href="index_v7.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 group/item transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-cyan-700 text-white flex items-center justify-center font-bold text-xs group-hover/item:bg-cyan-600 transition-colors">
+                                V7</div>
+                            <div>
+                                <span class="font-semibold text-slate-800 text-sm block">Dashboard V7</span>
+                                <span class="text-xs text-slate-500">Compact</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('click', function (event) {
+                    var dropdown = document.getElementById('versionDropdown');
+                    if (dropdown && !dropdown.classList.contains('hidden')) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            </script>
+        </div>
+
+        <!-- Right Side -->
+        <div class="flex items-center gap-5">
+            <button class="relative hover:opacity-80 transition">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span
+                    class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#172B85]"></span>
+            </button>
+            <div class="flex items-center gap-3 pl-4 border-l border-white/20">
+                <div class="text-right hidden sm:block leading-tight">
+                    <div class="text-sm font-semibold">Harley</div>
+                    <div class="text-[11px] text-blue-200 opacity-80">Owner</div>
+                </div>
+                <div
+                    class="w-9 h-9 rounded-full bg-blue-400 border border-white/20 flex items-center justify-center shadow-sm text-white font-bold text-xs">
+                    HA
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 pt-28 pb-12 px-6 max-w-[1400px] mx-auto w-full">
+
+        <!-- Welcome Section -->
+        <div class="mb-10">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">Xin chào, Harley!</h1>
+            <p class="text-slate-500">Chào mừng bạn quay trở lại. Hãy chọn một module để bắt đầu làm việc</p>
+        </div>
+
+        <!-- Modules Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+            <!-- 1. Quản lý bán hàng (Blue Theme) -->
+            <a href="modules/sales.html"
+                class="bg-blue-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(37,99,235,0.1)] border border-blue-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Increased Opacity) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#2563EB" stroke-width="1.2" d="M100,200 C150,150 180,180 200,100" />
+                        <path fill="none" stroke="#2563EB" stroke-width="1.2" d="M80,200 C130,140 170,170 200,80" />
+                        <path fill="none" stroke="#2563EB" stroke-width="1.2" d="M60,200 C110,130 160,160 200,60" />
+                        <path fill="none" stroke="#2563EB" stroke-width="1.2" d="M40,200 C90,120 150,150 200,40" />
+                        <path fill="none" stroke="#2563EB" stroke-width="1.2" d="M20,200 C70,110 140,140 200,20" />
+                    </svg>
+                </div>
+
+                <!-- Icon Box -->
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-blue-100 shadow-[0_8px_20px_-4px_rgba(37,99,235,0.2)] flex items-center justify-center text-[#2563EB] flex-shrink-0 z-10 mr-5 group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-cart-shopping text-xl bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+
+                <!-- Content -->
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-[#2563EB] transition-colors">
+                        Quản lý bán hàng</h3>
+                    <div class="flex items-center text-xs font-semibold text-[#2563EB]">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 2. Sản phẩm (Amber Theme) -->
+            <a href="modules/product.html"
+                class="bg-amber-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(245,158,11,0.1)] border border-amber-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Concentric Arcs) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#F59E0B" stroke-width="1.2"
+                            d="M200,200 L200,0 M200,180 A180,180 0 0,0 20,200 M200,140 A140,140 0 0,0 60,200 M200,100 A100,100 0 0,0 100,200 M200,60 A60,60 0 0,0 140,200 M200,20 A20,20 0 0,0 180,200" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-amber-100 shadow-[0_8px_20px_-4px_rgba(245,158,11,0.2)] flex items-center justify-center text-amber-500 flex-shrink-0 z-10 mr-5 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-box-open text-xl bg-gradient-to-br from-amber-500 to-orange-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-amber-500 transition-colors">Sản
+                        phẩm</h3>
+                    <div class="flex items-center text-xs font-semibold text-amber-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 3. Khách hàng (Emerald Theme) -->
+            <a href="modules/customer.html"
+                class="bg-emerald-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(16,185,129,0.1)] border border-emerald-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Intersecting Arcs) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <circle cx="150" cy="150" r="100" fill="none" stroke="#10B981" stroke-width="1" opacity="0.6" />
+                        <circle cx="200" cy="200" r="80" fill="none" stroke="#10B981" stroke-width="1.2" />
+                        <circle cx="200" cy="100" r="100" fill="none" stroke="#10B981" stroke-width="1" opacity="0.5" />
+                        <circle cx="100" cy="200" r="80" fill="none" stroke="#10B981" stroke-width="1" opacity="0.5" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-emerald-100 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.2)] flex items-center justify-center text-emerald-600 flex-shrink-0 z-10 mr-5 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-user-group text-xl bg-gradient-to-br from-emerald-500 to-teal-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-emerald-600 transition-colors">
+                        Khách hàng</h3>
+                    <div class="flex items-center text-xs font-semibold text-emerald-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 4. Kho hàng (Slate/Gray Theme) -->
+            <a href="modules/warehouse.html"
+                class="bg-gray-100/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(75,85,99,0.1)] border border-gray-200 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Stacked Layers) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#4B5563" stroke-width="1.2"
+                            d="M0,180 L200,180 M20,160 L200,160 M40,140 L200,140 M60,120 L200,120 M80,100 L200,100" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-gray-200 shadow-[0_8px_20px_-4px_rgba(75,85,99,0.2)] flex items-center justify-center text-gray-600 flex-shrink-0 z-10 mr-5 group-hover:bg-gray-600 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-warehouse text-xl bg-gradient-to-br from-gray-600 to-slate-700 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-gray-600 transition-colors">Kho
+                        hàng</h3>
+                    <div class="flex items-center text-xs font-semibold text-gray-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 5. Báo cáo (Indigo Theme) -->
+            <a href="modules/report.html"
+                class="bg-indigo-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(79,70,229,0.1)] border border-indigo-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Rising Growth) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#4F46E5" stroke-width="1.2" d="M20,200 Q100,180 200,50" />
+                        <path fill="none" stroke="#4F46E5" stroke-width="1.2" d="M40,200 Q110,190 200,80" />
+                        <path fill="none" stroke="#4F46E5" stroke-width="1.2" d="M60,200 Q120,200 200,110" />
+                        <path fill="none" stroke="#4F46E5" stroke-width="1.2" d="M0,200 L200,200" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-indigo-100 shadow-[0_8px_20px_-4px_rgba(79,70,229,0.2)] flex items-center justify-center text-indigo-600 flex-shrink-0 z-10 mr-5 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-chart-simple text-xl bg-gradient-to-br from-indigo-500 to-violet-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                        Báo cáo</h3>
+                    <div class="flex items-center text-xs font-semibold text-indigo-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 6. CRM (Violet Theme) -->
+            <a href="modules/crm.html"
+                class="bg-violet-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(124,58,237,0.1)] border border-violet-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Network Nodes) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#7C3AED" stroke-width="1.2" d="M50,150 Q125,100 200,150 T350,150"
+                            opacity="0.5" />
+                        <path fill="none" stroke="#7C3AED" stroke-width="1.2" d="M0,200 Q100,100 200,200" />
+                        <circle cx="100" cy="150" r="4" fill="#7C3AED" opacity="0.6" />
+                        <circle cx="150" cy="120" r="3" fill="#7C3AED" opacity="0.6" />
+                        <circle cx="200" cy="180" r="5" fill="#7C3AED" opacity="0.6" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-violet-100 shadow-[0_8px_20px_-4px_rgba(124,58,237,0.2)] flex items-center justify-center text-violet-600 flex-shrink-0 z-10 mr-5 group-hover:bg-violet-600 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-chart-pie text-xl bg-gradient-to-br from-violet-600 to-purple-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-violet-600 transition-colors">
+                        CRM</h3>
+                    <div class="flex items-center text-xs font-semibold text-violet-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 7. Automation (Purple Theme) -->
+            <a href="modules/automation.html"
+                class="bg-purple-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(147,51,234,0.1)] border border-purple-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Sine Waves) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#9333EA" stroke-width="1.2"
+                            d="M0,180 Q25,160 50,180 T100,180 T150,180 T200,180" />
+                        <path fill="none" stroke="#9333EA" stroke-width="1.2"
+                            d="M0,150 Q25,130 50,150 T100,150 T150,150 T200,150" />
+                        <path fill="none" stroke="#9333EA" stroke-width="1.2"
+                            d="M0,120 Q25,100 50,120 T100,120 T150,120 T200,120" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-purple-100 shadow-[0_8px_20px_-4px_rgba(147,51,234,0.2)] flex items-center justify-center text-purple-600 flex-shrink-0 z-10 mr-5 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-robot text-xl bg-gradient-to-br from-purple-600 to-fuchsia-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-purple-600 transition-colors">
+                        Automation</h3>
+                    <div class="flex items-center text-xs font-semibold text-purple-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 8. Ưu đãi (Pink Theme) -->
+            <a href="modules/promotions.html"
+                class="bg-pink-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(236,72,153,0.1)] border border-pink-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Burst) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <line x1="200" y1="200" x2="150" y2="150" stroke="#EC4899" stroke-width="1.2" />
+                        <line x1="200" y1="200" x2="120" y2="180" stroke="#EC4899" stroke-width="1.2" />
+                        <line x1="200" y1="200" x2="180" y2="120" stroke="#EC4899" stroke-width="1.2" />
+                        <line x1="200" y1="200" x2="100" y2="200" stroke="#EC4899" stroke-width="1.2" />
+                        <line x1="200" y1="200" x2="200" y2="100" stroke="#EC4899" stroke-width="1.2" />
+                        <circle cx="200" cy="200" r="50" fill="none" stroke="#EC4899" stroke-width="1" opacity="0.5" />
+                        <circle cx="200" cy="200" r="90" fill="none" stroke="#EC4899" stroke-width="0.8"
+                            opacity="0.3" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-pink-100 shadow-[0_8px_20px_-4px_rgba(236,72,153,0.2)] flex items-center justify-center text-pink-500 flex-shrink-0 z-10 mr-5 group-hover:bg-pink-500 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-ticket text-xl bg-gradient-to-br from-pink-500 to-rose-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-pink-500 transition-colors">Ưu
+                        đãi</h3>
+                    <div class="flex items-center text-xs font-semibold text-pink-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 9. Flash Sale (Red Theme) -->
+            <a href="modules/flashsale.html"
+                class="bg-red-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(239,68,68,0.1)] border border-red-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Zigzag High Energy) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#EF4444" stroke-width="1.5"
+                            d="M50,200 L80,170 L110,200 L140,170 L170,200 L200,170" />
+                        <path fill="none" stroke="#EF4444" stroke-width="1.5"
+                            d="M70,200 L100,170 L130,200 L160,170 L190,200 L220,170" opacity="0.5" />
+                        <path fill="none" stroke="#EF4444" stroke-width="1.5"
+                            d="M90,200 L120,170 L150,200 L180,170 L210,200 L240,170" opacity="0.3" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-red-100 shadow-[0_8px_20px_-4px_rgba(239,68,68,0.2)] flex items-center justify-center text-red-600 flex-shrink-0 z-10 mr-5 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-bolt text-xl bg-gradient-to-br from-red-500 to-orange-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-red-600 transition-colors">Flash
+                        Sale</h3>
+                    <div class="flex items-center text-xs font-semibold text-red-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 10. Loyalty (Amber-600 Theme) -->
+            <a href="modules/loyalty.html"
+                class="bg-amber-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(217,119,6,0.1)] border border-amber-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Elegant Ribbon) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#D97706" stroke-width="1.2" d="M0,150 C50,100 150,200 200,100" />
+                        <path fill="none" stroke="#D97706" stroke-width="1.2" d="M0,180 C50,130 150,230 200,130"
+                            opacity="0.7" />
+                        <path fill="none" stroke="#D97706" stroke-width="1.2" d="M0,210 C50,160 150,260 200,160"
+                            opacity="0.4" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-amber-100 shadow-[0_8px_20px_-4px_rgba(217,119,6,0.2)] flex items-center justify-center text-amber-600 flex-shrink-0 z-10 mr-5 group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-crown text-xl bg-gradient-to-br from-amber-600 to-yellow-500 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-amber-600 transition-colors">
+                        Loyalty</h3>
+                    <div class="flex items-center text-xs font-semibold text-amber-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 11. Combo (Orange Theme) -->
+            <a href="modules/combo.html"
+                class="bg-orange-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(234,88,12,0.1)] border border-orange-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Twisted Helix) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#EA580C" stroke-width="1.2"
+                            d="M50,200 C50,150 150,150 150,100 S50,50 50,0" />
+                        <path fill="none" stroke="#EA580C" stroke-width="1.2"
+                            d="M150,200 C150,150 50,150 50,100 S150,50 150,0" opacity="0.6" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-orange-100 shadow-[0_8px_20px_-4px_rgba(234,88,12,0.2)] flex items-center justify-center text-orange-600 flex-shrink-0 z-10 mr-5 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-layer-group text-xl bg-gradient-to-br from-orange-500 to-red-600 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-orange-600 transition-colors">
+                        Combo</h3>
+                    <div class="flex items-center text-xs font-semibold text-orange-600">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 12. RFM (Violet-500 Theme) -->
+            <a href="modules/rfm.html"
+                class="bg-violet-50/80 rounded-[24px] p-6 shadow-[0_2px_12px_-2px_rgba(139,92,246,0.1)] border border-violet-100 card-hover group relative overflow-hidden flex items-center h-[120px]">
+                <!-- Wave BG (Radar Target) -->
+                <div
+                    class="absolute right-0 bottom-0 w-48 h-full opacity-[0.25] pointer-events-none group-hover:opacity-[0.35] transition-opacity wave-pattern">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                        class="w-full h-full">
+                        <path fill="none" stroke="#8B5CF6" stroke-width="1.2" d="M100,200 A100,100 0 0,0 200,100" />
+                        <path fill="none" stroke="#8B5CF6" stroke-width="1.2" d="M120,200 A80,80 0 0,0 200,120"
+                            opacity="0.8" />
+                        <path fill="none" stroke="#8B5CF6" stroke-width="1.2" d="M140,200 A60,60 0 0,0 200,140"
+                            opacity="0.6" />
+                        <path fill="none" stroke="#8B5CF6" stroke-width="1.2" d="M160,200 A40,40 0 0,0 200,160"
+                            opacity="0.4" />
+                        <line x1="200" y1="200" x2="100" y2="100" stroke="#8B5CF6" stroke-width="1" opacity="0.3" />
+                    </svg>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-2xl bg-white border border-violet-100 shadow-[0_8px_20px_-4px_rgba(139,92,246,0.2)] flex items-center justify-center text-violet-500 flex-shrink-0 z-10 mr-5 group-hover:bg-violet-500 group-hover:text-white transition-colors duration-300">
+                    <i
+                        class="fa-solid fa-chart-area text-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 bg-clip-text text-transparent group-hover:text-white group-hover:bg-none"></i>
+                </div>
+                <div class="relative z-10 flex-1">
+                    <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-violet-500 transition-colors">
+                        RFM</h3>
+                    <div class="flex items-center text-xs font-semibold text-violet-500">
+                        Truy cập <i
+                            class="fa-solid fa-arrow-right ml-1 text-[10px] transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="mt-auto py-6 text-center text-slate-400 text-xs">
+        <p>&copy; 2026 Appvn. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>
