@@ -4,7 +4,7 @@ import os
 def update_nav_buttons():
     # Define the orderly sequence of versions as they appear in the V17 dropdown
     version_order = [
-         'index_v1.html',  # V1
+         'index.html',     # V1
          'index_v2.html',  # V2
          'index_v3.html',  # V3
          'index_v4.html',  # V4
@@ -13,7 +13,7 @@ def update_nav_buttons():
          'index_v7.html',  # V7
          'index_v8.html',  # V8
          'index_v9.html',  # V9
-         'index_v10.html', # V10 (was index.html)
+         'index_v10.html', # V10
          'index_v11.html', # V11
          'index_v12.html', # V12
          'index_v13.html', # V13
@@ -76,12 +76,7 @@ def update_nav_buttons():
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
             
-        # If current file is index_v1.html, also update index.html
-        if current_file == 'index_v1.html':
-            index_path = os.path.join(directory, 'index.html')
-            if os.path.exists(index_path):
-                 with open(index_path, 'w', encoding='utf-8') as f:
-                    f.write(content) # Same content as v1
+
 
             
     print("Navigation update complete.")

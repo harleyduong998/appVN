@@ -99,16 +99,7 @@ def standardize_dropdowns():
              pattern = re.compile(r'<a\s+href="' + re.escape(filename) + r'"[^>]*>', re.IGNORECASE)
              current_html = pattern.sub(hl_replacer, current_html)
         else:
-            # Special case: index.html should highlight index_v1.html (V1)
-            if filename == 'index.html':
-                 search_href_v1 = 'href="index_v1.html"'
-                 if search_href_v1 in current_html:
-                      pattern_v1 = re.compile(r'<a\s+href="index_v1.html"[^>]*>', re.IGNORECASE)
-                      current_html = pattern_v1.sub(hl_replacer, current_html)
-                 else:
-                      print("Warning: V1 link not found for index.html highlighting")
-            else:
-                print(f"Warning: Self-link {filename} not found in dropdown list")
+            print(f"Warning: Self-link {filename} not found in dropdown list")
 
         # Reconstruct Content
         new_content = content[:f_opening_tag_end+1] + current_html + content[f_dropdown_end_idx:]
