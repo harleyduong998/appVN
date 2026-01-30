@@ -20,7 +20,9 @@ def update_nav_buttons():
          'index_v14.html', # V14
          'index_v15.html', # V15
          'index_v16.html', # V16
-         'index_v17.html'  # V17
+         'index_v17.html', # V17
+         'index_v18.html', # V18
+         'index_v19.html'  # V19
     ]
     
     # We will assume circular navigation

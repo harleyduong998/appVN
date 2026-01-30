@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard V20 - Colored Cards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F8F9;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease-out;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #cbd5e1;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .text-fade {
+            white-space: nowrap;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col text-slate-800 relative">
+
+    <!-- Header (Deep Blue) -->
+    <header style="background: linear-gradient(135deg, #1B3DA1 0%, #0F256E 100%);"
+        class=" h-16 text-white px-6 flex items-center justify-between shadow-lg z-50 fixed w-full top-0">
+        <!-- Left Section -->
+        <div class="flex items-center gap-8">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div onclick="window.location.href='index.html'"
+                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-md cursor-pointer">
+                    <img src="logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
+                </div>
+                <span class="text-xl font-bold tracking-tight">App.vn</span>
+            </div>
+
+
+            <!-- Version Switcher -->
+            <div class="flex items-center gap-2">
+                <!-- Prev Button -->
+                <a href="index_v19.html"
+                    class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
+                    title="Phiên bản trước">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </a>
+
+                <div class="relative">
+                    <button
+                        onclick="document.getElementById('versionDropdown').classList.toggle('hidden'); event.stopPropagation();"
+                        class="flex items-center gap-2 text-white/90 hover:text-white font-medium bg-white/10 px-3 py-1.5 rounded-lg transition-all border border-white/10 hover:bg-white/20 cursor-pointer h-9">
+                        <span class="text-sm">Phiên bản giao diện</span>
+                        <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div id="versionDropdown"
+                        class="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+                        onclick="event.stopPropagation()">
+                        <div class="p-1 max-h-80 overflow-y-auto">
+                            <a href="index.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                                <div
+                                    class="w-8 h-8 rounded bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
+                                    V1</div>
+                                <div class="text-sm font-medium text-slate-700">Original</div>
+                            </a>
+                            <a href="index_v2.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                                <div
+                                    class="w-8 h-8 rounded bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">
+                                    V2</div>
+                                <div class="text-sm font-medium text-slate-700">Clean White</div>
+                            </a>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            <a href="index_v10.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                                <div
+                                    class="w-8 h-8 rounded bg-white text-amber-500 flex items-center justify-center font-bold text-xs ring-1 ring-slate-200 shadow-sm">
+                                    V10</div>
+                                <div class="text-sm font-medium text-slate-700">Icon Box</div>
+                            </a>
+                            
+                            
+                            
+                            <a href="index_v14.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                                <div
+                                    class="w-8 h-8 rounded bg-gradient-to-br from-rose-500 to-pink-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                    V14</div>
+                                <div class="text-sm font-medium text-slate-700">Quarter Circle</div>
+                            </a>
+                            <a href="index_v15.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors ">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                                    V15</div>
+                                <div class="text-sm font-medium text-slate-700">MacOS Style</div>
+                            </a>
+                            <a href="index_v16.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-blue-600 flex items-center justify-center font-bold text-xs shadow-sm">
+                                    V16</div>
+                                <div class="text-sm font-medium text-slate-700">V15 Layout + V10 Icon</div>
+                            </a>
+                            
+                            <a href="index_v18.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
+                                    <span
+                                        class="bg-gradient-to-br from-purple-600 to-blue-400 bg-clip-text text-transparent">V18</span>
+                                </div>
+                                <div class="text-sm font-medium text-slate-700">Category Filter</div>
+                            </a>
+                            <a href="index_v19.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
+                                    <span
+                                        class="bg-gradient-to-br from-indigo-600 to-cyan-400 bg-clip-text text-transparent">V19</span>
+                                </div>
+                                <div class="text-sm font-medium text-slate-700">Sibebar Layout</div>
+                            </a>
+
+                            <a href="index_v20.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
+                                    <span
+                                        class="bg-gradient-to-br from-green-500 to-emerald-400 bg-clip-text text-transparent">V20</span>
+                                </div>
+                                <div class="text-sm font-medium text-slate-700">Module Colors</div>
+                            </a>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    document.addEventListener('click', function (event) {
+                        var dropdown = document.getElementById('versionDropdown');
+                        if (dropdown && !dropdown.classList.contains('hidden')) {
+                            dropdown.classList.add('hidden');
+                        }
+                    });
+                </script>
+            </div>
+
+            <!-- Next Button -->
+            <a href="index.html"
+                class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
+                title="Phiên bản tiếp theo">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </a>
+        </div>
+
+        <!-- Search Bar Removed -->
+
+        <!-- Right Side -->
+        <div class="flex items-center gap-5">
+            <button class="relative hover:opacity-80 transition">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span
+                    class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#172B85]"></span>
+            </button>
+            <div class="flex items-center gap-3 pl-4 border-l border-white/20">
+                <div class="text-right hidden sm:block leading-tight">
+                    <div class="text-sm font-semibold">Harley</div>
+                    <div class="text-[11px] text-blue-200 opacity-80">Owner</div>
+                </div>
+                <div
+                    class="w-9 h-9 rounded-full bg-blue-400 border border-white/20 flex items-center justify-center shadow-md text-white font-bold text-xs">
+                    HA
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex flex-1 pt-16 h-screen overflow-hidden">
+
+        <!-- Sidebar (Fixed Width) -->
+        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col h-screen shrink-0 z-20">
+            <!-- 2. Search Section (Fixed at Top of Sidebar) -->
+            <div class="p-4 border-b border-slate-100">
+                <div class="relative group">
+                    <input type="text" id="moduleSearch" placeholder="Tìm kiếm module..."
+                        class="w-full bg-slate-50 text-slate-800 placeholder-slate-400 border border-slate-200 rounded-lg py-2.5 pl-10 pr-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-sm">
+                    <button
+                        class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-blue-500 transition-colors">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- 1. Categories Menu (Vertical List) -->
+            <div class="flex-1 overflow-y-auto no-scrollbar p-3 space-y-1">
+                <button onclick="filterModules('all', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Tất cả</span>
+                </button>
+
+
+                <button onclick="filterModules('sales', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Bán hàng</span>
+                </button>
+                <button onclick="filterModules('contact', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Liên hệ</span>
+                </button>
+                <button onclick="filterModules('marketing', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Marketing</span>
+                </button>
+                <button onclick="filterModules('products', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Hàng hóa & Tồn kho</span>
+                </button>
+                <button onclick="filterModules('content', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Quản lý nội dung</span>
+                </button>
+                <button onclick="filterModules('design', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Công cụ thiết kế</span>
+                </button>
+                <button onclick="filterModules('support', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Ứng dụng hỗ trợ</span>
+                </button>
+                <button onclick="filterModules('report', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Báo cáo - Thống kê</span>
+                </button>
+                <button onclick="filterModules('other', this)"
+                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
+                    <span>Khác</span>
+                </button>
+            </div>
+
+
+
+
+        </aside>
+
+        <!-- Main Content Area (Right Side) -->
+        <main class="flex-1 overflow-y-auto bg-[#F7F8F9] p-6 lg:p-10 scroll-smooth relative w-full">
+
+            <!-- Welcome Section -->
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold text-slate-800 mb-1">Xin chào, Harley! 👋</h1>
+                <p class="text-slate-500">Chọn module để bắt đầu làm việc.</p>
+            </div>
+
+            <!-- Modules Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+
+                <!-- 1. Quản lý bán hàng -->
+                <a href="modules/sales.html" data-categories="recent sales"
+                    class="module-card bg-blue-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-blue-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-500 flex-shrink-0 z-10  group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-cart-shopping text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-blue-700 transition-colors">
+                            Bán hàng</h3>
+                    </div>
+                </a>
+
+                <!-- 2. Sản phẩm -->
+                <a href="modules/product.html" data-categories="products"
+                    class="module-card bg-amber-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-amber-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-amber-500 flex-shrink-0 z-10  group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-box-open text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-amber-600 transition-colors">
+                            Sản phẩm</h3>
+                    </div>
+                </a>
+
+                <!-- 3. Khách hàng -->
+                <a href="modules/customer.html" data-categories="recent contact"
+                    class="module-card bg-emerald-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-emerald-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-emerald-500 flex-shrink-0 z-10  group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-user-group text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-emerald-700 transition-colors">
+                            Khách hàng</h3>
+                    </div>
+                </a>
+
+                <!-- 4. Kho hàng -->
+                <!-- 4. Kho hàng -->
+                <a href="modules/warehouse.html" data-categories="recent products"
+                    class="module-card bg-orange-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-orange-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-orange-500 flex-shrink-0 z-10  group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-warehouse text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-orange-700 transition-colors">
+                            Kho hàng</h3>
+                    </div>
+                </a>
+
+                <!-- 5. Báo cáo -->
+                <a href="modules/report.html" data-categories="recent report"
+                    class="module-card bg-indigo-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-indigo-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-indigo-500 flex-shrink-0 z-10  group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-chart-simple text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-indigo-700 transition-colors">
+                            Báo cáo</h3>
+                    </div>
+                </a>
+
+                <!-- 6. CRM -->
+                <a href="modules/crm.html" data-categories="contact"
+                    class="module-card bg-rose-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-rose-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-rose-500 flex-shrink-0 z-10  group-hover:bg-rose-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-chart-pie text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-rose-600 transition-colors">
+                            CRM</h3>
+                    </div>
+                </a>
+
+                <!-- 7. Automation -->
+                <a href="modules/automation.html" data-categories="support"
+                    class="module-card bg-purple-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-purple-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-purple-500 flex-shrink-0 z-10  group-hover:bg-purple-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-robot text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-purple-700 transition-colors">
+                            Automation</h3>
+                    </div>
+                </a>
+
+                <!-- 8. Ưu đãi -->
+                <a href="modules/promotions.html" data-categories="sales marketing"
+                    class="module-card bg-red-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-red-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-red-500 flex-shrink-0 z-10  group-hover:bg-red-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-tags text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-red-600 transition-colors">
+                            Ưu
+                            đãi</h3>
+                    </div>
+                </a>
+
+                <!-- 9. Flash Sale -->
+                <a href="modules/flashsale.html" data-categories="sales marketing"
+                    class="module-card bg-red-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-red-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-red-600 flex-shrink-0 z-10  group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-bolt text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-red-700 transition-colors">
+                            Flash Sale</h3>
+                    </div>
+                </a>
+
+                <!-- 10. Loyalty -->
+                <a href="modules/loyalty.html" data-categories="marketing"
+                    class="module-card bg-yellow-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-yellow-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-yellow-500 flex-shrink-0 z-10  group-hover:bg-yellow-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-crown text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-yellow-700 transition-colors">
+                            Loyalty</h3>
+                    </div>
+                </a>
+
+                <!-- 11. Combo -->
+                <a href="modules/combo.html" data-categories="sales"
+                    class="module-card bg-orange-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-orange-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-orange-500 flex-shrink-0 z-10  group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-layer-group text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-orange-600 transition-colors">
+                            Combo</h3>
+                    </div>
+                </a>
+
+                <!-- 12. RFM -->
+                <a href="modules/rfm.html" data-categories="marketing"
+                    class="module-card bg-violet-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-violet-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-violet-500 flex-shrink-0 z-10  group-hover:bg-violet-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-chart-area text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-violet-700 transition-colors">
+                            RFM</h3>
+                    </div>
+                </a>
+
+                <!-- 13. WorkChatV2 -->
+                <a href="modules/workchat.html" data-categories="contact"
+                    class="module-card bg-pink-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-pink-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-pink-500 flex-shrink-0 z-10  group-hover:bg-pink-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-regular fa-comments text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-pink-600 transition-colors">
+                            WorkChatV2</h3>
+                    </div>
+                </a>
+
+                <!-- 14. Tổng đài - SMS - ZNS -->
+                <a href="modules/callcenter.html" data-categories="contact"
+                    class="module-card bg-green-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-green-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-green-600 flex-shrink-0 z-10  group-hover:bg-green-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-headset text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-green-700 transition-colors">
+                            Tổng đài</h3>
+                    </div>
+                </a>
+
+                <!-- 15. Feedback -->
+                <a href="modules/feedback.html" data-categories="contact"
+                    class="module-card bg-yellow-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-yellow-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-yellow-600 flex-shrink-0 z-10  group-hover:bg-yellow-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-comment-dots text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-yellow-700 transition-colors">
+                            Feedback</h3>
+                    </div>
+                </a>
+
+                <!-- 16. Booking -->
+                <a href="modules/booking.html" data-categories="content"
+                    class="module-card bg-blue-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-blue-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-600 flex-shrink-0 z-10  group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-calendar-check text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-blue-700 transition-colors">
+                            Booking</h3>
+                    </div>
+                </a>
+
+                <!-- 17. Khóa học - Sự kiện -->
+                <a href="modules/events.html" data-categories="content"
+                    class="module-card bg-orange-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-orange-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-orange-600 flex-shrink-0 z-10  group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-calendar-days text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-orange-700 transition-colors">
+                            Sự kiện</h3>
+                    </div>
+                </a>
+
+                <!-- 18. Bảo hành -->
+                <a href="modules/warranty.html" data-categories="products"
+                    class="module-card bg-teal-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-teal-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-teal-500 flex-shrink-0 z-10  group-hover:bg-teal-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-shield-halved text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-teal-700 transition-colors">
+                            Bảo hành</h3>
+                    </div>
+                </a>
+
+                <!-- 19. Hóa đơn điện tử -->
+                <a href="modules/einvoice.html" data-categories="sales support"
+                    class="module-card bg-blue-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-blue-500 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-500 flex-shrink-0 z-10  group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-file-invoice text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-blue-600 transition-colors">
+                            Hóa đơn</h3>
+                    </div>
+                </a>
+
+                <!-- 20. Công nợ -->
+                <a href="modules/debt.html" data-categories="sales"
+                    class="module-card bg-indigo-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-indigo-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-indigo-600 flex-shrink-0 z-10  group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-file-invoice-dollar text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-indigo-700 transition-colors">
+                            Công nợ</h3>
+                    </div>
+                </a>
+
+                <!-- 21. Cổng thanh toán -->
+                <a href="modules/payment.html" data-categories="sales"
+                    class="module-card bg-emerald-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-emerald-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-emerald-600 flex-shrink-0 z-10  group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-credit-card text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-emerald-700 transition-colors">
+                            Thanh toán</h3>
+                    </div>
+                </a>
+
+                <!-- 22. Thẻ trả trước -->
+                <a href="modules/prepaid.html" data-categories="sales"
+                    class="module-card bg-emerald-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-emerald-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-emerald-600 flex-shrink-0 z-10  group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-money-check-dollar text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-emerald-700 transition-colors">
+                            Thẻ trả trước</h3>
+                    </div>
+                </a>
+
+                <!-- 23. Mini App Builder -->
+                <a href="modules/miniapp.html" data-categories="content"
+                    class="module-card bg-blue-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-blue-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-600 flex-shrink-0 z-10  group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo"
+                            class="w-6 h-6">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-blue-700 transition-colors">
+                            Mini App</h3>
+                    </div>
+                </a>
+
+                <!-- 24. Webview -->
+                <a href="modules/webview.html" data-categories="content"
+                    class="module-card bg-purple-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-purple-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-purple-600 flex-shrink-0 z-10  group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-globe text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-purple-700 transition-colors">
+                            Webview</h3>
+                    </div>
+                </a>
+
+                <!-- 25. Cộng tác viên -->
+                <a href="modules/agents.html" data-categories="contact"
+                    class="module-card bg-cyan-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-cyan-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-cyan-600 flex-shrink-0 z-10  group-hover:bg-cyan-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-handshake text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-cyan-700 transition-colors">
+                            Cộng tác viên</h3>
+                    </div>
+                </a>
+
+                <!-- 26. Tích hợp -->
+                <a href="modules/integration.html" data-categories="support"
+                    class="module-card bg-cyan-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-cyan-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-cyan-600 flex-shrink-0 z-10  group-hover:bg-cyan-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-plug text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-cyan-700 transition-colors">
+                            Tích hợp</h3>
+                    </div>
+                </a>
+
+                <!-- 27. Vận chuyển nội bộ -->
+                <a href="modules/shipping.html" data-categories="products"
+                    class="module-card bg-amber-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-amber-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-amber-600 flex-shrink-0 z-10  group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-truck text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-amber-700 transition-colors">
+                            Vận chuyển</h3>
+                    </div>
+                </a>
+
+                <!-- 28. Thiết kế ảnh -->
+                <a href="modules/imagedesign.html" data-categories="design"
+                    class="module-card bg-rose-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-rose-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-rose-600 flex-shrink-0 z-10  group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-palette text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-rose-700 transition-colors">
+                            Thiết kế ảnh</h3>
+                    </div>
+                </a>
+
+                <!-- 29. Thiết kế Email -->
+                <a href="modules/emaildesign.html" data-categories="design marketing"
+                    class="module-card bg-fuchsia-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-fuchsia-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-fuchsia-600 flex-shrink-0 z-10  group-hover:bg-fuchsia-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-envelope-open-text text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-fuchsia-700 transition-colors">
+                            Thiết kế Email</h3>
+                    </div>
+                </a>
+
+                <!-- 30. Mẫu in -->
+                <a href="modules/templates.html" data-categories="design"
+                    class="module-card bg-gray-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-gray-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-gray-600 flex-shrink-0 z-10  group-hover:bg-gray-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-print text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-gray-700 transition-colors">
+                            Mẫu in</h3>
+                    </div>
+                </a>
+
+                <!-- 31. Lưu trữ -->
+                <a href="modules/storage.html" data-categories="support"
+                    class="module-card bg-stone-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-stone-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-stone-600 flex-shrink-0 z-10  group-hover:bg-stone-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-hard-drive text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-stone-700 transition-colors">
+                            Lưu trữ</h3>
+                    </div>
+                </a>
+
+                <!-- 32. Cài đặt -->
+                <a href="modules/settings.html" data-categories="support"
+                    class="module-card bg-slate-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-slate-200/300 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-slate-600 flex-shrink-0 z-10  group-hover:bg-slate-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-gear text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-slate-700 transition-colors">
+                            Cài đặt</h3>
+                    </div>
+                </a>
+
+                <!-- 33. Bất động sản -->
+                <a href="modules/realestate.html" data-categories="other"
+                    class="module-card bg-sky-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-sky-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-sky-600 flex-shrink-0 z-10  group-hover:bg-sky-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-building text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-sky-700 transition-colors">
+                            Bất
+                            động sản</h3>
+                    </div>
+                </a>
+
+                <!-- 34. Zalo OA -->
+                <a href="modules/zalo-oa.html"
+                    class="bg-blue-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-blue-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-blue-600 flex-shrink-0 z-10  group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo"
+                            class="w-6 h-6">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-blue-700 transition-colors">
+                            Zalo OA</h3>
+                    </div>
+                </a>
+
+                <!-- 35. Thiết kế Website -->
+                <a href="modules/web-design.html"
+                    class="bg-indigo-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-indigo-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-indigo-600 flex-shrink-0 z-10  group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-laptop-code text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-indigo-700 transition-colors">
+                            Thiết kế Website</h3>
+                    </div>
+                </a>
+
+                <!-- 36. Bảng dữ liệu -->
+                <a href="modules/datatables.html"
+                    class="bg-emerald-50 rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-emerald-600 relative overflow-hidden transition-all">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.15)] flex items-center justify-center text-emerald-600 flex-shrink-0 z-10  group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-table text-2xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="font-bold text-slate-800 text-sm text-fade group-hover:text-emerald-700 transition-colors">
+                            Bảng dữ liệu</h3>
+                    </div>
+                </a>
+
+            </div>
+        </main>
+
+        <!-- Simple Footer -->
+        <footer class="mt-auto py-6 text-center text-slate-400 text-xs">
+            <p>&copy; 2026 Appvn. All rights reserved.</p>
+        </footer>
+
+        <script>
+            let currentCategory = 'all';
+
+            function filterModules(category, btn) {
+                // Update Active State if button is provided
+                if (btn) {
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('text-blue-600', 'bg-blue-50', 'font-semibold');
+                        b.classList.add('text-slate-500', 'border-transparent', 'font-medium');
+                    });
+                    btn.classList.remove('text-slate-500', 'border-transparent', 'font-medium');
+                    btn.classList.add('text-blue-600', 'bg-blue-50', 'font-semibold');
+                }
+
+                currentCategory = category;
+                applyFilters();
+            }
+
+            function applyFilters() {
+                const searchInput = document.getElementById('moduleSearch');
+                const searchText = searchInput ? searchInput.value.toLowerCase() : '';
+                const modules = document.querySelectorAll('.module-card');
+
+                modules.forEach(module => {
+                    const categories = module.getAttribute('data-categories').split(' ');
+                    const title = module.querySelector('h3').innerText.toLowerCase();
+
+                    // Category Match
+                    const matchCategory = currentCategory === 'all' ? true : categories.includes(currentCategory);
+
+                    // Search Match
+                    const matchSearch = title.includes(searchText);
+
+                    if (matchCategory && matchSearch) {
+                        module.classList.remove('hidden');
+                    } else {
+                        module.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Initialize default view (Recent) on load
+            document.addEventListener('DOMContentLoaded', () => {
+                const defaultBtn = document.querySelector('.category-btn');
+                if (defaultBtn) filterModules('all', defaultBtn);
+
+                // Add search listener
+                const searchInput = document.getElementById('moduleSearch');
+                if (searchInput) {
+                    searchInput.addEventListener('input', applyFilters);
+                }
+            });
+        </script>
+</body>
+
+</html>
