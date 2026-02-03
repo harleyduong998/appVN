@@ -178,6 +178,127 @@
             background-color: #dbeafe;
         }
 
+        /* --- Module Themes --- */
+        .card-light-bg {
+            background-color: rgba(var(--theme-rgb, 51, 65, 85), 0.08) !important;
+            border-color: rgba(var(--theme-rgb, 51, 65, 85), 0.15) !important;
+        }
+
+        .card-light-bg:hover {
+            background-color: rgba(var(--theme-rgb, 51, 65, 85), 0.12) !important;
+            border-color: rgba(var(--theme-rgb, 51, 65, 85), 0.3) !important;
+        }
+
+        /* Segmented Control Styling (Old - will be replaced by Gallery) */
+        .style-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .style-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: 4px;
+        }
+
+        .style-item:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .style-item.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .style-preview {
+            width: 100%;
+            height: 24px;
+            border-radius: 4px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .style-name {
+            font-size: 10px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .style-item.active .style-name {
+            color: #2563eb;
+        }
+
+        /* --- Theme Implementation Classes --- */
+
+        /* Glassmorphism */
+        .card-glass {
+            background: rgba(255, 255, 255, 0.7) !important;
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+
+        /* Border Focus */
+        .card-border-focus {
+            border-left: 4px solid rgba(var(--theme-rgb, 51, 65, 85), 1) !important;
+            background: #fff !important;
+        }
+
+        /* Soft Elevation */
+        .card-soft-elevated {
+            background: #fff !important;
+            border: none !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        /* Minimalist */
+        .card-minimalist {
+            background: transparent !important;
+            border: 1px dashed #e2e8f0 !important;
+            box-shadow: none !important;
+        }
+
+        .card-minimalist:hover {
+            border-style: solid;
+            border-color: rgba(var(--theme-rgb, 51, 65, 85), 0.5) !important;
+        }
+
+        /* Specific Preview Decorations */
+        .preview-light-bg {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .preview-glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(2px);
+        }
+
+        .preview-border {
+            border-left: 3px solid #3b82f6;
+        }
+
+        .preview-elevated {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-minimalist {
+            border: 1px dashed #cbd5e1;
+            background: transparent;
+        }
+
         /* Smooth View Transitions */
         .view-container {
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -424,9 +545,6 @@
                         <div id="displayDropdown"
                             class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden hidden z-50">
                             <div class="p-3 border-b border-slate-100">
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Tùy chỉnh
-                                    hiển thị</h4>
-
                                 <!-- Toggle Option -->
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
@@ -441,6 +559,44 @@
                                             class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
                                         </div>
                                     </label>
+                                </div>
+
+                                <div class="border-t border-slate-100 my-3"></div>
+
+                                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Giao diện
+                                    thẻ</h4>
+
+                                <!-- Theme Selection: Style Gallery Grid -->
+                                <div class="style-gallery mt-2">
+                                    <div class="style-item active" id="theme-btn-default"
+                                        onclick="setModuleTheme('default')">
+                                        <div class="style-preview"></div>
+                                        <span class="style-name">Mặc định</span>
+                                    </div>
+                                    <div class="style-item" id="theme-btn-light-bg"
+                                        onclick="setModuleTheme('light-bg')">
+                                        <div class="style-preview preview-light-bg"></div>
+                                        <span class="style-name">Nền nhạt</span>
+                                    </div>
+                                    <div class="style-item" id="theme-btn-glass" onclick="setModuleTheme('glass')">
+                                        <div class="style-preview preview-glass"></div>
+                                        <span class="style-name">Glass</span>
+                                    </div>
+                                    <div class="style-item" id="theme-btn-border-focus"
+                                        onclick="setModuleTheme('border-focus')">
+                                        <div class="style-preview preview-border"></div>
+                                        <span class="style-name">Accent</span>
+                                    </div>
+                                    <div class="style-item" id="theme-btn-soft-elevation"
+                                        onclick="setModuleTheme('soft-elevation')">
+                                        <div class="style-preview preview-elevated"></div>
+                                        <span class="style-name">Soft Shadow</span>
+                                    </div>
+                                    <div class="style-item" id="theme-btn-minimalist"
+                                        onclick="setModuleTheme('minimalist')">
+                                        <div class="style-preview preview-minimalist"></div>
+                                        <span class="style-name">Minimal</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1232,6 +1388,80 @@
             }
         };
 
+        // Module Themes Logic
+        const tailwindColorMap = {
+            'blue-500': '59, 130, 246', 'blue-600': '37, 99, 235',
+            'emerald-500': '16, 185, 129', 'emerald-600': '5, 150, 105',
+            'indigo-600': '79, 70, 229', 'indigo-500': '99, 102, 241',
+            'sky-600': '2, 132, 199', 'sky-500': '14, 165, 233',
+            'pink-500': '236, 72, 153', 'green-600': '22, 163, 74',
+            'yellow-600': '202, 138, 4', 'yellow-500': '234, 179, 8',
+            'red-500': '239, 68, 68', 'red-600': '220, 38, 38',
+            'orange-500': '249, 115, 22', 'orange-600': '234, 88, 12',
+            'violet-500': '139, 92, 246', 'amber-500': '245, 158, 11',
+            'gray-500': '107, 114, 128', 'gray-600': '75, 85, 99',
+            'stone-600': '87, 83, 78', 'purple-600': '147, 51, 234',
+            'purple-500': '168, 85, 247', 'cyan-600': '8, 145, 178',
+            'cyan-500': '6, 182, 212', 'rose-600': '225, 29, 72',
+            'rose-500': '244, 63, 94', 'fuchsia-600': '192, 38, 211',
+            'slate-600': '71, 85, 105', 'teal-500': '20, 184, 166'
+        };
+
+        function setModuleTheme(themeName) {
+            const allModules = document.querySelectorAll('.card-hover');
+            const galleryItems = document.querySelectorAll('.style-item');
+
+            // Remove active state from all gallery items and add to selected one
+            galleryItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.id === `theme-btn-${themeName}`) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Theme class mapping
+            const themeClasses = {
+                'light-bg': 'card-light-bg',
+                'glass': 'card-glass',
+                'border-focus': 'card-border-focus',
+                'soft-elevation': 'card-soft-elevated',
+                'minimalist': 'card-minimalist'
+            };
+
+            allModules.forEach(card => {
+                // Remove all possible theme classes
+                Object.values(themeClasses).forEach(cls => card.classList.remove(cls));
+                card.style.removeProperty('--theme-rgb');
+
+                // Apply selected theme class
+                const selectedClass = themeClasses[themeName];
+                if (selectedClass) {
+                    card.classList.add(selectedClass);
+
+                    // Special logic for themes that need the icon color (like light-bg and border-focus)
+                    if (themeName === 'light-bg' || themeName === 'border-focus' || themeName === 'minimalist') {
+                        const iconContainer = card.querySelector('.w-14');
+                        if (iconContainer) {
+                            const colorClass = Array.from(iconContainer.classList).find(c => c.startsWith('text-'));
+                            if (colorClass) {
+                                const colorKey = colorClass.replace('text-', '');
+                                const rgb = tailwindColorMap[colorKey];
+                                if (rgb) card.style.setProperty('--theme-rgb', rgb);
+                            }
+                        }
+                    }
+                }
+            });
+
+            localStorage.setItem('appvn_module_theme', themeName);
+        }
+
+        // Initialize theme on load
+        function initTheme() {
+            const savedTheme = localStorage.getItem('appvn_module_theme') || 'default';
+            setModuleTheme(savedTheme);
+        }
+
         function decorateModuleCards() {
             const allModules = document.querySelectorAll('.card-hover');
             allModules.forEach(module => {
@@ -1563,6 +1793,11 @@
                 if (favSection) favSection.classList.add('hidden');
             } else {
                 if (favSection) favSection.classList.remove('hidden');
+                // Re-apply theme to newly cloned favorites
+                if (typeof setModuleTheme === 'function') {
+                    const savedTheme = localStorage.getItem('appvn_module_theme') || 'default';
+                    setModuleTheme(savedTheme);
+                }
             }
         }
 
@@ -1593,6 +1828,9 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initFavorites();
+
+            // Load and apply theme preference
+            initTheme();
 
             // Load and apply category view preference
             const savedView = localStorage.getItem('appvn_category_view');
