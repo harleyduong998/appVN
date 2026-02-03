@@ -243,12 +243,17 @@
 
         /* --- Theme Implementation Classes --- */
 
-        /* Glassmorphism */
-        .card-glass {
-            background: rgba(255, 255, 255, 0.7) !important;
-            backdrop-filter: blur(8px) !important;
-            -webkit-backdrop-filter: blur(8px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        /* Soft Pure - Inspired by Image */
+        .card-soft-pure {
+            background: #ffffff !important;
+            border: none !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+        }
+
+        .card-soft-pure .w-14 {
+            background: #ffffff !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04) !important;
+            border-radius: 12px !important;
         }
 
         /* Border Focus */
@@ -281,9 +286,22 @@
             background-color: rgba(59, 130, 246, 0.1);
         }
 
-        .preview-glass {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
-            backdrop-filter: blur(2px);
+        .preview-soft-pure {
+            background: #f8fafc;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-soft-pure::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .preview-border {
@@ -578,9 +596,10 @@
                                         <div class="style-preview preview-light-bg"></div>
                                         <span class="style-name">Nền nhạt</span>
                                     </div>
-                                    <div class="style-item" id="theme-btn-glass" onclick="setModuleTheme('glass')">
-                                        <div class="style-preview preview-glass"></div>
-                                        <span class="style-name">Glass</span>
+                                    <div class="style-item" id="theme-btn-soft-pure"
+                                        onclick="setModuleTheme('soft-pure')">
+                                        <div class="style-preview preview-soft-pure"></div>
+                                        <span class="style-name">Soft Pure</span>
                                     </div>
                                     <div class="style-item" id="theme-btn-border-focus"
                                         onclick="setModuleTheme('border-focus')">
@@ -1422,7 +1441,7 @@
             // Theme class mapping
             const themeClasses = {
                 'light-bg': 'card-light-bg',
-                'glass': 'card-glass',
+                'soft-pure': 'card-soft-pure',
                 'border-focus': 'card-border-focus',
                 'soft-elevation': 'card-soft-elevated',
                 'minimalist': 'card-minimalist'
