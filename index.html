@@ -71,161 +71,288 @@
         .module-grid.collapsed {
             display: none;
         }
+
+        /* --- App Store Mode Redesign --- */
+        .app-store-view .module-grid,
+        .app-store-view.view-container#flat-view {
+            grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+
+            .app-store-view .module-grid,
+            .app-store-view.view-container#flat-view {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (min-width: 1280px) {
+
+            .app-store-view .module-grid,
+            .app-store-view.view-container#flat-view {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+        }
+
+        /* Cards in App Store View */
+        .app-store-view .card-hover {
+            height: 100px !important;
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+
+        .app-store-view .card-hover h3 {
+            font-size: 15px;
+        }
+
+        .view-details {
+            display: none;
+            font-size: 12px;
+            color: #2563eb;
+            font-weight: 500;
+            margin-top: 2px;
+            transition: all 0.2s;
+        }
+
+        .view-details:hover {
+            text-decoration: underline;
+        }
+
+        .app-store-view .view-details {
+            display: block;
+        }
+
+        /* Status Buttons (Soft Colors) */
+        .status-badge {
+            display: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            border-width: 1px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .app-store-view .status-badge {
+            display: inline-flex;
+        }
+
+        /* Hide star in App Store mode */
+        .app-store-view .favorite-star {
+            display: none !important;
+        }
+
+        /* Green - Activated */
+        .status-active {
+            background-color: #f0fdf4;
+            color: #16a34a;
+            border-color: #dcfce7;
+        }
+
+        .status-active:hover {
+            background-color: #dcfce7;
+        }
+
+        /* Amber - Pending */
+        .status-pending {
+            background-color: #fffbeb;
+            color: #d97706;
+            border-color: #fef3c7;
+        }
+
+        .status-pending:hover {
+            background-color: #fef3c7;
+        }
+
+        /* Blue - Activate */
+        .status-inactive {
+            background-color: #eff6ff;
+            color: #2563eb;
+            border-color: #dbeafe;
+        }
+
+        .status-inactive:hover {
+            background-color: #dbeafe;
+        }
+
+        /* Smooth View Transitions */
+        .view-container {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 1;
+        }
+
+        .view-container.fade-out {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+            pointer-events: none;
+        }
+
+        /* --- App Description Modal --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .modal-body {
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        .modal-footer {
+            padding: 0 2rem 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #64748b;
+        }
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col text-slate-800 relative">
 
     <!-- Header (Deep Blue) -->
-    <header style="background: linear-gradient(135deg, #1B3DA1 0%, #0F256E 100%);"
-        class=" h-16 text-white px-6 flex items-center justify-between shadow-lg z-50 fixed w-full top-0">
+    <header id="main-header" style="background: linear-gradient(135deg, #1B3DA1 0%, #0F256E 100%);"
+        class=" h-16 text-white px-6 flex items-center justify-between shadow-lg z-50 fixed w-full top-0 transition-opacity duration-300">
         <!-- Left Section -->
         <div class="flex items-center gap-8">
             <!-- Logo -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center">
                 <div onclick="window.location.href='index.html'"
-                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-md cursor-pointer">
-                    <img src="logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
+                    class="h-[38px] px-2 bg-[#1B3DA1] rounded flex items-center justify-center cursor-pointer hover:bg-[#2549BD] transition-all shadow-sm">
+                    <img src="logo2.png" alt="App.vn Logo" class="h-6 object-contain">
                 </div>
-                <span class="text-xl font-bold tracking-tight">App.vn</span>
             </div>
 
 
-            <!-- Version Switcher -->
-            <div class="flex items-center gap-2">
-                <!-- Prev Button -->
-                <a href="index_v19.html"
-                    class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
-                    title="Phiên bản trước">
-                    <i class="fa-solid fa-chevron-left text-xs"></i>
-                </a>
-
-
-
-                <div class="relative">
-                    <button
-                        onclick="document.getElementById('versionDropdown').classList.toggle('hidden'); event.stopPropagation();"
-                        class="flex items-center gap-2 text-white/90 hover:text-white font-medium bg-white/10 px-3 py-1.5 rounded-lg transition-all border border-white/10 hover:bg-white/20 cursor-pointer h-9">
-                        <span class="text-sm">Phiên bản giao diện</span>
-                        <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div id="versionDropdown"
-                        class="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
-                        onclick="event.stopPropagation()">
-                        <div class="p-1 max-h-80 overflow-y-auto">
-                            <a href="index.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors bg-slate-50">
-                                <div
-                                    class="w-8 h-8 rounded bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
-                                    V1</div>
-                                <div class="text-sm font-medium text-slate-700">Original</div>
-                            </a>
-                            <a href="index_v2.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
-                                <div
-                                    class="w-8 h-8 rounded bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">
-                                    V2</div>
-                                <div class="text-sm font-medium text-slate-700">Clean White</div>
-                            </a>
-
-
-
-
-
-
-
-                            <a href="index_v10.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
-                                <div
-                                    class="w-8 h-8 rounded bg-white text-amber-500 flex items-center justify-center font-bold text-xs ring-1 ring-slate-200 shadow-sm">
-                                    V10</div>
-                                <div class="text-sm font-medium text-slate-700">Icon Box</div>
-                            </a>
-
-
-
-                            <a href="index_v14.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
-                                <div
-                                    class="w-8 h-8 rounded bg-gradient-to-br from-rose-500 to-pink-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
-                                    V14</div>
-                                <div class="text-sm font-medium text-slate-700">Quarter Circle</div>
-                            </a>
-                            <a href="index_v15.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors ">
-                                <div
-                                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
-                                    V15</div>
-                                <div class="text-sm font-medium text-slate-700">MacOS Style</div>
-                            </a>
-                            <a href="index_v16.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
-                                <div
-                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-blue-600 flex items-center justify-center font-bold text-xs shadow-sm">
-                                    V16</div>
-                                <div class="text-sm font-medium text-slate-700">V15 Layout + V10 Icon</div>
-                            </a>
-
-                            <a href="index_v18.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
-                                <div
-                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
-                                    <span
-                                        class="bg-gradient-to-br from-purple-600 to-blue-400 bg-clip-text text-transparent">V18</span>
-                                </div>
-                                <div class="text-sm font-medium text-slate-700">Category Filter</div>
-                            </a>
-                            <a href="index_v19.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
-                                <div
-                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
-                                    <span
-                                        class="bg-gradient-to-br from-indigo-600 to-cyan-400 bg-clip-text text-transparent">V19</span>
-                                </div>
-                                <div class="text-sm font-medium text-slate-700">Sibebar Layout</div>
-                            </a>
-                            <a href="index_v20.html"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 group/item transition-colors">
-                                <div
-                                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
-                                    <span
-                                        class="bg-gradient-to-br from-green-500 to-emerald-400 bg-clip-text text-transparent">V20</span>
-                                </div>
-                                <div class="text-sm font-medium text-slate-700">Module Colors</div>
-                            </a>
-
-
-
-                        </div>
+            <!-- BIZ Dropdown -->
+            <div class="relative">
+                <button
+                    onclick="document.getElementById('bizDropdown').classList.toggle('hidden'); event.stopPropagation();"
+                    class="flex items-center gap-2 text-white/90 hover:text-white font-medium transition-all cursor-pointer h-9 ml-2">
+                    <img src="l55702188101656-1666339957875559117998.jpg"
+                        class="w-6 h-6 rounded-full object-cover opacity-90" alt="Biz Avatar">
+                    <span class="text-sm font-semibold tracking-wide">Trang Test</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] opacity-70 ml-1"></i>
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="bizDropdown"
+                    class="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+                    onclick="event.stopPropagation()">
+                    <div class="p-1">
+                        <div class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Chọn doanh
+                            nghiệp</div>
+                        <a href="#"
+                            class="flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-50 group transition-colors">
+                            <div class="flex items-center gap-2">
+                                <img src="l55702188101656-1666339957875559117998.jpg"
+                                    class="w-5 h-5 rounded-full object-cover" alt="Trang Test">
+                                <span class="text-sm font-medium text-slate-700">Trang Test</span>
+                            </div>
+                            <i class="fa-solid fa-check text-blue-500 text-xs"></i>
+                        </a>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-md hover:bg-slate-50 group transition-colors">
+                            <span class="text-sm font-medium text-slate-700">Biz 1</span>
+                        </a>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-md hover:bg-slate-50 group transition-colors">
+                            <span class="text-sm font-medium text-slate-700">Biz 2</span>
+                        </a>
                     </div>
                 </div>
-
-                <script>
-                    document.addEventListener('click', function (event) {
-                        var dropdown = document.getElementById('versionDropdown');
-                        if (dropdown && !dropdown.classList.contains('hidden')) {
-                            dropdown.classList.add('hidden');
-                        }
-                    });
-                </script>
             </div>
 
-            <!-- Next Button -->
-            <a href="index_v2.html"
-                class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
-                title="Phiên bản tiếp theo">
-                <i class="fa-solid fa-chevron-right text-xs"></i>
-            </a>
+            <script>
+                document.addEventListener('click', function (event) {
+                    var bizDropdown = document.getElementById('bizDropdown');
+                    if (bizDropdown && !bizDropdown.contains(event.target)) {
+                        bizDropdown.classList.add('hidden');
+                    }
+                });
+            </script>
         </div>
 
 
         <!-- Right Side -->
-        <div class="flex items-center gap-5">
-            <button class="relative hover:opacity-80 transition">
-                <i class="fa-regular fa-bell text-xl"></i>
-                <span
-                    class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#172B85]"></span>
+        <div class="flex items-center gap-4">
+            <!-- Support -->
+            <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+                title="Liên hệ">
+                <i class="fa-solid fa-headset text-xl opacity-90"></i>
+            </button>
+            <!-- Documentation -->
+            <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+                title="Tài liệu">
+                <i class="fa-regular fa-file-lines text-xl opacity-90"></i>
+            </button>
+            <!-- Notifications -->
+            <button
+                class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors">
+                <i class="fa-regular fa-bell text-xl opacity-90"></i>
+                <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-[#172B85]"></span>
             </button>
             <div class="flex items-center gap-3 pl-4 border-l border-white/20">
                 <div class="text-right hidden sm:block leading-tight">
@@ -244,7 +371,7 @@
     <main class="flex-1 pt-24 pb-12 px-6 max-w-7xl mx-auto w-full">
 
         <!-- Welcome Section -->
-        <div class="mb-6 animate-fade-in-up">
+        <div id="welcome-section" class="mb-8 transition-opacity duration-300">
             <h1 class="text-3xl font-bold text-slate-800 mb-2">Xin chào, Harley! 👋</h1>
             <p class="text-slate-500 text-lg">Chào mừng bạn quay trở lại. Hãy chọn một module để bắt đầu làm việc.</p>
         </div>
@@ -252,10 +379,11 @@
 
 
         <!-- Toolbar -->
-        <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-6">
+        <div id="toolbar-section"
+            class="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-6 transition-opacity duration-300">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <!-- Left Side - Search -->
-                <div class="relative flex-1 max-w-md">
+                <div class="relative flex-1 max-w-2xl">
                     <input type="text" id="search-box" placeholder="Tìm kiếm ứng dụng"
                         class="w-full px-4 py-2 pl-10 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                         oninput="searchModules(this.value)">
@@ -264,35 +392,18 @@
 
                 <!-- Right Side - Actions -->
                 <div class="flex items-center gap-2 w-full md:w-auto flex-wrap">
+                    <!-- Tab Navigation -->
                     <button id="btn-my-apps"
-                        class="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
-                        <i class="fa-solid fa-star text-xs"></i>
+                        class="flex items-center gap-1.5 px-4 py-2 bg-blue-600 border border-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-all shadow-md whitespace-nowrap">
+                        <i class="fa-solid fa-house text-xs"></i>
                         Ứng dụng của tôi
                     </button>
                     <button id="btn-app-store"
-                        class="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
+                        class="flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
                         <i class="fa-solid fa-table-cells text-xs"></i>
                         Kho ứng dụng
                     </button>
 
-                    <!-- Status Filter (Only visible in App Store mode) -->
-                    <div id="status-filter-container"
-                        class="hidden items-center border border-slate-200 rounded-md overflow-hidden bg-white">
-                        <span
-                            class="px-3 py-2 text-sm text-slate-500 bg-slate-50 border-r border-slate-200 whitespace-nowrap">Trạng
-                            thái:</span>
-                        <div class="relative flex items-center">
-                            <select id="status-filter"
-                                class="pl-3 pr-8 py-2 bg-white text-slate-600 rounded-none text-sm font-medium focus:outline-none transition-all appearance-none cursor-pointer">
-                                <option value="all">Tất cả</option>
-                                <option value="inactive">Chưa kích hoạt</option>
-                                <option value="pending">Chờ kích hoạt</option>
-                                <option value="active">Đã kích hoạt</option>
-                            </select>
-                            <i
-                                class="fa-solid fa-chevron-down absolute right-2.5 text-[10px] text-slate-400 pointer-events-none"></i>
-                        </div>
-                    </div>
 
                     <button
                         class="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
@@ -338,16 +449,35 @@
             </div>
         </div>
 
+        <div id="status-filter-container"
+            class="hidden justify-end mb-6 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-slate-500">Trạng thái:</span>
+                <div class="relative flex items-center h-8">
+                    <select id="status-filter"
+                        class="pl-3 pr-8 py-1 bg-white border border-slate-200 text-slate-600 rounded text-sm font-medium focus:outline-none transition-all appearance-none cursor-pointer h-full">
+                        <option value="all">Tất cả</option>
+                        <option value="inactive">Chưa kích hoạt</option>
+                        <option value="pending">Chờ kích hoạt</option>
+                        <option value="active">Đã kích hoạt</option>
+                    </select>
+                    <i
+                        class="fa-solid fa-chevron-down absolute right-2 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+            </div>
+        </div>
+
         <!-- Modules Grid - Categorized View -->
-        <div id="categorized-view">
+        <div id="categorized-view" class="view-container">
 
             <!-- 1. Ưa thích -->
-            <div class="mb-10">
+            <div id="favorites-section" class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
                     <span>Ưa thích</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 module-grid">
+                <div id="favorites-grid"
+                    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 module-grid">
                     <!-- Placeholder for favorites -->
                 </div>
             </div>
@@ -861,11 +991,13 @@
                     </a>
                 </div>
             </div>
+        </div> <!-- End of #categorized-view -->
 
-            <!-- Flat View (Hidden by default) - V10 COMPACT STYLE -->
-            <div id="flat-view" class="hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                <!-- Modules will be cloned here when flat view is enabled -->
-            </div>
+        <!-- Flat View (Hidden by default) - V10 COMPACT STYLE -->
+        <div id="flat-view"
+            class="hidden view-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <!-- Modules will be cloned here when flat view is enabled -->
+        </div>
 
     </main>
 
@@ -925,26 +1057,77 @@
         }
 
         // My Apps List (hardcoded)
-        const myAppsList = ['Quản lý bán hàng', 'Sản phẩm', 'Khách hàng', 'Hóa đơn điện tử', 'Tự động hóa', 'Kho hàng'];
-        let isMyAppsActive = false;
+        const myAppsList = [
+            'Bán hàng', 'Hóa đơn', 'Khách hàng', 'Công nợ',
+            'Thanh toán', 'Sản phẩm', 'Kho hàng', 'Báo cáo',
+            'CRM', 'Automation'
+        ];
+        let isMyAppsActive = true;
         let isAppStoreMode = false;
         let currentStatusFilter = 'all';
 
-        // My Apps Filter
+        // Navigation Tabs Logic
         const btnMyApps = document.getElementById('btn-my-apps');
+        const btnAppStore = document.getElementById('btn-app-store');
+        const statusFilterContainer = document.getElementById('status-filter-container');
+        const statusFilter = document.getElementById('status-filter');
+
+        function updateTabStyles() {
+            if (isMyAppsActive) {
+                // My Apps Active
+                btnMyApps.classList.remove('bg-white', 'border-slate-200', 'text-slate-600', 'hover:bg-slate-50', 'hover:text-blue-600');
+                btnMyApps.classList.add('bg-blue-600', 'border-blue-600', 'text-white', 'shadow-md', 'hover:bg-blue-700');
+
+                // App Store Inactive
+                btnAppStore.classList.add('bg-white', 'border-slate-200', 'text-slate-600', 'hover:bg-slate-50', 'hover:text-blue-600');
+                btnAppStore.classList.remove('bg-blue-600', 'border-blue-600', 'text-white', 'shadow-md', 'hover:bg-blue-700');
+
+                // Hide status filter
+                if (statusFilterContainer) {
+                    statusFilterContainer.classList.add('hidden');
+                    statusFilterContainer.classList.remove('flex');
+                }
+            } else {
+                // My Apps Inactive
+                btnMyApps.classList.add('bg-white', 'border-slate-200', 'text-slate-600', 'hover:bg-slate-50', 'hover:text-blue-600');
+                btnMyApps.classList.remove('bg-blue-600', 'border-blue-600', 'text-white', 'shadow-md', 'hover:bg-blue-700');
+
+                // App Store Active
+                btnAppStore.classList.remove('bg-white', 'border-slate-200', 'text-slate-600', 'hover:bg-slate-50', 'hover:text-blue-600');
+                btnAppStore.classList.add('bg-blue-600', 'border-blue-600', 'text-white', 'shadow-md', 'hover:bg-blue-700');
+
+                // Show status filter
+                if (statusFilterContainer) {
+                    statusFilterContainer.classList.remove('hidden');
+                    statusFilterContainer.classList.add('flex');
+                }
+            }
+        }
+
         if (btnMyApps) {
             btnMyApps.addEventListener('click', function () {
-                isMyAppsActive = !isMyAppsActive;
+                if (isMyAppsActive) return;
 
-                if (isMyAppsActive) {
-                    this.classList.remove('bg-white', 'border-slate-200', 'text-slate-600');
-                    this.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-600');
-                } else {
-                    this.classList.add('bg-white', 'border-slate-200', 'text-slate-600');
-                    this.classList.remove('bg-blue-50', 'border-blue-200', 'text-blue-600');
-                }
+                const categorizedView = document.getElementById('categorized-view');
+                const flatView = document.getElementById('flat-view');
 
-                applyMyAppsFilter();
+                // Transition out
+                if (categorizedView) categorizedView.classList.add('fade-out');
+                if (flatView) flatView.classList.add('fade-out');
+
+                setTimeout(() => {
+                    isMyAppsActive = true;
+                    isAppStoreMode = false;
+                    updateTabStyles();
+                    applyMyAppsFilter();
+                    toggleAppStoreMode();
+
+                    // Transition in
+                    setTimeout(() => {
+                        if (categorizedView) categorizedView.classList.remove('fade-out');
+                        if (flatView) flatView.classList.remove('fade-out');
+                    }, 50);
+                }, 300);
             });
         }
 
@@ -969,42 +1152,30 @@
             updateCategoryVisibility();
         }
 
-        // App Store Mode
-        const btnAppStore = document.getElementById('btn-app-store');
-        const statusFilterContainer = document.getElementById('status-filter-container');
-        const statusFilter = document.getElementById('status-filter');
-
         if (btnAppStore) {
             btnAppStore.addEventListener('click', function () {
-                isAppStoreMode = !isAppStoreMode;
+                if (isAppStoreMode) return;
 
-                if (isAppStoreMode) {
-                    this.classList.remove('bg-white', 'border-slate-200', 'text-slate-600');
-                    this.classList.add('bg-blue-600', 'border-blue-600', 'text-white');
+                const categorizedView = document.getElementById('categorized-view');
+                const flatView = document.getElementById('flat-view');
 
-                    // Show status filter
-                    if (statusFilterContainer) {
-                        statusFilterContainer.classList.remove('hidden');
-                        statusFilterContainer.classList.add('flex');
-                    }
-                } else {
-                    this.classList.add('bg-white', 'border-slate-200', 'text-slate-600');
-                    this.classList.remove('bg-blue-600', 'border-blue-600', 'text-white');
+                // Transition out
+                if (categorizedView) categorizedView.classList.add('fade-out');
+                if (flatView) flatView.classList.add('fade-out');
 
-                    // Hide status filter
-                    if (statusFilterContainer) {
-                        statusFilterContainer.classList.add('hidden');
-                        statusFilterContainer.classList.remove('flex');
-                    }
+                setTimeout(() => {
+                    isAppStoreMode = true;
+                    isMyAppsActive = false;
+                    updateTabStyles();
+                    applyMyAppsFilter();
+                    toggleAppStoreMode();
 
-                    // Reset status filter
-                    if (statusFilter) {
-                        statusFilter.value = 'all';
-                        currentStatusFilter = 'all';
-                    }
-                }
-
-                toggleAppStoreMode();
+                    // Transition in
+                    setTimeout(() => {
+                        if (categorizedView) categorizedView.classList.remove('fade-out');
+                        if (flatView) flatView.classList.remove('fade-out');
+                    }, 50);
+                }, 300);
             });
         }
 
@@ -1016,10 +1187,121 @@
             });
         }
 
+        const appDescriptions = {
+            'Bản đồ nhà thuốc': 'Ứng dụng giúp bạn tìm kiếm và quản lý hệ thống nhà thuốc trên bản đồ, hỗ trợ điều hướng và kiểm tra thông tin liên hệ một cách nhanh chóng.',
+            'SMS Brandname': 'Giải pháp gửi tin nhắn marketing và thông báo tự động với định danh thương hiệu riêng, tăng mức độ uy tín và tiếp cận khách hàng.',
+            'Zalo OA': 'Kết nối trực tiếp với khách hàng thông qua Zalo Official Account, hỗ trợ chăm sóc khách hàng và gửi thông báo tin nhắn OA tự động.',
+            'Mạng xã hội': 'Tích hợp các nền tảng mạng xã hội để quản lý bài viết, tương tác và theo dõi hiệu quả truyền thông từ một giao diện duy nhất.',
+            'Phân tích dữ liệu': 'Công cụ phân tích chuyên sâu với các biểu đồ trực quan, giúp bạn đưa ra quyết định kinh doanh dựa trên dữ liệu thực tế.',
+            'Trí tuệ nhân tạo': 'Sử dụng AI để tự động hóa quy trình, phân loại khách hàng và dự báo xu hướng thị trường trong tương lai.'
+        };
+
+        function openAppModal(title, iconClass, colorClass) {
+            const modal = document.getElementById('app-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-desc');
+            const modalIcon = document.getElementById('modal-icon');
+            const modalIconI = modalIcon.querySelector('i');
+
+            if (modal && modalTitle && modalDesc && modalIcon) {
+                modalTitle.textContent = title;
+                modalDesc.textContent = appDescriptions[title] || 'Đang cập nhật mô tả chi tiết cho ứng dụng này. Vui lòng quay lại sau.';
+
+                // Update icon and color
+                modalIconI.className = iconClass;
+                modalIcon.className = `w-20 h-20 rounded-3xl text-white flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg ${colorClass}`;
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scroll
+            }
+        }
+
+        window.closeAppModal = function () {
+            const modal = document.getElementById('app-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scroll
+            }
+        };
+
+        // Close modal on click outside content
+        window.onclick = function (event) {
+            const modal = document.getElementById('app-modal');
+            if (event.target == modal) {
+                closeAppModal();
+            }
+        };
+
+        function decorateModuleCards() {
+            const allModules = document.querySelectorAll('.card-hover');
+            allModules.forEach(module => {
+                // Ensure we don't double-decorate
+                if (module.querySelector('.view-details')) return;
+
+                const textContainer = module.querySelector('.flex-1');
+                const titleEl = module.querySelector('h3');
+                const title = titleEl ? titleEl.textContent.trim() : '';
+
+                // Get icon info for modal
+                const iconContainer = module.querySelector('.w-14');
+                const iconEl = iconContainer ? iconContainer.querySelector('i') : null;
+                const iconClass = iconEl ? iconEl.className : 'fa-solid fa-cube';
+                const colorClass = iconContainer ? Array.from(iconContainer.classList).find(c => c.startsWith('text-')) : 'text-blue-500';
+
+                // Add "Xem chi tiết" link
+                if (textContainer) {
+                    const viewDetails = document.createElement('span');
+                    viewDetails.className = 'view-details';
+                    viewDetails.textContent = 'Xem chi tiết';
+                    textContainer.appendChild(viewDetails);
+                }
+
+                // Add Status Button
+                const isActive = myAppsList.includes(title);
+                const isPending = title.includes('Zalo') || title.includes('SMS');
+
+                const statusBtn = document.createElement('div');
+                statusBtn.className = 'status-badge ml-auto';
+
+                if (isActive) {
+                    statusBtn.textContent = 'Đã kích hoạt';
+                    statusBtn.classList.add('status-active');
+                } else if (isPending) {
+                    statusBtn.textContent = 'Chờ kích hoạt';
+                    statusBtn.classList.add('status-pending');
+                } else {
+                    statusBtn.textContent = 'Kích hoạt';
+                    statusBtn.classList.add('status-inactive');
+                }
+
+                module.appendChild(statusBtn);
+
+                // Adjust card classes for App Store layout
+                module.classList.remove('justify-start');
+                module.classList.add('justify-between');
+
+                // Modal Triggering
+                module.addEventListener('click', function (e) {
+                    if (isAppStoreMode && !isActive) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openAppModal(title, iconClass, colorClass);
+                    }
+                });
+            });
+        }
+
         function toggleAppStoreMode() {
             const welcomeText = document.querySelector('main p.text-slate-500');
+            const categorizedView = document.getElementById('categorized-view');
+            const flatView = document.getElementById('flat-view');
 
             if (isAppStoreMode) {
+                // Apply app store layout
+                if (categorizedView) categorizedView.classList.add('app-store-view');
+                if (flatView) flatView.classList.add('app-store-view');
+                decorateModuleCards();
+
                 // Change welcome message
                 if (welcomeText) {
                     welcomeText.textContent = 'Chào mừng bạn đến kho ứng dụng';
@@ -1033,15 +1315,18 @@
                 // Apply current status filter
                 applyStatusFilter();
             } else {
+                // Remove app store layout
+                if (categorizedView) categorizedView.classList.remove('app-store-view');
+                if (flatView) flatView.classList.remove('app-store-view');
+
                 // Restore welcome message
                 if (welcomeText) {
                     welcomeText.textContent = 'Chào mừng bạn quay trở lại. Hãy chọn một module để bắt đầu làm việc.';
                 }
-
-                // Show all modules
-                const allModules = document.querySelectorAll('.card-hover');
-                allModules.forEach(module => module.classList.remove('hidden'));
             }
+
+            // Refresh favorites visibility based on mode
+            renderFavorites();
         }
 
         function applyStatusFilter() {
@@ -1084,35 +1369,101 @@
         }
 
         // Toggle Category View
-        function toggleCategoryView(checkbox) {
-            const modulesGrid = document.getElementById('categorized-view');
+        function toggleCategoryView(checkbox, isInit = false) {
+            const categorizedView = document.getElementById('categorized-view');
             const flatView = document.getElementById('flat-view');
+            const searchBox = document.getElementById('search-box');
 
-            if (checkbox.checked) {
-                // Show categorized view
-                if (modulesGrid) {
-                    modulesGrid.classList.remove('hidden');
-                }
-                if (flatView) {
-                    flatView.classList.add('hidden');
-                }
-            } else {
-                // Show flat view
-                if (modulesGrid) {
-                    modulesGrid.classList.add('hidden');
-                }
-                if (flatView) {
-                    flatView.classList.remove('hidden');
+            // Save state
+            localStorage.setItem('appvn_category_view', checkbox.checked);
 
-                    // Clone all modules to flat view if empty
-                    if (flatView.children.length === 0) {
-                        const allModules = document.querySelectorAll('#categorized-view .card-hover');
-                        allModules.forEach(module => {
-                            const clone = module.cloneNode(true);
-                            flatView.appendChild(clone);
-                        });
+            if (isInit) {
+                // Silent update for initialization
+                if (checkbox.checked) {
+                    if (categorizedView) categorizedView.classList.remove('hidden');
+                    if (flatView) flatView.classList.add('hidden');
+                } else {
+                    if (categorizedView) categorizedView.classList.add('hidden');
+                    if (flatView) {
+                        flatView.classList.remove('hidden');
+                        renderFlatView();
                     }
                 }
+                return;
+            }
+
+            // 1. Start Fade Out
+            if (categorizedView) categorizedView.classList.add('fade-out');
+            if (flatView) flatView.classList.add('fade-out');
+
+            setTimeout(() => {
+                if (checkbox.checked) {
+                    // Show categorized view
+                    if (categorizedView) categorizedView.classList.remove('hidden');
+                    if (flatView) flatView.classList.add('hidden');
+                } else {
+                    // Show flat view (unified grid)
+                    if (categorizedView) categorizedView.classList.add('hidden');
+                    if (flatView) {
+                        flatView.classList.remove('hidden');
+                        renderFlatView();
+                    }
+                }
+
+                // Re-run search if needed
+                if (searchBox && searchBox.value) {
+                    searchModules(searchBox.value);
+                }
+
+                // 2. Fade In
+                setTimeout(() => {
+                    if (categorizedView) categorizedView.classList.remove('fade-out');
+                    if (flatView) flatView.classList.remove('fade-out');
+                }, 50);
+
+            }, 300); // Match CSS transition duration
+
+            // Reset opacity scroll effect
+            if (!checkbox.checked) {
+                const welcome = document.getElementById('welcome-section');
+                const toolbar = document.getElementById('toolbar-section');
+                const header = document.getElementById('main-header');
+                if (welcome) welcome.style.opacity = 1;
+                if (toolbar) toolbar.style.opacity = 1;
+                if (header) header.style.opacity = 1;
+            }
+        }
+
+        function renderFlatView() {
+            const flatView = document.getElementById('flat-view');
+            if (!flatView) return;
+
+            flatView.innerHTML = '';
+            const titlesAdded = new Set();
+
+            // Collect all modules from categorized view categories (excluding Favorites)
+            const originalModules = document.querySelectorAll('#categorized-view > div:not(:first-child) .card-hover');
+
+            originalModules.forEach(module => {
+                const title = module.querySelector('h3').textContent.trim();
+                if (!titlesAdded.has(title)) {
+                    const clone = module.cloneNode(true);
+                    const starBtn = clone.querySelector('.favorite-star');
+                    if (starBtn) {
+                        starBtn.onclick = (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleFavorite(title, starBtn);
+                        };
+                    }
+                    flatView.appendChild(clone);
+                    titlesAdded.add(title);
+                }
+            });
+
+            // Decorate cards in flat view if needed
+            if (isAppStoreMode) {
+                decorateModuleCards();
             }
         }
 
@@ -1124,7 +1475,166 @@
             header.classList.toggle('collapsed');
             grid.classList.toggle('collapsed');
         }
+
+        // --- Favorites System Logic ---
+        let favorites = JSON.parse(localStorage.getItem('appvn_favorites')) || [];
+
+        function initFavorites() {
+            const allModules = document.querySelectorAll('.card-hover');
+            allModules.forEach(module => {
+                const titleEl = module.querySelector('h3');
+                if (!titleEl) return;
+                const title = titleEl.textContent.trim();
+
+                // Create Star Button
+                const starBtn = document.createElement('button');
+                starBtn.className = 'favorite-star absolute top-2 right-2 text-slate-300 hover:text-amber-400 z-20 opacity-0 group-hover:opacity-100 transition-opacity p-1';
+                starBtn.innerHTML = '<i class="fa-solid fa-star text-base"></i>';
+
+                if (favorites.includes(title)) {
+                    starBtn.classList.add('active');
+                }
+
+                starBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleFavorite(title, starBtn);
+                });
+
+                module.appendChild(starBtn);
+            });
+            renderFavorites();
+        }
+
+        function toggleFavorite(title, btn) {
+            const index = favorites.indexOf(title);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(title);
+            }
+            localStorage.setItem('appvn_favorites', JSON.stringify(favorites));
+
+            // Sync all instances of the same module star
+            document.querySelectorAll('.card-hover').forEach(card => {
+                const cardTitleEl = card.querySelector('h3');
+                if (cardTitleEl && cardTitleEl.textContent.trim() === title) {
+                    const cardStar = card.querySelector('.favorite-star');
+                    if (cardStar) {
+                        if (favorites.includes(title)) cardStar.classList.add('active');
+                        else cardStar.classList.remove('active');
+                    }
+                }
+            });
+
+            renderFavorites();
+        }
+
+        function renderFavorites() {
+            const favGrid = document.getElementById('favorites-grid');
+            if (!favGrid) return;
+
+            favGrid.innerHTML = '';
+
+            // Find modules that are favorited and clone them
+            const allOriginalModules = Array.from(document.querySelectorAll('#categorized-view > div:not(:first-child) .card-hover'));
+
+            favorites.forEach(title => {
+                const original = allOriginalModules.find(m => m.querySelector('h3').textContent.trim() === title);
+                if (original) {
+                    const clone = original.cloneNode(true);
+                    // Update star logic for the clone
+                    const starBtn = clone.querySelector('.favorite-star');
+                    if (starBtn) {
+                        starBtn.classList.add('active');
+                        starBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleFavorite(title, starBtn);
+                        });
+                    }
+                    favGrid.appendChild(clone);
+                }
+            });
+
+            // Hide/Show Favorites Category
+            const favSection = document.getElementById('favorites-section');
+            if (isAppStoreMode || favorites.length === 0) {
+                if (favSection) favSection.classList.add('hidden');
+            } else {
+                if (favSection) favSection.classList.remove('hidden');
+            }
+        }
+
+        // --- Scroll Fade Logic ---
+        function initScrollFade() {
+            const welcome = document.getElementById('welcome-section');
+            const toolbar = document.getElementById('toolbar-section');
+            const toggleCat = document.getElementById('toggle-category');
+
+            if (!welcome || !toolbar) return;
+
+            window.addEventListener('scroll', () => {
+                // Only fade if categorized view is enabled
+                if (toggleCat && toggleCat.checked) {
+                    const scrollTop = window.scrollY;
+                    const fadeStart = 0;
+                    const fadeEnd = 300; // Fully transparent at 300px
+
+                    let opacity = 1 - (scrollTop / (fadeEnd - fadeStart));
+                    if (opacity < 0) opacity = 0;
+                    if (opacity > 1) opacity = 1;
+
+                    welcome.style.opacity = opacity;
+                    toolbar.style.opacity = opacity;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initFavorites();
+
+            // Load and apply category view preference
+            const savedView = localStorage.getItem('appvn_category_view');
+            const toggleCat = document.getElementById('toggle-category');
+            if (savedView !== null && toggleCat) {
+                const isChecked = savedView === 'true';
+                toggleCat.checked = isChecked;
+                toggleCategoryView(toggleCat, true); // Silent init
+            }
+
+            initScrollFade();
+
+            // Initialize default tab state
+            applyMyAppsFilter();
+        });
     </script>
+
+    <!-- App Description Modal -->
+    <div id="app-modal" class="modal-overlay">
+        <div class="modal-content relative">
+            <i class="fa-solid fa-xmark modal-close" onclick="closeAppModal()"></i>
+            <div class="modal-header">
+                <div id="modal-icon"
+                    class="w-20 h-20 rounded-3xl bg-blue-500 text-white flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">
+                    <i class="fa-solid fa-cube"></i>
+                </div>
+                <h2 id="modal-title" class="text-2xl font-bold text-slate-800">Tên sản phẩm</h2>
+            </div>
+            <div class="modal-body">
+                <p id="modal-desc" class="text-slate-600 leading-relaxed text-center">
+                    Đây là mô tả chi tiết về ứng dụng. Ứng dụng này giúp bạn quản lý các hoạt động kinh doanh một cách
+                    hiệu quả và chuyên nghiệp.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button
+                    class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg transition-all active:scale-95">
+                    Kích hoạt ngay
+                </button>
+            </div>
+        </div>
+    </div>
 
 </body>
 
