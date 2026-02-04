@@ -673,6 +673,28 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        /* --- Wallpaper Selection Highlights --- */
+        .bg-btn-active {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+
+        #custom-bg-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 9999px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #custom-bg-thumb:hover {
+            transform: scale(1.1);
+        }
+
         body.theme-dark .card-hover h3 {
             color: #f9fafb !important;
         }
@@ -914,16 +936,19 @@
                                 <div>
                                     <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Hình
                                         nền</h4>
-                                    <div class="flex items-center gap-3 mb-3">
-                                        <button onclick="changeBg('default')"
-                                            class="w-6 h-6 rounded-full border border-slate-200 bg-[#F7F8F9] hover:scale-110 transition-transform"
+                                    <div class="flex items-center gap-3 mb-3" id="wallpaper-options">
+                                        <button onclick="changeBg('default')" id="bg-btn-default"
+                                            class="w-6 h-6 rounded-full border border-slate-200 bg-[#F7F8F9] hover:scale-110 transition-transform bg-btn-active"
                                             title="Mặc định"></button>
-                                        <button onclick="changeBg('black')"
+                                        <button onclick="changeBg('black')" id="bg-btn-black"
                                             class="w-6 h-6 rounded-full border border-slate-200 bg-black hover:scale-110 transition-transform"
                                             title="Đen"></button>
-                                        <button onclick="changeBg('lightblue')"
+                                        <button onclick="changeBg('lightblue')" id="bg-btn-lightblue"
                                             class="w-6 h-6 rounded-full border border-slate-200 bg-[#e0f2fe] hover:scale-110 transition-transform"
                                             title="Xanh nhạt"></button>
+                                        <!-- Thumbnail placeholder created dynamically or hidden initially -->
+                                        <div id="custom-bg-thumb" class="hidden" onclick="changeBg('custom')"
+                                            title="Ảnh đã tải"></div>
                                     </div>
                                     <div class="flex items-center justify-between text-xs text-slate-500 cursor-pointer hover:text-blue-600 transition-colors group"
                                         onclick="document.getElementById('bg-upload-input').click()">
@@ -1530,8 +1555,28 @@
         });
 
         // Change Background Function
+        let uploadedBgData = null;
+
         function changeBg(type) {
-            // Clear custom background image
+            // Update selection highlights
+            document.querySelectorAll('#wallpaper-options button, #custom-bg-thumb').forEach(btn => {
+                btn.classList.remove('bg-btn-active');
+            });
+
+            if (type === 'custom' && uploadedBgData) {
+                document.body.style.backgroundImage = `url('${uploadedBgData}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundAttachment = 'fixed';
+                document.body.style.backgroundColor = 'transparent';
+                document.body.classList.add('theme-dark', 'theme-wallpaper');
+                currentSnowColor = '#FFFFFF';
+                const thumb = document.getElementById('custom-bg-thumb');
+                if (thumb) thumb.classList.add('bg-btn-active');
+                return;
+            }
+
+            // Clear custom background image if choosing color
             document.body.style.backgroundImage = 'none';
 
             // Remove special classes
@@ -1540,13 +1585,19 @@
             if (type === 'default') {
                 document.body.style.backgroundColor = '#F7F8F9';
                 currentSnowColor = '#60a5fa'; // More blue for grey theme
+                const btn = document.getElementById('bg-btn-default');
+                if (btn) btn.classList.add('bg-btn-active');
             } else if (type === 'black') {
                 document.body.style.backgroundColor = '#111827';
                 document.body.classList.add('theme-dark');
                 currentSnowColor = '#FFFFFF';
+                const btn = document.getElementById('bg-btn-black');
+                if (btn) btn.classList.add('bg-btn-active');
             } else if (type === 'lightblue') {
                 document.body.style.backgroundColor = '#e0f2fe';
                 currentSnowColor = '#FFFFFF';
+                const btn = document.getElementById('bg-btn-lightblue');
+                if (btn) btn.classList.add('bg-btn-active');
             }
         }
 
@@ -1555,15 +1606,17 @@
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    // Apply background image
-                    document.body.style.backgroundImage = `url('${e.target.result}')`;
-                    document.body.style.backgroundSize = 'cover';
-                    document.body.style.backgroundPosition = 'center';
-                    document.body.style.backgroundAttachment = 'fixed';
+                    uploadedBgData = e.target.result;
 
-                    // Force Dark Mode styles for readability
-                    document.body.classList.add('theme-dark', 'theme-wallpaper');
-                    currentSnowColor = '#FFFFFF'; // Ensure snow is visible on images
+                    // Show and update thumbnail
+                    const thumb = document.getElementById('custom-bg-thumb');
+                    if (thumb) {
+                        thumb.style.backgroundImage = `url('${uploadedBgData}')`;
+                        thumb.classList.remove('hidden');
+                    }
+
+                    // Apply immediately
+                    changeBg('custom');
                 };
                 reader.readAsDataURL(input.files[0]);
             }
