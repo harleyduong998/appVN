@@ -1571,14 +1571,19 @@
             const dropdown = document.getElementById('displayDropdown');
             const button = document.getElementById('btn-display');
             if (dropdown && !dropdown.contains(event.target) && !button.contains(event.target)) {
-                dropdown.classList.add('hidden');
+                if (!dropdown.classList.contains('hidden')) {
+                    dropdown.classList.add('hidden');
+                    saveAppSettings();
+                }
             }
         });
 
         // Change Background Function
         let uploadedBgData = null;
+        let currentBgType = 'default';
 
         function changeBg(type) {
+            currentBgType = type;
             // Update selection highlights
             document.querySelectorAll('#wallpaper-options button, #custom-bg-thumb').forEach(btn => {
                 btn.classList.remove('bg-btn-active');
@@ -1802,6 +1807,70 @@
             });
 
             animationId = requestAnimationFrame(animateSakura);
+        }
+
+        // --- Settings Persistence Logic ---
+        function saveAppSettings() {
+            const settings = {
+                theme: localStorage.getItem('appvn_module_theme') || 'default',
+                bgType: currentBgType,
+                bgData: uploadedBgData,
+                categoryView: document.getElementById('toggle-category')?.checked,
+                snowActive: snowActive,
+                sakuraActive: sakuraActive
+            };
+            localStorage.setItem('appvn_settings', JSON.stringify(settings));
+        }
+
+        function loadAppSettings() {
+            const saved = localStorage.getItem('appvn_settings');
+            if (!saved) return;
+
+            try {
+                const settings = JSON.parse(saved);
+
+                // 1. Load Category View
+                const toggleCat = document.getElementById('toggle-category');
+                if (toggleCat && settings.categoryView !== undefined) {
+                    toggleCat.checked = settings.categoryView;
+                    toggleCategoryView(toggleCat, true);
+                }
+
+                // 2. Load Theme
+                if (settings.theme) {
+                    setModuleTheme(settings.theme);
+                }
+
+                // 3. Load Background
+                if (settings.bgData) {
+                    uploadedBgData = settings.bgData;
+                    const thumb = document.getElementById('custom-bg-thumb');
+                    if (thumb) {
+                        thumb.style.backgroundImage = `url('${uploadedBgData}')`;
+                        thumb.classList.remove('hidden');
+                    }
+                }
+                if (settings.bgType) {
+                    changeBg(settings.bgType);
+                }
+
+                // 4. Load Effects
+                if (settings.snowActive) {
+                    const snowToggle = document.getElementById('toggle-snow');
+                    if (snowToggle) {
+                        snowToggle.checked = true;
+                        toggleSnow(snowToggle);
+                    }
+                } else if (settings.sakuraActive) {
+                    const sakuraToggle = document.getElementById('toggle-sakura');
+                    if (sakuraToggle) {
+                        sakuraToggle.checked = true;
+                        toggleSakura(sakuraToggle);
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading settings:', e);
+            }
         }
 
         // Search Modules Function
@@ -2590,17 +2659,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             initFavorites();
 
-            // Load and apply theme preference
-            initTheme();
-
-            // Load and apply category view preference
-            const savedView = localStorage.getItem('appvn_category_view');
-            const toggleCat = document.getElementById('toggle-category');
-            if (savedView !== null && toggleCat) {
-                const isChecked = savedView === 'true';
-                toggleCat.checked = isChecked;
-                toggleCategoryView(toggleCat, true); // Silent init
-            }
+            // Load and apply all user settings
+            loadAppSettings();
 
             initScrollFade();
 
