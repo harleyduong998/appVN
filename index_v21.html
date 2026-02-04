@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard V20 - Colored Cards</title>
+    <title>Mood Dashboard V21 - Happy/Sad Effects</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -44,10 +45,81 @@
             mask-image: linear-gradient(to right, black 85%, transparent 100%);
             -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
         }
+
+        /* Modal Styles */
+        .mood-modal-overlay {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease;
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .mood-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mood-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Physics Elements */
+        .physics-element {
+            position: fixed !important;
+            margin: 0 !important;
+            z-index: 100 !important;
+            pointer-events: auto !important;
+        }
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col text-slate-800 relative">
+<body class="min-h-screen flex flex-col text-slate-800 relative overflow-hidden">
+
+    <!-- Mood Modal -->
+    <div id="moodModal" class="fixed inset-0 z-[1000] flex items-center justify-center mood-modal-overlay p-4">
+        <div
+            class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center border border-white/20 animate-in zoom-in duration-300">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-2">How do you feel today?</h2>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="startExperience('happy')"
+                    class="mood-btn group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-lg hover:shadow-orange-200">
+                    <div class="text-5xl mb-3 group-hover:scale-110 transition-transform">😊</div>
+                    <div class="font-bold text-xl">Happy</div>
+                </button>
+
+                <button onclick="startExperience('sad')"
+                    class="mood-btn group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg hover:shadow-blue-200">
+                    <div class="text-5xl mb-3 group-hover:scale-110 transition-transform">😔</div>
+                    <div class="font-bold text-xl">Sad</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comfort Popup (Hidden by default) -->
+    <div id="comfortModal"
+        class="fixed inset-0 z-[2000] flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-1000 bg-black/60 backdrop-blur-sm">
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl max-w-md w-full p-8 text-center border border-white/40 transform scale-95 transition-transform duration-500"
+            id="comfortContent">
+            <div
+                class="w-16 h-16 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm">
+                ☕
+            </div>
+            <h3 class="text-xl font-bold text-slate-800 mb-3">Nghỉ một chút nhé</h3>
+            <p class="text-slate-600 leading-relaxed text-lg italic">
+                “Nghỉ một chút để nạp lại năng lượng nhé. <br> Ổn hơn rồi mình quay lại, mọi thứ vẫn chờ bạn mà.”
+            </p>
+            <button onclick="closeComfortModal()"
+                class="mt-8 px-6 py-2 bg-slate-800 text-white rounded-full font-medium hover:bg-slate-900 transition-colors shadow-lg">
+                Mình ổn rồi
+            </button>
+        </div>
+    </div>
 
     <!-- Header (Deep Blue) -->
     <header style="background: linear-gradient(135deg, #1B3DA1 0%, #0F256E 100%);"
@@ -67,7 +139,7 @@
             <!-- Version Switcher -->
             <div class="flex items-center gap-2">
                 <!-- Prev Button -->
-                <a href="index_v19.html"
+                <a href="index_v20.html"
                     class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
                     title="Phiên bản trước">
                     <i class="fa-solid fa-chevron-left text-xs"></i>
@@ -194,7 +266,7 @@
             </div>
 
             <!-- Next Button -->
-            <a href="index_v21.html"
+            <a href="index.html"
                 class="flex items-center justify-center w-9 h-9 text-white/90 hover:text-white bg-white/10 rounded-lg border border-white/10 hover:bg-white/20 transition-all"
                 title="Phiên bản tiếp theo">
                 <i class="fa-solid fa-chevron-right text-xs"></i>
@@ -226,79 +298,13 @@
     <!-- Main Content Wrapper -->
     <div class="flex flex-1 pt-16 h-screen overflow-hidden">
 
-        <!-- Sidebar (Fixed Width) -->
-        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col h-screen shrink-0 z-20">
-            <!-- 2. Search Section (Fixed at Top of Sidebar) -->
-            <div class="p-4 border-b border-slate-100">
-                <div class="relative group">
-                    <input type="text" id="moduleSearch" placeholder="Tìm kiếm module..."
-                        class="w-full bg-slate-50 text-slate-800 placeholder-slate-400 border border-slate-200 rounded-lg py-2.5 pl-10 pr-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-sm">
-                    <button
-                        class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-blue-500 transition-colors">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </div>
-            </div>
-
-
-            <!-- 1. Categories Menu (Vertical List) -->
-            <div class="flex-1 overflow-y-auto no-scrollbar p-3 space-y-1">
-                <button onclick="filterModules('all', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Tất cả</span>
-                </button>
-
-
-                <button onclick="filterModules('sales', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Bán hàng</span>
-                </button>
-                <button onclick="filterModules('contact', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Liên hệ</span>
-                </button>
-                <button onclick="filterModules('marketing', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Marketing</span>
-                </button>
-                <button onclick="filterModules('products', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Hàng hóa & Tồn kho</span>
-                </button>
-                <button onclick="filterModules('content', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Quản lý nội dung</span>
-                </button>
-                <button onclick="filterModules('design', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Công cụ thiết kế</span>
-                </button>
-                <button onclick="filterModules('support', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Ứng dụng hỗ trợ</span>
-                </button>
-                <button onclick="filterModules('report', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Báo cáo - Thống kê</span>
-                </button>
-                <button onclick="filterModules('other', this)"
-                    class="category-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200 flex items-center justify-between group">
-                    <span>Khác</span>
-                </button>
-            </div>
-
-
-
-
-        </aside>
-
         <!-- Main Content Area (Right Side) -->
         <main class="flex-1 overflow-y-auto bg-[#F7F8F9] p-6 lg:p-10 scroll-smooth relative w-full">
 
             <!-- Welcome Section -->
             <div class="mb-8">
                 <h1 class="text-2xl font-bold text-slate-800 mb-1">Xin chào, Harley! 👋</h1>
-                <p class="text-slate-500">Chọn module để bắt đầu làm việc.</p>
+                <p class="text-slate-500">Pick a module to start working.</p>
             </div>
 
             <!-- Modules Grid -->
@@ -825,7 +831,6 @@
             let currentCategory = 'all';
 
             function filterModules(category, btn) {
-                // Update Active State if button is provided
                 if (btn) {
                     document.querySelectorAll('.category-btn').forEach(b => {
                         b.classList.remove('text-blue-600', 'bg-blue-50', 'font-semibold');
@@ -845,13 +850,11 @@
                 const modules = document.querySelectorAll('.module-card');
 
                 modules.forEach(module => {
-                    const categories = module.getAttribute('data-categories').split(' ');
-                    const title = module.querySelector('h3').innerText.toLowerCase();
+                    const categories = (module.getAttribute('data-categories') || '').split(' ');
+                    const h3 = module.querySelector('h3');
+                    const title = h3 ? h3.innerText.toLowerCase() : '';
 
-                    // Category Match
                     const matchCategory = currentCategory === 'all' ? true : categories.includes(currentCategory);
-
-                    // Search Match
                     const matchSearch = title.includes(searchText);
 
                     if (matchCategory && matchSearch) {
@@ -862,12 +865,179 @@
                 });
             }
 
-            // Initialize default view (Recent) on load
+            function closeComfortModal() {
+                const url = new URL(window.location);
+                url.searchParams.set('mood', 'normal');
+                window.location.href = url.toString();
+            }
+
+            // Matter.js Logic
+            function startExperience(mood) {
+                const modal = document.getElementById('moodModal');
+                modal.classList.add('fade-out');
+                setTimeout(() => modal.remove(), 300);
+
+                // If Happy, just show normal UI (no physics)
+                if (mood === 'happy') {
+                    return;
+                }
+
+                // Show comfort message if sad
+                if (mood === 'sad') {
+                    setTimeout(() => {
+                        const comfortModal = document.getElementById('comfortModal');
+                        const comfortContent = document.getElementById('comfortContent');
+                        comfortModal.classList.remove('opacity-0', 'pointer-events-none');
+                        comfortModal.classList.add('opacity-100', 'pointer-events-auto');
+                        comfortContent.classList.remove('scale-95');
+                        comfortContent.classList.add('scale-100');
+                    }, 5000);
+                }
+
+                const { Engine, World, Bodies, Mouse, MouseConstraint, Runner } = Matter;
+
+                const engine = Engine.create();
+                const world = engine.world;
+
+                if (mood === 'happy') {
+                    engine.gravity.y = 1; // Normal gravity for bouncing
+                } else {
+                    engine.gravity.y = 1; // Fall down
+                }
+
+                // Create Barriers
+                const thickness = 100;
+                const ground = Bodies.rectangle(window.innerWidth / 2, window.innerHeight + thickness / 2, window.innerWidth, thickness, { isStatic: true });
+                const ceiling = Bodies.rectangle(window.innerWidth / 2, -thickness / 2, window.innerWidth, thickness, { isStatic: true });
+                const leftWall = Bodies.rectangle(-thickness / 2, window.innerHeight / 2, thickness, window.innerHeight, { isStatic: true });
+                const rightWall = Bodies.rectangle(window.innerWidth + thickness / 2, window.innerHeight / 2, thickness, window.innerHeight, { isStatic: true });
+                World.add(world, [ground, ceiling, leftWall, rightWall]);
+
+                // Select and convert elements
+                const selectors = [
+                    '.module-card:not(.hidden)',
+                    'header',
+                    'h1',
+                    'main p'
+                ];
+
+                const elements = [];
+                selectors.forEach(sel => {
+                    document.querySelectorAll(sel).forEach(el => {
+                        if (el.offsetParent !== null) elements.push(el);
+                    });
+                });
+
+                const bodies = [];
+                elements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.width === 0 || rect.height === 0) return;
+
+                    const body = Bodies.rectangle(
+                        rect.left + rect.width / 2,
+                        rect.top + rect.height / 2,
+                        rect.width,
+                        rect.height,
+                        {
+                            restitution: 0.8,
+                            friction: 0.1,
+                            chamfer: { radius: 10 }
+                        }
+                    );
+
+                    body.homePosition = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+                    body.renderElement = el;
+                    bodies.push(body);
+
+                    el.style.width = rect.width + 'px';
+                    el.style.height = rect.height + 'px';
+                    el.style.position = 'fixed';
+                    el.style.left = rect.left + 'px';
+                    el.style.top = rect.top + 'px';
+                    el.style.margin = '0';
+                    el.classList.add('physics-element');
+                });
+
+                World.add(world, bodies);
+
+                // Interaction
+                const mouse = Mouse.create(document.body);
+                const mouseConstraint = MouseConstraint.create(engine, {
+                    mouse: mouse,
+                    constraint: {
+                        stiffness: 0.2,
+                        render: { visible: false }
+                    }
+                });
+                World.add(world, mouseConstraint);
+
+                // Run
+                const runner = Runner.create();
+                Runner.run(runner, engine);
+
+                if (mood === 'happy') {
+                    // Add constraints to hold bodies in place but allow bouncing
+                    const { Constraint } = Matter;
+                    bodies.forEach(body => {
+                        const constraint = Constraint.create({
+                            bodyA: body,
+                            pointB: { x: body.homePosition.x, y: body.homePosition.y },
+                            stiffness: 0.05, // Spring-like
+                            damping: 0.05,
+                            length: 0
+                        });
+                        World.add(world, constraint);
+                    });
+                }
+
+                (function update() {
+                    bodies.forEach(body => {
+                        if (mood === 'happy') {
+                            // Periodic "Jump" (Vertical Only)
+                            // Jump chance needs to be low so they don't all jump at once constantly
+                            if (Math.random() < 0.005) {
+                                // Reset position close to home before jumping to prevent drift accumulation? No, constraint handles it.
+                                Matter.Body.applyForce(body, body.position, {
+                                    x: 0,
+                                    y: - (body.mass * 0.035) // Proportional force for consistent jump height
+                                });
+                            }
+                        }
+
+                        const { x, y } = body.position;
+                        const angle = body.angle;
+                        const el = body.renderElement;
+                        el.style.left = `${x - el.offsetWidth / 2}px`;
+                        el.style.top = `${y - el.offsetHeight / 2}px`;
+                        el.style.transform = `rotate(${angle}rad)`;
+                    });
+                    requestAnimationFrame(update);
+                })();
+
+                // Add Reset Button
+                const resetBtn = document.createElement('button');
+                resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right mr-2"></i> Reset Mood';
+                resetBtn.className = 'fixed bottom-6 right-6 z-[2000] bg-white/90 backdrop-blur text-slate-800 px-5 py-2.5 rounded-full shadow-2xl border border-slate-200 font-semibold hover:bg-white transition-all scale-0';
+                document.body.appendChild(resetBtn);
+                setTimeout(() => resetBtn.classList.remove('scale-0'), 1000);
+                resetBtn.onclick = () => {
+                    const url = new URL(window.location);
+                    url.searchParams.delete('mood');
+                    window.location.href = url.toString();
+                };
+            }
+
             document.addEventListener('DOMContentLoaded', () => {
+                // Check URL params for mood=normal
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('mood') === 'normal') {
+                    const modal = document.getElementById('moodModal');
+                    if (modal) modal.remove();
+                }
+
                 const defaultBtn = document.querySelector('.category-btn');
                 if (defaultBtn) filterModules('all', defaultBtn);
 
-                // Add search listener
                 const searchInput = document.getElementById('moduleSearch');
                 if (searchInput) {
                     searchInput.addEventListener('input', applyFilters);
