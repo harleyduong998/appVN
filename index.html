@@ -646,6 +646,33 @@
             border-color: #4b5563 !important;
         }
 
+        /* --- Custom Wallpaper Glassmorphism --- */
+        body.theme-wallpaper #toolbar-section {
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        body.theme-wallpaper .card-hover {
+            background-color: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+        }
+
+        body.theme-wallpaper .card-hover:hover {
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        body.theme-wallpaper #welcome-section h1,
+        body.theme-wallpaper #welcome-section p {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
         body.theme-dark .card-hover h3 {
             color: #f9fafb !important;
         }
@@ -898,12 +925,14 @@
                                             class="w-6 h-6 rounded-full border border-slate-200 bg-[#e0f2fe] hover:scale-110 transition-transform"
                                             title="Xanh nhạt"></button>
                                     </div>
-                                    <div
-                                        class="flex items-center justify-between text-xs text-slate-500 cursor-pointer hover:text-blue-600 transition-colors group">
+                                    <div class="flex items-center justify-between text-xs text-slate-500 cursor-pointer hover:text-blue-600 transition-colors group"
+                                        onclick="document.getElementById('bg-upload-input').click()">
                                         <span class="font-medium text-[10px] uppercase tracking-wider">Tải ảnh</span>
                                         <i
                                             class="fa-solid fa-cloud-arrow-up text-sm group-hover:scale-110 transition-transform"></i>
                                     </div>
+                                    <input type="file" id="bg-upload-input" class="hidden" accept="image/*"
+                                        onchange="handleBgUpload(this)">
                                 </div>
 
                                 <div class="border-t border-slate-100"></div>
@@ -1502,8 +1531,11 @@
 
         // Change Background Function
         function changeBg(type) {
-            // Remove dark theme by default
-            document.body.classList.remove('theme-dark');
+            // Clear custom background image
+            document.body.style.backgroundImage = 'none';
+
+            // Remove special classes
+            document.body.classList.remove('theme-dark', 'theme-wallpaper');
 
             if (type === 'default') {
                 document.body.style.backgroundColor = '#F7F8F9';
@@ -1515,6 +1547,25 @@
             } else if (type === 'lightblue') {
                 document.body.style.backgroundColor = '#e0f2fe';
                 currentSnowColor = '#FFFFFF';
+            }
+        }
+
+        // Custom Wallpaper Upload Logic
+        function handleBgUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Apply background image
+                    document.body.style.backgroundImage = `url('${e.target.result}')`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundAttachment = 'fixed';
+
+                    // Force Dark Mode styles for readability
+                    document.body.classList.add('theme-dark', 'theme-wallpaper');
+                    currentSnowColor = '#FFFFFF'; // Ensure snow is visible on images
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
