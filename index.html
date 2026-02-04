@@ -436,6 +436,98 @@
             word-wrap: break-word !important;
         }
 
+        /* Wave Theme (3 columns) */
+        html body.theme-wave .module-grid,
+        html body.theme-wave #favorites-grid,
+        html body.theme-wave #flat-view.view-container {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            grid-template-rows: auto !important;
+            gap: 1.25rem !important;
+            display: grid !important;
+        }
+
+        body.theme-wave .card-wave {
+            background: linear-gradient(135deg,
+                    rgba(var(--theme-rgb, 59, 130, 246), 0.03) 0%,
+                    white 100%) !important;
+            border: 1px solid #f1f5f9 !important;
+            border-radius: 1.5rem !important;
+            padding: 1.25rem !important;
+            height: 100px !important;
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 1.25rem !important;
+            position: relative !important;
+            overflow: hidden !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.3s ease !important;
+            transform: none !important;
+        }
+
+        body.theme-wave .card-wave:hover {
+            transform: translateY(-4px) !important;
+        }
+
+        /* Ensure icon color doesn't change on hover for Wave theme */
+        body.theme-wave .card-wave:hover .w-14 i {
+            color: inherit !important;
+        }
+
+        /* Wave Pattern using local image */
+        body.theme-wave .card-wave::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 260px;
+            height: 100%;
+            background-image: url("wave.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center right;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 1;
+            mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 40%);
+            -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 40%);
+        }
+
+        body.theme-wave .card-wave .w-14 {
+            background: white !important;
+            border-radius: 1.1rem !important;
+            width: 58px !important;
+            height: 58px !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+            margin-right: 0 !important;
+        }
+
+
+        body.theme-wave .card-wave h3 {
+            font-size: 16px !important;
+            font-weight: 700 !important;
+        }
+
+        body.theme-wave .card-wave .flex-1 {
+            z-index: 2;
+        }
+
+        /* Access link in wave theme */
+        .wave-access {
+            display: none;
+            font-size: 11px;
+            color: #3b82f6;
+            /* Will be updated via JS to match icon color if possible, or stay blue */
+            font-weight: 600;
+            margin-top: 2px;
+            opacity: 0.8;
+        }
+
+        body.theme-wave .wave-access {
+            display: block !important;
+        }
+
         /* Hide stars when category view is disabled */
         body.hide-stars .favorite-star {
             display: none !important;
@@ -652,6 +744,17 @@
                                             </div>
                                         </div>
                                         <span class="style-name">Cổ điển</span>
+                                    </div>
+
+                                    <div class="style-item" id="theme-btn-wave" onclick="setModuleTheme('wave')">
+                                        <div
+                                            class="style-preview flex items-center justify-center bg-white border-slate-200 overflow-hidden">
+                                            <div class="w-full h-full relative">
+                                                <div class="absolute bottom-0 left-0 w-full h-1/2 bg-blue-500/10"
+                                                    style="clip-path: ellipse(80% 100% at 50% 100%);"></div>
+                                            </div>
+                                        </div>
+                                        <span class="style-name">Sóng</span>
                                     </div>
                                 </div>
                             </div>
@@ -1495,8 +1598,8 @@
                 if (selectedClass) {
                     card.classList.add(selectedClass);
 
-                    // Special logic for themes that need the icon color (like light-bg and border-focus)
-                    if (themeName === 'light-bg' || themeName === 'border-focus' || themeName === 'minimalist') {
+                    // Special logic for themes that need the icon color
+                    if (themeName === 'light-bg' || themeName === 'border-focus' || themeName === 'minimalist' || themeName === 'wave') {
                         const iconContainer = card.querySelector('.w-14');
                         if (iconContainer) {
                             const colorClass = Array.from(iconContainer.classList).find(c => c.startsWith('text-'));
@@ -1541,6 +1644,12 @@
                     viewDetails.className = 'view-details';
                     viewDetails.textContent = 'Xem chi tiết';
                     textContainer.appendChild(viewDetails);
+
+                    // Add Access link for Wave theme
+                    const accessLink = document.createElement('div');
+                    accessLink.className = 'wave-access';
+                    accessLink.innerHTML = 'Truy cập <i class="fa-solid fa-arrow-right ml-1 text-[8px]"></i>';
+                    textContainer.appendChild(accessLink);
                 }
 
                 // Add Status Button
@@ -1585,12 +1694,20 @@
             // Toggle Body Class and Grid Properties for layout changes
             if (themeName === 'vertical-8') {
                 document.body.classList.add('theme-vertical-8');
+                document.body.classList.remove('theme-wave');
                 allGrids.forEach(grid => {
                     grid.style.setProperty('grid-template-columns', 'repeat(8, minmax(0, 1fr))', 'important');
                     grid.style.setProperty('gap', '1.5rem 0.5rem', 'important');
                 });
-            } else {
+            } else if (themeName === 'wave') {
+                document.body.classList.add('theme-wave');
                 document.body.classList.remove('theme-vertical-8');
+                allGrids.forEach(grid => {
+                    grid.style.setProperty('grid-template-columns', 'repeat(3, minmax(0, 1fr))', 'important');
+                    grid.style.setProperty('gap', '1.25rem', 'important');
+                });
+            } else {
+                document.body.classList.remove('theme-vertical-8', 'theme-wave');
                 allGrids.forEach(grid => {
                     grid.style.removeProperty('grid-template-columns');
                     grid.style.removeProperty('gap');
@@ -1601,7 +1718,8 @@
             const themeClasses = {
                 'light-bg': 'card-light-bg',
                 'vertical-8': 'card-vertical-8',
-                'classic': 'card-classic'
+                'classic': 'card-classic',
+                'wave': 'card-wave'
             };
 
             allModules.forEach(card => {
@@ -1612,7 +1730,7 @@
                 // Manage group-hover classes (fix for vertical-8 and classic white icon issue)
                 const iconContainer = card.querySelector('.w-14');
                 if (iconContainer) {
-                    if (themeName === 'vertical-8' || themeName === 'classic') {
+                    if (themeName === 'vertical-8' || themeName === 'classic' || themeName === 'wave') {
                         // Backup and remove hover classes
                         const hoverClasses = [];
                         iconContainer.classList.forEach(cls => {
