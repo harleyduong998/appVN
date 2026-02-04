@@ -366,6 +366,31 @@
             /* Larger icon */
         }
 
+        /* High specificity Vertical Icon Theme (8 columns) */
+        body.theme-vertical-8 .module-grid {
+            grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+            gap: 1rem !important;
+        }
+
+        body.theme-vertical-8 .card-vertical-8 {
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 120px !important;
+            text-align: center !important;
+            gap: 0.5rem !important;
+            padding: 0.75rem !important;
+        }
+
+        body.theme-vertical-8 .card-vertical-8 .w-14 {
+            margin-right: 0 !important;
+        }
+
+        body.theme-vertical-8 .card-vertical-8 h3 {
+            white-space: normal !important;
+            font-size: 13px !important;
+        }
+
         /* Hide stars when category view is disabled */
         body.hide-stars .favorite-star {
             display: none !important;
