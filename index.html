@@ -50,6 +50,15 @@
             background-color: rgba(241, 245, 249, 0.8);
         }
 
+        .category-header.no-collapse {
+            cursor: default !important;
+            background-color: transparent !important;
+        }
+
+        .category-header.no-collapse .chevron-icon {
+            display: none !important;
+        }
+
         .category-header .chevron-icon {
             font-size: 14px;
             color: #94a3b8;
@@ -2525,8 +2534,13 @@
             }
         }
 
+        // Configuration: Enable/Disable category collapse
+        const canCollapseCategories = false;
+
         // Toggle Individual Category Collapse
         function toggleCategory(header) {
+            if (!canCollapseCategories) return;
+
             const grid = header.nextElementSibling;
             if (!grid) return;
 
@@ -2659,6 +2673,13 @@
 
             // Load and apply all user settings
             loadAppSettings();
+
+            // Apply category collapse config
+            if (!canCollapseCategories) {
+                document.querySelectorAll('.category-header').forEach(header => {
+                    header.classList.add('no-collapse');
+                });
+            }
 
             initScrollFade();
 
