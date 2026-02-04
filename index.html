@@ -370,6 +370,11 @@
         body.hide-stars .favorite-star {
             display: none !important;
         }
+
+        /* Force 3 columns in App Store */
+        .app-store-view .module-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        }
     </style>
 </head>
 
@@ -1503,18 +1508,8 @@
             });
         }
 
-
-        function setModuleTheme(themeName) {
+        function applyThemeToModules(themeName) {
             const allModules = document.querySelectorAll('.card-hover');
-            const galleryItems = document.querySelectorAll('.style-item');
-
-            // Remove active state from all gallery items and add to selected one
-            galleryItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.id === `theme-btn-${themeName}`) {
-                    item.classList.add('active');
-                }
-            });
 
             // Toggle Body Class for Grid Layout Changes
             if (themeName === 'vertical-8') {
@@ -1580,8 +1575,27 @@
                     }
                 }
             });
+        }
 
+
+        function setModuleTheme(themeName) {
+            // Save preference
             localStorage.setItem('appvn_module_theme', themeName);
+
+            const galleryItems = document.querySelectorAll('.style-item');
+
+            // Remove active state from all gallery items and add to selected one
+            galleryItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.id === `theme-btn-${themeName}`) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Only apply theme if NOT in App Store mode
+            if (!isAppStoreMode) {
+                applyThemeToModules(themeName);
+            }
         }
 
         function toggleAppStoreMode() {
@@ -1593,6 +1607,10 @@
                 // Apply app store layout
                 if (categorizedView) categorizedView.classList.add('app-store-view');
                 if (flatView) flatView.classList.add('app-store-view');
+
+                // Force default theme in App Store
+                applyThemeToModules('default');
+
                 decorateModuleCards();
 
                 // Change welcome message
@@ -1611,6 +1629,10 @@
                 // Remove app store layout
                 if (categorizedView) categorizedView.classList.remove('app-store-view');
                 if (flatView) flatView.classList.remove('app-store-view');
+
+                // Restore user theme preference when back in My Apps
+                const savedTheme = localStorage.getItem('appvn_module_theme') || 'default';
+                applyThemeToModules(savedTheme);
 
                 // Restore welcome message
                 if (welcomeText) {
