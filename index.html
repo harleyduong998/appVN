@@ -594,6 +594,26 @@
 
         /* --- Dark Mode Refinements --- */
 
+        /* Monochrome Theme (Gradient Icons) */
+        .card-monochrome .w-14 i {
+            background: linear-gradient(to bottom, #1B3DA1, #3c8fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #1B3DA1;
+            /* Fallback */
+            display: inline-block;
+        }
+
+        .card-monochrome:hover {
+            border-color: #1B3DA1 !important;
+        }
+
+        .card-monochrome:hover .w-14 {
+            background-color: #eff6ff !important;
+            border-color: #3c8fff !important;
+        }
+
         /* 1. Toolbar Refinement */
         body.theme-dark #toolbar-section {
             background-color: #1f2937 !important;
@@ -936,6 +956,17 @@
                                                 </div>
                                             </div>
                                             <div class="style-name">Sóng</div>
+                                        </div>
+                                        <!-- Gradient Theme -->
+                                        <div class="style-item" id="theme-btn-monochrome"
+                                            onclick="setModuleTheme('monochrome')">
+                                            <div
+                                                class="style-preview flex items-center justify-center bg-white border-slate-200">
+                                                <div class="w-5 h-5 rounded-sm"
+                                                    style="background: linear-gradient(to bottom, #1B3DA1, #3c8fff)">
+                                                </div>
+                                            </div>
+                                            <span class="style-name">Đơn sắc</span>
                                         </div>
                                     </div>
                                 </div>
@@ -2267,7 +2298,8 @@
                 'light-bg': 'card-light-bg',
                 'vertical-8': 'card-vertical-8',
                 'classic': 'card-classic',
-                'wave': 'card-wave'
+                'wave': 'card-wave',
+                'monochrome': 'card-monochrome'
             };
 
             allModules.forEach(card => {
@@ -2307,7 +2339,7 @@
                     card.classList.add(selectedClass);
 
                     // Special logic for themes that need the icon color
-                    if (themeName === 'light-bg') {
+                    if (themeName === 'light-bg' || themeName === 'border-focus' || themeName === 'minimalist' || themeName === 'wave') {
                         const iconContainer = card.querySelector('.w-14');
                         if (iconContainer) {
                             const colorClass = Array.from(iconContainer.classList).find(c => c.startsWith('text-'));
@@ -2321,7 +2353,6 @@
                 }
             });
         }
-
 
         function setModuleTheme(themeName) {
             // Save preference
