@@ -503,7 +503,6 @@
             margin-right: 0 !important;
         }
 
-
         body.theme-wave .card-wave h3 {
             font-size: 16px !important;
             font-weight: 700 !important;
@@ -533,9 +532,133 @@
             display: none !important;
         }
 
-        /* Force 3 columns in App Store */
         .app-store-view .module-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        }
+
+        /* Snow Canvas Styling */
+        #snow-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+        }
+
+        /* Dark Theme Text Overrides - Refined to protect cards */
+        body.theme-dark .category-header,
+        body.theme-dark main>div>h1,
+        body.theme-dark main>div>p {
+            color: white !important;
+        }
+
+        /* Target general text that is NOT inside a module card */
+        body.theme-dark .text-slate-400:not(.card-hover *),
+        body.theme-dark .text-slate-500:not(.card-hover *),
+        body.theme-dark .text-slate-600:not(.card-hover *) {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        body.theme-dark .text-slate-800:not(.card-hover *) {
+            color: white !important;
+        }
+
+        /* Ensure dropdowns remain readable */
+        body.theme-dark #displayDropdown,
+        body.theme-dark #bizDropdown {
+            background-color: white !important;
+            color: #1e293b !important;
+        }
+
+        body.theme-dark #displayDropdown *,
+        body.theme-dark #bizDropdown * {
+            color: inherit !important;
+        }
+
+        body.theme-dark #displayDropdown .text-slate-400,
+        body.theme-dark #displayDropdown .text-slate-700 {
+            color: inherit !important;
+        }
+
+        /* --- Dark Mode Refinements --- */
+
+        /* 1. Toolbar Refinement */
+        body.theme-dark #toolbar-section {
+            background-color: #1f2937 !important;
+            /* Gray 800 */
+            border-color: #374151 !important;
+            /* Gray 700 */
+        }
+
+        body.theme-dark #search-box {
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            border-color: #4b5563 !important;
+            color: white !important;
+        }
+
+        body.theme-dark #search-box::placeholder {
+            color: #9ca3af !important;
+        }
+
+        /* Fix buttons with bg-white class in dark mode */
+        body.theme-dark #toolbar-section button.bg-white {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+            color: #e5e7eb !important;
+        }
+
+        body.theme-dark #toolbar-section button.bg-white:hover {
+            background-color: #4b5563 !important;
+            color: white !important;
+        }
+
+        /* Active buttons refine */
+        body.theme-dark #toolbar-section .bg-blue-600 {
+            background-color: #2563eb !important;
+            border-color: #3b82f6 !important;
+        }
+
+        /* 2. Status Filter Refinement */
+        body.theme-dark #status-filter-container span {
+            color: #9ca3af !important;
+            /* Gray 400 */
+        }
+
+        body.theme-dark #status-filter {
+            background-color: #1f2937 !important;
+            border-color: #374151 !important;
+            color: #f3f4f6 !important;
+        }
+
+        /* 3. Module Card Refinement in Dark Mode */
+        body.theme-dark .card-hover {
+            background-color: #1f2937 !important;
+            /* Gray 800 */
+            border-color: #374151 !important;
+            /* Gray 700 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        body.theme-dark .card-hover:hover {
+            border-color: #4b5563 !important;
+        }
+
+        body.theme-dark .card-hover h3 {
+            color: #f9fafb !important;
+        }
+
+        body.theme-dark .card-hover .view-details,
+        body.theme-dark .card-hover .wave-access {
+            color: #60a5fa !important;
+            /* Lighter blue for dark mode */
+        }
+
+        /* 4. Footer in Dark Mode */
+        body.theme-dark footer p {
+            color: #6b7280 !important;
         }
     </style>
 </head>
@@ -691,77 +814,122 @@
                         <!-- Dropdown Menu -->
                         <div id="displayDropdown"
                             class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden hidden z-50">
-                            <div class="p-3 border-b border-slate-100">
-                                <!-- Toggle Option -->
+                            <div class="p-4 space-y-3">
+                                <!-- Section 1: Visibility -->
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <i class="fa-solid fa-layer-group text-slate-400 text-xs"></i>
                                         <span class="text-sm font-medium text-slate-700">Hiển thị danh mục</span>
                                     </div>
-
                                     <label class="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" checked class="sr-only peer" id="toggle-category"
                                             onchange="toggleCategoryView(this)">
                                         <div
-                                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                                            class="w-10 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600">
                                         </div>
                                     </label>
                                 </div>
 
-                                <div class="border-t border-slate-100 my-3"></div>
+                                <div class="border-t border-slate-100"></div>
 
-                                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Giao diện
-                                    thẻ</h4>
-
-                                <!-- Theme Selection: Style Gallery Grid -->
-                                <div class="style-gallery mt-2">
-                                    <div class="style-item active" id="theme-btn-default"
-                                        onclick="setModuleTheme('default')">
-                                        <div class="style-preview"></div>
-                                        <span class="style-name">Mặc định</span>
-                                    </div>
-                                    <div class="style-item" id="theme-btn-light-bg"
-                                        onclick="setModuleTheme('light-bg')">
-                                        <div class="style-preview preview-light-bg"></div>
-                                        <span class="style-name">Nền nhạt</span>
-                                    </div>
-
-                                    <div class="style-item" id="theme-btn-vertical-8"
-                                        onclick="setModuleTheme('vertical-8')">
-                                        <div
-                                            class="style-preview flex items-center justify-center bg-slate-50 border-slate-200">
-                                            <div class="w-2 h-2 bg-blue-500 rounded border border-white shadow-sm mb-1">
-                                            </div>
+                                <!-- Section 2: Themes -->
+                                <div>
+                                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Giao
+                                        diện thẻ</h4>
+                                    <!-- Style Gallery Grid -->
+                                    <div class="style-gallery">
+                                        <div class="style-item active" id="theme-btn-default"
+                                            onclick="setModuleTheme('default')">
+                                            <div class="style-preview"></div>
+                                            <span class="style-name">Mặc định</span>
                                         </div>
-                                        <span class="style-name">Icon dọc</span>
-                                    </div>
-
-                                    <div class="style-item" id="theme-btn-classic" onclick="setModuleTheme('classic')">
-                                        <div
-                                            class="style-preview flex items-center justify-center bg-white border-slate-200">
-                                            <div class="flex items-center gap-1">
-                                                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
-                                            </div>
+                                        <div class="style-item" id="theme-btn-light-bg"
+                                            onclick="setModuleTheme('light-bg')">
+                                            <div class="style-preview preview-light-bg"></div>
+                                            <span class="style-name">Nền nhạt</span>
                                         </div>
-                                        <span class="style-name">Cổ điển</span>
-                                    </div>
-
-                                    <div class="style-item" id="theme-btn-wave" onclick="setModuleTheme('wave')">
-                                        <div
-                                            class="style-preview flex items-center justify-center bg-white border-slate-200 overflow-hidden">
-                                            <div class="w-full h-full relative">
-                                                <div class="absolute bottom-0 left-0 w-full h-1/2 bg-blue-500/10"
-                                                    style="clip-path: ellipse(80% 100% at 50% 100%);"></div>
+                                        <div class="style-item" id="theme-btn-vertical-8"
+                                            onclick="setModuleTheme('vertical-8')">
+                                            <div
+                                                class="style-preview flex items-center justify-center bg-slate-50 border-slate-200">
+                                                <div
+                                                    class="w-2 h-2 bg-blue-500 rounded border border-white shadow-sm mb-1">
+                                                </div>
                                             </div>
+                                            <span class="style-name">Icon dọc</span>
                                         </div>
-                                        <span class="style-name">Sóng</span>
+                                        <div class="style-item" id="theme-btn-classic"
+                                            onclick="setModuleTheme('classic')">
+                                            <div
+                                                class="style-preview flex items-center justify-center bg-white border-slate-200">
+                                                <div class="flex items-center gap-1">
+                                                    <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                                </div>
+                                            </div>
+                                            <span class="style-name">Cổ điển</span>
+                                        </div>
+                                        <div class="style-item" id="theme-btn-wave" onclick="setModuleTheme('wave')">
+                                            <div
+                                                class="style-preview flex items-center justify-center bg-white border-slate-200 overflow-hidden">
+                                                <div class="w-full h-full relative">
+                                                    <div class="absolute bottom-0 left-0 w-full h-1/2 bg-blue-500/10"
+                                                        style="clip-path: ellipse(80% 100% at 50% 100%);"></div>
+                                                </div>
+                                            </div>
+                                            <div class="style-name">Sóng</div>
+                                        </div>
                                     </div>
+                                </div>
+
+                                <div class="border-t border-slate-100"></div>
+
+                                <!-- Section 3: Wallpaper -->
+                                <div>
+                                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Hình
+                                        nền</h4>
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <button onclick="changeBg('default')"
+                                            class="w-6 h-6 rounded-full border border-slate-200 bg-[#F7F8F9] hover:scale-110 transition-transform"
+                                            title="Mặc định"></button>
+                                        <button onclick="changeBg('black')"
+                                            class="w-6 h-6 rounded-full border border-slate-200 bg-black hover:scale-110 transition-transform"
+                                            title="Đen"></button>
+                                        <button onclick="changeBg('lightblue')"
+                                            class="w-6 h-6 rounded-full border border-slate-200 bg-[#e0f2fe] hover:scale-110 transition-transform"
+                                            title="Xanh nhạt"></button>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between text-xs text-slate-500 cursor-pointer hover:text-blue-600 transition-colors group">
+                                        <span class="font-medium text-[10px] uppercase tracking-wider">Tải ảnh</span>
+                                        <i
+                                            class="fa-solid fa-cloud-arrow-up text-sm group-hover:scale-110 transition-transform"></i>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-100"></div>
+
+                                <!-- Section 4: Snow -->
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-regular fa-snowflake text-slate-400 text-xs animate-pulse"></i>
+                                        <span
+                                            class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tuyết
+                                            rơi</span>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" id="toggle-snow"
+                                            onchange="toggleSnow(this)">
+                                        <div
+                                            class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-500">
+                                        </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         </div>
 
@@ -1331,6 +1499,96 @@
                 dropdown.classList.add('hidden');
             }
         });
+
+        // Change Background Function
+        function changeBg(type) {
+            // Remove dark theme by default
+            document.body.classList.remove('theme-dark');
+
+            if (type === 'default') {
+                document.body.style.backgroundColor = '#F7F8F9';
+                currentSnowColor = '#60a5fa'; // More blue for grey theme
+            } else if (type === 'black') {
+                document.body.style.backgroundColor = '#111827';
+                document.body.classList.add('theme-dark');
+                currentSnowColor = '#FFFFFF';
+            } else if (type === 'lightblue') {
+                document.body.style.backgroundColor = '#e0f2fe';
+                currentSnowColor = '#FFFFFF';
+            }
+        }
+
+        // --- Snow Effect Logic ---
+        let snowActive = false;
+        let snowCanvas, snowCtx;
+        let flakes = [];
+        let animationId;
+        let currentSnowColor = '#60a5fa'; // Matches default grey theme
+
+        function toggleSnow(checkbox) {
+            snowActive = checkbox.checked;
+            snowCanvas = document.getElementById('snow-canvas');
+
+            if (snowActive) {
+                snowCanvas.style.display = 'block';
+                initSnow();
+                animateSnow();
+            } else {
+                snowCanvas.style.display = 'none';
+                cancelAnimationFrame(animationId);
+            }
+        }
+
+        function initSnow() {
+            snowCtx = snowCanvas.getContext('2d');
+            resizeSnow();
+            window.addEventListener('resize', resizeSnow);
+
+            flakes = [];
+            const flakeCount = 150;
+            for (let i = 0; i < flakeCount; i++) {
+                flakes.push({
+                    x: Math.random() * snowCanvas.width,
+                    y: Math.random() * snowCanvas.height,
+                    radius: Math.random() * 2 + 0.5,
+                    speed: Math.random() * 1 + 0.5,
+                    wind: Math.random() * 1 - 0.5,
+                    opacity: Math.random() * 0.5 + 0.3
+                });
+            }
+        }
+
+        function resizeSnow() {
+            if (snowCanvas) {
+                snowCanvas.width = window.innerWidth;
+                snowCanvas.height = window.innerHeight;
+            }
+        }
+
+        function animateSnow() {
+            if (!snowActive) return;
+
+            snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+            snowCtx.fillStyle = currentSnowColor;
+
+            flakes.forEach(flake => {
+                snowCtx.beginPath();
+                snowCtx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+                snowCtx.fill();
+
+                flake.y += flake.speed;
+                flake.x += flake.wind;
+
+                if (flake.y > snowCanvas.height) {
+                    flake.y = -10;
+                    flake.x = Math.random() * snowCanvas.width;
+                }
+                if (flake.x > snowCanvas.width) flake.x = 0;
+                else if (flake.x < 0) flake.x = snowCanvas.width;
+            });
+
+            animationId = requestAnimationFrame(animateSnow);
+        }
 
         // Search Modules Function
         function searchModules(query) {
@@ -2163,6 +2421,7 @@
         </div>
     </div>
 
+    <canvas id="snow-canvas"></canvas>
 </body>
 
 </html>
