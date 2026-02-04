@@ -367,28 +367,73 @@
         }
 
         /* High specificity Vertical Icon Theme (8 columns) */
-        body.theme-vertical-8 .module-grid {
+        html body.theme-vertical-8 .module-grid,
+        html body.theme-vertical-8 #favorites-grid,
+        html body.theme-vertical-8 #flat-view.view-container {
             grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
-            gap: 1rem !important;
+            grid-template-rows: auto !important;
+            gap: 1.5rem 0.5rem !important;
+            /* More row gap, less col gap */
+            display: grid !important;
         }
 
         body.theme-vertical-8 .card-vertical-8 {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            height: auto !important;
+            width: 100% !important;
             flex-direction: column !important;
             align-items: center !important;
-            justify-content: center !important;
-            height: 120px !important;
-            text-align: center !important;
+            justify-content: flex-start !important;
             gap: 0.5rem !important;
-            padding: 0.75rem !important;
+            transition: none !important;
+            overflow: visible !important;
+            transform: none !important;
+            margin: 0 auto !important;
+            /* Neutralize card-hover */
+        }
+
+        body.theme-vertical-8 .card-vertical-8:hover {
+            transform: none !important;
+            box-shadow: none !important;
+            border-color: transparent !important;
         }
 
         body.theme-vertical-8 .card-vertical-8 .w-14 {
             margin-right: 0 !important;
+            background: white !important;
+            border: 1px solid #f1f5f9 !important;
+            border-radius: 1.25rem !important;
+            /* 20px */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+            width: 64px !important;
+            height: 64px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.2s ease !important;
+            flex-shrink: 0 !important;
+        }
+
+        body.theme-vertical-8 .card-vertical-8:hover .w-14 {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+            border-color: #e2e8f0 !important;
         }
 
         body.theme-vertical-8 .card-vertical-8 h3 {
             white-space: normal !important;
             font-size: 13px !important;
+            font-weight: 600 !important;
+            color: #1e293b !important;
+            text-align: center !important;
+            margin-top: 4px !important;
+            line-height: 1.2 !important;
+            max-width: 100% !important;
+            word-wrap: break-word !important;
         }
 
         /* Hide stars when category view is disabled */
@@ -1163,7 +1208,7 @@
 
         <!-- Flat View (Hidden by default) - V10 COMPACT STYLE -->
         <div id="flat-view"
-            class="hidden view-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            class="hidden view-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 module-grid">
             <!-- Modules will be cloned here when flat view is enabled -->
         </div>
 
@@ -1535,12 +1580,21 @@
 
         function applyThemeToModules(themeName) {
             const allModules = document.querySelectorAll('.card-hover');
+            const allGrids = document.querySelectorAll('.module-grid');
 
-            // Toggle Body Class for Grid Layout Changes
+            // Toggle Body Class and Grid Properties for layout changes
             if (themeName === 'vertical-8') {
                 document.body.classList.add('theme-vertical-8');
+                allGrids.forEach(grid => {
+                    grid.style.setProperty('grid-template-columns', 'repeat(8, minmax(0, 1fr))', 'important');
+                    grid.style.setProperty('gap', '1.5rem 0.5rem', 'important');
+                });
             } else {
                 document.body.classList.remove('theme-vertical-8');
+                allGrids.forEach(grid => {
+                    grid.style.removeProperty('grid-template-columns');
+                    grid.style.removeProperty('gap');
+                });
             }
 
             // Theme class mapping
