@@ -962,21 +962,41 @@
 
                                 <div class="border-t border-slate-100"></div>
 
-                                <!-- Section 4: Snow -->
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-regular fa-snowflake text-slate-400 text-xs animate-pulse"></i>
-                                        <span
-                                            class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tuyết
-                                            rơi</span>
-                                    </div>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" class="sr-only peer" id="toggle-snow"
-                                            onchange="toggleSnow(this)">
-                                        <div
-                                            class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-500">
+                                <!-- Section 4: Effects -->
+                                <div class="space-y-3">
+                                    <!-- Snow Toggle -->
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fa-regular fa-snowflake text-slate-400 text-xs animate-pulse"></i>
+                                            <span
+                                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tuyết
+                                                rơi</span>
                                         </div>
-                                    </label>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" class="sr-only peer" id="toggle-snow"
+                                                onchange="toggleSnow(this)">
+                                            <div
+                                                class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-500">
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- Sakura Toggle (Cherry Blossom) -->
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fa-solid fa-leaf text-pink-400 text-xs animate-bounce"></i>
+                                            <span
+                                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Hoa
+                                                đào rơi</span>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" class="sr-only peer" id="toggle-sakura"
+                                                onchange="toggleSakura(this)">
+                                            <div
+                                                class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-500">
+                                            </div>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1622,10 +1642,12 @@
             }
         }
 
-        // --- Snow Effect Logic ---
+        // --- Effects Logic (Snow & Sakura) ---
         let snowActive = false;
+        let sakuraActive = false;
         let snowCanvas, snowCtx;
         let flakes = [];
+        let petals = [];
         let animationId;
         let currentSnowColor = '#60a5fa'; // Matches default grey theme
 
@@ -1634,11 +1656,35 @@
             snowCanvas = document.getElementById('snow-canvas');
 
             if (snowActive) {
+                // Mutual exclusivity: Turn off Sakura
+                sakuraActive = false;
+                const sakuraToggle = document.getElementById('toggle-sakura');
+                if (sakuraToggle) sakuraToggle.checked = false;
+
                 snowCanvas.style.display = 'block';
                 initSnow();
                 animateSnow();
             } else {
-                snowCanvas.style.display = 'none';
+                if (!sakuraActive) snowCanvas.style.display = 'none';
+                cancelAnimationFrame(animationId);
+            }
+        }
+
+        function toggleSakura(checkbox) {
+            sakuraActive = checkbox.checked;
+            snowCanvas = document.getElementById('snow-canvas');
+
+            if (sakuraActive) {
+                // Mutual exclusivity: Turn off Snow
+                snowActive = false;
+                const snowToggle = document.getElementById('toggle-snow');
+                if (snowToggle) snowToggle.checked = false;
+
+                snowCanvas.style.display = 'block';
+                initSakura();
+                animateSakura();
+            } else {
+                if (!snowActive) snowCanvas.style.display = 'none';
                 cancelAnimationFrame(animationId);
             }
         }
@@ -1646,6 +1692,7 @@
         function initSnow() {
             snowCtx = snowCanvas.getContext('2d');
             resizeSnow();
+            window.removeEventListener('resize', resizeSnow);
             window.addEventListener('resize', resizeSnow);
 
             flakes = [];
@@ -1658,6 +1705,29 @@
                     speed: Math.random() * 1 + 0.5,
                     wind: Math.random() * 1 - 0.5,
                     opacity: Math.random() * 0.5 + 0.3
+                });
+            }
+        }
+
+        function initSakura() {
+            snowCtx = snowCanvas.getContext('2d');
+            resizeSnow();
+            window.removeEventListener('resize', resizeSnow);
+            window.addEventListener('resize', resizeSnow);
+
+            petals = [];
+            const petalCount = 80; // Fewer but larger
+            for (let i = 0; i < petalCount; i++) {
+                petals.push({
+                    x: Math.random() * snowCanvas.width,
+                    y: Math.random() * snowCanvas.height,
+                    size: Math.random() * 6 + 4,
+                    speed: Math.random() * 1 + 0.5,
+                    angle: Math.random() * Math.PI * 2,
+                    angleSpeed: Math.random() * 0.02 - 0.01,
+                    sway: Math.random() * 2,
+                    swaySpeed: Math.random() * 0.02 + 0.01,
+                    opacity: Math.random() * 0.5 + 0.4
                 });
             }
         }
@@ -1692,6 +1762,45 @@
             });
 
             animationId = requestAnimationFrame(animateSnow);
+        }
+
+        function animateSakura() {
+            if (!sakuraActive) return;
+
+            snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+
+            petals.forEach(petal => {
+                snowCtx.save();
+                snowCtx.translate(petal.x, petal.y);
+                snowCtx.rotate(petal.angle);
+
+                // Draw petal (egg shape)
+                snowCtx.beginPath();
+                snowCtx.fillStyle = `rgba(255, 183, 197, ${petal.opacity})`; // Soft pink
+                snowCtx.ellipse(0, 0, petal.size, petal.size / 2, 0, 0, Math.PI * 2);
+                snowCtx.fill();
+
+                // Add a small vein/detail
+                snowCtx.strokeStyle = `rgba(255, 105, 180, ${petal.opacity * 0.5})`; // Slightly darker pink
+                snowCtx.lineWidth = 0.5;
+                snowCtx.stroke();
+
+                snowCtx.restore();
+
+                // Update position
+                petal.y += petal.speed;
+                petal.x += Math.sin(petal.y * petal.swaySpeed) * petal.sway;
+                petal.angle += petal.angleSpeed;
+
+                if (petal.y > snowCanvas.height + 10) {
+                    petal.y = -10;
+                    petal.x = Math.random() * snowCanvas.width;
+                }
+                if (petal.x > snowCanvas.width) petal.x = 0;
+                else if (petal.x < 0) petal.x = snowCanvas.width;
+            });
+
+            animationId = requestAnimationFrame(animateSakura);
         }
 
         // Search Modules Function
