@@ -243,44 +243,6 @@
 
         /* --- Theme Implementation Classes --- */
 
-        /* Soft Pure - Inspired by Image */
-        .card-soft-pure {
-            background: #ffffff !important;
-            border: none !important;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
-        }
-
-        .card-soft-pure .w-14 {
-            background: #ffffff !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04) !important;
-            border-radius: 12px !important;
-        }
-
-        /* Border Focus */
-        .card-border-focus {
-            border-left: 4px solid rgba(var(--theme-rgb, 51, 65, 85), 1) !important;
-            background: #fff !important;
-        }
-
-        /* Soft Elevation */
-        .card-soft-elevated {
-            background: #fff !important;
-            border: none !important;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-        }
-
-        /* Minimalist */
-        .card-minimalist {
-            background: transparent !important;
-            border: 1px dashed #e2e8f0 !important;
-            box-shadow: none !important;
-        }
-
-        .card-minimalist:hover {
-            border-style: solid;
-            border-color: rgba(var(--theme-rgb, 51, 65, 85), 0.5) !important;
-        }
-
         /* Specific Preview Decorations */
         .preview-light-bg {
             background-color: rgba(59, 130, 246, 0.1);
@@ -407,6 +369,36 @@
         .modal-close:hover {
             color: #64748b;
         }
+
+        /* Classic Theme */
+        .card-classic {
+            background: #fff !important;
+            border: 1px solid #f1f5f9 !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .card-classic:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        .card-classic .w-14 {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            width: auto !important;
+            height: auto !important;
+            padding-right: 12px !important;
+        }
+
+        .card-classic .w-14 i {
+            font-size: 2rem !important;
+            /* Larger icon */
+        }
+
+        /* Hide stars when category view is disabled */
+        body.hide-stars .favorite-star {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -419,8 +411,7 @@
         <div class="flex items-center gap-8">
             <!-- Logo -->
             <div class="flex items-center">
-                <div onclick="window.location.href='index.html'"
-                    class="h-[38px] px-2 bg-[#1B3DA1] rounded flex items-center justify-center cursor-pointer hover:bg-[#2549BD] transition-all shadow-sm">
+                <div class="h-[38px] flex items-center justify-center">
                     <img src="logo2.png" alt="App.vn Logo" class="h-6 object-contain">
                 </div>
             </div>
@@ -596,25 +587,25 @@
                                         <div class="style-preview preview-light-bg"></div>
                                         <span class="style-name">Nền nhạt</span>
                                     </div>
-                                    <div class="style-item" id="theme-btn-soft-pure"
-                                        onclick="setModuleTheme('soft-pure')">
-                                        <div class="style-preview preview-soft-pure"></div>
-                                        <span class="style-name">Soft Pure</span>
+
+                                    <div class="style-item" id="theme-btn-vertical-8"
+                                        onclick="setModuleTheme('vertical-8')">
+                                        <div
+                                            class="style-preview flex items-center justify-center bg-slate-50 border-slate-200">
+                                            <div class="w-2 h-2 bg-blue-500 rounded border border-white shadow-sm mb-1">
+                                            </div>
+                                        </div>
+                                        <span class="style-name">Icon dọc</span>
                                     </div>
-                                    <div class="style-item" id="theme-btn-border-focus"
-                                        onclick="setModuleTheme('border-focus')">
-                                        <div class="style-preview preview-border"></div>
-                                        <span class="style-name">Accent</span>
-                                    </div>
-                                    <div class="style-item" id="theme-btn-soft-elevation"
-                                        onclick="setModuleTheme('soft-elevation')">
-                                        <div class="style-preview preview-elevated"></div>
-                                        <span class="style-name">Soft Shadow</span>
-                                    </div>
-                                    <div class="style-item" id="theme-btn-minimalist"
-                                        onclick="setModuleTheme('minimalist')">
-                                        <div class="style-preview preview-minimalist"></div>
-                                        <span class="style-name">Minimal</span>
+
+                                    <div class="style-item" id="theme-btn-classic" onclick="setModuleTheme('classic')">
+                                        <div
+                                            class="style-preview flex items-center justify-center bg-white border-slate-200">
+                                            <div class="flex items-center gap-1">
+                                                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                            </div>
+                                        </div>
+                                        <span class="style-name">Cổ điển</span>
                                     </div>
                                 </div>
                             </div>
@@ -622,6 +613,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 
         <div id="status-filter-container"
@@ -1540,6 +1532,87 @@
             });
         }
 
+
+        function setModuleTheme(themeName) {
+            const allModules = document.querySelectorAll('.card-hover');
+            const galleryItems = document.querySelectorAll('.style-item');
+
+            // Remove active state from all gallery items and add to selected one
+            galleryItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.id === `theme-btn-${themeName}`) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Toggle Body Class for Grid Layout Changes
+            if (themeName === 'vertical-8') {
+                document.body.classList.add('theme-vertical-8');
+            } else {
+                document.body.classList.remove('theme-vertical-8');
+            }
+
+            // Theme class mapping
+            const themeClasses = {
+                'light-bg': 'card-light-bg',
+                'vertical-8': 'card-vertical-8',
+                'classic': 'card-classic'
+            };
+
+            allModules.forEach(card => {
+                // Remove all possible theme classes
+                Object.values(themeClasses).forEach(cls => card.classList.remove(cls));
+                card.style.removeProperty('--theme-rgb');
+
+                // Manage group-hover classes (fix for vertical-8 and classic white icon issue)
+                const iconContainer = card.querySelector('.w-14');
+                if (iconContainer) {
+                    if (themeName === 'vertical-8' || themeName === 'classic') {
+                        // Backup and remove hover classes
+                        const hoverClasses = [];
+                        iconContainer.classList.forEach(cls => {
+                            if (cls.startsWith('group-hover:')) {
+                                hoverClasses.push(cls);
+                            }
+                        });
+
+                        if (hoverClasses.length > 0) {
+                            iconContainer.dataset.hoverClasses = hoverClasses.join(' ');
+                            iconContainer.classList.remove(...hoverClasses);
+                        }
+                    } else {
+                        // Restore hover classes if they were removed
+                        if (iconContainer.dataset.hoverClasses) {
+                            const classesToRestore = iconContainer.dataset.hoverClasses.split(' ');
+                            iconContainer.classList.add(...classesToRestore);
+                            delete iconContainer.dataset.hoverClasses;
+                        }
+                    }
+                }
+
+                // Apply selected theme class
+                const selectedClass = themeClasses[themeName];
+                if (selectedClass) {
+                    card.classList.add(selectedClass);
+
+                    // Special logic for themes that need the icon color
+                    if (themeName === 'light-bg') {
+                        const iconContainer = card.querySelector('.w-14');
+                        if (iconContainer) {
+                            const colorClass = Array.from(iconContainer.classList).find(c => c.startsWith('text-'));
+                            if (colorClass) {
+                                const colorKey = colorClass.replace('text-', '');
+                                const rgb = tailwindColorMap[colorKey];
+                                if (rgb) card.style.setProperty('--theme-rgb', rgb);
+                            }
+                        }
+                    }
+                }
+            });
+
+            localStorage.setItem('appvn_module_theme', themeName);
+        }
+
         function toggleAppStoreMode() {
             const welcomeText = document.querySelector('main p.text-slate-500');
             const categorizedView = document.getElementById('categorized-view');
@@ -1625,6 +1698,13 @@
 
             // Save state
             localStorage.setItem('appvn_category_view', checkbox.checked);
+
+            // Toggle star visibility
+            if (checkbox.checked) {
+                document.body.classList.remove('hide-stars');
+            } else {
+                document.body.classList.add('hide-stars');
+            }
 
             if (isInit) {
                 // Silent update for initialization
