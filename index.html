@@ -130,6 +130,209 @@
             transition: all 0.2s ease-in-out;
         }
 
+                        /* Survey Modal Styles */
+        #survey-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 20000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .survey-modal {
+            background: white;
+            width: 95%;
+            max-width: 850px; /* Tăng chiều rộng lên 850px */
+            min-height: 750px; /* Tăng chiều cao tối thiểu lên 750px */
+            max-height: 95vh;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        /* Chia grid 2 cột cho các options để tiết kiệm không gian và tránh scroll */
+        .survey-options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Chia làm 2 cột */
+            gap: 12px;
+            overflow-y: auto;
+            padding-right: 4px;
+            padding-bottom: 20px;
+        }
+
+        /* Với các lựa chọn dài hoặc ô nhập "Khác", cho trải dài cả 2 cột */
+        .survey-option-card.full-width, 
+        .survey-other-input,
+        .survey-step[data-step="7"] .survey-option-card,
+        .survey-step[data-step="8"] .survey-option-card {
+            grid-column: span 2;
+        }
+
+        .survey-progress-container {
+            height: 6px;
+            background: #f1f5f9;
+            width: 100%;
+        }
+
+        #survey-progress-bar {
+            height: 100%;
+            background: #1B3DA1;
+            width: 10%;
+            transition: width 0.4s ease;
+        }
+
+        .survey-modal-header {
+            padding: 20px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .survey-steps-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .survey-step {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 32px;
+            opacity: 0;
+            transform: translateX(50px);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .survey-step.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .survey-step.prev {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .survey-question-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .survey-question-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .survey-options-grid {
+            display: grid;
+            gap: 12px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .survey-option-card {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border: 2px solid #f1f5f9;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .survey-option-card:hover {
+            border-color: #e2e8f0;
+            background: #f8fafc;
+        }
+
+        .survey-option-card.selected {
+            border-color: #1B3DA1;
+            background: rgba(27, 61, 161, 0.04);
+        }
+
+        .survey-option-card input[type="radio"],
+        .survey-option-card input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 16px;
+            accent-color: #1B3DA1;
+            cursor: pointer;
+        }
+
+        .survey-other-input {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 2px solid #f1f5f9;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .survey-other-input:focus {
+            border-color: #1B3DA1;
+        }
+
+        .survey-modal-footer {
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f1f5f9;
+            background: white;
+        }
+
+        .btn-survey-nav {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-survey-prev {
+            color: #64748b;
+            background: #f1f5f9;
+        }
+
+        .btn-survey-next {
+            background: #1B3DA1;
+            color: white;
+        }
+
+        .btn-survey-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
         /* Automation Side Panel Styles */
         #automation-panel-overlay {
             position: fixed;
@@ -3055,6 +3258,168 @@
         });
     </script>
 
+            <!-- Survey Modal -->
+    <div id="survey-modal-overlay">
+        <div class="survey-modal">
+            <div class="survey-progress-container">
+                <div id="survey-progress-bar"></div>
+            </div>
+
+            <div class="survey-modal-header">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-clipboard-check text-[#1B3DA1] fs-4"></i>
+                    <span class="fw-bold text-slate-800">Khảo sát nhu cầu hệ thống</span>
+                </div>
+                <button type="button" class="btn-close shadow-none" onclick="closeSurveyModal()"></button>
+            </div>
+
+            <div class="survey-steps-container" id="survey-steps">
+                <!-- Step 1 -->
+                <div class="survey-step active" data-step="1">
+                    <h3 class="survey-question-title">Lĩnh vực kinh doanh</h3>
+                    <p class="survey-question-desc">Chọn lĩnh vực hoạt động chính của bạn</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="radio" name="q1" value="fnb"><span>F&B (Nhà hàng, Cafe, Trà sữa)</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q1" value="retail"><span>Bán lẻ (Thời trang, Mỹ phẩm, Mẹ & Bé, Tạp hóa)</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q1" value="beauty"><span>Dịch vụ làm đẹp (Spa, Salon, Thẩm mỹ viện)</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q1" value="edu"><span>Giáo dục / Trung tâm đào tạo</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q1" value="health"><span>Sức khỏe / Phòng khám / Nhà thuốc</span></label>
+                        <div class="d-flex flex-column gap-2" style="grid-column: span 2;">
+                             <label class="survey-option-card"><input type="radio" name="q1" value="other"><span>Khác</span></label>
+                             <input type="text" class="survey-other-input hidden" id="q1_other" placeholder="Nhập lĩnh vực khác...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="survey-step" data-step="2">
+                    <h3 class="survey-question-title">Quy mô hoạt động</h3>
+                    <p class="survey-question-desc">Quy mô hiện tại của bạn là gì?</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="radio" name="q2" value="solo"><span>Cá nhân / Kinh doanh online</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q2" value="1store"><span>1 cửa hàng duy nhất</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q2" value="chain_small"><span>Chuỗi cửa hàng (2 - 5 điểm)</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q2" value="chain_large"><span>Chuỗi cửa hàng (Trên 5 điểm)</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q2" value="enterprise"><span>Doanh nghiệp lớn (B2B/Phân phối)</span></label>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="survey-step" data-step="3" data-multi="true">
+                    <h3 class="survey-question-title">Công cụ quản lý hiện tại</h3>
+                    <p class="survey-question-desc">Chọn các công cụ bạn đang sử dụng (Có thể chọn nhiều)</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="checkbox" name="q3" value="none"><span>Chưa dùng phần mềm (Sổ sách/Excel)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q3" value="pos"><span>Đang dùng POS (KiotViet, Sapo, Loyverse...)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q3" value="crm"><span>Đang dùng CRM (Hubspot, Salesforce, Getfly...)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q3" value="inhouse"><span>Đang dùng giải pháp tự xây dựng</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q3" value="other"><span>Khác</span></label>
+                        <input type="text" class="survey-other-input hidden" id="q3_other" placeholder="Nhập công cụ khác...">
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="survey-step" data-step="4" data-multi="true">
+                    <h3 class="survey-question-title">Kênh bán hàng chính</h3>
+                    <p class="survey-question-desc">Bạn đang bán hàng trên những kênh nào?</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="checkbox" name="q4" value="offline"><span>Bán trực tiếp tại cửa hàng</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q4" value="facebook"><span>Facebook (Fanpage, Messenger)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q4" value="zalo"><span>Zalo (Cá nhân, OA)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q4" value="ecommerce"><span>Sàn TMĐT (Shopee, Lazada, TikTok Shop)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q4" value="website"><span>Website bán hàng</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q4" value="telesale"><span>Telesale (Gọi điện trực tiếp)</span></label>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="survey-step" data-step="5" data-multi="true">
+                    <h3 class="survey-question-title">Kênh thu hút khách hàng/Lead</h3>
+                    <p class="survey-question-desc">Cách bạn tìm kiếm khách hàng mới</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="checkbox" name="q5" value="ads"><span>Chạy quảng cáo (FB/GG/TikTok Ads)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q5" value="livestream"><span>Livestream bán hàng</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q5" value="store_front"><span>Khách vãng lai / Biển hiệu</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q5" value="referral"><span>Giới thiệu từ khách cũ (Referral)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q5" value="seo"><span>SEO / Content Marketing</span></label>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="survey-step" data-step="6">
+                    <h3 class="survey-question-title">Số lượng dữ liệu khách hàng</h3>
+                    <p class="survey-question-desc">Quy mô data khách hàng hiện có</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="radio" name="q6" value="<1k"><span>Dưới 1.000 khách hàng</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q6" value="1-10k"><span>1.000 - 10.000 khách hàng</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q6" value="10-50k"><span>10.000 - 50.000 khách hàng</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q6" value="50k+"><span>Trên 50.000 khách hàng</span></label>
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="survey-step" data-step="7" data-multi="true" data-max="3">
+                    <h3 class="survey-question-title">Vấn đề lớn nhất đang gặp phải</h3>
+                    <p class="survey-question-desc">Chọn tối đa 3 vấn đề gây nhức nhối nhất</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="checkbox" name="q7" value="stock"><span>Thất thoát hàng hóa, khó quản lý tồn kho</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q7" value="disperse_data"><span>Data khách hàng rải rác, không tập trung</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q7" value="nurture"><span>Không biết khách hàng cũ là ai để chăm sóc lại</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q7" value="ads_cost"><span>Tốn nhiều chi phí quảng cáo nhưng không ra đơn</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q7" value="forget"><span>Nhân viên quên lịch hẹn, bỏ sót khách</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q7" value="report"><span>Báo cáo doanh thu chậm, không chính xác</span></label>
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div class="survey-step" data-step="8" data-multi="true" data-max="2">
+                    <h3 class="survey-question-title">Tính năng quan tâm nhất</h3>
+                    <p class="survey-question-desc">Chọn tối đa 2 tính năng bạn ưu tiên nhất</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="checkbox" name="q8" value="pos"><span>Quản lý bán hàng & Kho (POS)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q8" value="crm"><span>Quản lý thông tin & Lịch sử mua hàng (CRM)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q8" value="automation"><span>Tự động hóa Marketing/Chăm sóc</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q8" value="cdp"><span>Phân tích dữ liệu khách hàng (CDP)</span></label>
+                        <label class="survey-option-card"><input type="checkbox" name="q8" value="loyalty"><span>Quản lý Loyalty (Tích điểm, hạng thành viên)</span></label>
+                    </div>
+                </div>
+
+                <!-- Step 9 -->
+                <div class="survey-step" data-step="9">
+                    <h3 class="survey-question-title">Ngân sách dự kiến / năm</h3>
+                    <p class="survey-question-desc">Khoảng kinh phí dự chi cho phần mềm</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="radio" name="q9" value="<5m"><span>Dưới 5 triệu / năm</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q9" value="5-15m"><span>5 - 15 triệu / năm</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q9" value="15-50m"><span>15 - 50 triệu / năm</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q9" value="50m+"><span>Trên 50 triệu / năm (Solution riêng)</span></label>
+                    </div>
+                </div>
+
+                <!-- Step 10 -->
+                <div class="survey-step" data-step="10">
+                    <h3 class="survey-question-title">Thời gian dự kiến triển khai</h3>
+                    <p class="survey-question-desc">Mức độ ưu tiên sử dụng</p>
+                    <div class="survey-options-grid">
+                        <label class="survey-option-card"><input type="radio" name="q10" value="asap"><span>Càng sớm càng tốt (Trong tuần này)</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q10" value="month"><span>Trong tháng này</span></label>
+                        <label class="survey-option-card"><input type="radio" name="q10" value="reference"><span>Đang tham khảo giá/Tính năng</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="survey-modal-footer">
+                <button type="button" class="btn btn-survey-nav btn-survey-prev" id="prev-survey-btn" onclick="prevSurveyStep()">
+                    <i class="bi bi-arrow-left"></i> Quay lại
+                </button>
+                <div class="text-slate-400 small fw-medium" id="survey-counter">Câu 1 / 10</div>
+                <button type="button" class="btn btn-survey-nav btn-survey-next" id="next-survey-btn" onclick="nextSurveyStep()">
+                    Tiếp theo <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- App Description Modal -->
     <div id="app-modal" class="modal-overlay">
         <div class="modal-content relative">
@@ -3128,7 +3493,7 @@
                     </div>
                 </div>
                 <div class="ms-4">
-                    <button class="btn-start-survey">Bắt đầu khảo sát</button>
+                    <button class="btn-start-survey" onclick="openSurveyModal()">Bắt đầu khảo sát</button>
                 </div>
             </div>
 
@@ -3167,6 +3532,136 @@
             document.body.style.overflow = 'hidden'; // Prevent background scroll
         }
 
+                        let currentSurveyStep = 1;
+        const totalSurveySteps = 10;
+
+        function openSurveyModal() {
+            document.getElementById('survey-modal-overlay').style.display = 'flex';
+            currentSurveyStep = 1;
+            showSurveyStep(1);
+            resetSurveyInputs();
+        }
+
+        function closeSurveyModal() {
+            document.getElementById('survey-modal-overlay').style.display = 'none';
+        }
+
+        function showSurveyStep(step) {
+            const steps = document.querySelectorAll('.survey-step');
+            steps.forEach(s => {
+                s.classList.remove('active', 'prev');
+                const sStep = parseInt(s.getAttribute('data-step'));
+                if (sStep < step) s.classList.add('prev');
+                if (sStep === step) s.classList.add('active');
+            });
+
+            // Update Progress
+            const progress = (step / totalSurveySteps) * 100;
+            document.getElementById('survey-progress-bar').style.width = progress + '%';
+            document.getElementById('survey-counter').textContent = `Câu ${step} / ${totalSurveySteps}`;
+
+            // Buttons visibility
+            document.getElementById('prev-survey-btn').style.visibility = step === 1 ? 'hidden' : 'visible';
+            
+            const nextBtn = document.getElementById('next-survey-btn');
+            if (step === totalSurveySteps) {
+                nextBtn.innerHTML = 'Gửi kết quả <i class="bi bi-check-lg"></i>';
+            } else {
+                nextBtn.innerHTML = 'Tiếp theo <i class="bi bi-arrow-right"></i>';
+            }
+            
+            checkStepValidity();
+        }
+
+        function nextSurveyStep() {
+            if (currentSurveyStep < totalSurveySteps) {
+                currentSurveyStep++;
+                showSurveyStep(currentSurveyStep);
+            } else {
+                // Submit logic
+                alert("Cảm ơn bạn đã hoàn thành khảo sát! Chúng tôi sẽ liên hệ tư vấn giải pháp tối ưu nhất.");
+                closeSurveyModal();
+            }
+        }
+
+        function prevSurveyStep() {
+            if (currentSurveyStep > 1) {
+                currentSurveyStep--;
+                showSurveyStep(currentSurveyStep);
+            }
+        }
+
+        function checkStepValidity() {
+            const currentStepEl = document.querySelector(`.survey-step[data-step="${currentSurveyStep}"]`);
+            const inputs = currentStepEl.querySelectorAll('input:checked');
+            const nextBtn = document.getElementById('next-survey-btn');
+            
+            let isValid = inputs.length > 0;
+            
+            // Check max selection
+            const max = currentStepEl.getAttribute('data-max');
+            if (max && inputs.length > max) {
+                isValid = false;
+            }
+
+            nextBtn.disabled = !isValid;
+        }
+
+        function resetSurveyInputs() {
+            document.querySelectorAll('#survey-steps input').forEach(input => {
+                input.checked = false;
+                if (input.type === 'text') input.value = '';
+            });
+            document.querySelectorAll('.survey-option-card').forEach(card => card.classList.remove('selected'));
+        }
+
+        // Event Delegation for Radio/Checkbox and Auto Next
+        document.addEventListener('change', (e) => {
+            if (e.target.name && e.target.name.startsWith('q')) {
+                const card = e.target.closest('.survey-option-card');
+                const stepEl = e.target.closest('.survey-step');
+                const isMulti = stepEl.getAttribute('data-multi') === 'true';
+
+                if (!isMulti) {
+                    // Radio effect
+                    stepEl.querySelectorAll('.survey-option-card').forEach(c => c.classList.remove('selected'));
+                    if (card) card.classList.add('selected');
+                    
+                    // Show "Other" input if needed
+                    const otherInput = stepEl.querySelector('.survey-other-input');
+                    if (otherInput) {
+                        if (e.target.value === 'other') otherInput.classList.remove('hidden');
+                        else otherInput.classList.add('hidden');
+                    }
+
+                    // Auto Next after small delay
+                    setTimeout(() => {
+                        if (currentSurveyStep < totalSurveySteps && !isMulti && e.target.value !== 'other') {
+                            nextSurveyStep();
+                        }
+                    }, 400);
+                } else {
+                    // Checkbox effect
+                    if (e.target.checked) card.classList.add('selected');
+                    else card.classList.remove('selected');
+                    
+                    // Show "Other" for checkboxes
+                    if (e.target.value === 'other') {
+                        const otherInput = stepEl.querySelector('.survey-other-input');
+                        if (otherInput) {
+                            if (e.target.checked) otherInput.classList.remove('hidden');
+                            else otherInput.classList.add('hidden');
+                        }
+                    }
+                }
+                checkStepValidity();
+            }
+        });
+
+        function closeSurveyModal() {
+            document.getElementById('survey-modal-overlay').style.display = 'none';
+        }
+
         function closeAutomationPanel() {
             document.getElementById('automation-panel-overlay').style.display = 'none';
             document.getElementById('automation-panel').classList.remove('open');
@@ -3179,3 +3674,10 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
