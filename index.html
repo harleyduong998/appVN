@@ -130,7 +130,164 @@
             transition: all 0.2s ease-in-out;
         }
 
-                        /* Survey Modal Styles */
+                                /* Manage Group Modal Styles */
+        #manage-group-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 20001; /* Above Automation Panel and Survey Modal */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .manage-group-modal {
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .manage-group-header {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .manage-group-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .manage-group-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 12px;
+        }
+
+        .empty-group-placeholder {
+            background: #f8fafc;
+            border: 1px dashed #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .group-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 1px solid #f1f5f9;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .group-item:hover {
+            border-color: #e2e8f0;
+            background: #f8fafc;
+        }
+
+        .group-icon-circle {
+            width: 36px;
+            height: 36px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: #64748b;
+        }
+
+        .group-name {
+            flex: 1;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .btn-add-group-item {
+            background: #1B3DA1; /* Đổi sang xanh AppVN */
+            width: 28px;
+            height: 28px;
+            background: #1B3DA1; /* Orange-red like in screenshot */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-add-group-item:hover {
+            opacity: 0.9;
+        }
+
+        .manage-group-footer {
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn-new-group {
+            color: #1B3DA1;
+            border: 1px solid #1B3DA1;
+            color: #1B3DA1;
+            border: 1px solid #1B3DA1;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .btn-group-close {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 8px 24px;
+            border-radius: 8px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .btn-group-save {
+            background: #1B3DA1;
+            background: #1B3DA1;
+            color: white;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-left: 12px;
+        }
+
+        /* Survey Modal Styles */
         #survey-modal-overlay {
             display: none;
             position: fixed;
@@ -3258,7 +3415,76 @@
         });
     </script>
 
-            <!-- Survey Modal -->
+                <!-- Manage Group Modal -->
+    <div id="manage-group-modal-overlay" onclick="if(event.target === this) closeManageGroupModal()">
+        <div class="manage-group-modal">
+            <div class="manage-group-header">
+                <span class="fw-bold text-slate-800">Quản lý nhóm</span>
+                <button type="button" class="btn-close shadow-none small" onclick="closeManageGroupModal()"></button>
+            </div>
+            
+            <div class="manage-group-body">
+                <div class="manage-group-section-title">Nhóm đang sử dụng (0)</div>
+                <div class="empty-group-placeholder">
+                    Không có nhóm nào đang sử dụng
+                </div>
+
+                <div class="manage-group-section-title mt-4">Nhóm chưa sử dụng (13)</div>
+                <div class="group-list">
+                    <div class="group-item">
+                        <div class="group-icon-circle"><i class="bi bi-chat-dots"></i></div>
+                        <span class="group-name">Thiết lập Livechat</span>
+                        <button class="btn-add-group-item">+</button>
+                    </div>
+                    <div class="group-item">
+                        <div class="group-icon-circle"><i class="bi bi-robot"></i></div>
+                        <span class="group-name">Thiết lập Chatbot</span>
+                        <button class="btn-add-group-item">+</button>
+                    </div>
+                    <div class="group-item">
+                        <div class="group-icon-circle"><i class="bi bi-bar-chart"></i></div>
+                        <span class="group-name">Insight Quảng cáo</span>
+                        <button class="btn-add-group-item">+</button>
+                    </div>
+                    <div class="group-item">
+                        <div class="group-icon-circle"><i class="bi bi-cpu"></i></div>
+                        <span class="group-name">GenAI</span>
+                        <button class="btn-add-group-item">+</button>
+                    </div>
+                    <div class="group-item">
+                        <div class="group-icon-circle"><i class="bi bi-share"></i></div>
+                        <span class="group-name">Automation</span>
+                        <button class="btn-add-group-item">+</button>
+                    </div>
+                    <div class="group-item">
+                        <div class="group-icon-circle"><i class="bi bi-shop"></i></div>
+                        <span class="group-name">Thiết lập Haravan</span>
+                        <button class="btn-add-group-item">+</button>
+                    </div>
+                    <div class="group-item">
+                        <div class="group-icon-circle"><i class="bi bi-people"></i></div>
+                        <span class="group-name">Chăm sóc khách hàng cũ</span>
+                        <button class="btn-add-group-item">+</button>
+                    </div>
+                    <div class="group-item">
+                        <div class="group-icon-circle"><i class="bi bi-send"></i></div>
+                        <span class="group-name">Zalo Cá nhân</span>
+                        <button class="btn-add-group-item">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manage-group-footer">
+                <button class="btn-new-group">+ Thêm nhóm mới</button>
+                <div class="d-flex">
+                    <button class="btn-group-close" onclick="closeManageGroupModal()">Thoát</button>
+                    <button class="btn-group-save" onclick="closeManageGroupModal()">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Survey Modal -->
     <div id="survey-modal-overlay">
         <div class="survey-modal">
             <div class="survey-progress-container">
@@ -3424,7 +3650,7 @@
     <div id="app-modal" class="modal-overlay">
         <div class="modal-content relative">
             <i class="fa-solid fa-xmark modal-close" onclick="closeAppModal()"></i>
-            <div class="modal-header">
+            <div class="modal-header">            git add . ; git commit -m "Cập nhật khảo sát" ; git push origin main
                 <div id="modal-icon"
                     class="w-20 h-20 rounded-3xl bg-blue-500 text-white flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">
                     <i class="fa-solid fa-cube"></i>
@@ -3492,16 +3718,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="ms-4">
-                    <button class="btn-start-survey" onclick="openSurveyModal()">Bắt đầu khảo sát</button>
-                </div>
             </div>
 
             <!-- Group Header -->
             <div class="group-header d-flex flex-column gap-3">
                 <span class="font-bold text-[#1B3DA1] text-lg">Danh sách nhóm (0)</span>
                 <div class="d-flex">
-                    <button class="btn-manage-group">
+                    <button class="btn-manage-group" onclick="openManageGroupModal()">
                         <i class="bi bi-layers"></i>
                         <span>Quản lý nhóm</span>
                     </button>
@@ -3534,6 +3757,14 @@
 
                         let currentSurveyStep = 1;
         const totalSurveySteps = 10;
+
+                function openManageGroupModal() {
+            document.getElementById('manage-group-modal-overlay').style.display = 'flex';
+        }
+
+        function closeManageGroupModal() {
+            document.getElementById('manage-group-modal-overlay').style.display = 'none';
+        }
 
         function openSurveyModal() {
             document.getElementById('survey-modal-overlay').style.display = 'flex';
@@ -3674,6 +3905,8 @@
 </body>
 
 </html>
+
+
 
 
 
