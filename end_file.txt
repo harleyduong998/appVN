@@ -1,0 +1,10 @@
+﻿            document.getElementById('automation-panel').classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+
+    <!-- Bootstrap Icons (Required for bi-* classes if not already present) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</body>
+
+</html>

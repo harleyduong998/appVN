@@ -259,6 +259,94 @@
             font-weight: 500;
         }
 
+        /* Survey Modal Styles */
+        #survey-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 20000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .survey-modal {
+            background: white;
+            width: 95%;
+            max-width: 500px;
+            max-height: 85vh;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .survey-modal-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .survey-modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .survey-modal-footer {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .survey-option-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .survey-option-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .survey-radio {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #1B3DA1;
+        }
+
+        .btn-survey-finish {
+            background-color: #1B3DA1;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-survey-skip {
+            color: #64748b;
+            font-weight: 500;
+        }
+
         .module-grid {
             transition: all 0.3s ease;
             padding-top: 0.5rem;
@@ -977,8 +1065,8 @@
                     class="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
                     onclick="event.stopPropagation()">
                     <div class="p-1">
-                        <div class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Chọn doanh
-                            nghiệp</div>
+                        <div class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Chá»n doanh
+                            nghiá»‡p</div>
                         <a href="#"
                             class="flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-50 group transition-colors">
                             <div class="flex items-center gap-2">
@@ -1015,12 +1103,12 @@
         <div class="flex items-center gap-4">
             <!-- Support -->
             <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-                title="Liên hệ">
+                title="LiÃªn há»‡">
                 <i class="fa-solid fa-headset text-xl opacity-90"></i>
             </button>
             <!-- Documentation -->
             <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-                title="Tài liệu">
+                title="TÃ i liá»‡u">
                 <i class="fa-regular fa-file-lines text-xl opacity-90"></i>
             </button>
             <!-- Notifications -->
@@ -1047,8 +1135,8 @@
 
         <!-- Welcome Section -->
         <div id="welcome-section" class="mb-8 transition-opacity duration-300">
-            <h1 class="text-3xl font-bold text-slate-800 mb-2">Xin chào, Harley! 👋</h1>
-            <p class="text-slate-500 text-lg">Chào mừng bạn quay trở lại. Hãy chọn một module để bắt đầu làm việc.</p>
+            <h1 class="text-3xl font-bold text-slate-800 mb-2">Xin chÃ o, Harley! ðŸ‘‹</h1>
+            <p class="text-slate-500 text-lg">ChÃ o má»«ng báº¡n quay trá»Ÿ láº¡i. HÃ£y chá»n má»™t module Ä‘á»ƒ báº¯t Ä‘áº§u lÃ m viá»‡c.</p>
         </div>
 
 
@@ -1059,7 +1147,7 @@
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <!-- Left Side - Search -->
                 <div class="relative flex-1 max-w-4xl">
-                    <input type="text" id="search-box" placeholder="Tìm kiếm ứng dụng"
+                    <input type="text" id="search-box" placeholder="TÃ¬m kiáº¿m á»©ng dá»¥ng"
                         class="w-full px-4 py-2 pl-10 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                         oninput="searchModules(this.value)">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
@@ -1071,19 +1159,19 @@
                     <button id="btn-my-apps"
                         class="flex items-center gap-1.5 px-4 py-2 bg-blue-600 border border-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-all shadow-md whitespace-nowrap">
                         <i class="fa-solid fa-house text-xs"></i>
-                        Ứng dụng của tôi
+                        á»¨ng dá»¥ng cá»§a tÃ´i
                     </button>
                     <button id="btn-app-store"
                         class="flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
                         <i class="fa-solid fa-table-cells text-xs"></i>
-                        Kho ứng dụng
+                        Kho á»©ng dá»¥ng
                     </button>
 
 
                     <button
                         class="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
                         <i class="fa-solid fa-box-open text-xs"></i>
-                        Gói cước
+                        GÃ³i cÆ°á»›c
                     </button>
 
                     <!-- Display Dropdown -->
@@ -1092,7 +1180,7 @@
                             onclick="document.getElementById('displayDropdown').classList.toggle('hidden'); event.stopPropagation();"
                             class="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
                             <i class="fa-solid fa-tv text-xs"></i>
-                            Hiển thị
+                            Hiá»ƒn thá»‹
                         </button>
 
                         <!-- Dropdown Menu -->
@@ -1103,7 +1191,7 @@
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2 text-slate-600">
                                         <i class="fa-solid fa-layer-group text-xs"></i>
-                                        <span class="text-[10px] font-bold uppercase tracking-wider">Xem danh mục</span>
+                                        <span class="text-[10px] font-bold uppercase tracking-wider">Xem danh má»¥c</span>
                                     </div>
                                     <label class="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" checked class="sr-only peer" id="toggle-category"
@@ -1119,7 +1207,7 @@
                                 <!-- Section 2: Themes -->
                                 <div>
                                     <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Giao
-                                        diện thẻ</h4>
+                                        diá»‡n tháº»</h4>
                                     <!-- Style Gallery Grid -->
                                     <div class="style-gallery">
                                         <!-- Monochrome Theme (Now absolute Default) -->
@@ -1131,18 +1219,18 @@
                                                     style="background: linear-gradient(to bottom, #1B3DA1, #3c8fff)">
                                                 </div>
                                             </div>
-                                            <span class="style-name">Mặc định</span>
+                                            <span class="style-name">Máº·c Ä‘á»‹nh</span>
                                         </div>
                                         <!-- Multicolor Theme (Previous Default) -->
                                         <div class="style-item" id="theme-btn-multicolor"
                                             onclick="setModuleTheme('multicolor')">
                                             <div class="style-preview"></div>
-                                            <span class="style-name">Đa sắc</span>
+                                            <span class="style-name">Äa sáº¯c</span>
                                         </div>
                                         <div class="style-item" id="theme-btn-light-bg"
                                             onclick="setModuleTheme('light-bg')">
                                             <div class="style-preview preview-light-bg"></div>
-                                            <span class="style-name">Nền nhạt</span>
+                                            <span class="style-name">Ná»n nháº¡t</span>
                                         </div>
                                         <div class="style-item" id="theme-btn-vertical-8"
                                             onclick="setModuleTheme('vertical-8')">
@@ -1152,7 +1240,7 @@
                                                     class="w-2 h-2 bg-blue-500 rounded border border-white shadow-sm mb-1">
                                                 </div>
                                             </div>
-                                            <span class="style-name">Icon dọc</span>
+                                            <span class="style-name">Icon dá»c</span>
                                         </div>
                                         <div class="style-item" id="theme-btn-classic"
                                             onclick="setModuleTheme('classic')">
@@ -1162,7 +1250,7 @@
                                                     <div class="w-2 h-2 rounded-full bg-blue-500"></div>
                                                 </div>
                                             </div>
-                                            <span class="style-name">Cổ điển</span>
+                                            <span class="style-name">Cá»• Ä‘iá»ƒn</span>
                                         </div>
                                         <div class="style-item" id="theme-btn-wave" onclick="setModuleTheme('wave')">
                                             <div
@@ -1172,7 +1260,7 @@
                                                         style="clip-path: ellipse(80% 100% at 50% 100%);"></div>
                                                 </div>
                                             </div>
-                                            <div class="style-name">Sóng</div>
+                                            <div class="style-name">SÃ³ng</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1181,25 +1269,25 @@
 
                                 <!-- Section 3: Wallpaper -->
                                 <div>
-                                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Hình
-                                        nền</h4>
+                                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">HÃ¬nh
+                                        ná»n</h4>
                                     <div class="flex items-center gap-3 mb-3" id="wallpaper-options">
                                         <button onclick="changeBg('default')" id="bg-btn-default"
                                             class="w-6 h-6 rounded-full border border-slate-200 bg-[#F7F8F9] hover:scale-110 transition-transform bg-btn-active"
-                                            title="Mặc định"></button>
+                                            title="Máº·c Ä‘á»‹nh"></button>
                                         <button onclick="changeBg('black')" id="bg-btn-black"
                                             class="w-6 h-6 rounded-full border border-slate-200 bg-black hover:scale-110 transition-transform"
-                                            title="Đen"></button>
+                                            title="Äen"></button>
                                         <button onclick="changeBg('lightblue')" id="bg-btn-lightblue"
                                             class="w-6 h-6 rounded-full border border-slate-200 bg-[#e0f2fe] hover:scale-110 transition-transform"
-                                            title="Xanh nhạt"></button>
+                                            title="Xanh nháº¡t"></button>
                                         <!-- Thumbnail placeholder created dynamically or hidden initially -->
                                         <div id="custom-bg-thumb" class="hidden" onclick="changeBg('custom')"
-                                            title="Ảnh đã tải"></div>
+                                            title="áº¢nh Ä‘Ã£ táº£i"></div>
                                     </div>
                                     <div class="flex items-center justify-between text-xs text-slate-500 cursor-pointer hover:text-blue-600 transition-colors group"
                                         onclick="document.getElementById('bg-upload-input').click()">
-                                        <span class="font-medium text-[10px] uppercase tracking-wider">Tải ảnh</span>
+                                        <span class="font-medium text-[10px] uppercase tracking-wider">Táº£i áº£nh</span>
                                         <i
                                             class="fa-solid fa-cloud-arrow-up text-sm group-hover:scale-110 transition-transform"></i>
                                     </div>
@@ -1215,8 +1303,8 @@
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2 text-slate-600">
                                             <i class="fa-regular fa-snowflake text-xs animate-pulse text-blue-400"></i>
-                                            <span class="text-[10px] font-bold uppercase tracking-wider">Tuyết
-                                                rơi</span>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider">Tuyáº¿t
+                                                rÆ¡i</span>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" class="sr-only peer" id="toggle-snow"
@@ -1231,8 +1319,8 @@
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2 text-slate-600">
                                             <i class="fa-solid fa-leaf text-pink-400 text-xs animate-bounce"></i>
-                                            <span class="text-[10px] font-bold uppercase tracking-wider">Hoa đào
-                                                rơi</span>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider">Hoa Ä‘Ã o
+                                                rÆ¡i</span>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" class="sr-only peer" id="toggle-sakura"
@@ -1255,14 +1343,14 @@
         <div id="status-filter-container"
             class="hidden justify-end mb-6 animate-in fade-in slide-in-from-top-2 duration-300">
             <div class="flex items-center gap-2">
-                <span class="text-sm font-medium text-slate-500">Trạng thái:</span>
+                <span class="text-sm font-medium text-slate-500">Tráº¡ng thÃ¡i:</span>
                 <div class="relative flex items-center h-8">
                     <select id="status-filter"
                         class="pl-3 pr-8 py-1 bg-white border border-slate-200 text-slate-600 rounded text-sm font-medium focus:outline-none transition-all appearance-none cursor-pointer h-full">
-                        <option value="all">Tất cả</option>
-                        <option value="inactive">Chưa kích hoạt</option>
-                        <option value="pending">Chờ kích hoạt</option>
-                        <option value="active">Đã kích hoạt</option>
+                        <option value="all">Táº¥t cáº£</option>
+                        <option value="inactive">ChÆ°a kÃ­ch hoáº¡t</option>
+                        <option value="pending">Chá» kÃ­ch hoáº¡t</option>
+                        <option value="active">ÄÃ£ kÃ­ch hoáº¡t</option>
                     </select>
                     <i
                         class="fa-solid fa-chevron-down absolute right-2 text-[10px] text-slate-400 pointer-events-none"></i>
@@ -1273,10 +1361,10 @@
         <!-- Modules Grid - Categorized View -->
         <div id="categorized-view" class="view-container">
 
-            <!-- 1. Ưa thích -->
+            <!-- 1. Æ¯a thÃ­ch -->
             <div id="favorites-section" class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
-                    <span>Ưa thích</span>
+                    <span>Æ¯a thÃ­ch</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div id="favorites-grid"
@@ -1285,14 +1373,14 @@
                 </div>
             </div>
 
-            <!-- 2. Bán hàng -->
+            <!-- 2. BÃ¡n hÃ ng -->
             <div class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
-                    <span>Bán hàng</span>
+                    <span>BÃ¡n hÃ ng</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
-                    <!-- Bán hàng -->
+                    <!-- BÃ¡n hÃ ng -->
                     <a href="modules/sales.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-blue-500 relative overflow-hidden transition-all">
                         <div
@@ -1302,10 +1390,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-blue-700 transition-colors">
-                                Bán hàng</h3>
+                                BÃ¡n hÃ ng</h3>
                         </div>
                     </a>
-                    <!-- Hóa đơn -->
+                    <!-- HÃ³a Ä‘Æ¡n -->
                     <a href="modules/einvoice.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-blue-500 relative overflow-hidden transition-all">
                         <div
@@ -1315,10 +1403,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-blue-700 transition-colors">
-                                Hóa đơn</h3>
+                                HÃ³a Ä‘Æ¡n</h3>
                         </div>
                     </a>
-                    <!-- Công nợ -->
+                    <!-- CÃ´ng ná»£ -->
                     <a href="modules/debt.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-indigo-600 relative overflow-hidden transition-all">
                         <div
@@ -1328,10 +1416,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-indigo-700 transition-colors">
-                                Công nợ</h3>
+                                CÃ´ng ná»£</h3>
                         </div>
                     </a>
-                    <!-- Thanh toán -->
+                    <!-- Thanh toÃ¡n -->
                     <a href="modules/payment.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-emerald-600 relative overflow-hidden transition-all">
                         <div
@@ -1341,10 +1429,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-emerald-700 transition-colors">
-                                Thanh toán</h3>
+                                Thanh toÃ¡n</h3>
                         </div>
                     </a>
-                    <!-- Thẻ trả trước -->
+                    <!-- Tháº» tráº£ trÆ°á»›c -->
                     <a href="modules/prepaid.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-emerald-600 relative overflow-hidden transition-all">
                         <div
@@ -1354,10 +1442,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-emerald-700 transition-colors">
-                                Thẻ trả trước</h3>
+                                Tháº» tráº£ trÆ°á»›c</h3>
                         </div>
                     </a>
-                    <!-- Bất động sản -->
+                    <!-- Báº¥t Ä‘á»™ng sáº£n -->
                     <a href="modules/realestate.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-sky-600 relative overflow-hidden transition-all">
                         <div
@@ -1367,7 +1455,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-sky-700 transition-colors">
-                                Bất động sản</h3>
+                                Báº¥t Ä‘á»™ng sáº£n</h3>
                         </div>
                     </a>
                     <!-- Booking -->
@@ -1383,7 +1471,7 @@
                                 Booking</h3>
                         </div>
                     </a>
-                    <!-- Dịch vụ - Làm đẹp -->
+                    <!-- Dá»‹ch vá»¥ - LÃ m Ä‘áº¹p -->
                     <a href="modules/beauty.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-pink-500 relative overflow-hidden transition-all">
                         <div
@@ -1393,7 +1481,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-pink-700 transition-colors">
-                                Dịch vụ - Làm đẹp</h3>
+                                Dá»‹ch vá»¥ - LÃ m Ä‘áº¹p</h3>
                         </div>
                     </a>
                     <!-- Wallet -->
@@ -1425,14 +1513,14 @@
                 </div>
             </div>
 
-            <!-- 3. Liên hệ -->
+            <!-- 3. LiÃªn há»‡ -->
             <div class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
-                    <span>Liên hệ</span>
+                    <span>LiÃªn há»‡</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
-                    <!-- Khách hàng -->
+                    <!-- KhÃ¡ch hÃ ng -->
                     <a href="modules/customer.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-emerald-500 relative overflow-hidden transition-all">
                         <div
@@ -1442,7 +1530,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-emerald-700 transition-colors">
-                                Khách hàng</h3>
+                                KhÃ¡ch hÃ ng</h3>
                         </div>
                     </a>
                     <!-- WorkChatV2 -->
@@ -1472,7 +1560,7 @@
                                 Zalo OA</h3>
                         </div>
                     </a>
-                    <!-- Tổng đài -->
+                    <!-- Tá»•ng Ä‘Ã i -->
                     <a href="modules/callcenter.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-green-600 relative overflow-hidden transition-all">
                         <div
@@ -1482,7 +1570,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-green-700 transition-colors">
-                                Tổng đài</h3>
+                                Tá»•ng Ä‘Ã i</h3>
                         </div>
                     </a>
                     <!-- Feedback -->
@@ -1498,7 +1586,7 @@
                                 Feedback</h3>
                         </div>
                     </a>
-                    <!-- Cảnh báo khách xấu -->
+                    <!-- Cáº£nh bÃ¡o khÃ¡ch xáº¥u -->
                     <a href="modules/badcustomer.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-rose-600 relative overflow-hidden transition-all">
                         <div
@@ -1508,7 +1596,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-rose-700 transition-colors">
-                                Cảnh báo khách xấu</h3>
+                                Cáº£nh bÃ¡o khÃ¡ch xáº¥u</h3>
                         </div>
                     </a>
                 </div>
@@ -1521,7 +1609,7 @@
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
-                    <!-- Ưu đãi -->
+                    <!-- Æ¯u Ä‘Ã£i -->
                     <a href="modules/promotions.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-red-500 relative overflow-hidden transition-all">
                         <div
@@ -1531,7 +1619,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-red-700 transition-colors">
-                                Ưu đãi</h3>
+                                Æ¯u Ä‘Ã£i</h3>
                         </div>
                     </a>
                     <!-- Flash Sale -->
@@ -1586,7 +1674,7 @@
                                 RFM</h3>
                         </div>
                     </a>
-                    <!-- Quản lý quảng cáo -->
+                    <!-- Quáº£n lÃ½ quáº£ng cÃ¡o -->
                     <a href="modules/ads.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-blue-500 relative overflow-hidden transition-all">
                         <div
@@ -1596,10 +1684,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-blue-700 transition-colors">
-                                Quản lý quảng cáo</h3>
+                                Quáº£n lÃ½ quáº£ng cÃ¡o</h3>
                         </div>
                     </a>
-                    <!-- Rút gọn link -->
+                    <!-- RÃºt gá»n link -->
                     <a href="modules/shortlink.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-indigo-500 relative overflow-hidden transition-all">
                         <div
@@ -1609,10 +1697,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-indigo-700 transition-colors">
-                                Rút gọn link</h3>
+                                RÃºt gá»n link</h3>
                         </div>
                     </a>
-                    <!-- Quà tặng xoay vòng -->
+                    <!-- QuÃ  táº·ng xoay vÃ²ng -->
                     <a href="modules/spin.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-red-500 relative overflow-hidden transition-all">
                         <div
@@ -1622,20 +1710,20 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-red-700 transition-colors">
-                                Quà tặng xoay vòng</h3>
+                                QuÃ  táº·ng xoay vÃ²ng</h3>
                         </div>
                     </a>
                 </div>
             </div>
 
-            <!-- 5. Hàng hóa & Tồn kho -->
+            <!-- 5. HÃ ng hÃ³a & Tá»“n kho -->
             <div class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
-                    <span>Hàng hóa & Tồn kho</span>
+                    <span>HÃ ng hÃ³a & Tá»“n kho</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
-                    <!-- Sản phẩm -->
+                    <!-- Sáº£n pháº©m -->
                     <a href="modules/product.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-amber-500 relative overflow-hidden transition-all">
                         <div
@@ -1645,10 +1733,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-amber-700 transition-colors">
-                                Sản phẩm</h3>
+                                Sáº£n pháº©m</h3>
                         </div>
                     </a>
-                    <!-- Kho hàng -->
+                    <!-- Kho hÃ ng -->
                     <a href="modules/warehouse.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-gray-500 relative overflow-hidden transition-all">
                         <div
@@ -1658,10 +1746,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-gray-700 transition-colors">
-                                Kho hàng</h3>
+                                Kho hÃ ng</h3>
                         </div>
                     </a>
-                    <!-- Vận chuyển -->
+                    <!-- Váº­n chuyá»ƒn -->
                     <a href="modules/shipping.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-amber-600 relative overflow-hidden transition-all">
                         <div
@@ -1671,10 +1759,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-amber-700 transition-colors">
-                                Vận chuyển</h3>
+                                Váº­n chuyá»ƒn</h3>
                         </div>
                     </a>
-                    <!-- Mẫu in -->
+                    <!-- Máº«u in -->
                     <a href="modules/templates.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-gray-600 relative overflow-hidden transition-all">
                         <div
@@ -1684,10 +1772,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-gray-700 transition-colors">
-                                Mẫu in</h3>
+                                Máº«u in</h3>
                         </div>
                     </a>
-                    <!-- Lưu trữ -->
+                    <!-- LÆ°u trá»¯ -->
                     <a href="modules/storage.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-stone-600 relative overflow-hidden transition-all">
                         <div
@@ -1697,7 +1785,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-stone-700 transition-colors">
-                                Lưu trữ</h3>
+                                LÆ°u trá»¯</h3>
                         </div>
                     </a>
                     <!-- Delivery-Agency -->
@@ -1716,10 +1804,10 @@
                 </div>
             </div>
 
-            <!-- 6. Quản lý nội dung -->
+            <!-- 6. Quáº£n lÃ½ ná»™i dung -->
             <div class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
-                    <span>Quản lý nội dung</span>
+                    <span>Quáº£n lÃ½ ná»™i dung</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
@@ -1736,7 +1824,7 @@
                                 Webview</h3>
                         </div>
                     </a>
-                    <!-- Tích hợp -->
+                    <!-- TÃ­ch há»£p -->
                     <a href="modules/integration.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-cyan-600 relative overflow-hidden transition-all">
                         <div
@@ -1746,10 +1834,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-cyan-700 transition-colors">
-                                Tích hợp</h3>
+                                TÃ­ch há»£p</h3>
                         </div>
                     </a>
-                    <!-- Sự kiện -->
+                    <!-- Sá»± kiá»‡n -->
                     <a href="modules/events.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-orange-600 relative overflow-hidden transition-all">
                         <div
@@ -1759,7 +1847,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-orange-700 transition-colors">
-                                Sự kiện</h3>
+                                Sá»± kiá»‡n</h3>
                         </div>
                     </a>
                     <!-- Content -->
@@ -1778,14 +1866,14 @@
                 </div>
             </div>
 
-            <!-- 7. Công cụ thiết kế -->
+            <!-- 7. CÃ´ng cá»¥ thiáº¿t káº¿ -->
             <div class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
-                    <span>Công cụ thiết kế</span>
+                    <span>CÃ´ng cá»¥ thiáº¿t káº¿</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
-                    <!-- Thiết kế ảnh -->
+                    <!-- Thiáº¿t káº¿ áº£nh -->
                     <a href="modules/imagedesign.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-rose-600 relative overflow-hidden transition-all">
                         <div
@@ -1795,10 +1883,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-rose-700 transition-colors">
-                                Thiết kế ảnh</h3>
+                                Thiáº¿t káº¿ áº£nh</h3>
                         </div>
                     </a>
-                    <!-- Thiết kế Email -->
+                    <!-- Thiáº¿t káº¿ Email -->
                     <a href="modules/emaildesign.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-fuchsia-600 relative overflow-hidden transition-all">
                         <div
@@ -1808,7 +1896,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-fuchsia-700 transition-colors">
-                                Thiết kế Email</h3>
+                                Thiáº¿t káº¿ Email</h3>
                         </div>
                     </a>
                     <!-- Mini App Builder -->
@@ -1840,14 +1928,14 @@
                 </div>
             </div>
 
-            <!-- 8. Ứng dụng hỗ trợ -->
+            <!-- 8. á»¨ng dá»¥ng há»— trá»£ -->
             <div class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
-                    <span>Ứng dụng hỗ trợ</span>
+                    <span>á»¨ng dá»¥ng há»— trá»£</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
-                    <!-- Cài đặt -->
+                    <!-- CÃ i Ä‘áº·t -->
                     <a href="modules/settings.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-slate-600 relative overflow-hidden transition-all">
                         <div
@@ -1857,10 +1945,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-slate-700 transition-colors">
-                                Cài đặt</h3>
+                                CÃ i Ä‘áº·t</h3>
                         </div>
                     </a>
-                    <!-- Cộng tác viên -->
+                    <!-- Cá»™ng tÃ¡c viÃªn -->
                     <a href="modules/collaborator.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-cyan-600 relative overflow-hidden transition-all">
                         <div
@@ -1870,10 +1958,10 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-cyan-700 transition-colors">
-                                Cộng tác viên</h3>
+                                Cá»™ng tÃ¡c viÃªn</h3>
                         </div>
                     </a>
-                    <!-- Bảo hành -->
+                    <!-- Báº£o hÃ nh -->
                     <a href="modules/warranty.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-teal-500 relative overflow-hidden transition-all">
                         <div
@@ -1883,7 +1971,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-teal-700 transition-colors">
-                                Bảo hành</h3>
+                                Báº£o hÃ nh</h3>
                         </div>
                     </a>
                     <!-- Ticket -->
@@ -1928,14 +2016,14 @@
                 </div>
             </div>
 
-            <!-- 9. Báo cáo - Thống kê -->
+            <!-- 9. BÃ¡o cÃ¡o - Thá»‘ng kÃª -->
             <div class="mb-10">
                 <div class="category-header" onclick="toggleCategory(this)">
-                    <span>Báo cáo - Thống kê</span>
+                    <span>BÃ¡o cÃ¡o - Thá»‘ng kÃª</span>
                     <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
-                    <!-- Báo cáo -->
+                    <!-- BÃ¡o cÃ¡o -->
                     <a href="modules/report.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-indigo-500 relative overflow-hidden transition-all">
                         <div
@@ -1945,7 +2033,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-indigo-700 transition-colors">
-                                Báo cáo</h3>
+                                BÃ¡o cÃ¡o</h3>
                         </div>
                     </a>
                     <!-- CRM -->
@@ -1974,7 +2062,7 @@
                                 Automation</h3>
                         </div>
                     </a>
-                    <!-- Bảng dữ liệu -->
+                    <!-- Báº£ng dá»¯ liá»‡u -->
                     <a href="modules/datatable.html"
                         class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/30 card-hover group flex items-center justify-start gap-3 h-[85px] hover:border-slate-600 relative overflow-hidden transition-all">
                         <div
@@ -1984,7 +2072,7 @@
                         <div class="flex-1 min-w-0">
                             <h3
                                 class="font-bold text-slate-800 text-sm title-fade group-hover:text-slate-700 transition-colors">
-                                Bảng dữ liệu</h3>
+                                Báº£ng dá»¯ liá»‡u</h3>
                         </div>
                     </a>
                 </div>
@@ -2354,14 +2442,14 @@
 
         // My Apps List (hardcoded)
         const myAppsList = [
-            'Bán hàng', 'Hóa đơn', 'Công nợ', 'Thanh toán', 'Thẻ trả trước', 'Bất động sản', 'Booking', 'Dịch vụ - Làm đẹp', 'Wallet', 'Order Check',
-            'Khách hàng', 'WorkChatV2', 'Zalo OA', 'Tổng đài', 'Feedback', 'Cảnh báo khách xấu',
-            'Ưu đãi', 'Flash Sale', 'Loyalty', 'Combo', 'RFM', 'Quản lý quảng cáo', 'Rút gọn link', 'Quà tặng xoay vòng',
-            'Sản phẩm', 'Kho hàng', 'Vận chuyển', 'Mẫu in', 'Lưu trữ', 'Delivery-Agency',
-            'Webview', 'Tích hợp', 'Sự kiện', 'Content',
-            'Thiết kế ảnh', 'Thiết kế Email', 'Mini App Builder',
-            'Cài đặt', 'Cộng tác viên', 'Bảo hành', 'Ticket', 'System warning',
-            'Báo cáo', 'CRM', 'Automation', 'Bảng dữ liệu'
+            'BÃ¡n hÃ ng', 'HÃ³a Ä‘Æ¡n', 'CÃ´ng ná»£', 'Thanh toÃ¡n', 'Tháº» tráº£ trÆ°á»›c', 'Báº¥t Ä‘á»™ng sáº£n', 'Booking', 'Dá»‹ch vá»¥ - LÃ m Ä‘áº¹p', 'Wallet', 'Order Check',
+            'KhÃ¡ch hÃ ng', 'WorkChatV2', 'Zalo OA', 'Tá»•ng Ä‘Ã i', 'Feedback', 'Cáº£nh bÃ¡o khÃ¡ch xáº¥u',
+            'Æ¯u Ä‘Ã£i', 'Flash Sale', 'Loyalty', 'Combo', 'RFM', 'Quáº£n lÃ½ quáº£ng cÃ¡o', 'RÃºt gá»n link', 'QuÃ  táº·ng xoay vÃ²ng',
+            'Sáº£n pháº©m', 'Kho hÃ ng', 'Váº­n chuyá»ƒn', 'Máº«u in', 'LÆ°u trá»¯', 'Delivery-Agency',
+            'Webview', 'TÃ­ch há»£p', 'Sá»± kiá»‡n', 'Content',
+            'Thiáº¿t káº¿ áº£nh', 'Thiáº¿t káº¿ Email', 'Mini App Builder',
+            'CÃ i Ä‘áº·t', 'Cá»™ng tÃ¡c viÃªn', 'Báº£o hÃ nh', 'Ticket', 'System warning',
+            'BÃ¡o cÃ¡o', 'CRM', 'Automation', 'Báº£ng dá»¯ liá»‡u'
         ];
         let isMyAppsActive = true;
         let isAppStoreMode = false;
@@ -2489,12 +2577,12 @@
         }
 
         const appDescriptions = {
-            'Bản đồ nhà thuốc': 'Ứng dụng giúp bạn tìm kiếm và quản lý hệ thống nhà thuốc trên bản đồ, hỗ trợ điều hướng và kiểm tra thông tin liên hệ một cách nhanh chóng.',
-            'SMS Brandname': 'Giải pháp gửi tin nhắn marketing và thông báo tự động với định danh thương hiệu riêng, tăng mức độ uy tín và tiếp cận khách hàng.',
-            'Zalo OA': 'Kết nối trực tiếp với khách hàng thông qua Zalo Official Account, hỗ trợ chăm sóc khách hàng và gửi thông báo tin nhắn OA tự động.',
-            'Mạng xã hội': 'Tích hợp các nền tảng mạng xã hội để quản lý bài viết, tương tác và theo dõi hiệu quả truyền thông từ một giao diện duy nhất.',
-            'Phân tích dữ liệu': 'Công cụ phân tích chuyên sâu với các biểu đồ trực quan, giúp bạn đưa ra quyết định kinh doanh dựa trên dữ liệu thực tế.',
-            'Trí tuệ nhân tạo': 'Sử dụng AI để tự động hóa quy trình, phân loại khách hàng và dự báo xu hướng thị trường trong tương lai.'
+            'Báº£n Ä‘á»“ nhÃ  thuá»‘c': 'á»¨ng dá»¥ng giÃºp báº¡n tÃ¬m kiáº¿m vÃ  quáº£n lÃ½ há»‡ thá»‘ng nhÃ  thuá»‘c trÃªn báº£n Ä‘á»“, há»— trá»£ Ä‘iá»u hÆ°á»›ng vÃ  kiá»ƒm tra thÃ´ng tin liÃªn há»‡ má»™t cÃ¡ch nhanh chÃ³ng.',
+            'SMS Brandname': 'Giáº£i phÃ¡p gá»­i tin nháº¯n marketing vÃ  thÃ´ng bÃ¡o tá»± Ä‘á»™ng vá»›i Ä‘á»‹nh danh thÆ°Æ¡ng hiá»‡u riÃªng, tÄƒng má»©c Ä‘á»™ uy tÃ­n vÃ  tiáº¿p cáº­n khÃ¡ch hÃ ng.',
+            'Zalo OA': 'Káº¿t ná»‘i trá»±c tiáº¿p vá»›i khÃ¡ch hÃ ng thÃ´ng qua Zalo Official Account, há»— trá»£ chÄƒm sÃ³c khÃ¡ch hÃ ng vÃ  gá»­i thÃ´ng bÃ¡o tin nháº¯n OA tá»± Ä‘á»™ng.',
+            'Máº¡ng xÃ£ há»™i': 'TÃ­ch há»£p cÃ¡c ná»n táº£ng máº¡ng xÃ£ há»™i Ä‘á»ƒ quáº£n lÃ½ bÃ i viáº¿t, tÆ°Æ¡ng tÃ¡c vÃ  theo dÃµi hiá»‡u quáº£ truyá»n thÃ´ng tá»« má»™t giao diá»‡n duy nháº¥t.',
+            'PhÃ¢n tÃ­ch dá»¯ liá»‡u': 'CÃ´ng cá»¥ phÃ¢n tÃ­ch chuyÃªn sÃ¢u vá»›i cÃ¡c biá»ƒu Ä‘á»“ trá»±c quan, giÃºp báº¡n Ä‘Æ°a ra quyáº¿t Ä‘á»‹nh kinh doanh dá»±a trÃªn dá»¯ liá»‡u thá»±c táº¿.',
+            'TrÃ­ tuá»‡ nhÃ¢n táº¡o': 'Sá»­ dá»¥ng AI Ä‘á»ƒ tá»± Ä‘á»™ng hÃ³a quy trÃ¬nh, phÃ¢n loáº¡i khÃ¡ch hÃ ng vÃ  dá»± bÃ¡o xu hÆ°á»›ng thá»‹ trÆ°á»ng trong tÆ°Æ¡ng lai.'
         };
 
         function openAppModal(title, iconClass, colorClass) {
@@ -2506,7 +2594,7 @@
 
             if (modal && modalTitle && modalDesc && modalIcon) {
                 modalTitle.textContent = title;
-                modalDesc.textContent = appDescriptions[title] || 'Đang cập nhật mô tả chi tiết cho ứng dụng này. Vui lòng quay lại sau.';
+                modalDesc.textContent = appDescriptions[title] || 'Äang cáº­p nháº­t mÃ´ táº£ chi tiáº¿t cho á»©ng dá»¥ng nÃ y. Vui lÃ²ng quay láº¡i sau.';
 
                 // Update icon and color
                 modalIconI.className = iconClass;
@@ -2610,7 +2698,7 @@
                         delete iconContainer.dataset.hoverClasses;
                     }
 
-                    // Extract color for special themes (Nền nhạt, Sóng)
+                    // Extract color for special themes (Ná»n nháº¡t, SÃ³ng)
                     if (['light-bg', 'wave'].includes(themeName)) {
                         const colorClass = Array.from(iconContainer.classList).find(c => c.startsWith('text-'));
                         if (colorClass) {
@@ -2669,12 +2757,12 @@
                 if (textContainer) {
                     const viewDetails = document.createElement('span');
                     viewDetails.className = 'view-details';
-                    viewDetails.textContent = 'Xem chi tiết';
+                    viewDetails.textContent = 'Xem chi tiáº¿t';
                     textContainer.appendChild(viewDetails);
 
                     const accessLink = document.createElement('div');
                     accessLink.className = 'wave-access';
-                    accessLink.innerHTML = 'Truy cập <i class="fa-solid fa-arrow-right ml-1 text-[8px]"></i>';
+                    accessLink.innerHTML = 'Truy cáº­p <i class="fa-solid fa-arrow-right ml-1 text-[8px]"></i>';
                     textContainer.appendChild(accessLink);
                 }
 
@@ -2685,13 +2773,13 @@
                 statusBtn.className = 'status-badge ml-auto';
 
                 if (isActive) {
-                    statusBtn.textContent = 'Đã kích hoạt';
+                    statusBtn.textContent = 'ÄÃ£ kÃ­ch hoáº¡t';
                     statusBtn.classList.add('status-active');
                 } else if (isPending) {
-                    statusBtn.textContent = 'Chờ kích hoạt';
+                    statusBtn.textContent = 'Chá» kÃ­ch hoáº¡t';
                     statusBtn.classList.add('status-pending');
                 } else {
-                    statusBtn.textContent = 'Kích hoạt';
+                    statusBtn.textContent = 'KÃ­ch hoáº¡t';
                     statusBtn.classList.add('status-inactive');
                 }
                 module.appendChild(statusBtn);
@@ -2726,7 +2814,7 @@
 
                 // Change welcome message
                 if (welcomeText) {
-                    welcomeText.textContent = 'Chào mừng bạn đến kho ứng dụng';
+                    welcomeText.textContent = 'ChÃ o má»«ng báº¡n Ä‘áº¿n kho á»©ng dá»¥ng';
                 }
 
                 // Disable My Apps filter
@@ -2748,7 +2836,7 @@
 
                 // Restore welcome message
                 if (welcomeText) {
-                    welcomeText.textContent = 'Chào mừng bạn quay trở lại. Hãy chọn một module để bắt đầu làm việc.';
+                    welcomeText.textContent = 'ChÃ o má»«ng báº¡n quay trá»Ÿ láº¡i. HÃ£y chá»n má»™t module Ä‘á»ƒ báº¯t Ä‘áº§u lÃ m viá»‡c.';
                 }
             }
 
@@ -3064,18 +3152,18 @@
                     class="w-20 h-20 rounded-3xl bg-blue-500 text-white flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">
                     <i class="fa-solid fa-cube"></i>
                 </div>
-                <h2 id="modal-title" class="text-2xl font-bold text-slate-800">Tên sản phẩm</h2>
+                <h2 id="modal-title" class="text-2xl font-bold text-slate-800">TÃªn sáº£n pháº©m</h2>
             </div>
             <div class="modal-body">
                 <p id="modal-desc" class="text-slate-600 leading-relaxed text-center">
-                    Đây là mô tả chi tiết về ứng dụng. Ứng dụng này giúp bạn quản lý các hoạt động kinh doanh một cách
-                    hiệu quả và chuyên nghiệp.
+                    ÄÃ¢y lÃ  mÃ´ táº£ chi tiáº¿t vá» á»©ng dá»¥ng. á»¨ng dá»¥ng nÃ y giÃºp báº¡n quáº£n lÃ½ cÃ¡c hoáº¡t Ä‘á»™ng kinh doanh má»™t cÃ¡ch
+                    hiá»‡u quáº£ vÃ  chuyÃªn nghiá»‡p.
                 </p>
             </div>
             <div class="modal-footer">
                 <button
                     class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg transition-all active:scale-95">
-                    Kích hoạt ngay
+                    KÃ­ch hoáº¡t ngay
                 </button>
             </div>
         </div>
@@ -3105,15 +3193,14 @@
                 <i class="bi bi-robot"></i>
                 <span>Automation Map</span>
             </div>
-
         </div>
 
         <div class="flex-grow-1 overflow-y-auto">
             <!-- Survey Card -->
             <div class="survey-card shadow-sm border-slate-100">
                 <div class="survey-info">
-                    <h3 class="font-bold text-[#1e293b] text-xl mb-1">Chào mừng bạn đến với App.vn</h3>
-                    <p class="text-slate-500 text-sm">Hoàn thành thiết lập để tự động hóa quy trình</p>
+                    <h3 class="font-bold text-[#1e293b] text-xl mb-1">ChÃ o má»«ng báº¡n Ä‘áº¿n vá»›i App.vn</h3>
+                    <p class="text-slate-500 text-sm">HoÃ n thÃ nh thiáº¿t láº­p Ä‘á»ƒ tá»± Ä‘á»™ng hÃ³a quy trÃ¬nh</p>
                     
                     <div class="progress-thin w-full">
                         <div class="progress-bar-success" style="width: 0%;"></div>
@@ -3122,23 +3209,23 @@
                     <div class="d-flex align-items-center justify-content-between mt-2">
                         <span class="text-green-500 font-bold">0%</span>
                         <div class="text-sm">
-                            <span class="text-slate-400">Tiến độ</span>
-                            <span class="font-bold text-slate-700 ml-1">0/50 bước</span>
+                            <span class="text-slate-400">Tiáº¿n Ä‘á»™</span>
+                            <span class="font-bold text-slate-700 ml-1">0/50 bÆ°á»›c</span>
                         </div>
                     </div>
                 </div>
                 <div class="ms-4">
-                    <button class="btn-start-survey">Bắt đầu khảo sát</button>
+                    <button class="btn-start-survey">Báº¯t Ä‘áº§u kháº£o sÃ¡t</button>
                 </div>
             </div>
 
             <!-- Group Header -->
             <div class="group-header d-flex flex-column gap-3">
-                <span class="font-bold text-[#1B3DA1] text-lg">Danh sách nhóm (0)</span>
+                <span class="font-bold text-[#1B3DA1] text-lg">Danh sÃ¡ch nhÃ³m (0)</span>
                 <div class="d-flex">
                     <button class="btn-manage-group">
                         <i class="bi bi-layers"></i>
-                        <span>Quản lý nhóm</span>
+                        <span>Quáº£n lÃ½ nhÃ³m</span>
                     </button>
                 </div>
             </div>
