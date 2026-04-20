@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-End CRM & CDP Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        }
+
+        .insight-banner {
+            background: linear-gradient(135deg, #1B3DA1 0%, #3B82F6 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-banner::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .sparkline-container {
+            height: 40px;
+            width: 100px;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .nav-item-active {
+            background-color: #F1F5F9;
+            color: #1B3DA1;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0">
+        <div class="p-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-[#1B3DA1] rounded-lg flex items-center justify-center text-white">
+                    <i class="fa-solid fa-layer-group text-sm"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight">Nexus CDP</span>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 py-4 space-y-1">
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl nav-item-active">
+                <i class="fa-solid fa-house-chimney text-lg"></i>
+                <span class="text-sm">Dashboard</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-users text-lg"></i>
+                <span class="text-sm">Customers</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-chart-line text-lg"></i>
+                <span class="text-sm">Analytics</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-bullseye text-lg"></i>
+                <span class="text-sm">Campaigns</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-database text-lg"></i>
+                <span class="text-sm">Data Sources</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
+                <div class="w-10 h-10 rounded-full bg-slate-200 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80')"></div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-semibold truncate">Alex Henderson</p>
+                    <p class="text-xs text-slate-500 truncate">Admin Account</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#F8FAFC]">
+        <!-- Top Navigation -->
+        <header class="h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-10 px-8 flex items-center justify-between">
+            <h1 class="text-lg font-semibold text-slate-800">Executive Overview</h1>
+            <div class="flex items-center gap-4">
+                <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+                <div class="h-8 w-[1px] bg-slate-200"></div>
+                <button class="bg-[#1B3DA1] text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition flex items-center gap-2">
+                    <i class="fa-solid fa-plus text-xs"></i> Create Segment
+                </button>
+            </div>
+        </header>
+
+        <div class="p-8">
+            <!-- Hero Section: Stat Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                
+                <!-- Total Customers Card -->
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="stat-icon bg-emerald-50 text-emerald-600">
+                            <i class="fa-solid fa-user-group"></i>
+                        </div>
+                        <span class="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                            <i class="fa-solid fa-arrow-up mr-1 text-[10px]"></i> 12.5%
+                        </span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium">Total Customers</p>
+                    <h3 class="text-3xl font-bold mt-1 tracking-tight">42,891</h3>
+                </div>
+
+                <!-- Average Revenue Card -->
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="stat-icon bg-blue-50 text-[#1B3DA1]">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div class="sparkline-container">
+                            <canvas id="revSparkline"></canvas>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium">Avg. Revenue / User</p>
+                    <h3 class="text-3xl font-bold mt-1 tracking-tight">$342.10</h3>
+                </div>
+
+                <!-- Insight Banner (Spans 2 columns on large screens) -->
+                <div class="insight-banner col-span-1 md:col-span-2 p-6 rounded-2xl text-white flex flex-col justify-between shadow-xl shadow-blue-600/10">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-white/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">AI Insight</span>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-1">Customer Churn Alert</h4>
+                        <p class="text-blue-100 text-sm leading-relaxed max-w-sm">
+                            We've identified <span class="text-white font-bold">148 high-value customers</span> showing reduced activity. Recommended intervention: Retention Campaign.
+                        </p>
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <button class="bg-white text-[#1B3DA1] px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-50 transition">
+                            View Segment
+                        </button>
+                        <button class="border border-white/30 hover:bg-white/10 px-4 py-1.5 rounded-lg text-xs font-bold transition">
+                            Dismiss
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area: Detail Views -->
+            <div class="grid grid-cols-12 gap-6">
+                <!-- User Segmentation Chart -->
+                <div class="col-span-12 lg:col-span-8 glass-card p-6 rounded-2xl">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h4 class="font-bold text-slate-800">Retention & Cohort Analysis</h4>
+                            <p class="text-xs text-slate-400">Activity performance by user tier (Last 30 days)</p>
+                        </div>
+                        <select class="bg-slate-50 border border-slate-200 text-xs font-semibold rounded-lg px-2 py-1 outline-none">
+                            <option>Monthly</option>
+                            <option>Weekly</option>
+                        </select>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent High-Value Activities -->
+                <div class="col-span-12 lg:col-span-4 glass-card p-6 rounded-2xl">
+                    <h4 class="font-bold text-slate-800 mb-6">Propensity to Buy</h4>
+                    <div class="space-y-6">
+                        <!-- User 1 -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-sm">JS</div>
+                                <div>
+                                    <p class="text-sm font-semibold">Jonathan Smith</p>
+                                    <p class="text-[11px] text-slate-400">Active - Gold Tier</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs font-bold text-green-600">94%</p>
+                                <div class="w-16 h-1 bg-slate-100 rounded-full mt-1">
+                                    <div class="bg-green-500 h-full rounded-full" style="width: 94%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- User 2 -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-sm">MM</div>
+                                <div>
+                                    <p class="text-sm font-semibold">Maria Martinez</p>
+                                    <p class="text-[11px] text-slate-400">At Risk - Silver Tier</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs font-bold text-amber-600">62%</p>
+                                <div class="w-16 h-1 bg-slate-100 rounded-full mt-1">
+                                    <div class="bg-amber-500 h-full rounded-full" style="width: 62%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-8 py-2.5 text-sm font-bold text-slate-400 hover:text-[#1B3DA1] border border-dashed border-slate-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition">
+                        Expand All Leads
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Main Activity Chart
+        const mainCtx = document.getElementById('mainChart').getContext('2d');
+        new Chart(mainCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                datasets: [{
+                    label: 'Premium Users',
+                    data: [45, 52, 48, 61, 55, 68],
+                    borderColor: '#1B3DA1',
+                    backgroundColor: 'rgba(27, 61, 161, 0.05)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 0
+                }, {
+                    label: 'Standard Users',
+                    data: [35, 38, 42, 39, 41, 44],
+                    borderColor: '#94A3B8',
+                    borderDash: [5, 5],
+                    fill: false,
+                    tension: 0.4,
+                    borderWidth: 2,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { display: false },
+                    x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                }
+            }
+        });
+
+        // Sparkline for Revenue
+        const sparkCtx = document.getElementById('revSparkline').getContext('2d');
+        new Chart(sparkCtx, {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                datasets: [{
+                    data: [310, 325, 315, 340, 335, 360, 345, 370, 355, 375],
+                    borderColor: '#3B82F6',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { display: false }, y: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>

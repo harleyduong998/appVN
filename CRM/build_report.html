@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI Report Builder | CRM System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .config-sidebar { width: 340px; min-width: 340px; }
+        .config-scroll { height: calc(100vh - 120px); overflow-y: auto; }
+        .config-scroll::-webkit-scrollbar { width: 4px; }
+        .config-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .preview-area { background-color: #f8fafc; }
+    </style>
+</head>
+<body class="bg-white text-slate-900 overflow-hidden">
+    <div class="flex h-screen">
+        <!-- Sidebar: Configuration (GA4 Style) -->
+        <div class="config-sidebar border-r border-slate-200 flex flex-col bg-white">
+            <!-- Header -->
+            <div class="p-5 border-b border-slate-100 bg-white">
+                <div class="flex items-center gap-3 mb-4">
+                    <a href="report_builder.html" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 transition-colors text-slate-500">
+                        <i class="fas fa-arrow-left text-sm"></i>
+                    </a>
+                    <h1 class="text-sm font-bold text-slate-800 uppercase tracking-tighter italic">Cấu hình báo cáo</h1>
+                </div>
+                <input type="text" id="report-name-input" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:ring-2 focus:ring-blue-100 outline-none transition-all" value="Báo cáo mới">
+            </div>
+
+            <!-- Configuration Sections -->
+            <div class="flex-grow config-scroll p-4 space-y-6">
+                <!-- Metrics Section -->
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                    <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center group">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider italic">Chỉ số (Metrics)</span>
+                        <button id="open-custom-metric-modal" class="text-slate-400 hover:text-blue-600 transition-colors">
+                            <i class="fas fa-plus text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div id="metrics-selection" class="divide-y divide-slate-100">
+                        <label class="flex items-center px-4 py-2.5 hover:bg-slate-50 cursor-pointer transition-colors group">
+                            <input type="checkbox" name="metric" value="leads" checked class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-3 text-sm text-slate-600 group-hover:text-slate-900">Tổng Leads</span>
+                        </label>
+                        <label class="flex items-center px-4 py-2.5 hover:bg-slate-50 cursor-pointer transition-colors group">
+                            <input type="checkbox" name="metric" value="revenue" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-3 text-sm text-slate-600 group-hover:text-slate-900">Doanh thu dự kiến</span>
+                        </label>
+                        <label class="flex items-center px-4 py-2.5 hover:bg-slate-50 cursor-pointer transition-colors group">
+                            <input type="checkbox" name="metric" value="conversion_rate" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-3 text-sm text-slate-600 group-hover:text-slate-900">Tỷ lệ chuyển đổi</span>
+                        </label>
+                        <label class="flex items-center px-4 py-2.5 hover:bg-slate-50 cursor-pointer transition-colors group">
+                            <input type="checkbox" name="metric" value="new_customers" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-3 text-sm text-slate-600 group-hover:text-slate-900">Khách hàng mới</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Dimensions Section -->
+                <div id="group-by-section" style="display: none;" class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm animate-in fade-in duration-300">
+                    <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider italic">Chiều dữ liệu (Dimensions)</span>
+                        <i class="fas fa-plus text-[10px] text-slate-400"></i>
+                    </div>
+                    <div class="p-3">
+                        <select id="group-by-selection" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 outline-none focus:border-blue-500 cursor-pointer shadow-sm appearance-none">
+                            <option value="date">📅 &nbsp; Theo Ngày</option>
+                            <option value="source">🌐 &nbsp; Theo Nguồn</option>
+                            <option value="owner">👤 &nbsp; Theo Phụ trách</option>
+                            <option value="status">🚦 &nbsp; Theo Trạng thái</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Visualization Section -->
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                    <div class="px-4 py-3 bg-slate-50 border-b border-slate-200">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider italic">Trực quan hóa (Visualization)</span>
+                    </div>
+                    <div class="p-4 space-y-4">
+                        <select id="chart-type-selection" class="hidden">
+                            <option value="scorecard">scorecard</option>
+                            <option value="bar">bar</option>
+                            <option value="line">line</option>
+                            <option value="pie">pie</option>
+                            <option value="table">table</option>
+                            <option value="mixed">mixed</option>
+                        </select>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="setChartType('scorecard', this)" id="type-scorecard" class="viz-btn p-2.5 border rounded-lg flex flex-col items-center gap-1 hover:bg-slate-50 transition-all">
+                                <i class="fas fa-th-large text-xs text-slate-400"></i><span class="text-[9px] font-bold text-slate-500 uppercase">Số</span>
+                            </button>
+                            <button onclick="setChartType('bar', this)" id="type-bar" class="viz-btn p-2.5 border rounded-lg flex flex-col items-center gap-1 hover:bg-slate-50 transition-all">
+                                <i class="fas fa-chart-bar text-xs text-slate-400"></i><span class="text-[9px] font-bold text-slate-500 uppercase">Cột</span>
+                            </button>
+                            <button onclick="setChartType('line', this)" id="type-line" class="viz-btn p-2.5 border rounded-lg flex flex-col items-center gap-1 hover:bg-slate-50 transition-all">
+                                <i class="fas fa-chart-line text-xs text-slate-400"></i><span class="text-[9px] font-bold text-slate-500 uppercase">Đường</span>
+                            </button>
+                            <button onclick="setChartType('pie', this)" id="type-pie" class="viz-btn p-2.5 border rounded-lg flex flex-col items-center gap-1 hover:bg-slate-50 transition-all">
+                                <i class="fas fa-chart-pie text-xs text-slate-400"></i><span class="text-[9px] font-bold text-slate-500 uppercase">Tròn</span>
+                            </button>
+                            <button onclick="setChartType('table', this)" id="type-table" class="viz-btn p-2.5 border rounded-lg flex flex-col items-center gap-1 hover:bg-slate-50 transition-all">
+                                <i class="fas fa-table text-xs text-slate-400"></i><span class="text-[9px] font-bold text-slate-500 uppercase">Bảng</span>
+                            </button>
+                            <button onclick="setChartType('mixed', this)" id="type-mixed" class="viz-btn p-2.5 border rounded-lg flex flex-col items-center gap-1 hover:bg-slate-50 transition-all">
+                                <i class="fas fa-layer-group text-xs text-slate-400"></i><span class="text-[9px] font-bold text-slate-500 uppercase">Mix</span>
+                            </button>
+                        </div>
+                        <div id="mixed-chart-config" class="hidden pt-3 border-t border-slate-100 space-y-2">
+                            <div id="mixed-metrics-config" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters Section -->
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                    <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider italic">Bộ lọc (Filters)</span>
+                        <i class="fas fa-plus text-[10px] text-slate-400"></i>
+                    </div>
+                    <div class="p-4 bg-slate-50/50">
+                        <div class="border border-dashed border-slate-300 rounded-lg p-4 text-center">
+                            <p class="text-[10px] text-slate-400">Kéo thả chiều dữ liệu vào đây</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="p-5 border-t border-slate-100 bg-white shadow-lg">
+                <button class="w-full bg-blue-600 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition-all shadow-md shadow-blue-100">
+                    Lưu báo cáo
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Preview Area -->
+        <div class="flex-grow flex flex-col preview-area overflow-hidden">
+            <!-- Preview Header -->
+            <div class="h-16 border-b border-slate-200 bg-white flex items-center justify-between px-8">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-xs font-bold text-slate-500 uppercase">Preview trực tiếp</span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex bg-slate-100 rounded-lg p-1">
+                        <button class="px-3 py-1 text-[10px] font-bold bg-white rounded shadow-sm">Desktop</button>
+                        <button class="px-3 py-1 text-[10px] font-bold text-slate-400">Mobile</button>
+                    </div>
+                    <button class="text-slate-400 hover:text-slate-600"><i class="fas fa-expand-alt text-sm"></i></button>
+                </div>
+            </div>
+
+            <!-- Preview Content -->
+            <div class="flex-grow flex items-center justify-center p-12 overflow-y-auto">
+                <div id="preview-container" class="w-full max-w-5xl aspect-video bg-white rounded-3xl shadow-2xl shadow-slate-200 border border-slate-100 p-12 flex items-center justify-center relative overflow-hidden">
+                    <div id="preview-content" class="w-full h-full flex items-center justify-center">
+                        <!-- Chart or Scorecard will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Metric Selection Sidebar / Dropdown Panel -->
+    <div id="metric-catalog-panel" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-slate-900/20 backdrop-blur-[2px]">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col transform transition-all animate-in slide-in-from-right-10 duration-300">
+            <!-- Search & Header -->
+            <div class="p-4 border-b border-slate-100">
+                <div class="relative mb-4">
+                    <i class="fas fa-search absolute left-3 top-3 text-slate-400 text-xs"></i>
+                    <input type="text" placeholder="Search metrics" class="w-full pl-9 pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-100 outline-none">
+                </div>
+                
+                <!-- Breadcrumb / Navigation -->
+                <div id="catalog-nav" class="flex items-center justify-between">
+                    <div id="catalog-title-wrapper" class="flex items-center gap-3">
+                        <button id="catalog-back-btn" class="hidden text-slate-400 hover:text-slate-600 transition-colors">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                        </button>
+                        <span id="catalog-current-title" class="text-sm font-bold text-slate-700">Categories</span>
+                    </div>
+                    <button id="close-metric-catalog-x" class="text-slate-300 hover:text-slate-500 text-lg">&times;</button>
+                </div>
+            </div>
+
+            <!-- Content Area: Categories or Metrics -->
+            <div id="catalog-content" class="flex-grow overflow-y-auto max-h-[450px] p-2 space-y-1">
+                <!-- Data will be injected via JS -->
+            </div>
+
+            <!-- Action: Add Custom -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50 space-y-2">
+                <button id="apply-selected-metrics" class="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 rounded-xl text-sm font-bold text-white hover:bg-blue-700 transition-all shadow-md shadow-blue-100">
+                    <i class="fas fa-check-circle"></i>
+                    Áp dụng các chỉ số đã chọn
+                </button>
+                <button id="trigger-custom-metric-modal" class="w-full flex items-center justify-center gap-2 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-blue-600 hover:bg-blue-50 transition-all shadow-sm">
+                    <i class="fas fa-plus-circle"></i>
+                    Thêm chỉ số tùy chỉnh
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Metric Modal (Giữ nguyên component cũ vì thiết kế đã đẹp) -->
+    <div id="custom-metric-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
+        <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col transform transition-all animate-in zoom-in-95 duration-300">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 class="text-lg font-bold text-slate-800">Chỉ số tùy chỉnh</h3>
+                <button id="close-custom-metric-modal" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+            </div>
+            <div class="p-8 space-y-8 overflow-y-auto max-h-[80vh]">
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tên chỉ số</label>
+                        <input type="text" placeholder="VD: Doanh thu thực tế" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Key của chỉ số</label>
+                        <input type="text" placeholder="VD: real_revenue" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none transition-all">
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="radio" name="metric-method" value="filter" checked class="w-5 h-5 text-blue-600">
+                        <span class="text-sm font-bold text-slate-700">Chọn chỉ số & Bộ lọc</span>
+                    </label>
+                    <div class="ml-8 p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <span class="w-32 text-xs font-semibold text-slate-600">Trạng thái đơn hàng</span>
+                                <select class="px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs w-24"><option>Chứa</option></select>
+                                <div class="flex-grow px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-400">Chọn trạng thái...</div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="w-32 text-xs font-semibold text-slate-600">Nguồn của biz</span>
+                                <select class="px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs w-24"><option>Chứa</option></select>
+                                <div class="flex-grow px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-400">Chọn nguồn...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="px-8 py-4 border-t border-slate-100 flex justify-end gap-3 bg-slate-50/30">
+                <button id="cancel-custom-metric" class="px-6 py-2 bg-white border border-slate-300 rounded-lg text-sm font-semibold">Hủy</button>
+                <button id="create-custom-metric" class="px-8 py-2 bg-blue-600 rounded-lg text-sm font-semibold text-white">Tạo chỉ số</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/report_builder.js"></script>
+</body>
+</html>
