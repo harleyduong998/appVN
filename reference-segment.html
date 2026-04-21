@@ -519,6 +519,40 @@
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
+
+        function applyTemplate(btn, templateName) {
+            // Hiệu ứng "đang lấy về"
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> ĐANG LẤY MẪU...';
+            btn.classList.add('opacity-80');
+
+            setTimeout(() => {
+                // Hiệu ứng thành công
+                btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> ĐÃ THÊM THÀNH CÔNG';
+                btn.classList.add('bg-green-600', 'text-white');
+                btn.classList.remove('bg-gray-50', 'text-[#1B3DA1]', 'text-red-600', 'text-amber-600', 'text-indigo-600');
+                
+                // Hiển thị thông báo nhỏ hoặc animation lấy về (giả lập)
+                const card = btn.closest('.group');
+                card.classList.add('ring-4', 'ring-green-400/20', 'scale-[0.98]');
+                
+                setTimeout(() => {
+                    // Hiển thị button "Xem nhóm khách hàng"
+                    const actionContainer = document.createElement('div');
+                    actionContainer.className = 'mt-4 animate-in fade-in slide-in-from-top-2 duration-300';
+                    actionContainer.innerHTML = `
+                        <button onclick="closeTemplateModal(); switchView('card')" class="w-full py-3 bg-[#1B3DA1] text-white text-[11px] font-bold rounded-2xl border-2 border-[#1B3DA1] hover:bg-blue-800 transition-all uppercase tracking-widest flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-users-viewfinder"></i> Xem nhóm khách hàng
+                        </button>
+                    `;
+                    
+                    btn.parentElement.appendChild(actionContainer);
+                    btn.classList.add('hidden');
+                    card.classList.remove('scale-[0.98]');
+                }, 800);
+            }, 1200);
+        }
     </script>
     
     <!-- AI Modal -->
@@ -984,7 +1018,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="w-full py-3 bg-gray-50 text-[#1B3DA1] text-[11px] font-bold rounded-2xl border border-gray-100 group-hover:bg-[#1B3DA1] group-hover:text-white transition-all uppercase tracking-widest shadow-sm">
+                                    <button onclick="applyTemplate(this, 'Khách hàng VIP')" class="w-full py-3 bg-gray-50 text-[#1B3DA1] text-[11px] font-bold rounded-2xl border border-gray-100 group-hover:bg-[#1B3DA1] group-hover:text-white transition-all uppercase tracking-widest shadow-sm">
                                         Dùng mẫu này
                                     </button>
                                 </div>
@@ -1017,7 +1051,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="w-full py-3 bg-gray-50 text-red-600 text-[11px] font-bold rounded-2xl border border-gray-100 group-hover:bg-red-600 group-hover:text-white transition-all uppercase tracking-widest shadow-sm">
+                                    <button onclick="applyTemplate(this, 'Sắp rời bỏ')" class="w-full py-3 bg-gray-50 text-red-600 text-[11px] font-bold rounded-2xl border border-gray-100 group-hover:bg-red-600 group-hover:text-white transition-all uppercase tracking-widest shadow-sm">
                                         Dùng mẫu này
                                     </button>
                                 </div>
@@ -1050,7 +1084,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="w-full py-3 bg-gray-50 text-amber-600 text-[11px] font-bold rounded-2xl border border-gray-100 group-hover:bg-amber-500 group-hover:text-white transition-all uppercase tracking-widest shadow-sm">
+                                    <button onclick="applyTemplate(this, 'Sinh nhật tháng này')" class="w-full py-3 bg-gray-50 text-amber-600 text-[11px] font-bold rounded-2xl border border-gray-100 group-hover:bg-amber-500 group-hover:text-white transition-all uppercase tracking-widest shadow-sm">
                                         Dùng mẫu này
                                     </button>
                                 </div>
@@ -1083,7 +1117,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="w-full py-3 bg-gray-50 text-indigo-600 text-[11px] font-bold rounded-2xl border border-gray-100 group-hover:bg-indigo-600 group-hover:text-white transition-all uppercase tracking-widest shadow-sm">
+                                    <button onclick="applyTemplate(this, 'Fan cứng Email')" class="w-full py-3 bg-gray-50 text-indigo-600 text-[11px] font-bold rounded-2xl border border-gray-100 group-hover:bg-indigo-600 group-hover:text-white transition-all uppercase tracking-widest shadow-sm">
                                         Dùng mẫu này
                                     </button>
                                 </div>
