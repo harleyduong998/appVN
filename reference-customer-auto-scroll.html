@@ -71,6 +71,60 @@
             max-height: 500px;
             transition: max-height 0.3s ease-in;
         }
+
+        /* Hero scroll animation */
+        #hero-section {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 500px;
+            opacity: 1;
+            transform-origin: top;
+            overflow: hidden;
+            margin-top: 1rem;
+            transform: scaleY(1);
+        }
+
+        #hero-section.hero-collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            transform: scaleY(0);
+            pointer-events: none;
+        }
+
+        #sticky-header {
+            transition: all 0.3s ease;
+        }
+
+        .hero-collapsed + #table-content-wrapper {
+            /* Table section is naturally pulled up because hero-section height becomes 0 */
+        }
+
+        .hero-content {
+            transition: all 0.5s ease-in-out;
+            transform: translateY(0);
+        }
+
+        .hero-collapsed .hero-content {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        #sticky-header {
+            transition: background-color 0.3s, backdrop-filter 0.3s, box-shadow 0.3s;
+        }
+
+        #sticky-header.scrolled {
+            background-color: rgba(243, 244, 248, 0.8);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-bar-sticky {
+            /* Handled by JS adding classes */
+        }
     </style>
 </head>
 
@@ -186,15 +240,17 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col h-screen overflow-y-auto">
+    <div id="main-scroll-container" class="flex-1 flex flex-col h-screen overflow-hidden">
    
 
         <!-- Customer Middle Section (Sync from customerMau.html) -->
-        <main class="flex-1 overflow-hidden flex flex-col pt-2 px-1">
+        <main class="flex-1 flex flex-col pt-2 px-1 relative w-full overflow-hidden h-full">
             
-            <!-- Filter Bar -->
-            <div class="bg-white mx-4 mt-2 px-4 py-3 rounded-xl border border-blue-50 shadow-sm flex items-center justify-between gap-4">
-                <div class="flex items-center gap-2 overflow-x-auto pb-1 max-w-[70%] no-scrollbar">
+            <!-- Sticky Header Wrapper for Hero & Filter Wrapper -->
+            <div id="sticky-header" class="shrink-0 z-40 bg-[#F3F4F8] transition-all duration-300">
+                <!-- Filter Bar -->
+                <div id="filter-bar" class="bg-white mx-4 mt-2 px-4 py-3 rounded-xl border border-blue-50 shadow-sm flex items-center justify-between gap-4 transition-all duration-300">
+                    <div class="flex items-center gap-2 overflow-x-auto pb-1 max-w-[70%] no-scrollbar">
                     <!-- Locations -->
                     <div class="flex items-center gap-2 px-3 py-1.5 bg-blue-50/50 rounded-lg border border-blue-100 hover:border-blue-300 cursor-pointer min-w-max transition-colors">
                         <img src="./assets/icons/location.svg" class="w-3.5 h-3.5 opacity-70">
@@ -232,35 +288,21 @@
                         <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-500 transition-colors" title="Reset">
                             <img src="./assets/icons/reset.svg" class="w-4 h-4 opacity-70">
                         </button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-500 transition-colors" title="Poll">
-                            <i class="fas fa-poll text-xs"></i>
-                        </button>
-                        <div class="relative group">
-                            <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-500 transition-colors" title="More">
-                                <div class="relative">
-                                    <img src="./assets/images/icon-three-dot-horizontal.svg" alt="" height="2" width="10" class="opacity-70">
-                                    <div class="absolute -top-2.5 -right-2.5 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full border border-white">8</div>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="border-l border-gray-100 ml-1 pl-3">
-                            <img width="32" height="32" alt="avatar" class="rounded-full ring-2 ring-white shadow-sm cursor-pointer" src="https://dev-cdn.smax.in/s01/smaxapp-dev/users/65e153749aa2455d7f92ecc1.jpeg?expire=1782457137892&signature=52e12571abecbc11ce8af86419bced67ded4166aece24ee9c2603d85ad70009d">
-                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Hero Section Dashboard -->
-            <div class="mx-4 mt-4 p-5 rounded-2xl bg-[#0F2670] bg-gradient-to-r from-[#0F2670] via-[#1B3DA1] to-[#0F2670] relative overflow-hidden group shadow-xl">
+            <div id="hero-section" class="mx-4 mt-4 p-5 rounded-2xl bg-[#0F2670] bg-gradient-to-r from-[#0F2670] via-[#1B3DA1] to-[#0F2670] relative overflow-hidden group shadow-xl">
                 <!-- Status Badge -->
-                <div class="absolute top-4 right-5 z-10">
+                <div class="absolute top-4 right-5 z-10 transition-all duration-300 hero-content">
                     <div class="flex items-center gap-2 px-3 py-1 bg-black/20 backdrop-blur-md rounded-full border border-white/10">
                         <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>
                         <span class="text-[9px] font-bold text-white/90 tracking-widest uppercase">Neural Engine Ready</span>
                     </div>
                 </div>
 
-                <div class="relative z-10">
+                <div class="relative z-10 hero-content transition-all duration-500">
                     <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
                         Customer 360
                     </h2>
@@ -268,7 +310,7 @@
                         Tổng hợp dữ liệu khách hàng từ các kênh bán hàng, tổng hợp, phân nhóm và định danh qua các nền tảng social để chăm sóc và bán hàng lại.
                     </p>
 
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 transition-opacity duration-300">
                         <button class="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/15 text-white text-[11px] font-bold rounded-lg border border-white/10 transition-all uppercase tracking-wide">
                             <i class="fa-solid fa-rotate text-[10px]"></i> Đồng bộ dữ liệu
                         </button>
@@ -282,32 +324,35 @@
                     <i class="fa-solid fa-star text-9xl text-white transform rotate-12"></i>
                 </div>
             </div>
+            </div> <!-- End Sticky Header Wrapper -->
 
-            <!-- Tabs View Mode -->
-            <div class="px-6 mt-4 flex items-center justify-between border-b border-gray-100">
-                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
-                    <button class="px-4 py-2 text-xs font-semibold border-b-2 border-orange-500 text-orange-600 flex items-center gap-2 whitespace-nowrap">
-                        Áp dụng ALL <span class="px-1.5 py-0.5 rounded-full bg-orange-100 text-[10px]">6,183</span>
-                    </button>
-                    <button class="px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap">
-                        Facebook
-                    </button>
-                    <button class="px-4 py-2 text-xs font-medium text-gray-400">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
+            <!-- Table Content Area -->
+            <div id="table-content-area" class="flex-1 flex flex-col overflow-hidden transition-all duration-700 ease-in-out">
+                <!-- Tabs View Mode -->
+                <div class="px-6 mt-4 flex items-center justify-between border-b border-gray-100 shrink-0">
+                    <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+                        <button class="px-4 py-2 text-xs font-semibold border-b-2 border-orange-500 text-orange-600 flex items-center gap-2 whitespace-nowrap">
+                            Áp dụng ALL <span class="px-1.5 py-0.5 rounded-full bg-orange-100 text-[10px]">6,183</span>
+                        </button>
+                        <button class="px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap">
+                            Facebook
+                        </button>
+                        <button class="px-4 py-2 text-xs font-medium text-gray-400">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <button onclick="openCreateCustomerModal()" class="flex items-center gap-2 px-3 py-1.5 bg-[#1B3DA1] text-white text-xs font-bold rounded-lg hover:shadow-lg hover:shadow-[#1B3DA1]/20 transition-all active:scale-95">
+                            <i class="fa-solid fa-plus"></i> THÊM MỚI
+                        </button>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2 mb-1">
-                    <button onclick="openCreateCustomerModal()" class="flex items-center gap-2 px-3 py-1.5 bg-[#1B3DA1] text-white text-xs font-bold rounded-lg hover:shadow-lg hover:shadow-[#1B3DA1]/20 transition-all active:scale-95">
-                        <i class="fa-solid fa-plus"></i> THÊM MỚI
-                    </button>
-                </div>
-            </div>
 
-            <!-- Table Section -->
-            <div class="flex-1 overflow-hidden flex flex-col bg-white mx-4 mt-2 rounded-xl border border-blue-50 shadow-sm mb-4">
-                <div class="flex-1 overflow-auto custom-scrollbar">
-                    <table class="w-full text-left border-collapse min-w-[1200px]">
-                        <thead class="sticky top-0 bg-[#F9FAFB] border-b border-gray-100 z-10 shadow-sm">
+                <!-- Table Section -->
+                <div class="flex-1 flex flex-col bg-white mx-4 mt-2 rounded-xl border border-blue-50 shadow-sm mb-4 overflow-hidden relative">
+                    <div id="table-scroll-container" class="flex-1 overflow-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse min-w-[1000px]">
+                            <thead class="sticky top-0 bg-[#F9FAFB] border-b border-gray-100 z-10 shadow-sm">
                             <tr class="text-[11px] text-gray-500 uppercase font-bold">
                                 <th class="p-3 w-10 text-center"><input type="checkbox" class="rounded border-gray-300 text-[#1B3DA1]"></th>
                                 <th class="p-3 whitespace-nowrap group cursor-pointer hover:bg-gray-100/50 transition-colors">
@@ -394,6 +439,390 @@
                                         <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors" title="View"><i class="fa-solid fa-eye text-[10px]"></i></button>
                                         <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors" title="Edit"><i class="fa-solid fa-pen text-[10px]"></i></button>
                                         <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors" title="Delete"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Mock Data 1 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">16/04/2026 09:15</td>
+                                <td class="p-3 text-xs text-gray-600">Hà Nội</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">NH</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Nguyễn Văn Hoàng</span>
+                                            <div class="text-[10px] text-gray-400">hoangnv@company.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0988776655</td>
+                                <td class="p-3 text-xs text-gray-400 font-light truncate max-w-[120px]">hoangnv@gmail.com</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">3,500</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider">DIAMOND</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-green-600">45,800,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-facebook text-[#1877F2] text-sm cursor-pointer hover:scale-110"></i>
+                                       <i class="fa-brands fa-square-zalo text-blue-500 text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Mock Data 2 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">15/04/2026 21:05</td>
+                                <td class="p-3 text-xs text-gray-600">TP. Hồ Chí Minh</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">TL</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Trần Thị Lan</span>
+                                            <div class="text-[10px] text-gray-400">lantt@example.vn</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0912345678</td>
+                                <td class="p-3 text-xs text-gray-400 font-light truncate max-w-[120px]">lan.tran@yahoo.com</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">850</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider">SILVER</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">5,200,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-square-zalo text-blue-500 text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Repeat Mock Data to ensure scroll -->
+                            <!-- Mock Data 3 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">15/04/2026 18:30</td>
+                                <td class="p-3 text-xs text-gray-600">Đà Nẵng</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">PA</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Phạm Tuấn Anh</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0905123456</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">-</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">420</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider">NEW</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">1,500,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-facebook text-[#1877F2] text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                             <!-- Mock Data 4 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">14/04/2026 10:20</td>
+                                <td class="p-3 text-xs text-gray-600">Hà Nội</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">HD</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Hoàng Diệu Anh</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0377221199</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">dieuanh@company.com</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">12,400</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider">PLATINUM</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-green-600">89,200,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-facebook text-[#1877F2] text-sm cursor-pointer hover:scale-110"></i>
+                                       <i class="fa-brands fa-square-zalo text-blue-500 text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                             <!-- Mock Data 5 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">13/04/2026 15:45</td>
+                                <td class="p-3 text-xs text-gray-600">Cần Thơ</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">LM</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Lê Minh</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0708998877</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">-</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">2,100</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider">GOLD</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">18,450,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-square-zalo text-blue-500 text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Mock Data 6 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">12/04/2026 08:30</td>
+                                <td class="p-3 text-xs text-gray-600">Hải Phòng</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">VT</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Vũ Tuấn</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0966554433</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">vutuan.hp@gmail.com</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">50</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider">NEW</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">200,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-facebook text-[#1877F2] text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Mock Data 7 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">11/04/2026 14:20</td>
+                                <td class="p-3 text-xs text-gray-600">Hà Nội</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">QA</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Quốc Anh</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0977112233</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">-</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">1,800</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider">GOLD</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">12,000,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-square-zalo text-blue-500 text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Mock Data 8 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">10/04/2026 09:15</td>
+                                <td class="p-3 text-xs text-gray-600">Đà Nẵng</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">MT</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Minh Tú</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0905111222</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">minhtu@example.com</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">500</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider">SILVER</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">4,500,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-facebook text-[#1877F2] text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                             <!-- Mock Data 9 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">09/04/2026 17:45</td>
+                                <td class="p-3 text-xs text-gray-600">Huế</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">HV</div>
+                                        <div>
+                                            <span class="text-[13px] font-semibold text-gray-700">Hoàng Việt</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0944123456</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">-</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">120</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider">NEW</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">800,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-square-zalo text-blue-500 text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- New Mock Data Group -->
+                            <!-- Mock Data 11 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">07/04/2026 10:20</td>
+                                <td class="p-3 text-xs text-gray-600">Hà Nội</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">TH</div>
+                                        <span class="text-[13px] font-semibold text-gray-700">Trần Huy</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0981223344</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">-</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">450</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider">SILVER</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">3,400,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-square-zalo text-blue-500 text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Mock Data 12 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">06/04/2026 15:30</td>
+                                <td class="p-3 text-xs text-gray-600">Đồng Nai</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">LN</div>
+                                        <span class="text-[13px] font-semibold text-gray-700">Lê Nam</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0909334455</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">lenam@test.vn</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">2,100</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider">GOLD</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">15,600,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-facebook text-[#1877F2] text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Mock Data 13 -->
+                            <tr class="hover:bg-blue-50/30 transition group">
+                                <td class="p-3 text-center"><input type="checkbox" class="rounded border-gray-300"></td>
+                                <td class="p-3 text-xs text-gray-500 font-medium">05/04/2026 08:45</td>
+                                <td class="p-3 text-xs text-gray-600">Bình Dương</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-[10px] shadow-inner ring-2 ring-white">PV</div>
+                                        <span class="text-[13px] font-semibold text-gray-700">Phan Vinh</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-xs text-gray-500 font-bold">0944556677</td>
+                                <td class="p-3 text-xs text-gray-400 font-light">-</td>
+                                <td class="p-3 text-center text-xs text-blue-600 font-bold">120</td>
+                                <td class="p-3"><span class="px-2 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider">NEW</span></td>
+                                <td class="p-3 text-right text-xs font-bold text-gray-800">900,000 đ</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">
+                                    <div class="flex gap-1.5 grayscale group-hover:grayscale-0 transition-all items-center">
+                                       <i class="fa-brands fa-square-zalo text-blue-500 text-sm cursor-pointer hover:scale-110"></i>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right pr-6">
+                                    <div class="flex justify-end gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100 text-blue-600 transition-colors"><i class="fa-solid fa-eye text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-green-100 text-green-600 transition-colors"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                        <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-100 text-red-600 transition-colors"><i class="fa-solid fa-trash text-[10px]"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -717,6 +1146,57 @@
 
         </div>
     </div>
+    <script>
+        const tableScrollContainer = document.getElementById('table-scroll-container');
+        const heroSection = document.getElementById('hero-section');
+        const filterBar = document.getElementById('filter-bar');
+        const stickyHeader = document.getElementById('sticky-header');
+        
+        let isHeroCollapsed = false;
+
+        if (tableScrollContainer) {
+            tableScrollContainer.addEventListener('scroll', function() {
+                let scrollTop = tableScrollContainer.scrollTop;
+                
+                // Use a larger threshold and state check to prevent jumping
+                if (scrollTop > 50 && !isHeroCollapsed) {
+                    isHeroCollapsed = true;
+                    heroSection.classList.add('hero-collapsed');
+                    stickyHeader.classList.add('scrolled');
+                    filterBar.classList.add('mx-0', 'rounded-none', 'border-x-0', 'border-t-0', 'shadow-none');
+                    filterBar.classList.remove('mx-4', 'mt-2', 'rounded-xl', 'shadow-sm');
+                } else if (scrollTop <= 5 && isHeroCollapsed) {
+                    isHeroCollapsed = false;
+                    heroSection.classList.remove('hero-collapsed');
+                    stickyHeader.classList.remove('scrolled');
+                    filterBar.classList.remove('mx-0', 'rounded-none', 'border-x-0', 'border-t-0', 'shadow-none');
+                    filterBar.classList.add('mx-4', 'mt-2', 'rounded-xl', 'shadow-sm');
+                }
+            });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleIcon = document.getElementById('toggle-icon');
+            const sidebarTexts = document.querySelectorAll('.sidebar-text');
+            
+            sidebar.classList.toggle('w-16');
+            sidebar.classList.toggle('w-64');
+            toggleIcon.classList.toggle('rotate-chevron');
+            
+            sidebarTexts.forEach(text => {
+                text.classList.toggle('opacity-0');
+            });
+        }
+
+        function openCreateCustomerModal() {
+            document.getElementById('createCustomerModal').classList.remove('hidden');
+        }
+
+        function closeCreateCustomerModal() {
+            document.getElementById('createCustomerModal').classList.add('hidden');
+        }
+    </script>
 </body>
 
 </html>
