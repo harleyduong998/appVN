@@ -140,8 +140,11 @@
                             <i class="fa-solid fa-wand-magic-sparkles"></i> Thiết lập nhóm với AI
                         </button>
 
-                        
-                          <button onclick="openTemplateModal()" class="flex items-center gap-2 px-4 py-2 bg-blue-50 text-[#1B3DA1] text-[11px] font-bold rounded-lg border border-blue-200 hover:bg-blue-100 transition-all uppercase tracking-wide">
+                        <button onclick="openTemplateModal('RFM')" class="flex items-center gap-2 px-5 py-2 bg-indigo-600 text-white text-[11px] font-bold rounded-lg hover:bg-indigo-700 transition-all uppercase tracking-wide">
+                            <i class="fa-solid fa-chart-line"></i> Tạo nhóm RFM
+                        </button>
+
+                        <button onclick="openTemplateModal()" class="flex items-center gap-2 px-4 py-2 bg-blue-50 text-[#1B3DA1] text-[11px] font-bold rounded-lg border border-blue-200 hover:bg-blue-100 transition-all uppercase tracking-wide">
                             <i class="fa-solid fa-compass"></i> Xem thêm template
                         </button>
                     </div>
@@ -543,10 +546,35 @@
             }
         }
 
-        function openTemplateModal() {
+        function openTemplateModal(category = 'all') {
             const modal = document.getElementById('template-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+            
+            if (category === 'RFM') {
+                filterTemplate('RFM');
+            } else {
+                filterTemplate('all');
+            }
+        }
+
+        function filterTemplate(type) {
+            // Reset all tabs
+            const tabs = ['all', 'rfm', 'personal'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (el) {
+                    el.classList.remove('bg-[#F7FAFF]', 'text-[#313C62]', 'border', 'border-blue-100/50', 'shadow-sm');
+                    el.classList.add('text-gray-400');
+                }
+            });
+
+            // Set active tab
+            const activeTab = document.getElementById(`tab-${type.toLowerCase()}`);
+            if (activeTab) {
+                activeTab.classList.add('bg-[#F7FAFF]', 'text-[#313C62]', 'border', 'border-blue-100/50', 'shadow-sm');
+                activeTab.classList.remove('text-gray-400');
+            }
         }
 
         function closeTemplateModal() {
@@ -643,14 +671,21 @@
                 <!-- Sidebar -->
                 <aside class="w-64 bg-gray-50 border-r border-gray-100 flex flex-col p-6 shrink-0 overflow-y-auto">
                     <div class="space-y-1">
-                        <button class="w-full flex items-center justify-between px-4 py-3 bg-[#F7FAFF] text-[#313C62] rounded-lg border border-blue-100/50 shadow-sm transition-all group">
+                        <button id="tab-all" onclick="filterTemplate('all')" class="w-full flex items-center justify-between px-4 py-3 bg-[#F7FAFF] text-[#313C62] rounded-lg border border-blue-100/50 shadow-sm transition-all group">
                             <div class="text-left font-semibold text-sm">
                                 Tất cả mẫu
                             </div>
                             <div class="w-6 h-6 bg-[#1B3DA1]/10 rounded-md flex items-center justify-center text-[10px] text-[#1B3DA1] font-bold">20</div>
                         </button>
 
-                        <button class="w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
+                        <button id="tab-rfm" onclick="filterTemplate('RFM')" class="w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
+                            <div class="text-left font-semibold text-sm">
+                                Nhóm RFM
+                            </div>
+                            <i class="fa-solid fa-chart-pie text-xs opacity-30 group-hover:opacity-100 transition-opacity"></i>
+                        </button>
+
+                        <button id="tab-personal" onclick="filterTemplate('personal')" class="w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
                             <div class="text-left font-semibold text-sm">
                                 Cá nhân
                             </div>
