@@ -71,6 +71,27 @@
             max-height: 500px;
             transition: max-height 0.3s ease-in;
         }
+
+        /* Hero Banner Watermark */
+        .hero-banner-watermark::after {
+            content: "";
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 200px;
+            background-image: url("./LOGO_1.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.04;
+            pointer-events: none;
+            mask-image: linear-gradient(to left, black 30%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%);
+            z-index: 0;
+            filter: grayscale(1) brightness(0);
+        }
     </style>
 </head>
 
@@ -251,36 +272,29 @@
             </div>
 
             <!-- Hero Section Dashboard -->
-            <div class="mx-4 mt-4 p-5 rounded-2xl bg-[#0F2670] bg-gradient-to-r from-[#0F2670] via-[#1B3DA1] to-[#0F2670] relative overflow-hidden group shadow-xl">
+            <div class="mx-4 mt-4 p-5 rounded-2xl bg-[#F7FAFF] border border-blue-100/50 relative overflow-hidden group shadow-sm hero-banner-watermark">
                 <!-- Status Badge -->
                 <div class="absolute top-4 right-5 z-10">
-                    <div class="flex items-center gap-2 px-3 py-1 bg-black/20 backdrop-blur-md rounded-full border border-white/10">
-                        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>
-                        <span class="text-[9px] font-bold text-white/90 tracking-widest uppercase">Neural Engine Ready</span>
-                    </div>
+                  
                 </div>
 
                 <div class="relative z-10">
-                    <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                    <h2 class="text-xl font-bold text-[#1B3DA1] mb-2 flex items-center gap-2">
+                        <img src="http://dev.smax.app/assets/images/app-customers.svg" class="w-7 h-7" alt="Customer Icon">
                         Customer 360
                     </h2>
-                    <p class="text-xs text-blue-100/70 mb-5 max-w-xl leading-relaxed">
-                        Tổng hợp dữ liệu khách hàng từ các kênh bán hàng, tổng hợp, phân nhóm và định danh qua các nền tảng social để chăm sóc và bán hàng lại.
+                    <p class="text-xs font-medium text-blue-900/70 mb-5 max-w-2xl leading-relaxed">
+                        Tự động <span class="font-bold text-[#1B3DA1]">hợp nhất và định danh</span> khách hàng từ các kênh Social, E-com về <span class="font-bold text-[#1B3DA1]">hồ sơ customer 360°</span>.<br><span class="font-bold text-[#1B3DA1]">Hệ thống hóa mọi điểm chạm</span> để giúp doanh nghiệp thấu hiểu và tối ưu hiệu quả kinh doanh.
                     </p>
 
                     <div class="flex items-center gap-3">
-                        <button class="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/15 text-white text-[11px] font-bold rounded-lg border border-white/10 transition-all uppercase tracking-wide">
-                            <i class="fa-solid fa-rotate text-[10px]"></i> Đồng bộ dữ liệu
-                        </button>
+                        
                    
                     </div>
                 </div>
 
                 <!-- Abstract Decorations -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl group-hover:bg-white/10 transition-colors"></div>
-                <div class="absolute bottom-0 right-10 opacity-10">
-                    <i class="fa-solid fa-star text-9xl text-white transform rotate-12"></i>
-                </div>
+                <div class="absolute -top-10 -right-10 w-64 h-64 bg-blue-500 opacity-10 rounded-full blur-3xl z-0 pointer-events-none"></div>
             </div>
 
             <!-- Tabs View Mode -->

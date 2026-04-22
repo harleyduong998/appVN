@@ -1,0 +1,443 @@
+    <!-- AI Modal -->
+    <div id="ai-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="px-8 py-6 bg-gradient-to-r from-[#0F2670] to-[#1B3DA1] text-white flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Thiết lập nhóm với AI
+                    </h3>
+                    <p class="text-xs text-blue-100/80 mt-1">Hệ thống tự động phân tích hành vi để đề xuất các nhóm khách hàng có khả năng mang lại doanh thu cao nhất cho bạn.</p>
+                </div>
+                <button onclick="closeAIModal()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-all">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-8">
+                <!-- Scanning Section -->
+                <div id="ai-scanning" class="py-12 flex flex-col items-center justify-center text-center">
+                    <div class="flex items-center justify-center w-full">
+                        <div class="w-24 h-24 mb-6 relative">
+                            <!-- Vòng xoay ngoài (Dùng border để đảm bảo tâm cố định) -->
+                            <div class="absolute inset-0 rounded-full border-4 border-blue-100/50"></div>
+                            <div class="absolute inset-0 rounded-full border-4 border-[#1B3DA1] border-t-transparent animate-spin"></div>
+                            
+                            <!-- Icon căn giữa tuyệt đối bằng Grid -->
+                            <div class="absolute inset-0 grid place-items-center">
+                                <i class="fa-solid fa-microchip text-4xl text-[#1B3DA1]"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="text-lg font-bold text-gray-800 mb-2">AI đang phân tích hành vi của 52,430 khách hàng...</h4>
+                    <p class="text-sm text-gray-400">Vui lòng chờ trong giây lát để hệ thống tìm kiếm các phân khúc tiềm năng.</p>
+                </div>
+
+                <!-- Insights Section -->
+                <div id="ai-insights" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div class="mb-6 flex items-center justify-between">
+                        <h4 class="font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i> Phát hiện mới từ AI (3 Cơ hội tiềm năng)
+                        </h4>
+                        <span class="px-3 py-1 bg-green-50 text-green-600 text-[10px] font-bold rounded-full uppercase tracking-wider">Đã hoàn tất phân tích</span>
+                    </div>
+
+                    <div class="overflow-hidden border border-gray-100 rounded-2xl shadow-sm">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50/80 border-b border-gray-100">
+                                <tr class="text-[11px] text-gray-400 font-bold uppercase tracking-wider">
+                                    <th class="px-6 py-4">Phân khúc tiềm năng</th>
+                                    <th class="px-6 py-4">Quy mô</th>
+                                    <th class="px-6 py-4">Hành động gợi ý</th>
+                                    <th class="px-6 py-4 text-right">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50">
+                                <!-- Insight 1 -->
+                                <tr class="hover:bg-blue-50/30 transition-colors">
+                                    <td class="px-6 py-5">
+                                        <div class="font-bold text-gray-800 text-[13px] mb-1">Nhóm "Cá mập" mới</div>
+                                        <div class="text-[11px] text-gray-500 leading-relaxed italic">Mới mua 1 đơn nhưng giá trị > 5tr</div>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <span class="font-bold text-[#1B3DA1]">125</span>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <div class="text-[12px] text-gray-600 flex items-start gap-2">
+                                            <i class="fa-solid fa-bolt text-amber-500 mt-0.5"></i>
+                                            <span>Tặng thẻ VIP & Gán nhân viên CSKH ưu tiên gọi điện.</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-right">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button class="px-3 py-1.5 bg-gray-50 text-gray-400 text-[10px] font-bold rounded-lg hover:bg-gray-100 transition-all uppercase">tạo nhóm</button>
+                                            <button onclick="openConfirmModal('Cá mập mới')" class="px-3 py-1.5 bg-[#1B3DA1] text-white text-[10px] font-bold rounded-lg hover:shadow-lg transition-all uppercase flex items-center gap-1">
+                                                Thực thi ngay
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Insight 2 -->
+                                <tr class="hover:bg-blue-50/30 transition-colors">
+                                    <td class="px-6 py-5">
+                                        <div class="font-bold text-gray-800 text-[13px] mb-1">Người xem chuyên nghiệp</div>
+                                        <div class="text-[11px] text-gray-500 leading-relaxed italic">Xem >10 lần/tuần nhưng chưa bỏ giỏ</div>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <span class="font-bold text-[#1B3DA1]">850</span>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <div class="text-[12px] text-gray-600 flex items-start gap-2">
+                                            <i class="fa-solid fa-bolt text-amber-500 mt-0.5"></i>
+                                            <span>Gửi mã Freeship hoặc Voucher giảm 5% chỉ trong hôm nay.</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-right">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button class="px-3 py-1.5 bg-gray-50 text-gray-400 text-[10px] font-bold rounded-lg hover:bg-gray-100 transition-all uppercase">tạo nhóm</button>
+                                            <button onclick="openConfirmModal('Người xem chuyên nghiệp')" class="px-3 py-1.5 bg-[#1B3DA1] text-white text-[10px] font-bold rounded-lg hover:shadow-lg transition-all uppercase flex items-center gap-1">
+                                                Thực thi ngay
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Insight 3 -->
+                                <tr class="hover:bg-blue-50/30 transition-colors">
+                                    <td class="px-6 py-5">
+                                        <div class="font-bold text-gray-800 text-[13px] mb-1">Khách cũ "nguội lạnh"</div>
+                                        <div class="text-[11px] text-gray-500 leading-relaxed italic">Từng mua nhiều nhưng 3 tháng chưa quay lại</div>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <span class="font-bold text-[#1B3DA1]">420</span>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <div class="text-[12px] text-gray-600 flex items-start gap-2">
+                                            <i class="fa-solid fa-bolt text-amber-500 mt-0.5"></i>
+                                            <span>Gửi chiến dịch Email/SMS "Nhớ bạn" kèm quà tặng ẩn.</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-right">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button class="px-3 py-1.5 bg-gray-50 text-gray-400 text-[10px] font-bold rounded-lg hover:bg-gray-100 transition-all uppercase">tạo nhóm</button>
+                                            <button onclick="openConfirmModal('Khách cũ nguội lạnh')" class="px-3 py-1.5 bg-[#1B3DA1] text-white text-[10px] font-bold rounded-lg hover:shadow-lg transition-all uppercase flex items-center gap-1">
+                                                Thực thi ngay
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-end gap-3">
+                <button onclick="closeAIModal()" class="px-6 py-2 bg-white border border-gray-200 text-gray-500 text-xs font-bold rounded-lg hover:bg-gray-50 transition-all uppercase">Đóng</button>
+                <button class="px-6 py-2 bg-[#1B3DA1] text-white text-xs font-bold rounded-lg hover:bg-blue-800 transition-all uppercase tracking-wide">Lưu tất cả gợi ý</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Confirm Automation Modal -->
+    <div id="confirm-modal" class="fixed inset-0 z-[110] hidden items-center justify-center bg-black/70 backdrop-blur-md p-4">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+            <!-- Confirming State Content -->
+            <div id="confirm-content" class="flex flex-col">
+                <!-- Header -->
+                <div class="px-8 py-6 border-b border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-50 text-[#1B3DA1] rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 uppercase tracking-tight">Xác nhận kịch bản tự động</h3>
+                        <p class="text-sm text-gray-500">AI sẽ tự động thiết lập luồng sau cho nhóm <span id="confirm-group-name" class="font-bold text-[#1B3DA1]">...</span></p>
+                    </div>
+                </div>
+
+                <!-- Vertical Timeline Flow -->
+                <div class="p-8 bg-gray-50/50">
+                    <div class="relative">
+                        <!-- Vertical Line -->
+                        <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-dashed bg-gradient-to-b from-blue-200 via-blue-400 to-blue-200 ml-[-1px]"></div>
+
+                        <!-- Node 1: Ưu đãi -->
+                        <div class="relative flex items-start gap-10 mb-10">
+                            <div class="z-10 w-12 h-12 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center shrink-0 shadow-lg group">
+                                <i class="fa-solid fa-tag text-blue-500 text-lg group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex-1">
+                                <div class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1">Bước 1: Ưu đãi</div>
+                                <h4 class="font-bold text-gray-800 text-[13px] mb-2">AI tự động tạo ưu đãi VIP_CAMAP_2024</h4>
+                                <div class="grid grid-cols-2 gap-4 text-[11px] text-gray-500">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                                        <span>Giảm 15% đơn hàng</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-calendar-day text-gray-400"></i>
+                                        <span>Hạn dùng 30 ngày</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Node 2: Automation -->
+                        <div class="relative flex items-start gap-10 mb-10">
+                            <div class="z-10 w-12 h-12 bg-white border-2 border-indigo-500 rounded-full flex items-center justify-center shrink-0 shadow-lg">
+                                <i class="fa-solid fa-paper-plane text-indigo-500 text-lg"></i>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex-1">
+                                <div class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-1">Bước 2: Gửi thông điệp</div>
+                                <h4 class="font-bold text-gray-800 text-[13px] mb-2">Tự động tạo Card Coupon & gửi vào luồng chăm sóc</h4>
+                                <p class="text-[11px] text-gray-500 italic bg-gray-50 p-2 rounded-lg border border-dashed">
+                                    "Chào [Tên], chúc mừng bạn trở thành thành viên VIP... Đính kèm: Mã coupon vừa tạo"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Node 3: Task Management -->
+                        <div class="relative flex items-start gap-10">
+                            <div class="z-10 w-12 h-12 bg-white border-2 border-amber-500 rounded-full flex items-center justify-center shrink-0 shadow-lg">
+                                <i class="fa-solid fa-note-sticky text-amber-500 text-lg"></i>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex-1">
+                                <div class="text-[10px] font-bold text-amber-500 uppercase tracking-widest mb-1">Bước 3: Quản lý tác vụ</div>
+                                <h4 class="font-bold text-gray-800 text-[13px] mb-2">Tạo công việc: "Tặng quà VIP" gán cho nhân viên trực</h4>
+                                <div class="flex items-center gap-2 text-[11px] text-gray-500">
+                                    <span class="px-2 py-0.5 bg-amber-50 text-amber-600 rounded">Phân bổ tự động cho nhóm CSKH</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="px-8 py-6 bg-white border-t border-gray-100 flex items-center justify-between">
+                    <button onclick="closeConfirmModal()" class="px-6 py-2.5 text-gray-400 hover:text-gray-600 text-sm font-bold transition-all uppercase">Hủy bỏ</button>
+                    <button onclick="runAutomation()" class="flex items-center gap-3 px-8 py-3 bg-[#1B3DA1] text-white text-sm font-bold rounded-xl hover:shadow-xl hover:-translate-y-0.5 transition-all shadow-lg uppercase tracking-wide">
+                        Xác nhận & Chạy luồng <i class="fa-solid fa-bolt-lightning text-amber-400"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Running State Content -->
+            <div id="running-content" class="hidden flex flex-col p-12 items-center text-center">
+                <div class="w-32 h-32 bg-blue-50 text-[#1B3DA1] rounded-full flex items-center justify-center text-5xl mb-8 animate-pulse-subtle shadow-xl relative">
+                    <div class="absolute inset-0 border-4 border-[#1B3DA1]/20 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-[#1B3DA1] rounded-full border-t-transparent animate-spin"></div>
+                    <i class="fa-solid fa-bolt-lightning text-amber-400"></i>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-800 mb-2">AI đang thiết lập các module tự động...</h3>
+                <p id="running-log" class="text-sm text-blue-500 font-medium mb-12">Đang kết nối API các module...</p>
+
+                <!-- Process Steps -->
+                <div class="w-full max-w-sm space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div id="step-1" class="w-8 h-8 rounded-full border-2 border-blue-500 flex items-center justify-center text-blue-500 transition-all font-bold">1</div>
+                        <div class="flex-1 text-left">
+                            <div class="text-xs font-bold text-gray-700">Module Ưu đãi</div>
+                            <div class="w-full h-1.5 bg-gray-100 rounded-full mt-1 hidden overflow-hidden">
+                                <div id="progress-1" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div id="step-2" class="w-8 h-8 rounded-full border-2 border-indigo-500 flex items-center justify-center text-indigo-500 transition-all font-bold">2</div>
+                        <div class="flex-1 text-left">
+                            <div class="text-xs font-bold text-gray-700">Automation Flow</div>
+                            <div class="w-full h-1.5 bg-gray-100 rounded-full mt-1 hidden overflow-hidden">
+                                <div id="progress-2" class="h-full bg-indigo-500 transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div id="step-3" class="w-8 h-8 rounded-full border-2 border-amber-500 flex items-center justify-center text-amber-500 transition-all font-bold">3</div>
+                        <div class="flex-1 text-left">
+                            <div class="text-xs font-bold text-gray-700">CRM Task Node</div>
+                            <div class="w-full h-1.5 bg-gray-100 rounded-full mt-1 hidden overflow-hidden">
+                                <div id="progress-3" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success State Content -->
+            <div id="success-content" class="hidden flex flex-col p-10 items-center text-center">
+                <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-4xl mb-6 shadow-sm border border-green-100">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-1 uppercase tracking-tight">AI đã chuẩn bị xong kịch bản</h3>
+                <p class="text-sm text-gray-500 mb-8">Hệ thống đã sẵn sàng các nguồn lực cần thiết để thực thi.</p>
+                
+                <div class="w-full space-y-6 text-left mb-10">
+                    <!-- Phần 1 -->
+                    <div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <div class="h-px bg-gray-200 flex-1"></div>
+                            <span>Phần 1: Nguyên liệu đã tạo</span>
+                            <div class="h-px bg-gray-200 flex-1"></div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-green-500 text-white rounded-lg flex items-center justify-center text-xs shadow-sm">
+                                        <i class="fa-solid fa-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[11px] text-gray-400 font-medium">Mã ưu đãi</div>
+                                        <div class="text-xs font-bold text-gray-700">VIP_CAMAP_2024</div>
+                                    </div>
+                                </div>
+                                <a href="#" class="text-[10px] font-bold text-[#1B3DA1] hover:underline decoration-2 underline-offset-4 flex items-center gap-1">
+                                    Xem mã <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                                </a>
+                            </div>
+                            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-green-500 text-white rounded-lg flex items-center justify-center text-xs shadow-sm">
+                                        <i class="fa-solid fa-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[11px] text-gray-400 font-medium">Kịch bản Automation</div>
+                                        <div class="text-xs font-bold text-gray-700">Chăm sóc khách VIP tự động</div>
+                                    </div>
+                                </div>
+                                <a href="#" class="text-[10px] font-bold text-[#1B3DA1] hover:underline decoration-2 underline-offset-4 flex items-center gap-1">
+                                    Kiểm tra ngay <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phần 2 -->
+                    <div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <div class="h-px bg-gray-200 flex-1"></div>
+                            <span>Phần 2: Thực thi (Chỉ chạy khi kích hoạt)</span>
+                            <div class="h-px bg-gray-200 flex-1"></div>
+                        </div>
+                        <div class="space-y-2 px-4">
+                            <div class="flex items-center gap-3 py-1">
+                                <div class="w-5 h-5 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-[10px] border border-amber-100">
+                                    <i class="fa-solid fa-hourglass-half animate-pulse"></i>
+                                </div>
+                                <div class="text-[12px] text-gray-600">Gửi tin nhắn cho <span class="font-bold text-gray-800">125</span> khách hàng nhóm "Cá mập"</div>
+                            </div>
+                            <div class="flex items-center gap-3 py-1">
+                                <div class="w-5 h-5 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-[10px] border border-amber-100">
+                                    <i class="fa-solid fa-hourglass-half animate-pulse"></i>
+                                </div>
+                                <div class="text-[12px] text-gray-600">Tạo <span class="font-bold text-gray-800">125</span> tác vụ cho nhân viên CSKH</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 w-full">
+                    <button onclick="closeConfirmModal()" class="flex-1 py-3 text-gray-400 font-bold uppercase text-xs hover:text-gray-600 transition-all">Hủy bỏ</button>
+                    <button onclick="window.location.href='reference-automation.html'" class="flex-[2] py-3.5 bg-[#1B3DA1] text-white text-xs font-bold rounded-xl hover:shadow-xl hover:-translate-y-0.5 transition-all uppercase tracking-widest flex items-center justify-center gap-3 shadow-lg">
+                        KÍCH HOẠT GỬI TIN <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     function openAIModal() {
+            const modal = document.getElementById('ai-modal');
+            const scanning = document.getElementById('ai-scanning');
+            const insights = document.getElementById('ai-insights');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Show scanning, hide insights
+            scanning.style.display = 'block';
+            insights.style.display = 'none';
+            
+            // Clear any existing timeout and start new one
+            setTimeout(() => {
+                scanning.style.display = 'none';
+                insights.style.display = 'block';
+            }, 2000);
+        }
+
+        function closeAIModal() {
+            const modal = document.getElementById('ai-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openConfirmModal(groupName) {
+            document.getElementById('confirm-group-name').innerText = groupName;
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function runAutomation() {
+            const confirmContent = document.getElementById('confirm-content');
+            const runningContent = document.getElementById('running-content');
+            const successContent = document.getElementById('success-content');
+            
+            confirmContent.classList.add('hidden');
+            runningContent.classList.remove('hidden');
+
+            const steps = [
+                { id: 'step-1', progress: 'progress-1', log: 'AI đang tạo mã VIP_CAMAP_2024 tại Module Ưu đãi...' },
+                { id: 'step-2', progress: 'progress-2', log: 'Đang thiết lập Card Coupon vào luồng chăm sóc tự động...' },
+                { id: 'step-3', progress: 'progress-3', log: 'Đang khởi tạo 125 tác vụ gọi điện cho đội ngũ CSKH...' }
+            ];
+
+            let currentStep = 0;
+
+            function runStep() {
+                if (currentStep >= steps.length) {
+                    setTimeout(() => {
+                        runningContent.classList.add('hidden');
+                        successContent.classList.remove('hidden');
+                    }, 1000);
+                    return;
+                }
+
+                const step = steps[currentStep];
+                const element = document.getElementById(step.id);
+                const progress = document.getElementById(step.progress);
+                const logText = document.getElementById('running-log');
+
+                logText.innerText = step.log;
+                element.classList.add('ring-2', 'ring-blue-400', 'animate-pulse');
+                progress.style.width = '0%';
+                progress.parentElement.classList.remove('hidden');
+
+                let p = 0;
+                const interval = setInterval(() => {
+                    p += 5;
+                    progress.style.width = p + '%';
+                    if (p >= 100) {
+                        clearInterval(interval);
+                        element.classList.remove('ring-2', 'ring-blue-400', 'animate-pulse');
+                        element.innerHTML = '<i class="fa-solid fa-check text-white"></i>';
+                        element.classList.add('bg-green-500', 'border-green-500');
+                        element.classList.remove('text-blue-500', 'text-indigo-500', 'text-amber-500');
+                        
+                        currentStep++;
+                        setTimeout(runStep, 500);
+                    }
+                }, 50);
+            }
+
+            runStep();
+        }
+
+        function switchView(view) {
