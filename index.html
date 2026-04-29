@@ -287,6 +287,332 @@
             margin-left: 12px;
         }
 
+        /* Automation Map Modal Styles */
+        #automation-map-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 21000;
+            align-items: center;
+            justify-content: center;
+        }
+        .automation-map-modal {
+            background: #fff;
+            width: 92%;
+            max-width: 960px;
+            max-height: 88vh;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: ammSlideIn 0.25s ease;
+        }
+        @keyframes ammSlideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
+        }
+        .amm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 28px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .amm-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .amm-robot-icon {
+            background: linear-gradient(135deg, #1B3DA1, #152e80);
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+        }
+        .amm-header-actions { display: flex; align-items: center; gap: 12px; }
+        .amm-config-btn {
+            background: #1B3DA1;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .amm-config-btn:hover { background: #152e80; }
+        .amm-close-btn {
+            background: none; border: none;
+            color: #94a3b8; font-size: 20px;
+            cursor: pointer; padding: 4px 8px;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .amm-close-btn:hover { color: #1e293b; background: #f1f5f9; }
+        .amm-tabs {
+            display: flex;
+            gap: 0;
+            padding: 0 28px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .amm-tab {
+            padding: 12px 4px;
+            margin-right: 28px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .amm-tab.active { color: #1B3DA1; border-bottom-color: #1B3DA1; font-weight: 600; }
+        .amm-body { padding: 24px 28px; overflow-y: auto; }
+        .amm-progress-banner {
+            background: linear-gradient(135deg, #F8F9FA 100%, #0072FF 0% );
+            border-radius: 12px; padding: 18px 22px; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 20px; color: #38568d;
+        }
+        .amm-progress-text { flex: 1; }
+        .amm-progress-title { font-size: 13px; font-weight: 600; opacity: 1; margin-bottom: 6px; color: 1B3DA1 }
+        .amm-progress-track { height: 6px; background: #E9ECEF; border-radius: 3px; margin-bottom: 8px; overflow: hidden; }
+        .amm-progress-fill { height: 100%; background: #1B3DA1; border-radius: 3px; transition: width 0.4s ease; }
+        .amm-progress-meta { display: flex; align-items: center; justify-content: space-between; }
+        .amm-progress-label { font-size: 12px; opacity: 0.75; }
+        .amm-progress-steps { font-size: 12px; opacity: 0.75; }
+        .amm-progress-pct { font-size: 36px; font-weight: 800; line-height: 1; white-space: nowrap; }
+        .amm-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .amm-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .amm-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .amm-icon-wrap {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .amm-icon-blue   { background: #dbeafe; color: #2563eb; }
+        .amm-icon-green  { background: #dcfce7; color: #16a34a; }
+        .amm-icon-orange { background: #ffedd5; color: #ea580c; }
+        .amm-icon-purple { background: #ede9fe; color: #7c3aed; }
+        .amm-icon-red    { background: #fee2e2; color: #dc2626; }
+        .amm-icon-sky    { background: #e0f2fe; color: #0284c7; }
+        .amm-card-title { font-size: 15px; font-weight: 700; color: #1e293b; }
+        .amm-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+        .amm-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13.5px;
+            color: #475569;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            margin: -4px -6px;
+            transition: background 0.12s;
+        }
+        .amm-list li:hover { background: #f0f7ff; }
+        .amm-radio {
+            width: 16px; height: 16px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        /* Manage Module Modal */
+        #manage-module-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(4px);
+            z-index: 22000; align-items: center; justify-content: center;
+        }
+        .manage-module-modal {
+            background: #fff; width: 88%; max-width: 560px; max-height: 85vh;
+            border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+            animation: ammSlideIn 0.25s ease;
+        }
+        .mmm-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 24px 16px; border-bottom: 1px solid #e2e8f0;
+        }
+        .mmm-header-title {
+            font-size: 16px; font-weight: 700; color: #1e293b;
+        }
+        .mmm-close-btn {
+            background: none; border: none; color: #94a3b8; font-size: 20px;
+            cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s, background 0.2s;
+        }
+        .mmm-close-btn:hover { color: #1e293b; background: #f1f5f9; }
+        .mmm-body { padding: 20px 24px; overflow-y: auto; }
+        .mmm-section-head {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px;
+        }
+        .mmm-section-label {
+            font-size: 13px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .mm-add-module-btn {
+            background: #1B3DA1; color: white; border: none; padding: 6px 14px;
+            border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.2s;
+        }
+        .mm-add-module-btn:hover { background: #152e80; }
+        .mm-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 10px; margin-bottom: 8px;
+            border: 1px solid #e2e8f0; background: #fff;
+        }
+        .mm-item.mm-disabled {
+            background: #f8fafc;
+        }
+        .mm-icon-badge {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; flex-shrink: 0;
+        }
+        .mm-item-name {
+            flex: 1; font-size: 14px; font-weight: 500; color: #1e293b;
+        }
+        .mm-item-actions { display: flex; align-items: center; gap: 6px; }
+        .mm-btn {
+            background: none; border: 1px solid #e2e8f0; color: #64748b;
+            width: 28px; height: 28px; border-radius: 6px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; transition: all 0.15s;
+        }
+        .mm-btn:hover { background: #f1f5f9; color: #1e293b; border-color: #cbd5e1; }
+        .mm-btn.mm-btn-add { background: #dbeafe; border-color: #bfdbfe; color: #2563eb; }
+        .mm-btn.mm-btn-add:hover { background: #bfdbfe; color: #1d4ed8; }
+        .mm-btn.mm-btn-del { border-color: #fecaca; color: #dc2626; }
+        .mm-btn.mm-btn-del:hover { background: #fee2e2; }
+        .mm-section-divider { border: none; border-top: 1px solid #e2e8f0; margin: 16px 0; }
+        /* Toggle switch */
+        .mm-toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+        .mm-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+        .mm-toggle-slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1; border-radius: 20px; transition: 0.2s;
+        }
+        .mm-toggle-slider:before {
+            position: absolute; content: ""; height: 14px; width: 14px;
+            left: 3px; bottom: 3px; background-color: white;
+            border-radius: 50%; transition: 0.2s;
+        }
+        .mm-toggle input:checked + .mm-toggle-slider { background-color: #22c55e; }
+        .mm-toggle input:checked + .mm-toggle-slider:before { transform: translateX(16px); }
+        /* Inactive module items — buttons stay full opacity */
+        .mm-item.mm-disabled .mm-item-actions { opacity: 1; pointer-events: auto; }
+        .mm-btn.mm-btn-drag { cursor: grab; color: #94a3b8; }
+        .mm-btn.mm-btn-drag:hover { color: #475569; background: #f1f5f9; }
+
+        /* AMM card + button */
+        .amm-card { position: relative; }
+        .amm-card-add-btn {
+            position: absolute; top: 12px; right: 12px;
+            background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb;
+            width: 22px; height: 22px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; cursor: pointer; transition: all 0.15s;
+            opacity: 0;
+        }
+        .amm-card:hover .amm-card-add-btn { opacity: 1; }
+        .amm-card-add-btn:hover { background: #dbeafe; border-color: #93c5fd; }
+
+        /* Add Module Modal */
+        #add-module-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
+            z-index: 23000; align-items: center; justify-content: center;
+        }
+        .add-module-modal {
+            background: #fff; width: 88%; max-width: 560px; max-height: 85vh;
+            border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+            animation: ammSlideIn 0.25s ease;
+        }
+        .am-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px 16px; border-bottom: 1px solid #e2e8f0; }
+        .am-header-title { font-size: 16px; font-weight: 700; color: #1e293b; }
+        .am-close-btn { background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+        .am-close-btn:hover { color: #1e293b; background: #f1f5f9; }
+        .am-body { padding: 20px 24px; overflow-y: auto; }
+        .am-lib-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+        .am-lib-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px; border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; transition: all 0.15s; text-align: center; }
+        .am-lib-item:hover { border-color: #2563eb; background: #eff6ff; }
+        .am-lib-item.selected { border-color: #2563eb; background: #eff6ff; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+        .am-lib-item-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .am-lib-item-name { font-size: 12px; font-weight: 500; color: #334155; }
+        .am-divider { border: none; border-top: 1px solid #e2e8f0; margin: 14px 0; }
+        .am-custom-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 1.5px dashed #cbd5e1; border-radius: 10px; background: none; color: #64748b; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .am-custom-btn:hover { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
+        .am-custom-form { display: none; margin-top: 14px; }
+        .am-custom-form.show { display: block; }
+        .am-input { width: 100%; padding: 9px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; margin-bottom: 10px; box-sizing: border-box; }
+        .am-input:focus { border-color: #2563eb; }
+        .am-color-row { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; flex-wrap: wrap; }
+        .am-color-dot { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; }
+        .am-color-dot.selected { border-color: #1e293b; transform: scale(1.2); }
+        .am-footer { padding: 14px 24px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
+        .am-cancel-btn { background: #f1f5f9; border: none; color: #64748b; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; }
+        .am-submit-btn { background: #1B3DA1; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+        .am-submit-btn:hover { background: #152e80; }
+
+        /* Add Feature Modal */
+        #add-feature-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
+            z-index: 23000; align-items: center; justify-content: center;
+        }
+        .add-feature-modal {
+            background: #fff; width: 88%; max-width: 520px; max-height: 85vh;
+            border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+            animation: ammSlideIn 0.25s ease;
+        }
+        .af-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px 16px; border-bottom: 1px solid #e2e8f0; }
+        .af-header-title { font-size: 15px; font-weight: 700; color: #1e293b; }
+        .af-close-btn { background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+        .af-close-btn:hover { color: #1e293b; background: #f1f5f9; }
+        .af-body { padding: 20px 24px; overflow-y: auto; }
+        .af-section-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .af-suggest-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+        .af-suggest-item { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 13px; color: #475569; transition: all 0.15s; }
+        .af-suggest-item:hover { background: #f8fafc; border-color: #cbd5e1; }
+        .af-suggest-item.selected { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+        .af-suggest-item input[type="checkbox"] { accent-color: #2563eb; width: 15px; height: 15px; flex-shrink: 0; }
+        .af-textarea { width: 100%; padding: 9px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; outline: none; resize: none; margin-bottom: 12px; box-sizing: border-box; font-family: inherit; }
+        .af-textarea:focus { border-color: #2563eb; }
+        .af-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+        .af-tag { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1.5px solid #e2e8f0; color: #64748b; background: #f8fafc; cursor: pointer; transition: all 0.15s; }
+        .af-tag:hover { border-color: #94a3b8; color: #334155; }
+        .af-tag.selected-tag { color: #fff; border-color: transparent; }
+        .af-tag[data-tag="new"].selected-tag { background: #7c3aed; }
+        .af-tag[data-tag="config"].selected-tag { background: #059669; }
+        .af-tag[data-tag="priority"].selected-tag { background: #dc2626; }
+        .af-footer { padding: 14px 24px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
+        .af-cancel-btn { background: #f1f5f9; border: none; color: #64748b; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; }
+        .af-submit-btn { background: #1B3DA1; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+        .af-submit-btn:hover { background: #152e80; }
+
         /* Survey Modal Styles */
         #survey-modal-overlay {
             display: none;
@@ -1445,15 +1771,20 @@
                         <i class="fa-solid fa-box-open text-xs"></i>
                         Gói cước
                     </button>
-
+ <button onclick="openAutomationMapModal()"
+                        class="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
+                        <i class="fa-solid fa-robot text-xs"></i>
+                        Automation Map
+                    </button>
+                    
                     <!-- Display Dropdown -->
                     <div class="relative">
-                        <button id="btn-display"
+                        <!-- <button id="btn-display"
                             onclick="document.getElementById('displayDropdown').classList.toggle('hidden'); event.stopPropagation();"
                             class="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
                             <i class="fa-solid fa-tv text-xs"></i>
                             Hiển thị
-                        </button>
+                        </button> -->
 
                         <!-- Dropdown Menu -->
                         <div id="displayDropdown"
@@ -3704,7 +4035,7 @@
             <div class="survey-card shadow-sm border-slate-100">
                 <div class="survey-info">
                     <h3 class="font-bold text-[#1e293b] text-xl mb-1">Chào mừng bạn đến với App.vn</h3>
-                    <p class="text-slate-500 text-sm">Hoàn thành thiết lập để tự động hóa quy trình</p>
+                    <p class="text-slate-500 text-sm">Hoàn thành thiết lập để tự động hóa quy trình bán hàng của bạn</p>
                     
                     <div class="progress-thin w-full">
                         <div class="progress-bar-success" style="width: 0%;"></div>
@@ -3738,7 +4069,540 @@
         </div>
     </div>
 
+    <!-- Automation Map Modal -->
+    <div id="automation-map-modal-overlay" onclick="if(event.target===this)closeAutomationMapModal()">
+        <div class="automation-map-modal">
+            <div class="amm-header">
+                <div class="amm-title">
+                    <span class="amm-robot-icon"><i class="fa-solid fa-robot"></i></span>
+                    Tự động hóa doanh nghiệp với App.vn
+                </div>
+                <div class="amm-header-actions">
+                    <button class="amm-close-btn" onclick="closeAutomationMapModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            <div class="amm-tabs">
+                <div class="amm-tab active" onclick="ammSwitchTab(this)">Danh sách thiết lập</div>
+                <div class="amm-tab" onclick="ammSwitchTab(this)">Timeline triển khai</div>
+            </div>
+            <div class="amm-body">
+                <div class="amm-progress-banner">
+                    <div class="amm-progress-text">
+                        <div class="amm-progress-title">Hoàn thành thiết lập để tự động hóa quy trình bán hàng của bạn</div>
+                        <div class="amm-progress-track">
+                            <div class="amm-progress-fill" id="amm-progress-fill" style="width: 18%"></div>
+                        </div>
+                        <div class="amm-progress-meta">
+                            <span class="amm-progress-label">Tiến trình tự động hóa</span>
+                            <span class="amm-progress-steps" id="amm-progress-steps">4 / 22 bước</span>
+                        </div>
+                    </div>
+                    <div class="amm-progress-pct" id="amm-progress-pct">18%</div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; margin-bottom:16px;">
+                    <button class="amm-config-btn" onclick="openManageModuleModal()">Quản lý module</button>
+                </div>
+                <div class="amm-grid">
+                    <div class="amm-card">
+                        <div class="amm-card-header">
+                            <span class="amm-icon-wrap amm-icon-blue"><i class="fa-solid fa-users"></i></span>
+                            <span class="amm-card-title">Khách hàng</span>
+                        </div>
+                        <ul class="amm-list">
+                            <li><span class="amm-radio"></span>Đồng bộ khách hàng</li>
+                            <li><span class="amm-radio"></span>Bổ sung định danh khách hàng</li>
+                            <li><span class="amm-radio"></span>Phân nhóm khách hàng</li>
+                            <li><span class="amm-radio"></span>Phân nhóm theo RFM</li>
+                        </ul>
+                        <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Khách hàng', this)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="amm-card">
+                        <div class="amm-card-header">
+                            <span class="amm-icon-wrap amm-icon-green"><i class="fa-solid fa-cart-shopping"></i></span>
+                            <span class="amm-card-title">Bán hàng</span>
+                        </div>
+                        <ul class="amm-list">
+                            <li><span class="amm-radio"></span>Cấu hình trạng thái</li>
+                            <li><span class="amm-radio"></span>Kết nối vận chuyển</li>
+                            <li><span class="amm-radio"></span>Cấu hình bản in</li>
+                        </ul>
+                                            <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Bán hàng', this)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="amm-card">
+                        <div class="amm-card-header">
+                            <span class="amm-icon-wrap amm-icon-orange"><i class="fa-solid fa-box"></i></span>
+                            <span class="amm-card-title">Sản phẩm</span>
+                        </div>
+                        <ul class="amm-list">
+                            <li><span class="amm-radio"></span>Đồng bộ sản phẩm</li>
+                            <li><span class="amm-radio"></span>Quản lý danh mục</li>
+                            <li><span class="amm-radio"></span>Mapping sàn</li>
+                        </ul>
+                                            <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Sản phẩm', this)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="amm-card">
+                        <div class="amm-card-header">
+                            <span class="amm-icon-wrap amm-icon-purple"><i class="fa-solid fa-gem"></i></span>
+                            <span class="amm-card-title">Loyalty</span>
+                        </div>
+                        <ul class="amm-list">
+                            <li><span class="amm-radio"></span>Thiết lập hạng</li>
+                            <li><span class="amm-radio"></span>Thiết lập cộng điểm</li>
+                            <li><span class="amm-radio"></span>Quy trình tự động hóa</li>
+                        </ul>
+                                            <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Loyalty', this)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="amm-card">
+                        <div class="amm-card-header">
+                            <span class="amm-icon-wrap amm-icon-red"><i class="fa-solid fa-tag"></i></span>
+                            <span class="amm-card-title">Ưu đãi</span>
+                        </div>
+                        <ul class="amm-list">
+                            <li><span class="amm-radio"></span>Tạo danh sách ưu đãi</li>
+                            <li><span class="amm-radio"></span>Gắn vào luồng chăm sóc</li>
+                        </ul>
+                                            <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Ưu đãi', this)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="amm-card">
+                        <div class="amm-card-header">
+                            <span class="amm-icon-wrap amm-icon-sky"><i class="fa-solid fa-mobile-screen"></i></span>
+                            <span class="amm-card-title">MiniApp</span>
+                        </div>
+                        <ul class="amm-list">
+                            <li><span class="amm-radio"></span>Dựng Flow MiniApp</li>
+                            <li><span class="amm-radio"></span>Dựng UI MiniApp</li>
+                            <li><span class="amm-radio"></span>Xây dựng MiniApp</li>
+                        </ul>
+                                            <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('MiniApp', this)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Module Modal -->
+    <div id="manage-module-modal-overlay" onclick="if(event.target===this)closeManageModuleModal()">
+        <div class="manage-module-modal">
+            <div class="mmm-header">
+                <span class="mmm-header-title">Quản lý module</span>
+                <button class="mmm-close-btn" onclick="closeManageModuleModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="mmm-body" id="mmm-body-content">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Module Modal -->
+    <div id="add-module-modal-overlay" onclick="if(event.target===this)closeAddModuleModal()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:23000;align-items:center;justify-content:center;">
+        <div style="background:#fff;width:90%;max-width:580px;max-height:88vh;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;animation:ammSlideIn 0.25s ease;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid #f1f5f9;">
+                <span style="font-size:17px;font-weight:700;color:#1e293b;">Thêm Module vào Bản đồ</span>
+                <button onclick="closeAddModuleModal()" style="background:none;border:none;cursor:pointer;color:#94a3b8;font-size:20px;line-height:1;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="flex:1;overflow-y:auto;padding:18px 22px;">
+                <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:12px;">Thư viện module</div>
+                <div id="am-lib-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-bottom:20px;"></div>
+                <button onclick="amToggleCustomForm()" id="am-custom-toggle-btn" style="width:100%;padding:10px;border:1.5px dashed #cbd5e1;border-radius:10px;background:none;color:#64748b;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;">
+                    <i class="fa-solid fa-plus" style="font-size:12px;"></i> Tạo Module tùy chỉnh
+                </button>
+                <div id="am-custom-form" style="display:none;margin-top:14px;padding:16px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;">
+                    <div style="font-size:13px;font-weight:600;color:#475569;margin-bottom:10px;">Tên module</div>
+                    <input id="am-custom-name" type="text" placeholder="Nhập tên module..." style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;margin-bottom:14px;">
+                    <div style="font-size:13px;font-weight:600;color:#475569;margin-bottom:8px;">Màu sắc</div>
+                    <div id="am-color-row" style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <span class="am-color-dot" data-color="#2563eb" data-bg="#dbeafe" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#dbeafe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#2563eb;display:block;"></span></span>
+                        <span class="am-color-dot" data-color="#16a34a" data-bg="#dcfce7" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#dcfce7;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#16a34a;display:block;"></span></span>
+                        <span class="am-color-dot" data-color="#ea580c" data-bg="#ffedd5" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ffedd5;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#ea580c;display:block;"></span></span>
+                        <span class="am-color-dot" data-color="#7c3aed" data-bg="#ede9fe" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ede9fe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#7c3aed;display:block;"></span></span>
+                        <span class="am-color-dot" data-color="#dc2626" data-bg="#fee2e2" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#fee2e2;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#dc2626;display:block;"></span></span>
+                        <span class="am-color-dot" data-color="#0284c7" data-bg="#e0f2fe" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#e0f2fe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#0284c7;display:block;"></span></span>
+                        <span class="am-color-dot" data-color="#ca8a04" data-bg="#fef9c3" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#fef9c3;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#ca8a04;display:block;"></span></span>
+                        <span class="am-color-dot" data-color="#0f766e" data-bg="#ccfbf1" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ccfbf1;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#0f766e;display:block;"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;justify-content:flex-end;gap:10px;">
+                <button onclick="closeAddModuleModal()" style="padding:9px 18px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#64748b;font-size:14px;cursor:pointer;">Hủy</button>
+                <button onclick="amSubmit()" style="padding:9px 18px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Thêm vào bản đồ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Feature Modal -->
+    <div id="add-feature-modal-overlay" onclick="if(event.target===this)closeAddFeatureModal()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:23000;align-items:center;justify-content:center;">
+        <div style="background:#fff;width:90%;max-width:520px;max-height:90vh;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;animation:ammSlideIn 0.25s ease;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid #f1f5f9;">
+                <span id="af-modal-title" style="font-size:17px;font-weight:700;color:#1e293b;">Thêm tính năng cho Module</span>
+                <button onclick="closeAddFeatureModal()" style="background:none;border:none;cursor:pointer;color:#94a3b8;font-size:20px;line-height:1;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="flex:1;overflow-y:auto;padding:18px 22px;">
+                <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">Tính năng gợi ý</div>
+                <div id="af-suggest-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
+                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;margin-bottom:10px;" onclick="event.stopPropagation()">
+                    <input type="checkbox" id="af-custom-toggle" onchange="afToggleCustomFields(this)" style="accent-color:#2563eb;width:16px;height:16px;cursor:pointer;flex-shrink:0;">
+                    <span style="font-size:14px;font-weight:600;color:#374151;">Tính năng tùy chỉnh</span>
+                    <span style="font-size:12px;color:#94a3b8;margin-left:auto;">Tên, mô tả, nhãn, ngày...</span>
+                </label>
+                <div id="af-custom-fields" style="display:none;">
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Tên tính năng</div>
+                    <input id="af-custom-input" type="text" placeholder="Nhập tên tính năng..." style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;margin-bottom:14px;">
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Mô tả chi tiết</div>
+                    <textarea id="af-desc-input" placeholder="Mô tả chi tiết về tính năng..." rows="3" style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;margin-bottom:14px;font-family:inherit;"></textarea>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Nhãn</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+                        <button class="af-tag" data-tag="new" onclick="afSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Cần phát triển mới</button>
+                        <button class="af-tag" data-tag="config" onclick="afSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Có sẵn - cần cấu hình</button>
+                        <button class="af-tag" data-tag="priority" onclick="afSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Ưu tiên cao</button>
+                    </div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">Thời gian triển khai</div>
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <div style="flex:1;">
+                            <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;font-weight:500;">Từ ngày</div>
+                            <input id="af-date-from" type="date" onchange="afCalcDays()" style="width:100%;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;color:#374151;outline:none;box-sizing:border-box;cursor:pointer;">
+                        </div>
+                        <div style="color:#cbd5e1;font-size:18px;margin-top:16px;">→</div>
+                        <div style="flex:1;">
+                            <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;font-weight:500;">Đến ngày</div>
+                            <input id="af-date-to" type="date" onchange="afCalcDays()" style="width:100%;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;color:#374151;outline:none;box-sizing:border-box;cursor:pointer;">
+                        </div>
+                    </div>
+                    <div id="af-days-summary" style="display:none;font-size:12px;color:#2563eb;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:6px 12px;font-weight:500;"></div>
+                </div>
+            </div>
+            <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;justify-content:flex-end;gap:10px;">
+                <button onclick="closeAddFeatureModal()" style="padding:9px 18px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#64748b;font-size:14px;cursor:pointer;">Hủy</button>
+                <button onclick="afSubmit()" style="padding:9px 18px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Xác nhận thêm</button>
+            </div>
+        </div>
+    </div>
     <script>
+        function openAutomationMapModal() {
+            document.getElementById('automation-map-modal-overlay').style.display = 'flex';
+        }
+        function closeAutomationMapModal() {
+            document.getElementById('automation-map-modal-overlay').style.display = 'none';
+        }
+        function ammSwitchTab(el) {
+            el.closest('.amm-tabs').querySelectorAll('.amm-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // --- Manage Module Modal ---
+        const mmModules = {
+            active: [
+                { id: 'khachhang', name: 'Khách hàng', icon: 'fa-users', bg: '#dbeafe', color: '#2563eb', on: true },
+                { id: 'banhang',   name: 'Bán hàng',   icon: 'fa-cart-shopping', bg: '#dcfce7', color: '#16a34a', on: true },
+                { id: 'sanpham',   name: 'Sản phẩm',   icon: 'fa-box', bg: '#ffedd5', color: '#ea580c', on: true },
+                { id: 'loyalty',   name: 'Loyalty',    icon: 'fa-trophy', bg: '#ede9fe', color: '#7c3aed', on: true },
+            ],
+            inactive: [
+                { id: 'uudai',   name: 'Ưu đãi',   icon: 'fa-tags', bg: '#fee2e2', color: '#dc2626' },
+                { id: 'miniapp', name: 'MiniApp',   icon: 'fa-mobile-screen', bg: '#e0f2fe', color: '#0284c7' },
+                { id: 'nhansu',  name: 'Nhân sự',   icon: 'fa-id-badge', bg: '#fef9c3', color: '#ca8a04' },
+            ]
+        };
+
+        function openManageModuleModal() {
+            mmRender();
+            document.getElementById('manage-module-modal-overlay').style.display = 'flex';
+        }
+        function closeManageModuleModal() {
+            document.getElementById('manage-module-modal-overlay').style.display = 'none';
+        }
+
+        function mmIconHtml(m) {
+            return `<span class="mm-icon-badge" style="background:${m.bg};color:${m.color}"><i class="fa-solid ${m.icon}"></i></span>`;
+        }
+
+        function mmRender() {
+            const body = document.getElementById('mmm-body-content');
+            const active = mmModules.active;
+            const inactive = mmModules.inactive;
+            const searchTerm = (document.getElementById('mmm-search-input')?.value || '').toLowerCase();
+
+            let html = `<div class="mmm-section-head">
+                <span class="mmm-section-label">Module đang sử dụng <span style="background:#e2e8f0;color:#475569;font-size:12px;padding:1px 7px;border-radius:20px;font-weight:600;margin-left:4px;">${active.length}</span></span>
+            </div>`;
+
+            if (active.length === 0) {
+                html += `<div style="text-align:center;color:#94a3b8;font-size:13px;padding:12px 0;">Chưa có module nào</div>`;
+            } else {
+                active.forEach((m, i) => {
+                    html += `<div class="mm-item">
+                        <label class="mm-toggle">
+                            <input type="checkbox" ${m.on ? 'checked' : ''} onchange="mmToggle(${i})">
+                            <span class="mm-toggle-slider"></span>
+                        </label>
+                        ${mmIconHtml(m)}
+                        <span class="mm-item-name">${m.name}</span>
+                        <div class="mm-item-actions">
+                            <button class="mm-btn mm-btn-drag" title="Kéo để sắp xếp"><i class="fa-solid fa-grip-vertical"></i></button>
+                            <button class="mm-btn mm-btn-del" title="Xóa" onclick="mmDeactivate(${i})"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>`;
+                });
+            }
+
+            html += `<hr class="mm-section-divider">
+            <div class="mmm-section-head">
+                <span class="mmm-section-label">Module chưa sử dụng <span style="background:#e2e8f0;color:#475569;font-size:12px;padding:1px 7px;border-radius:20px;font-weight:600;margin-left:4px;">${inactive.length}</span></span>
+                <button class="mm-add-module-btn" onclick="openAddModuleModal()"><i class="fa-solid fa-plus" style="margin-right:5px;font-size:11px;"></i>Thêm module</button>
+            </div>`;
+
+            html += `<div style="padding: 0 12px 14px 12px;">
+                <div style="position:relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:13px;"></i>
+                    <input id="mmm-search-input" type="text" placeholder="Tìm kiếm module chưa sử dụng..." oninput="mmRender()" value="${searchTerm.replace(/"/g, '&quot;')}" style="width:100%;padding:9px 12px 9px 36px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
+                </div>
+            </div>`;
+
+            const filteredInactive = inactive.filter(m => m.name.toLowerCase().includes(searchTerm));
+
+            if (filteredInactive.length === 0) {
+                html += `<div style="text-align:center;color:#94a3b8;font-size:13px;padding:12px 0;">${searchTerm ? 'Không tìm thấy module nào' : 'Tất cả module đã được sử dụng'}</div>`;
+            } else {
+                inactive.forEach((m, i) => {
+                    if (m.name.toLowerCase().includes(searchTerm)) {
+                        html += `<div class="mm-item mm-disabled">
+                            ${mmIconHtml(m)}
+                            <span class="mm-item-name">${m.name}</span>
+                            <div class="mm-item-actions">
+                                <button class="mm-btn mm-btn-add" title="Thêm vào đang dùng" onclick="mmActivate(${i})"><i class="fa-solid fa-plus"></i></button>
+                                <button class="mm-btn mm-btn-del" title="Xóa module" onclick="mmDeleteInactive(${i})"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                        </div>`;
+                    }
+                });
+            }
+
+            body.innerHTML = html;
+            // Restore focus and cursor position after re-render if we were searching
+            const searchInput = document.getElementById('mmm-search-input');
+            if (searchTerm && searchInput) {
+                searchInput.focus();
+                searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+            }
+        }
+
+        function mmToggle(i) {
+            mmModules.active[i].on = !mmModules.active[i].on;
+        }
+        function mmMoveUp(i) {
+            if (i === 0) return;
+            const a = mmModules.active;
+            [a[i-1], a[i]] = [a[i], a[i-1]];
+            mmRender();
+        }
+        function mmMoveDown(i) {
+            const a = mmModules.active;
+            if (i === a.length - 1) return;
+            [a[i+1], a[i]] = [a[i], a[i+1]];
+            mmRender();
+        }
+        function mmDeactivate(i) {
+            const m = mmModules.active.splice(i, 1)[0];
+            mmModules.inactive.push(m);
+            mmRender();
+        }
+        function mmActivate(i) {
+            const m = mmModules.inactive.splice(i, 1)[0];
+            m.on = true;
+            mmModules.active.push(m);
+            mmRender();
+        }
+        function mmDeleteInactive(i) {
+            mmModules.inactive.splice(i, 1);
+            mmRender();
+        }
+        function openAddModuleModal() {
+            amRenderLibrary();
+            document.getElementById('am-custom-form').style.display = 'none';
+            document.getElementById('am-custom-name').value = '';
+            amSelectedColor = null;
+            amSelectedLibId = null;
+            document.querySelectorAll('.am-color-dot').forEach(d => d.style.border = '2px solid transparent');
+            document.getElementById('add-module-modal-overlay').style.display = 'flex';
+        }
+        function closeAddModuleModal() {
+            document.getElementById('add-module-modal-overlay').style.display = 'none';
+        }
+
+        const amLibrary = [
+            { id: 'warehouse',  name: 'Kho hàng',   icon: 'fa-warehouse',    bg: '#f0fdf4', color: '#15803d' },
+            { id: 'accounting', name: 'Kế toán',    icon: 'fa-calculator',   bg: '#fef3c7', color: '#b45309' },
+            { id: 'crm',        name: 'CRM',         icon: 'fa-handshake',    bg: '#ede9fe', color: '#6d28d9' },
+            { id: 'feedback',   name: 'Phản hồi',   icon: 'fa-comment-dots', bg: '#fff1f2', color: '#be123c' },
+            { id: 'report',     name: 'Báo cáo',    icon: 'fa-chart-pie',    bg: '#ecfdf5', color: '#059669' },
+            { id: 'shipping',   name: 'Vận chuyển', icon: 'fa-truck',        bg: '#eff6ff', color: '#1d4ed8' },
+        ];
+        let amSelectedLibId = null;
+        let amSelectedColor = null;
+
+        function amRenderLibrary() {
+            const grid = document.getElementById('am-lib-grid');
+            grid.innerHTML = amLibrary.map(m => `
+                <div id="am-lib-${m.id}" onclick="amSelectLib('${m.id}')" style="padding:12px 8px;border-radius:10px;border:1.5px solid #e2e8f0;cursor:pointer;text-align:center;transition:all 0.15s;background:#fff;">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:${m.bg};color:${m.color};font-size:16px;margin-bottom:6px;"><i class="fa-solid ${m.icon}"></i></span>
+                    <div style="font-size:12px;font-weight:600;color:#374151;">${m.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function amSelectLib(id) {
+            amSelectedLibId = id;
+            document.querySelectorAll('[id^="am-lib-"]').forEach(el => {
+                el.style.border = '1.5px solid #e2e8f0';
+                el.style.background = '#fff';
+            });
+            const el = document.getElementById('am-lib-' + id);
+            if (el) { el.style.border = '1.5px solid #2563eb'; el.style.background = '#eff6ff'; }
+        }
+
+        function amToggleCustomForm() {
+            const form = document.getElementById('am-custom-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function amSelectColor(el) {
+            document.querySelectorAll('.am-color-dot').forEach(d => d.style.border = '2px solid transparent');
+            el.style.border = '2px solid #2563eb';
+            amSelectedColor = { color: el.dataset.color, bg: el.dataset.bg };
+        }
+
+        function amSubmit() {
+            const customName = document.getElementById('am-custom-name').value.trim();
+            if (customName) {
+                const c = amSelectedColor || { color: '#2563eb', bg: '#dbeafe' };
+                mmModules.inactive.push({ id: 'custom_' + Date.now(), name: customName, icon: 'fa-cube', bg: c.bg, color: c.color });
+                closeAddModuleModal();
+                mmRender();
+                return;
+            }
+            if (amSelectedLibId) {
+                const lib = amLibrary.find(m => m.id === amSelectedLibId);
+                if (lib) {
+                    mmModules.inactive.push({ id: lib.id, name: lib.name, icon: lib.icon, bg: lib.bg, color: lib.color });
+                    closeAddModuleModal();
+                    mmRender();
+                }
+                return;
+            }
+            alert('Vui lòng chọn một module từ thư viện hoặc tạo module tùy chỉnh.');
+        }
+
+        // --- Add Feature Modal ---
+        const afSuggests = {
+            'Khách hàng': ['Tự động gắn nhãn', 'Nhắc nhở chăm sóc', 'Gộp khách hàng trùng'],
+            'Bán hàng':   ['Xác nhận đơn tự động', 'Cảnh báo tồn kho thấp', 'Báo cáo hàng ngày'],
+            'Sản phẩm':   ['Đồng bộ giá tự động', 'Cập nhật số lượng theo lô', 'Quản lý combo'],
+            'Loyalty':    ['Thông báo hết điểm', 'Tự động nâng hạng', 'Ưu đãi sinh nhật'],
+            'Ưu đãi':     ['Điều kiện áp dụng', 'Giới hạn số lần dùng', 'Kết hợp nhiều ưu đãi'],
+            'MiniApp':    ['Trang chủ tùy chỉnh', 'Tích hợp thanh toán', 'Thông báo push'],
+        };
+        let afCurrentModule = null;
+        let afCurrentBtn = null;
+        let afSelectedTag = null;
+        let afCheckedSuggests = new Set();
+
+        function openAddFeatureModal(moduleName, btn) {
+            afCurrentModule = moduleName;
+            afCurrentBtn = btn;
+            afSelectedTag = null;
+            afCheckedSuggests = new Set();
+            document.getElementById('af-modal-title').textContent = 'Thêm tính năng cho Module ' + moduleName;
+            document.getElementById('af-custom-input').value = '';
+            document.getElementById('af-desc-input').value = '';
+            document.querySelectorAll('.af-tag').forEach(t => {
+                t.style.background = '#fff';
+                t.style.color = '#64748b';
+                t.style.borderColor = '#e2e8f0';
+            });
+            const suggests = afSuggests[moduleName] || ['Tính năng tùy chỉnh', 'Quy trình tự động', 'Báo cáo & thống kê'];
+            const list = document.getElementById('af-suggest-list');
+            list.innerHTML = suggests.map(s => `
+                <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1.5px solid #e2e8f0;cursor:pointer;background:#fff;transition:background 0.15s;">
+                    <input type="checkbox" value="${s}" onchange="afToggleSuggest(this)" style="accent-color:#2563eb;width:16px;height:16px;cursor:pointer;">
+                    <span style="font-size:14px;color:#374151;">${s}</span>
+                </label>
+            `).join('');
+            document.getElementById('af-date-from').value = '';
+            document.getElementById('af-date-to').value = '';
+            const summary = document.getElementById('af-days-summary');
+            summary.style.display = 'none';
+            summary.textContent = '';
+            const afToggle = document.getElementById('af-custom-toggle');
+            if (afToggle) { afToggle.checked = false; }
+            const afCustomFields = document.getElementById('af-custom-fields');
+            if (afCustomFields) { afCustomFields.style.display = 'none'; }
+            document.getElementById('add-feature-modal-overlay').style.display = 'flex';
+        }
+        function closeAddFeatureModal() {
+            document.getElementById('add-feature-modal-overlay').style.display = 'none';
+        }
+        function afToggleCustomFields(cb) {
+            document.getElementById('af-custom-fields').style.display = cb.checked ? 'block' : 'none';
+        }
+        function afCalcDays() {
+            const from = document.getElementById('af-date-from').value;
+            const to = document.getElementById('af-date-to').value;
+            const summary = document.getElementById('af-days-summary');
+            if (!from || !to) { summary.style.display = 'none'; return; }
+            const d1 = new Date(from), d2 = new Date(to);
+            if (d2 < d1) { summary.style.display = 'block'; summary.textContent = 'Ngày kết thúc phải sau ngày bắt đầu.'; summary.style.color = '#dc2626'; summary.style.background = '#fef2f2'; summary.style.borderColor = '#fecaca'; return; }
+            let workDays = 0;
+            const cur = new Date(d1);
+            while (cur <= d2) {
+                const day = cur.getDay();
+                if (day !== 0 && day !== 6) workDays++;
+                cur.setDate(cur.getDate() + 1);
+            }
+            summary.style.display = 'block';
+            summary.style.color = '#2563eb';
+            summary.style.background = '#eff6ff';
+            summary.style.borderColor = '#bfdbfe';
+            summary.textContent = 'Tổng cộng: ' + workDays + ' ngày làm việc';
+        }
+        function afToggleSuggest(cb) {
+            if (cb.checked) afCheckedSuggests.add(cb.value);
+            else afCheckedSuggests.delete(cb.value);
+            cb.closest('label').style.background = cb.checked ? '#eff6ff' : '#fff';
+        }
+        function afSelectTag(btn) {
+            const tag = btn.dataset.tag;
+            if (afSelectedTag === tag) {
+                afSelectedTag = null;
+                btn.style.cssText = 'padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;';
+            } else {
+                document.querySelectorAll('.af-tag').forEach(t => {
+                    t.style.background = '#fff';
+                    t.style.color = '#64748b';
+                    t.style.borderColor = '#e2e8f0';
+                });
+                afSelectedTag = tag;
+                btn.style.background = '#eff6ff';
+                btn.style.color = '#2563eb';
+                btn.style.borderColor = '#bfdbfe';
+            }
+        }
+        function afSubmit() {
+            const customText = document.getElementById('af-custom-input').value.trim();
+            const toAdd = [...afCheckedSuggests];
+            if (customText) toAdd.push(customText);
+            if (toAdd.length === 0) { alert('Vui lòng chọn hoặc nhập ít nhất một tính năng.'); return; }
+            const card = afCurrentBtn ? afCurrentBtn.closest('.amm-card') : null;
+            if (card) {
+                const list = card.querySelector('.amm-list');
+                toAdd.forEach(text => {
+                    const li = document.createElement('li');
+                    li.innerHTML = '<span class="amm-radio"></span>' + text;
+                    list.appendChild(li);
+                });
+            }
+            closeAddFeatureModal();
+        }
+
         function toggleSideTab() {
             const sideTab = document.getElementById('side-tab');
             sideTab.classList.toggle('collapsed');

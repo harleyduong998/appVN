@@ -92,6 +92,10 @@
             z-index: 0;
             filter: grayscale(1) brightness(0);
         }
+
+        .hero-banner-watermark.collapsed {
+            height: auto;
+        }
     </style>
 </head>
 
@@ -272,13 +276,18 @@
             </div>
 
             <!-- Hero Section Dashboard -->
-            <div class="mx-4 mt-4 p-5 rounded-2xl bg-[#F7FAFF] border border-blue-100/50 relative overflow-hidden group shadow-sm hero-banner-watermark">
+            <div id="hero-section" class="mx-4 mt-4 p-5 rounded-2xl bg-[#F7FAFF] border border-blue-100/50 relative overflow-hidden group shadow-sm hero-banner-watermark transition-all duration-300">
+                <!-- Collapse Button -->
+                <button onclick="toggleHeroSection()" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-100/50 text-blue-400 hover:text-blue-600 transition-colors z-20" title="Thu gọn/Mở rộng">
+                    <i id="hero-toggle-icon" class="fa-solid fa-compress"></i>
+                </button>
+                
                 <!-- Status Badge -->
                 <div class="absolute top-4 right-5 z-10">
                   
                 </div>
 
-                <div class="relative z-10">
+                <div id="hero-content" class="relative z-10 transition-all duration-300">
                     <h2 class="text-xl font-bold text-[#1B3DA1] mb-2 flex items-center gap-2">
                         <img src="http://dev.smax.app/assets/images/app-customers.svg" class="w-7 h-7" alt="Customer Icon">
                         Customer 360
@@ -286,7 +295,7 @@
                     <p class="text-xs font-medium text-blue-900/70 mb-5 max-w-2xl leading-relaxed">
                         Tự động <span class="font-bold text-[#1B3DA1]">hợp nhất và định danh</span> khách hàng từ các kênh Social, E-com về <span class="font-bold text-[#1B3DA1]">hồ sơ customer 360°</span>.<br><span class="font-bold text-[#1B3DA1]">Hệ thống hóa mọi điểm chạm</span> để giúp doanh nghiệp thấu hiểu và tối ưu hiệu quả kinh doanh.
                     </p>
-<div class="flex flex-wrap items-center gap-3 mt-4">
+                    <div class="flex flex-wrap items-center gap-3 mt-4">
                         <button onclick="openSyncModal()" class="flex items-center gap-2 px-5 py-2 bg-[#1B3DA1] text-white text-[11px] font-bold rounded-lg hover:bg-blue-800 transition-all uppercase tracking-wide shadow-md">
                             <i class="fa-solid fa-cloud-arrow-down"></i> Đồng bộ khách hàng
                         </button>
@@ -297,9 +306,20 @@
                             <i class="fa-solid fa-user-check"></i> Khách hàng mẫu
                         </button>
                     </div>
-                    <div class="flex items-center gap-3">
-                        
-                   
+                </div>
+
+                <!-- Collapsed State Content -->
+                <div id="hero-collapsed-content" class="hidden relative z-10">
+                    <div class="flex items-center gap-2">
+                        <button onclick="openSyncModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg hover:bg-blue-100 transition-all uppercase tracking-wide border border-blue-100">
+                            <i class="fa-solid fa-cloud-arrow-down text-[9px]"></i> Đồng bộ
+                        </button>
+                        <button onclick="openIdModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded-lg hover:bg-indigo-100 transition-all uppercase tracking-wide border border-indigo-100">
+                            <i class="fa-solid fa-user-plus text-[9px]"></i> Định danh
+                        </button>
+                        <button onclick="openSampleCustomerModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-700 text-[10px] font-bold rounded-lg hover:bg-gray-100 transition-all uppercase tracking-wide border border-gray-200">
+                            <i class="fa-solid fa-user-check text-[9px]"></i> Mẫu
+                        </button>
                     </div>
                 </div>
 
@@ -568,6 +588,35 @@
                 dashboardBtn.classList.remove('font-bold', 'border-[#1B3DA1]', 'text-[#1B3DA1]');
             }
         }
+
+        function toggleHeroSection() {
+            const heroSection = document.getElementById('hero-section');
+            const heroContent = document.getElementById('hero-content');
+            const heroCollapsedContent = document.getElementById('hero-collapsed-content');
+            const toggleIcon = document.getElementById('hero-toggle-icon');
+
+            const isCollapsed = heroSection.classList.contains('collapsed');
+
+            if (isCollapsed) {
+                // Expand
+                heroSection.classList.remove('collapsed');
+                heroContent.classList.remove('hidden');
+                heroCollapsedContent.classList.add('hidden');
+                toggleIcon.classList.remove('fa-expand');
+                toggleIcon.classList.add('fa-compress');
+                heroSection.classList.remove('py-2');
+                heroSection.classList.add('p-5');
+            } else {
+                // Collapse
+                heroSection.classList.add('collapsed');
+                heroContent.classList.add('hidden');
+                heroCollapsedContent.classList.remove('hidden');
+                toggleIcon.classList.remove('fa-compress');
+                toggleIcon.classList.add('fa-expand');
+                heroSection.classList.remove('p-5');
+                heroSection.classList.add('py-2');
+            }
+        }
     </script>
 
     <!-- Create Customer Modal -->
@@ -828,7 +877,7 @@
                 </button>
             </div>
             <!-- Body -->
-            <div class="p-6 space-y-8 overflow-y-auto bg-[#F9FAFB] custom-scrollbar">
+            <div class="p-6 space-y-8 overflow-y-auto custom-scrollbar">
              
 
                 <!-- Ecom POS -->

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Lead - CRM AppVN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F8;
+        }
+
+        .sidebar-pro-style {
+            background-color: #1B3DA1;
+            background-image:
+                radial-gradient(80% 40% at 100% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+                radial-gradient(60% 40% at 0% 100%, rgba(255, 255, 255, 0.1) 0%, transparent 100%),
+                linear-gradient(160deg, #1B3DA1 0%, #0b2060 100%);
+        }
+
+        .sidebar-icon-active {
+            color: #FFFFFF;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }
+
+        .kanban-col {
+            min-width: 260px;
+            max-width: 260px;
+        }
+
+        .kanban-col-header {
+            border-top: 3px solid;
+        }
+
+        .btn-add-lead {
+            background: linear-gradient(135deg, #1B3DA1 0%, #2563EB 100%);
+        }
+
+        .view-toggle-active {
+            background-color: #EEF2FF;
+            color: #1B3DA1;
+        }
+
+        .pipe-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            font-size: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .scenario-card.selected {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+            background-color: #faf5ff;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden text-gray-700">
+
+    <!-- Global Sidebar (icon only) -->
+    <div id="sidebar" class="w-14 sidebar-pro-style text-white flex flex-col z-50 shadow-lg shadow-blue-900/30 flex-shrink-0">
+
+        <!-- Logo -->
+        <div class="px-2 py-3 flex items-center justify-center h-14 border-b border-white/10">
+            <div onclick="window.location.href='../index.html'"
+                class="h-9 w-9 bg-white rounded-lg flex items-center justify-center text-[#1B3DA1] font-bold shadow-lg cursor-pointer overflow-hidden">
+                <img style="width: 70%;" src="../LOGO APP VN BTHE 12.7-03.svg"
+                    onerror="this.style.display='none';this.parentNode.innerHTML='<span style=font-size:11px;font-weight:900;color:#1B3DA1>A</span>'"
+                    alt="Appvn">
+            </div>
+        </div>
+
+        <!-- Nav Icons -->
+        <nav class="flex-1 flex flex-col items-center gap-1 py-3">
+
+            <!-- Tác vụ -->
+            <a href="#" title="Tác vụ"
+                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/10 text-blue-200 hover:text-white transition">
+                <i class="fa-solid fa-list-check text-base"></i>
+            </a>
+
+            <!-- Quản lý Lead (Active) -->
+            <a href="#" title="Quản lý Lead"
+                class="w-10 h-10 flex items-center justify-center rounded-xl sidebar-icon-active transition">
+                <i class="fa-solid fa-filter text-base"></i>
+            </a>
+
+            <!-- Cấu hình Quy tắc và Dữ liệu -->
+            <a href="#" title="Cấu hình Quy tắc và Dữ liệu"
+                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/10 text-blue-200 hover:text-white transition">
+                <i class="fa-solid fa-diagram-project text-base"></i>
+            </a>
+
+            <!-- Cài đặt -->
+            <a href="#" title="Cài đặt"
+                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/10 text-blue-200 hover:text-white transition">
+                <i class="fa-solid fa-gear text-base"></i>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Left Folder Panel -->
+    <div class="w-64 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col shadow-sm z-40">
+
+        <!-- Panel Header -->
+        <div class="h-14 flex items-center justify-between px-3 border-b border-gray-100">
+            <span class="text-xs font-bold text-gray-700 uppercase tracking-wide">Danh sách Lead</span>
+            <div class="flex items-center gap-1">
+                <button class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition" title="Tìm kiếm">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </button>
+                <button class="w-7 h-7 flex items-center justify-center rounded-lg bg-[#1B3DA1] text-white hover:bg-blue-800 transition shadow-sm" title="Thêm mới">
+                    <i class="fa-solid fa-plus text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Input -->
+        <div class="px-3 py-2 border-b border-gray-50">
+            <div class="relative">
+                <input type="text" placeholder="Tìm kiếm..."
+                    class="w-full pl-8 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-[#1B3DA1]/20 focus:border-[#1B3DA1] outline-none transition">
+                <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[9px]"></i>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="flex-1 overflow-y-auto">
+            <div class="flex flex-col items-center justify-center h-full py-16 text-center px-4">
+                <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-folder-open text-gray-300 text-xl"></i>
+                </div>
+                <p class="text-xs text-gray-400 font-medium">Không có dữ liệu</p>
+                <p class="text-[10px] text-gray-300 mt-1">Nhấn <span class="text-[#1B3DA1] font-bold">+</span> để thêm mới</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+        <!-- Top Header Bar -->
+        <div class="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-4 flex-shrink-0 shadow-sm z-30">
+            <!-- Left: Branch / Role / Member filters -->
+            <div class="flex items-center gap-2">
+                <!-- 1 Chi nhánh -->
+                <button class="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50/70 border border-blue-100 rounded-lg hover:border-blue-300 transition cursor-pointer group">
+                    <i class="fa-solid fa-building text-[10px] text-blue-500"></i>
+                    <span class="text-xs font-semibold text-blue-800">1 chi nhánh</span>
+                    <i class="fa-solid fa-chevron-down text-[8px] text-blue-400 group-hover:text-blue-600 transition"></i>
+                </button>
+
+                <!-- Vai trò -->
+                <button class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-300 transition cursor-pointer group">
+                    <i class="fa-solid fa-shield-halved text-[10px] text-gray-400 group-hover:text-blue-500"></i>
+                    <span class="text-xs font-medium text-gray-600 group-hover:text-gray-800">Vai trò</span>
+                    <i class="fa-solid fa-chevron-down text-[8px] text-gray-300 group-hover:text-blue-400 transition"></i>
+                </button>
+
+                <!-- Thành viên -->
+                <button class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-300 transition cursor-pointer group">
+                    <i class="fa-solid fa-users text-[10px] text-gray-400 group-hover:text-blue-500"></i>
+                    <span class="text-xs font-medium text-gray-600 group-hover:text-gray-800">Thành viên</span>
+                    <i class="fa-solid fa-chevron-down text-[8px] text-gray-300 group-hover:text-blue-400 transition"></i>
+                </button>
+            </div>
+
+            <!-- Right: Search + Notifications + Avatar -->
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <input type="text" placeholder="Tìm kiếm..."
+                        class="w-48 pl-8 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-[#1B3DA1]/20 focus:border-[#1B3DA1] outline-none transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[9px]"></i>
+                </div>
+
+                <button class="relative w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+                    <i class="fa-solid fa-bell text-sm"></i>
+                    <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full border border-white"></span>
+                </button>
+
+                <img width="32" height="32" alt="avatar"
+                    class="rounded-full ring-2 ring-white shadow-sm cursor-pointer"
+                    src="https://ui-avatars.com/api/?name=A&background=1B3DA1&color=fff&size=32">
+            </div>
+        </div>
+
+        <!-- Content Toolbar -->
+        <div class="bg-white border-b border-gray-100 px-4 py-2.5 flex items-center justify-between flex-shrink-0">
+            <!-- Left: Add Lead button + Import -->
+            <div class="flex items-center gap-2">
+                <div class="flex items-stretch shadow-md shadow-blue-900/20 rounded-lg overflow-hidden">
+                    <button class="btn-add-lead flex items-center gap-2 px-4 py-2 text-white text-xs font-bold hover:opacity-90 transition active:scale-95">
+                        <i class="fa-solid fa-plus text-[10px]"></i>
+                        Thêm Lead
+                    </button>
+                    <div class="w-px bg-white/20"></div>
+                    <button class="btn-add-lead px-2.5 py-2 text-white hover:opacity-90 transition">
+                        <i class="fa-solid fa-chevron-down text-[9px]"></i>
+                    </button>
+                </div>
+
+                <button class="flex items-center gap-1.5 px-3 py-2 bg-white border border-gray-200 text-gray-600 text-xs font-medium rounded-lg hover:bg-gray-50 hover:border-gray-300 transition shadow-sm">
+                    <i class="fa-solid fa-upload text-[10px] text-gray-400"></i>
+                    Import
+                </button>
+            </div>
+
+            <!-- Right: Filter / Reset / View toggles -->
+            <div class="flex items-center gap-1">
+                <!-- Filter advanced -->
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition" title="Bộ lọc nâng cao">
+                    <i class="fa-solid fa-sliders text-sm"></i>
+                </button>
+
+                <!-- Reset filter -->
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition" title="Đặt lại bộ lọc">
+                    <i class="fa-solid fa-rotate-left text-sm"></i>
+                </button>
+
+                <div class="w-px h-5 bg-gray-200 mx-1"></div>
+
+                <!-- Kanban view (active) -->
+                <button id="btn-kanban" onclick="setView('kanban')"
+                    class="w-8 h-8 flex items-center justify-center rounded-lg view-toggle-active border border-blue-100 transition" title="Xem dạng Kanban">
+                    <i class="fa-solid fa-table-columns text-sm text-[#1B3DA1]"></i>
+                </button>
+
+                <!-- List view -->
+                <button id="btn-list" onclick="setView('list')"
+                    class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition" title="Xem dạng danh sách">
+                    <i class="fa-solid fa-list text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div id="hero-section" class="flex-shrink-0 bg-[#EEF2F8] px-4 pt-4 pb-0">
+            <div class="relative rounded-2xl overflow-hidden shadow-sm border border-blue-100/50 bg-[#F7FAFF]">
+
+             
+
+                <!-- Collapse button -->
+                <button onclick="toggleHero()" title="Thu gọn"
+                    class="absolute top-2 right-2 z-20 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-100/50 text-blue-400 hover:text-blue-600 transition">
+                    <i id="hero-toggle-icon" class="fa-solid fa-compress text-[10px]"></i>
+                </button>
+
+                <!-- Expanded content -->
+                <div id="hero-expanded" class="relative z-10 p-5">
+                    <div class="flex items-start justify-between gap-6">
+
+                        <!-- Left: Title + description + buttons -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                        
+                            </div>
+                            <h2 class="text-xl font-extrabold text-[#1B3DA1] mt-2 mb-1 leading-tight">
+                                Quản lý Lead thông minh
+                            </h2>
+                            <p class="text-blue-900/60 text-xs leading-relaxed max-w-xl mb-4">
+                                Theo dõi, phân loại và chuyển đổi lead hiệu quả với <span class="font-semibold text-[#1B3DA1]"> pipeline trực quan</span>. <br> 
+                                Tích hợp AI để <span class="font-semibold text-[#1B3DA1]">gợi ý kịch bản chăm sóc</span> tối ưu cho từng giai đoạn.
+                            </p>
+
+                            <!-- Buttons -->
+                            <div class="flex flex-wrap items-center gap-2">
+                                <!-- AI Gợi ý kịch bản -->
+                                <button onclick="openAiModal()"
+                                    class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition active:scale-95 shadow-md shadow-purple-900/20 text-white"
+                                    style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    AI Gợi ý chuyển đổi Lead
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right: Stats -->
+                        <div class="hidden lg:flex items-center gap-3 flex-shrink-0">
+                            <div class="flex flex-col items-center px-5 py-3 bg-white rounded-xl border border-blue-100 shadow-sm min-w-[80px]">
+                                <span class="text-2xl font-black text-[#1B3DA1]">0</span>
+                                <span class="text-[10px] text-blue-900/50 font-medium mt-0.5 whitespace-nowrap">Tổng lead</span>
+                            </div>
+                            <div class="flex flex-col items-center px-5 py-3 bg-white rounded-xl border border-blue-100 shadow-sm min-w-[80px]">
+                                <span class="text-2xl font-black text-emerald-600">0%</span>
+                                <span class="text-[10px] text-blue-900/50 font-medium mt-0.5 whitespace-nowrap">Tỷ lệ chốt</span>
+                            </div>
+                            <div class="flex flex-col items-center px-5 py-3 bg-white rounded-xl border border-blue-100 shadow-sm min-w-[80px]">
+                                <span class="text-2xl font-black text-amber-500">0</span>
+                                <span class="text-[10px] text-blue-900/50 font-medium mt-0.5 whitespace-nowrap">Hôm nay</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collapsed content -->
+                <div id="hero-collapsed" class="hidden relative z-10 px-5 py-3 flex items-center gap-4">
+                    <span class="text-[#1B3DA1] font-bold text-sm">Quản lý Lead thông minh</span>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openAiModal()"
+                            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold text-white transition shadow-sm"
+                            style="background: linear-gradient(135deg, #7c3aed, #a855f7);">
+                            <i class="fa-solid fa-wand-magic-sparkles text-[9px]"></i> AI Kịch bản
+                        </button>
+                        <button class="flex items-center gap-1.5 px-3 py-1.5 bg-[#1B3DA1] text-white rounded-lg text-[11px] font-medium hover:bg-blue-800 transition shadow-sm">
+                            <i class="fa-solid fa-plus text-[9px]"></i> Thêm Lead
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Modal -->
+        <div id="ai-modal" class="hidden fixed inset-0 z-[999] items-center justify-center p-4">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeAiModal()"></div>
+            <div class="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl flex flex-col overflow-hidden" style="height:88vh; width: 1000px; max-width: 5000px">
+
+                <!-- Modal Header -->
+                <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between flex-shrink-0 bg-gradient-to-r from-purple-50 to-blue-50">
+                    <h2 class="text-base font-bold text-gray-800 flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-white flex-shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                        </div>
+                        AI Gợi ý phễu chăm sóc
+                    </h2>
+                    <button onclick="closeAiModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 transition">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+
+                <!-- Body: Left menu + Right content -->
+                <div class="flex-1 flex overflow-hidden">
+
+                <!-- Left Category Menu -->
+                <div class="w-44 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col overflow-y-auto py-2 px-2 gap-0.5">
+                    <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest px-2 py-1 mt-1">Danh mục</p>
+                    <button onclick="filterCat('all')" class="cat-btn cat-all text-left px-3 py-2 text-xs font-semibold rounded-lg text-[#1B3DA1] bg-blue-50 transition">
+                        <i class="fa-solid fa-grip text-[10px] mr-1.5 opacity-70"></i>Tất cả
+                    </button>
+                    <button onclick="filterCat('ads')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
+                        <i class="fa-solid fa-bullhorn text-[10px] mr-1.5 text-blue-400"></i>Quảng cáo &amp; MKT
+                    </button>
+                    <button onclick="filterCat('retarget')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
+                        <i class="fa-solid fa-rotate text-[10px] mr-1.5 text-pink-400"></i>Tái tương tác
+                    </button>
+                    <button onclick="filterCat('loyalty')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
+                        <i class="fa-solid fa-star text-[10px] mr-1.5 text-amber-400"></i>Loyalty &amp; Upsell
+                    </button>
+                    <button onclick="filterCat('acquisition')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
+                        <i class="fa-solid fa-phone text-[10px] mr-1.5 text-cyan-400"></i>Acquisition
+                    </button>
+                    <button onclick="filterCat('service')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
+                        <i class="fa-solid fa-headset text-[10px] mr-1.5 text-rose-400"></i>Hậu mãi &amp; CSKH
+                    </button>
+                    <button onclick="filterCat('edu')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
+                        <i class="fa-solid fa-graduation-cap text-[10px] mr-1.5 text-emerald-500"></i>Giáo dục &amp; Sự kiện
+                    </button>
+                </div>
+
+                <!-- Right Scrollable Content -->
+                <div class="flex-1 overflow-y-auto bg-[#F9FAFB] px-5 py-4 space-y-6 custom-scrollbar">
+
+                <!-- ── Group 1: Quảng cáo & Marketing ── -->
+                    <div data-cat="ads">
+                        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2 uppercase tracking-wide">
+                            <i class="fa-solid fa-bullhorn text-blue-500"></i> Quảng cáo &amp; Marketing
+                        </h3>
+                        <div class="grid grid-cols-1 gap-3 pl-5 border-l-2 border-blue-100 ml-2">
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-blue-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'b2c')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-blue-600 mb-1">LEAD TỪ QUẢNG CÁO B2C (FB/TIKTOK/GG)</div>
+                                <p class="text-xs text-gray-500 mb-3">Phù hợp: Thời trang, gia dụng, mỹ phẩm, thực phẩm</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100 font-medium">Lead mới</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-sky-50 text-sky-600 text-[10px] rounded border border-sky-100 font-medium">Đã liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-indigo-50 text-indigo-600 text-[10px] rounded border border-indigo-100 font-medium">Đang tư vấn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-rose-50 text-rose-600 text-[10px] rounded border border-rose-100 font-medium">Đang chốt đơn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-blue-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'b2b')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-blue-600 mb-1">LEAD B2B</div>
+                                <p class="text-xs text-gray-500 mb-3">Cần nhiều bước thẩm định, hành trình chăm sóc đường dài</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100 font-medium">Tiếp nhận</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-violet-50 text-violet-600 text-[10px] rounded border border-violet-100 font-medium">Đánh giá</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-orange-50 text-orange-600 text-[10px] rounded border border-orange-100 font-medium">Đặt lịch hẹn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-amber-50 text-amber-600 text-[10px] rounded border border-amber-100 font-medium">Gửi báo giá</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-yellow-50 text-yellow-700 text-[10px] rounded border border-yellow-100 font-medium">Thương lượng</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-lime-50 text-lime-700 text-[10px] rounded border border-lime-100 font-medium">Ký kết</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-teal-50 text-teal-600 text-[10px] rounded border border-teal-100 font-medium">Triển khai</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Group 2: Tái tương tác & Remarketing ── -->
+                    <div data-cat="retarget">
+                        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2 uppercase tracking-wide">
+                            <i class="fa-solid fa-rotate text-pink-500"></i> Tái tương tác &amp; Remarketing
+                        </h3>
+                        <div class="grid grid-cols-1 gap-3 pl-5 border-l-2 border-pink-100 ml-2">
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-pink-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'re-engage')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-pink-600 mb-1">LEAD CHĂM SÓC LẠI</div>
+                                <p class="text-xs text-gray-500 mb-3">Những khách cũ đã lâu không tương tác hoặc từng từ chối</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] rounded border border-red-100 font-medium">Căn hâm nóng</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-pink-50 text-pink-600 text-[10px] rounded border border-pink-100 font-medium">Gửi ưu đãi</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-fuchsia-50 text-fuchsia-600 text-[10px] rounded border border-fuchsia-100 font-medium">Tương tác lại</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-purple-50 text-purple-600 text-[10px] rounded border border-purple-100 font-medium">Tái chuyển đổi</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-pink-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'promo')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-pink-600 mb-1">GỬI ƯU ĐÃI &amp; KHUYẾN MÃI</div>
+                                <p class="text-xs text-gray-500 mb-3">Quy trình biến một mã giảm giá thành một đơn hàng thành công</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-pink-50 text-pink-600 text-[10px] rounded border border-pink-100 font-medium">Đã gửi ưu đãi</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-fuchsia-50 text-fuchsia-600 text-[10px] rounded border border-fuchsia-100 font-medium">Có tương tác</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-rose-50 text-rose-600 text-[10px] rounded border border-rose-100 font-medium">Đang chốt đơn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-pink-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'reorder')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-pink-600 mb-1">TÁI ĐẶT HÀNG</div>
+                                <p class="text-xs text-gray-500 mb-3">Dành cho sản phẩm có vòng đời sử dụng (thế là phải mua lại)</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-green-50 text-green-600 text-[10px] rounded border border-green-100 font-medium">Đang sử dụng</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-lime-50 text-lime-700 text-[10px] rounded border border-lime-100 font-medium">Nhắc hẹn tái mua</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-rose-50 text-rose-600 text-[10px] rounded border border-rose-100 font-medium">Đang chốt đơn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Group 3: Loyalty & Upsell ── -->
+                    <div data-cat="loyalty">
+                        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2 uppercase tracking-wide">
+                            <i class="fa-solid fa-star text-amber-400"></i> Loyalty &amp; Upsell
+                        </h3>
+                        <div class="grid grid-cols-1 gap-3 pl-5 border-l-2 border-amber-100 ml-2">
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-amber-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'loyalty')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-amber-600 mb-1">CHĂM SÓC LOYALTY</div>
+                                <p class="text-xs text-gray-500 mb-3">Nuôi dưỡng khách hàng cũ để họ gắn bó lâu dài &amp; tăng hạng</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-slate-50 text-slate-500 text-[10px] rounded border border-slate-200 font-medium">Chưa chăm sóc</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-teal-50 text-teal-600 text-[10px] rounded border border-teal-100 font-medium">Đang nuôi dưỡng</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-rose-50 text-rose-600 text-[10px] rounded border border-rose-100 font-medium">Đang chốt đơn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-amber-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'upsell')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-amber-600 mb-1">UPSELL / CROSS-SELL</div>
+                                <p class="text-xs text-gray-500 mb-3">Bán thêm sản phẩm liên quan hoặc phiên bản cao cấp hơn</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-slate-50 text-slate-500 text-[10px] rounded border border-slate-200 font-medium">Chưa chăm sóc</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-cyan-50 text-cyan-600 text-[10px] rounded border border-cyan-100 font-medium">Đang liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-rose-50 text-rose-600 text-[10px] rounded border border-rose-100 font-medium">Đang chốt đơn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-amber-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'winback')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-amber-600 mb-1">CỨU KHÁCH HÀNG RỜI BỎ</div>
+                                <p class="text-xs text-gray-500 mb-3">Cho khách hàng "ngủ đông" hoặc đã lâu không quay lại</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-slate-50 text-slate-500 text-[10px] rounded border border-slate-200 font-medium">Chưa chăm sóc</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-cyan-50 text-cyan-600 text-[10px] rounded border border-cyan-100 font-medium">Đang liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-violet-50 text-violet-600 text-[10px] rounded border border-violet-100 font-medium">Điền form khảo sát</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-rose-50 text-rose-600 text-[10px] rounded border border-rose-100 font-medium">Đang chốt đơn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Group 4: Acquisition ── -->
+                    <div data-cat="acquisition">
+                        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2 uppercase tracking-wide">
+                            <i class="fa-solid fa-phone text-cyan-500"></i> Tiếp thị chuyên biệt
+                        </h3>
+                        <div class="grid grid-cols-1 gap-3 pl-5 border-l-2 border-cyan-100 ml-2">
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-cyan-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'cold')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-cyan-600 mb-1">LEAD BỊ ĐỘNG (TỪ FILE SỐ ĐIỆN THOẠI)</div>
+                                <p class="text-xs text-gray-500 mb-3">Khách bị động, tỷ lệ từ chối cao — cuộc gọi lạnh</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-slate-50 text-slate-500 text-[10px] rounded border border-slate-200 font-medium">Danh sách thô</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-cyan-50 text-cyan-600 text-[10px] rounded border border-cyan-100 font-medium">Đang liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-sky-50 text-sky-600 text-[10px] rounded border border-sky-100 font-medium">Đã liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-yellow-50 text-yellow-700 text-[10px] rounded border border-yellow-100 font-medium">Thương lượng</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-cyan-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'highvalue')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-cyan-600 mb-1">LEAD GIÁ TRỊ CAO</div>
+                                <p class="text-xs text-gray-500 mb-3">Giá trị cao, cần đi xem thực tế trước khi quyết định</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100 font-medium">Lead mới</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-sky-50 text-sky-600 text-[10px] rounded border border-sky-100 font-medium">Đã liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-orange-50 text-orange-600 text-[10px] rounded border border-orange-100 font-medium">Đặt lịch hẹn</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-indigo-50 text-indigo-600 text-[10px] rounded border border-indigo-100 font-medium">Xem thực tế</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-amber-50 text-amber-600 text-[10px] rounded border border-amber-100 font-medium">Đặt cọc</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-emerald-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'saas')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-emerald-600 mb-1">LEAD DÙNG THỬ PHẦN MỀM</div>
+                                <p class="text-xs text-gray-500 mb-3">Cần được làm rõ về giá trị trước khi mua</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100 font-medium">Check-in</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-sky-50 text-sky-600 text-[10px] rounded border border-sky-100 font-medium">Follow-up</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-indigo-50 text-indigo-600 text-[10px] rounded border border-indigo-100 font-medium">Liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Group 5: Hậu mãi & CSKH ── -->
+                    <div data-cat="service">
+                        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2 uppercase tracking-wide">
+                            <i class="fa-solid fa-headset text-rose-500"></i> Hậu mãi &amp; CSKH
+                        </h3>
+                        <div class="grid grid-cols-1 gap-3 pl-5 border-l-2 border-rose-100 ml-2">
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-rose-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'complaint')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-rose-600 mb-1">XỬ LÝ KHIẾU NẠI</div>
+                                <p class="text-xs text-gray-500 mb-3">Bộ phận CSKH xử lý các vấn đề sau khi khách mua hàng</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100 font-medium">Tiếp nhận</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-violet-50 text-violet-600 text-[10px] rounded border border-violet-100 font-medium">Phân loại</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-cyan-50 text-cyan-600 text-[10px] rounded border border-cyan-100 font-medium">Đang liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-amber-50 text-amber-600 text-[10px] rounded border border-amber-100 font-medium">Đang xử lý</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-lime-50 text-lime-700 text-[10px] rounded border border-lime-100 font-medium">Xác nhận lại</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-rose-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'warranty')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-rose-600 mb-1">BẢO HÀNH &amp; SỬA CHỮA</div>
+                                <p class="text-xs text-gray-500 mb-3">Dành cho các sản phẩm có thời gian bảo hành dài</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100 font-medium">Tiếp nhận</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-violet-50 text-violet-600 text-[10px] rounded border border-violet-100 font-medium">Phân loại</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-cyan-50 text-cyan-600 text-[10px] rounded border border-cyan-100 font-medium">Đang liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-amber-50 text-amber-600 text-[10px] rounded border border-amber-100 font-medium">Đang xử lý</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-teal-50 text-teal-600 text-[10px] rounded border border-teal-100 font-medium">Bàn giao</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Group 6: Giáo dục & Sự kiện ── -->
+                    <div data-cat="edu">
+                        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2 uppercase tracking-wide">
+                            <i class="fa-solid fa-graduation-cap text-emerald-500"></i> Giáo dục &amp; Sự kiện
+                        </h3>
+                        <div class="grid grid-cols-1 gap-3 pl-5 border-l-2 border-emerald-100 ml-2">
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-emerald-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'edu')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-emerald-600 mb-1">LEAD GIÁO DỤC / KHÓA HỌC ONLINE</div>
+                                <p class="text-xs text-gray-500 mb-3">Cần được làm rõ về giá trị trước khi mua</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100 font-medium">Lead mới</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-sky-50 text-sky-600 text-[10px] rounded border border-sky-100 font-medium">Đã liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-cyan-50 text-cyan-600 text-[10px] rounded border border-cyan-100 font-medium">Đang dùng thử</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-indigo-50 text-indigo-600 text-[10px] rounded border border-indigo-100 font-medium">Tương tác sâu</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-green-50 text-green-600 text-[10px] rounded border border-green-100 font-medium">Thanh toán</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            <div class="scenario-card bg-white border border-gray-200 p-4 rounded-lg hover:border-emerald-400 hover:shadow-md cursor-pointer transition group" onclick="selectScenario(this,'event')">
+                                <div class="font-semibold text-sm text-[#1B3DA1] group-hover:text-emerald-600 mb-1">LEAD TỪ SỰ KIỆN / HỘI THẢO</div>
+                                <p class="text-xs text-gray-500 mb-3">Cần được làm rõ về giá trị trước khi mua</p>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100 font-medium">Check-in</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-sky-50 text-sky-600 text-[10px] rounded border border-sky-100 font-medium">Follow-up</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-indigo-50 text-indigo-600 text-[10px] rounded border border-indigo-100 font-medium">Liên hệ</span>
+                                    <i class="fa-solid fa-arrow-right text-[8px] text-gray-300"></i>
+                                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] rounded border border-emerald-100 font-medium">Thành công</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                </div><!-- end right scrollable -->
+                </div><!-- end body flex row -->
+
+                <!-- Modal Footer -->
+                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center flex-shrink-0">
+                    <button onclick="closeAiModal()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Đóng</button>
+                    <button id="btn-apply" onclick="applyScenario()" disabled
+                        class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg transition shadow-md opacity-40 cursor-not-allowed"
+                        style="background: linear-gradient(135deg, #6d28d9, #a855f7);">
+                        <i class="fa-solid fa-check text-xs"></i> Áp dụng kịch bản này
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kanban Board Area -->
+        <div id="kanban-view" class="flex-1 overflow-x-auto overflow-y-hidden p-4 bg-[#EEF2F8]">
+            <div class="flex gap-3 h-full min-h-0">
+
+                <!-- Col: Mới -->
+                <div class="kanban-col flex flex-col bg-white rounded-xl shadow-sm border border-gray-100/80 overflow-hidden flex-shrink-0">
+                    <div class="kanban-col-header border-blue-400 px-3 py-2.5 flex items-center justify-between bg-white">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
+                            <span class="text-xs font-bold text-gray-700">Mới</span>
+                            <span class="px-1.5 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-full">0</span>
+                        </div>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 transition" title="Thêm lead">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 p-2 overflow-y-auto bg-gray-50/40">
+                        <div class="flex flex-col items-center justify-center h-20 text-center">
+                            <p class="text-[10px] text-gray-300">Chưa có lead</p>
+                        </div>
+                    </div>
+                    <div class="px-2 py-2 border-t border-gray-50">
+                        <button class="w-full flex items-center gap-1.5 px-2 py-1.5 text-[10px] text-gray-400 hover:text-[#1B3DA1] hover:bg-blue-50 rounded-lg transition">
+                            <i class="fa-solid fa-plus text-[9px]"></i> Thêm lead
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Col: Đang xử lý -->
+                <div class="kanban-col flex flex-col bg-white rounded-xl shadow-sm border border-gray-100/80 overflow-hidden flex-shrink-0">
+                    <div class="kanban-col-header border-amber-400 px-3 py-2.5 flex items-center justify-between bg-white">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
+                            <span class="text-xs font-bold text-gray-700">Đang xử lý</span>
+                            <span class="px-1.5 py-0.5 bg-amber-50 text-amber-600 text-[10px] font-bold rounded-full">0</span>
+                        </div>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 transition">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 p-2 overflow-y-auto bg-gray-50/40">
+                        <div class="flex flex-col items-center justify-center h-20 text-center">
+                            <p class="text-[10px] text-gray-300">Chưa có lead</p>
+                        </div>
+                    </div>
+                    <div class="px-2 py-2 border-t border-gray-50">
+                        <button class="w-full flex items-center gap-1.5 px-2 py-1.5 text-[10px] text-gray-400 hover:text-[#1B3DA1] hover:bg-blue-50 rounded-lg transition">
+                            <i class="fa-solid fa-plus text-[9px]"></i> Thêm lead
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Col: Quan tâm -->
+                <div class="kanban-col flex flex-col bg-white rounded-xl shadow-sm border border-gray-100/80 overflow-hidden flex-shrink-0">
+                    <div class="kanban-col-header border-purple-400 px-3 py-2.5 flex items-center justify-between bg-white">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-400 inline-block"></span>
+                            <span class="text-xs font-bold text-gray-700">Quan tâm</span>
+                            <span class="px-1.5 py-0.5 bg-purple-50 text-purple-600 text-[10px] font-bold rounded-full">0</span>
+                        </div>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 transition">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 p-2 overflow-y-auto bg-gray-50/40">
+                        <div class="flex flex-col items-center justify-center h-20 text-center">
+                            <p class="text-[10px] text-gray-300">Chưa có lead</p>
+                        </div>
+                    </div>
+                    <div class="px-2 py-2 border-t border-gray-50">
+                        <button class="w-full flex items-center gap-1.5 px-2 py-1.5 text-[10px] text-gray-400 hover:text-[#1B3DA1] hover:bg-blue-50 rounded-lg transition">
+                            <i class="fa-solid fa-plus text-[9px]"></i> Thêm lead
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Col: Chốt đơn -->
+                <div class="kanban-col flex flex-col bg-white rounded-xl shadow-sm border border-gray-100/80 overflow-hidden flex-shrink-0">
+                    <div class="kanban-col-header border-green-400 px-3 py-2.5 flex items-center justify-between bg-white">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span>
+                            <span class="text-xs font-bold text-gray-700">Chốt đơn</span>
+                            <span class="px-1.5 py-0.5 bg-green-50 text-green-600 text-[10px] font-bold rounded-full">0</span>
+                        </div>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 transition">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 p-2 overflow-y-auto bg-gray-50/40">
+                        <div class="flex flex-col items-center justify-center h-20 text-center">
+                            <p class="text-[10px] text-gray-300">Chưa có lead</p>
+                        </div>
+                    </div>
+                    <div class="px-2 py-2 border-t border-gray-50">
+                        <button class="w-full flex items-center gap-1.5 px-2 py-1.5 text-[10px] text-gray-400 hover:text-[#1B3DA1] hover:bg-blue-50 rounded-lg transition">
+                            <i class="fa-solid fa-plus text-[9px]"></i> Thêm lead
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Col: Không quan tâm -->
+                <div class="kanban-col flex flex-col bg-white rounded-xl shadow-sm border border-gray-100/80 overflow-hidden flex-shrink-0">
+                    <div class="kanban-col-header border-red-300 px-3 py-2.5 flex items-center justify-between bg-white">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-300 inline-block"></span>
+                            <span class="text-xs font-bold text-gray-700">Không quan tâm</span>
+                            <span class="px-1.5 py-0.5 bg-red-50 text-red-500 text-[10px] font-bold rounded-full">0</span>
+                        </div>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 transition">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 p-2 overflow-y-auto bg-gray-50/40">
+                        <div class="flex flex-col items-center justify-center h-20 text-center">
+                            <p class="text-[10px] text-gray-300">Chưa có lead</p>
+                        </div>
+                    </div>
+                    <div class="px-2 py-2 border-t border-gray-50">
+                        <button class="w-full flex items-center gap-1.5 px-2 py-1.5 text-[10px] text-gray-400 hover:text-[#1B3DA1] hover:bg-blue-50 rounded-lg transition">
+                            <i class="fa-solid fa-plus text-[9px]"></i> Thêm lead
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Add column button -->
+                <div class="flex-shrink-0 flex items-start">
+                    <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/60 border-2 border-dashed border-gray-300 hover:bg-white hover:border-[#1B3DA1] text-gray-400 hover:text-[#1B3DA1] transition" title="Thêm cột mới">
+                        <i class="fa-solid fa-plus text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- List View (hidden by default) -->
+        <div id="list-view" class="hidden flex-1 overflow-auto p-4 bg-[#EEF2F8]">
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 border-b border-gray-100">
+                        <tr class="text-[11px] text-gray-500 font-bold uppercase">
+                            <th class="p-3 w-10 text-center"><input type="checkbox" class="rounded border-gray-300"></th>
+                            <th class="p-3 whitespace-nowrap">Tên Lead</th>
+                            <th class="p-3 whitespace-nowrap">Số điện thoại</th>
+                            <th class="p-3 whitespace-nowrap">Trạng thái</th>
+                            <th class="p-3 whitespace-nowrap">Phụ trách</th>
+                            <th class="p-3 whitespace-nowrap">Nguồn</th>
+                            <th class="p-3 whitespace-nowrap">Ngày tạo</th>
+                            <th class="p-3 whitespace-nowrap text-right pr-4">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="8" class="p-12 text-center">
+                                <div class="flex flex-col items-center gap-3">
+                                    <i class="fa-solid fa-filter text-4xl text-gray-200"></i>
+                                    <span class="text-xs font-medium text-gray-400">Không có dữ liệu</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hero collapse
+        let heroExpanded = true;
+        function toggleHero() {
+            heroExpanded = !heroExpanded;
+            const expanded = document.getElementById('hero-expanded');
+            const collapsed = document.getElementById('hero-collapsed');
+            const icon = document.getElementById('hero-toggle-icon');
+            if (heroExpanded) {
+                expanded.classList.remove('hidden');
+                collapsed.classList.add('hidden');
+                icon.className = 'fa-solid fa-compress text-[10px]';
+            } else {
+                expanded.classList.add('hidden');
+                collapsed.classList.remove('hidden');
+                icon.className = 'fa-solid fa-expand text-[10px]';
+            }
+        }
+
+        // AI Modal
+        let selectedScenarioId = null;
+
+        function openAiModal() {
+            const modal = document.getElementById('ai-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeAiModal() {
+            const modal = document.getElementById('ai-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            if (selectedScenarioId) {
+                document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('selected'));
+                selectedScenarioId = null;
+            }
+            const btn = document.getElementById('btn-apply');
+            btn.disabled = true;
+            btn.classList.add('opacity-40', 'cursor-not-allowed');
+            btn.classList.remove('opacity-100', 'cursor-pointer', 'hover:opacity-90');
+        }
+        function filterCat(cat) {
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.classList.remove('text-[#1B3DA1]', 'bg-blue-50', 'font-semibold');
+                b.classList.add('text-gray-600', 'font-medium');
+            });
+            event.currentTarget.classList.remove('text-gray-600', 'font-medium');
+            event.currentTarget.classList.add('text-[#1B3DA1]', 'bg-blue-50', 'font-semibold');
+            document.querySelectorAll('[data-cat]').forEach(g => {
+                g.style.display = (cat === 'all' || g.dataset.cat === cat) ? '' : 'none';
+            });
+        }
+        function selectScenario(el, id) {
+            document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedScenarioId = id;
+            const btn = document.getElementById('btn-apply');
+            btn.disabled = false;
+            btn.classList.remove('opacity-40', 'cursor-not-allowed');
+            btn.classList.add('opacity-100', 'cursor-pointer', 'hover:opacity-90');
+        }
+        function applyScenario() {
+            const names = {
+                b2c: 'Lead từ quảng cáo B2C', b2b: 'Lead B2B',
+                're-engage': 'Lead chăm sóc lại', promo: 'Gửi ưu đãi & khuyến mãi',
+                reorder: 'Tái đặt hàng', loyalty: 'Chăm sóc Loyalty',
+                upsell: 'Upsell / Cross-sell', winback: 'Cứu khách hàng rời bỏ',
+                cold: 'Lead bị động', highvalue: 'Lead giá trị cao',
+                complaint: 'Xử lý khiếu nại', warranty: 'Bảo hành & sửa chữa',
+                edu: 'Lead giáo dục / khóa học', event: 'Lead từ sự kiện',
+                saas: 'Lead dùng thử phần mềm',
+            };
+            closeAiModal();
+            alert('✅ Đã áp dụng kịch bản: ' + (names[selectedScenarioId] || selectedScenarioId));
+        }
+
+        function setView(mode) {
+            const kanbanView = document.getElementById('kanban-view');
+            const listView = document.getElementById('list-view');
+            const btnKanban = document.getElementById('btn-kanban');
+            const btnList = document.getElementById('btn-list');
+
+            if (mode === 'kanban') {
+                kanbanView.classList.remove('hidden');
+                listView.classList.add('hidden');
+                btnKanban.className = 'w-8 h-8 flex items-center justify-center rounded-lg view-toggle-active border border-blue-100 transition';
+                btnKanban.querySelector('i').className = 'fa-solid fa-table-columns text-sm text-[#1B3DA1]';
+                btnList.className = 'w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition';
+                btnList.querySelector('i').className = 'fa-solid fa-list text-sm';
+            } else {
+                listView.classList.remove('hidden');
+                kanbanView.classList.add('hidden');
+                btnList.className = 'w-8 h-8 flex items-center justify-center rounded-lg view-toggle-active border border-blue-100 transition';
+                btnList.querySelector('i').className = 'fa-solid fa-list text-sm text-[#1B3DA1]';
+                btnKanban.className = 'w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition';
+                btnKanban.querySelector('i').className = 'fa-solid fa-table-columns text-sm';
+            }
+        }
+    </script>
+</body>
+</html>

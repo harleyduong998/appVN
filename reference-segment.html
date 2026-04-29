@@ -117,7 +117,7 @@
         
         <!-- Top Header -->
         <header class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
-            <h1 class="text-lg font-bold text-[#1B3DA1]">Quản lý Nhóm Khách Hàng</h1>
+            <h1 class="text-lg font-bold text-[#1B3DA1]">Phân Nhóm Khách Hàng</h1>
     
         </header>
 
@@ -132,7 +132,7 @@
                         <h2 class="text-xl font-bold text-[#1B3DA1] tracking-tight">AI Segmentation Hub</h2>
                     </div>
                     <p class="text-xs font-medium text-blue-900/70 max-w-xl leading-relaxed truncate">
-                        Phân loại <span class="text-[#1B3DA1] font-bold">52,430</span> khách hàng vào <span class="text-[#1B3DA1] font-bold">20+</span> nhóm mục tiêu tự động.
+                        Phân loại <span class="text-[#1B3DA1] font-bold">100,000,000</span> khách hàng vào <span class="text-[#1B3DA1] font-bold">20+</span> nhóm mục tiêu tự động.
                     </p>
 
                     <div class="flex flex-wrap items-center gap-3 mt-4">
@@ -173,19 +173,39 @@
         </div>
 
         <!-- Section Actions: Add & Search -->
-        <div class="px-6 mt-6 mb-4 flex items-center justify-between">
+        <div class="px-6 mt-6 mb-4 flex items-center gap-3">
             <button class="flex items-center gap-2 px-4 py-2 bg-[#1B3DA1] text-white text-xs font-bold rounded-lg hover:shadow-lg transition-all shadow-sm">
-                <i class="fa-solid fa-plus text-[10px]"></i> THÊM MỚI
+                <i class="fa-solid fa-plus text-[10px]"></i> Thêm mới
             </button>
-            
-            <div class="flex items-center gap-3">
-                <div class="relative w-64 lg:w-80">
-                    <input type="text" placeholder="Tìm kiếm trong danh sách..." 
+            <button class="w-9 h-9 flex items-center justify-center bg-white border border-gray-200 rounded-lg text-gray-400 hover:text-[#1B3DA1] hover:border-[#1B3DA1] transition-all shadow-sm shrink-0">
+                <i class="fa-solid fa-rotate text-sm"></i>
+            </button>
+
+            <div class="flex items-center gap-3 ml-auto">
+                <div class="relative w-52">
+                    <input type="text" placeholder="Tìm kiếm..."
                         class="w-full pl-9 pr-4 py-1.5 bg-white border border-gray-200 rounded-lg text-[13px] focus:ring-2 focus:ring-[#1B3DA1]/20 focus:border-[#1B3DA1] outline-none transition-all shadow-sm">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                 </div>
 
-                <!-- View Toggle Moved Here -->
+                <div class="relative">
+                    <select class="appearance-none w-28 pl-3 pr-8 py-1.5 bg-white border border-gray-200 rounded-lg text-[13px] text-gray-500 focus:ring-2 focus:ring-[#1B3DA1]/20 focus:border-[#1B3DA1] outline-none transition-all shadow-sm cursor-pointer">
+                        <option value="">Loại</option>
+                        <option value="auto">Tự động</option>
+                        <option value="manual">Thủ công</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                </div>
+
+                <div class="relative">
+                    <select class="appearance-none w-36 pl-3 pr-8 py-1.5 bg-white border border-gray-200 rounded-lg text-[13px] text-gray-500 focus:ring-2 focus:ring-[#1B3DA1]/20 focus:border-[#1B3DA1] outline-none transition-all shadow-sm cursor-pointer">
+                        <option value="">Trạng thái</option>
+                        <option value="active">Đang hoạt động</option>
+                        <option value="inactive">Tạm dừng</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                </div>
+
                 <div class="flex bg-gray-100 p-1 rounded-xl border border-gray-200 h-9 shrink-0">
                     <button onclick="switchView('card')" id="btn-card" class="flex items-center gap-2 px-3 py-1 rounded-lg text-[10px] font-bold transition-all bg-white text-[#1B3DA1] shadow-sm">
                         <i class="fa-solid fa-table-cells-large"></i> Thẻ
@@ -198,141 +218,411 @@
         </div>
 
         <!-- content Containers -->
-        <div id="card-container" class="px-6 pb-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Card Item 1 -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 segment-card p-5 relative overflow-hidden group">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-cart-arrow-down"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="px-2 py-1 bg-red-50 rounded-lg text-red-600 text-[14px] font-bold inline-block">12,430 KH</div>
-                            <div class="text-green-500 text-[12px] font-medium mt-0.5 pr-1">(+1239)</div>
+        <div id="card-container" class="px-6 pb-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
                         </div>
                     </div>
-                    <div class="mb-6">
-                        <h4 class="font-bold text-gray-800 text-base mb-2 group-hover:text-[#1B3DA1] transition-colors">Khách Bỏ rơi giỏ hàng</h4>
-                        <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-gray-600">
-                             <span>Tổng đơn</span>
-                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold">lớn hơn</span>
-                             <span>50</span>
-                             <span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold">VÀ</span>
-                             <span>SĐT</span>
-                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold">có tồn tại</span>
-                        </div>
-                    
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Test Xong Xóa</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                        <i class="fa-solid fa-circle-info text-gray-300 text-[10px] ml-0.5"></i>
                     </div>
-                    <div class="flex items-center gap-2 pt-4 border-t border-gray-50">
-                        <button onclick="openAiSuggestModal()" class="flex-1 py-2.5 bg-purple-50 text-purple-700 text-[10px] font-bold rounded-xl hover:bg-purple-100 transition-colors uppercase tracking-wider flex items-center justify-center gap-2 border border-purple-100 group-hover:bg-purple-600 group-hover:text-white">
-                             <i class="fa-solid fa-wand-magic-sparkles"></i> AI Gợi ý kịch bản
-                        </button>
-                        <button class="flex-1 py-2.5 bg-[#1B3DA1] text-white text-[10px] font-bold rounded-xl hover:bg-blue-800 transition-colors uppercase tracking-wider flex items-center justify-center gap-2">
-                             <i class="fa-solid fa-paper-plane text-[9px]"></i> Gửi Automation
-                        </button>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
                     </div>
                 </div>
 
-                <!-- Card Item 2 -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 segment-card p-5 relative overflow-hidden group">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-tag"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="px-2 py-1 bg-amber-50 rounded-lg text-amber-600 text-[14px] font-bold inline-block">8,215 KH</div>
-                            <div class="text-green-500 text-[12px] font-medium mt-0.5 pr-1">(+1239)</div>
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
                         </div>
                     </div>
-                    <div class="mb-6">
-                        <h4 class="font-bold text-gray-800 text-base mb-2 group-hover:text-[#1B3DA1] transition-colors">Khách Săn Khuyến Mãi</h4>
-                        <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-gray-600">
-                             <span>Voucher</span>
-                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold">lớn hơn</span>
-                             <span>5</span>
-                             <span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold">VÀ</span>
-                             <span>Mua cuối</span>
-                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold">trong vòng</span>
-                             <span>30n</span>
-                        </div>
-                        
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Vừa Tích Điểm Thành Công</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">3 điều kiện (AND)</span>
+                        <i class="fa-solid fa-circle-info text-gray-300 text-[10px] ml-0.5"></i>
                     </div>
-                    <div class="flex items-center gap-2 pt-4 border-t border-gray-50">
-                       <button onclick="openAiSuggestModal()" class="flex-1 py-2.5 bg-purple-50 text-purple-700 text-[10px] font-bold rounded-xl hover:bg-purple-100 transition-colors uppercase tracking-wider flex items-center justify-center gap-2 border border-purple-100 group-hover:bg-purple-600 group-hover:text-white">
-                             <i class="fa-solid fa-wand-magic-sparkles"></i> AI Gợi ý kịch bản
-                        </button>
-                        <button class="flex-1 py-2.5 bg-[#1B3DA1] text-white text-[10px] font-bold rounded-xl hover:bg-blue-800 transition-colors uppercase tracking-wider flex items-center justify-center gap-2">
-                             <i class="fa-solid fa-paper-plane text-[9px]"></i> Gửi Automation
-                        </button>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
                     </div>
                 </div>
 
-                <!-- Card Item 3 -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 segment-card p-5 relative overflow-hidden group">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="px-2 py-1 bg-indigo-50 rounded-lg text-indigo-600 text-[14px] font-bold inline-block">15,200 KH</div>
-                            <div class="text-green-500 text-[12px] font-medium mt-0.5 pr-1">(+1239)</div>
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
                         </div>
                     </div>
-                    <div class="mb-6">
-                        <h4 class="font-bold text-gray-800 text-base mb-2 group-hover:text-[#1B3DA1] transition-colors">Chỉ Xem Không Mua</h4>
-                        <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-gray-600">
-                             <span>Lượt xem</span>
-                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold">lớn hơn</span>
-                             <span>10</span>
-                             <span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold">VÀ</span>
-                             <span>Đơn hàng</span>
-                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold">bằng</span>
-                             <span>0</span>
-                        </div>
-                  
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Có Điểm Cao Không Sử Dụng</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
                     </div>
-                    <div class="flex items-center gap-2 pt-4 border-t border-gray-50">
-                        <button onclick="openAiSuggestModal()" class="flex-1 py-2.5 bg-purple-50 text-purple-700 text-[10px] font-bold rounded-xl hover:bg-purple-100 transition-colors uppercase tracking-wider flex items-center justify-center gap-2 border border-purple-100 group-hover:bg-purple-600 group-hover:text-white">
-                             <i class="fa-solid fa-wand-magic-sparkles"></i> AI Gợi ý kịch bản
-                        </button>
-                        <button class="flex-1 py-2.5 bg-[#1B3DA1] text-white text-[10px] font-bold rounded-xl hover:bg-blue-800 transition-colors uppercase tracking-wider flex items-center justify-center gap-2">
-                             <i class="fa-solid fa-paper-plane text-[9px]"></i> Gửi Automation
-                        </button>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
                     </div>
                 </div>
 
-                <!-- Card Item 4 -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 segment-card p-5 relative overflow-hidden group">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="px-2 py-1 bg-purple-50 rounded-lg text-purple-600 text-[14px] font-bold inline-block">3,150 KH</div>
-                            <div class="text-green-500 text-[12px] font-medium mt-0.5 pr-1">(+1239)</div>
+                <!-- Card 4 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
                         </div>
                     </div>
-                    <div class="mb-6">
-                        <h4 class="font-bold text-gray-800 text-base mb-2 group-hover:text-[#1B3DA1] transition-colors">Khách Mua Ngẫu Hứng</h4>
-                        <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-gray-600">
-                             <span>Click Ads</span>
-                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold">trong vòng</span>
-                             <span>24h</span>
-                             <span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold">VÀ</span>
-                             <span>Thanh toán</span>
-                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-bold">nhanh</span>
-                        </div>
-                
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Hàng Sắp Thăng Hạng</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">4 điều kiện (AND/OR)</span>
                     </div>
-                    <div class="flex items-center gap-2 pt-4 border-t border-gray-50">
-                       <button onclick="openAiSuggestModal()" class="flex-1 py-2.5 bg-purple-50 text-purple-700 text-[10px] font-bold rounded-xl hover:bg-purple-100 transition-colors uppercase tracking-wider flex items-center justify-center gap-2 border border-purple-100 group-hover:bg-purple-600 group-hover:text-white">
-                             <i class="fa-solid fa-wand-magic-sparkles"></i> AI Gợi ý kịch bản
-                        </button>
-                        <button class="flex-1 py-2.5 bg-[#1B3DA1] text-white text-[10px] font-bold rounded-xl hover:bg-blue-800 transition-colors uppercase tracking-wider flex items-center justify-center gap-2">
-                             <i class="fa-solid fa-paper-plane text-[9px]"></i> Gửi Automation
-                        </button>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
                     </div>
                 </div>
+
+                <!-- Card 5 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Có Nguy Cơ Rời Bỏ</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">3 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Sắp Hết Điểm Tích Lũy</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">3 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Đã Mua Lâu - Đến Chu Kỳ Đổi Mới</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">3 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 8 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Mua Theo Mùa Vụ / Sự Kiện Lớn</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">3 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 9 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Hàng Có Sinh Nhật Trong Tháng</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 10 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-orange-50 text-orange-400 flex items-center justify-center text-sm"><i class="fa-solid fa-cart-shopping"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Tiềm Năng Cross-sell</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">3 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 11 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Hàng Mới Có Tiềm Năng Cao</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">4 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 12 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Hàng Mới Mua Lần Đầu</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">3 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 13 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-sm"><i class="fa-solid fa-crown"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Hàng VIP Đang Hoạt Động</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 14 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-sm"><i class="fa-solid fa-crown"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Khách Hàng VIP Đang Hoạt Động</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 15 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Loyalists (khách quen)</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 16 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">At Risk</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 17 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">VIP có nguy cơ rời bỏ (Can't Lose Them)</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 18 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Hibernating</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 19 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 text-[#1B3DA1] flex items-center justify-center text-sm"><i class="fa-solid fa-chart-bar"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Champions</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
+                <!-- Card 20 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 segment-card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user"></i></div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-full border border-green-100">Tự động</span>
+                            <button class="text-gray-300 hover:text-gray-500 text-sm font-medium leading-none">—</button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">Promising</h4>
+                    <div class="flex items-center gap-1.5 mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-[11px] text-gray-400">2 điều kiện (AND)</span>
+                    </div>
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-50">
+                        <button onclick="openAiSuggestModal()" class="flex-1 py-2 bg-purple-50 text-purple-700 text-[9px] font-bold rounded-lg hover:bg-purple-100 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-[8px]"></i> AI Gợi ý kịch bản</button>
+                        <button class="flex-1 py-2 bg-[#1B3DA1] text-white text-[9px] font-bold rounded-lg hover:bg-blue-800 transition-colors uppercase tracking-wide flex items-center justify-center gap-1"><i class="fa-solid fa-paper-plane text-[8px]"></i> Gửi Automation</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -432,6 +722,31 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="px-6 py-5 shrink-0">
+            <div class="flex items-center justify-between text-[12px] text-gray-500">
+                <div class="flex items-center gap-2">
+                    <span>Hiển thị</span>
+                    <div class="relative">
+                        <select class="appearance-none w-16 pl-3 pr-6 py-1.5 bg-white border border-gray-200 rounded-lg text-[12px] text-gray-600 outline-none cursor-pointer shadow-sm">
+                            <option>20</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-[9px] pointer-events-none"></i>
+                    </div>
+                    <span>of 20</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button class="w-7 h-7 flex items-center justify-center rounded-md text-gray-300 cursor-not-allowed"><i class="fa-solid fa-angles-left text-[10px]"></i></button>
+                    <button class="w-7 h-7 flex items-center justify-center rounded-md text-gray-300 cursor-not-allowed"><i class="fa-solid fa-angle-left text-[10px]"></i></button>
+                    <button class="w-7 h-7 flex items-center justify-center rounded-md bg-[#1B3DA1] text-white text-[11px] font-bold">1</button>
+                    <button class="w-7 h-7 flex items-center justify-center rounded-md text-gray-300 cursor-not-allowed"><i class="fa-solid fa-angle-right text-[10px]"></i></button>
+                    <button class="w-7 h-7 flex items-center justify-center rounded-md text-gray-300 cursor-not-allowed"><i class="fa-solid fa-angles-right text-[10px]"></i></button>
                 </div>
             </div>
         </div>
@@ -562,7 +877,7 @@
             const typeLower = String(type || 'all').toLowerCase();
             const normalizedType = typeLower === 'personal' ? 'vip' : typeLower;
             // Reset all tabs
-            const tabs = ['all', 'rfm', 'vip', 'new', 'opportunity', 'retention'];
+            const tabs = ['all', 'rfm', 'loyalty', 'vip', 'new', 'opportunity', 'retention'];
             tabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if (el) {
@@ -784,6 +1099,9 @@
                                         </div>
                                         <h4 class="font-bold text-gray-800 text-[15px]">Champions</h4>
                                     </div>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Top 1% Khách hàng</span>
+                                    </div>
                                     
                                     <p class="text-[12px] text-green-700 font-medium mb-4">Đây là nhóm khách hàng "điểm 10", hội tụ đủ: Mua gần đây, mua rất thường xuyên và chi đậm.</p>
                         <p class="text-[12px] text-green-700 font-medium mb-4">Mỗi khách này mang về thêm 0.2 khách mới mà không tốn chi phí Marketing.</p>
@@ -809,6 +1127,9 @@
                                             <i class="fa-solid fa-heart text-lg"></i>
                                         </div>
                                         <h4 class="font-bold text-gray-800 text-[15px]">Loyalists (khách quen)</h4>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Trụ cột doanh thu</span>
                                     </div>
                                     
                                     <p class="text-[12px] text-purple-700 font-medium mb-4">Khách hàng đã có thói quen mua hàng, chi tiêu khá nhưng chưa đạt mức VIP</p>
@@ -836,6 +1157,9 @@
                                         </div>
                                         <h4 class="font-bold text-gray-800 text-[15px]">Promising</h4>
                                     </div>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-lime-600 bg-lime-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Ngôi sao đang lên</span>
+                                    </div>
                                     
                                     <p class="text-[12px] text-lime-700 font-medium mb-4">Những người vừa mới làm quen với thương hiệu và có mức chi tiêu ban đầu tốt</p>
                                     <p class="text-[12px] text-lime-700 font-medium mb-4">Tăng tỷ lệ khách quay lại, tránh "mua 1 lần rồi bỏ"</p>
@@ -860,6 +1184,9 @@
                                     <div class="flex items-center gap-3 mb-4">
                                         <div class="w-8 h-8 bg-orange-50 text-orange-500 rounded-lg flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                                             <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Báo động đỏ</span>
+                                    </div>
                                         </div>
                                         <h4 class="font-bold text-gray-800 text-[15px]">At Risk</h4>
                                     </div>
@@ -889,6 +1216,9 @@
                                         </div>
                                         <h4 class="font-bold text-slate-800 text-[15px]">Hibernating</h4>
                                     </div>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full uppercase tracking-wider">Zzz... Cần đánh thức</span>
+                                    </div>
                                     
                                     <p class="text-[12px] text-slate-700 font-medium mb-4">Nhóm khách hàng đã quá lâu không quay lại và giá trị đóng góp thấp</p>
                                      <p class="text-[12px] text-slate-700 font-medium mb-4">Tối ưu chi phí Marketing, lọc sạch dữ liệu rác</p>
@@ -913,6 +1243,9 @@
                                     <div class="flex items-center gap-3 mb-4">
                                         <div class="w-8 h-8 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                                             <i class="fa-solid fa-crown text-lg"></i>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Đối tượng ưu tiên số 1</span>
+                                    </div>
                                         </div>
                                         <h4 class="font-bold text-gray-800 text-[15px]">Khách Hàng VIP Đang Hoạt Động</h4>
                                     </div>
@@ -948,6 +1281,9 @@
                                         </div>
                                         <h4 class="font-bold text-gray-800 text-[15px]">VIP có nguy cơ rời bỏ (Can't Lose Them)</h4>
                                     </div>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Cứu vãn doanh thu lớn</span>
+                                    </div>
                                     
                                     <p class="text-[12px] text-red-700 font-medium mb-4">Từng là VIP nhưng đang dần rời bỏ. <br> <br> Cần một kịch bản chăm sóc từ quản lý cấp cao hoặc quà tặng tri ân đặc biệt để kéo họ lại</p>
                                     
@@ -967,6 +1303,9 @@
                             <!-- Template Card 12 -->
                             <div class="general-card new-card group bg-white rounded-2xl border-2 border-gray-50 hover:border-green-100 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col min-h-[300px]">
                                 <div class="p-6 flex flex-col h-full">
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full uppercase tracking-wider">F0 - Tiềm năng nảy mầm</span>
+                                    </div>
                                     <div class="flex items-center gap-3 mb-4">
                                         <div class="w-8 h-8 bg-green-50 text-green-500 rounded-lg flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                                             <i class="fa-solid fa-baby text-lg"></i>
@@ -999,6 +1338,9 @@
                                     <div class="flex items-center gap-3 mb-4">
                                         <div class="w-8 h-8 bg-indigo-50 text-indigo-500 rounded-lg flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                                             <i class="fa-solid fa-plus-circle text-lg"></i>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Gia tăng giỏ hàng</span>
+                                    </div>
                                         </div>
                                         <h4 class="font-bold text-gray-800 text-[15px]">Khách Tiềm Năng Cross-sell</h4>
                                     </div>
@@ -1032,6 +1374,9 @@
                                     <div class="flex items-center gap-3 mb-4">
                                         <div class="w-8 h-8 bg-pink-50 text-pink-500 rounded-lg flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                                             <i class="fa-solid fa-rocket text-lg"></i>
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Nuôi dưỡng mầm VIP</span>
+                                    </div>
                                         </div>
                                         <h4 class="font-bold text-gray-800 text-[15px]">Khách Hàng Mới Có Tiềm Năng Cao</h4>
                                     </div>
@@ -1059,7 +1404,10 @@
                                 </div>
                             </div>
 
-                            <!-- Template Card 15 -->
+                            <!-- Tem<div class="mb-3">
+                                        <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Personalized Marketing</span>
+                                    </div>
+                                    plate Card 15 -->
                             <div class="general-card opportunity-card group bg-white rounded-2xl border-2 border-gray-50 hover:border-amber-100 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col min-h-[300px]">
                                 <div class="p-6 flex flex-col h-full">
                                     <div class="flex items-center gap-3 mb-4">
@@ -1087,6 +1435,9 @@
                             <!-- Template Card 16 -->
                             <div class="general-card retention-card group bg-white rounded-2xl border-2 border-gray-50 hover:border-teal-100 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col min-h-[300px]">
                                 <div class="p-6 flex flex-col h-full">
+                                    <div class="mb-3">
+                                        <span class="text-[9px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Kích cầu đúng thời điểm</span>
+                                    </div>
                                     <div class="flex items-center gap-3 mb-4">
                                         <div class="w-8 h-8 bg-teal-50 text-teal-500 rounded-lg flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                                             <i class="fa-solid fa-refresh text-lg"></i>
@@ -1255,6 +1606,360 @@
             </div>
         </div>
     </div>
+    <!-- AI Suggest Modal -->
+    <div id="ai-suggest-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300 p-2">
+        <div class="bg-[#F8F9FA] w-full max-w-6xl rounded-xl shadow-2xl overflow-hidden animate-fade-in-up relative max-h-[98vh] flex flex-col">
+            <!-- Close button (floating) -->
+            <button onclick="closeAiSuggestModal()" class="absolute top-3 right-3 z-10 w-7 h-7 flex items-center justify-center rounded-full bg-white hover:bg-gray-100 text-gray-500 shadow-sm transition">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+
+            <div class="flex-1 overflow-y-auto p-3 custom-scrollbar">
+
+                <!-- Top Card: Tỷ Lệ Kết Nối -->
+                <div class="bg-white rounded-lg border border-gray-200 p-3 mb-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-[10px]">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <h2 class="text-sm font-bold text-gray-800">AI gợi ý Kịch Bản</h2>
+                    </div>
+
+                    <div class="bg-purple-50 rounded p-2 border border-purple-100 mb-3 relative text-[10px]">
+                        <i class="fa-solid fa-robot absolute -top-1.5 -left-1.5 w-5 h-5 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-[8px] border border-white"></i>
+                        <div class="font-bold text-purple-800 mb-0.5 pl-3">AI gợi ý: Kết hợp Flash Sale (Zalo) + Remarketing (FB Messenger)</div>
+                        <div class="text-gray-700 leading-tight pl-3">Khách mua ngẫu hứng nên dùng Zalo (65% tương tác) để thông báo promo thời gian, và FB (28%) để nhắc sản phẩm đã xem.</div>
+                    </div>
+
+                    <div class="flex items-center gap-2 bg-[#F8F9FA] rounded-lg p-2 border border-gray-100">
+                        <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                            <i class="fa-regular fa-comment text-[#0068FF] text-sm shrink-0"></i>
+                            <span class="text-[10px] font-bold text-gray-600 truncate">Zalo Cá Nhân</span>
+                            <span class="text-[13px] font-black text-[#1B3DA1] ml-auto shrink-0">65%</span>
+                            <span class="text-[8px] text-green-600 font-bold bg-green-50 px-1.5 py-0.5 rounded-full shrink-0"><i class="fa-solid fa-arrow-trend-up"></i> Tốt nhất</span>
+                        </div>
+                        <div class="w-px h-6 bg-gray-200 shrink-0"></div>
+                        <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                            <i class="fa-solid fa-comment-dots text-blue-400 text-sm shrink-0"></i>
+                            <span class="text-[10px] font-bold text-gray-600 truncate">Zalo ZNS</span>
+                            <span class="text-[13px] font-black text-[#1B3DA1] ml-auto shrink-0">42%</span>
+                            <span class="text-[8px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-full shrink-0">An toàn</span>
+                        </div>
+                        <div class="w-px h-6 bg-gray-200 shrink-0"></div>
+                        <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                            <i class="fa-brands fa-facebook-messenger text-[#0084FF] text-sm shrink-0"></i>
+                            <span class="text-[10px] font-bold text-gray-600 truncate">Messenger</span>
+                            <span class="text-[13px] font-black text-[#1B3DA1] ml-auto shrink-0">28%</span>
+                            <span class="text-[8px] text-red-500 font-bold bg-red-50 px-1.5 py-0.5 rounded-full shrink-0"><i class="fa-solid fa-exclamation"></i> 24h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggestions Row -->
+                <div class="grid grid-cols-3 gap-2">
+                    <!-- Zalo Cá Nhân Suggestion -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full border-l-[3px] border-l-green-500 relative">
+                        <div class="p-2.5 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800 text-[11px] flex items-center gap-1.5"><i class="fa-regular fa-comment text-green-500 text-sm"></i> Zalo Cá Nhân (Sale)</h3>
+                        </div>
+                        <div class="p-2.5 flex-1 flex flex-col">
+                            <div class="mb-2 relative">
+                                <div class="flex items-center gap-1.5 mb-0.5">
+                                    <i class="fa-solid fa-robot text-purple-600 text-sm"></i>
+                                    <div class="text-[10px] font-bold text-purple-800">Kịch bản:</div>
+                                </div>
+                                <div class="text-[9px] text-gray-600 leading-tight">Chi phí 0đ, không ràng buộc format. Gửi hình ảnh/video sản phẩm hoặc nhắc nhở cá nhân hóa.</div>
+                            </div>
+                            <div class="mx-auto w-[180px] h-[240px] bg-gray-100 rounded-[1.5rem] border-6 border-gray-800 relative overflow-hidden shadow-inner flex flex-col mt-auto shrink-0">
+                                <div class="bg-[#0068FF] text-white p-2 flex items-center gap-1.5 rounded-t-xl shrink-0 shadow-sm z-10">
+                                    <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                                    <div class="w-5 h-5 bg-white text-[#0068FF] rounded-full flex items-center justify-center text-[8px] font-bold shrink-0">KH</div>
+                                    <div class="text-[10px] font-bold truncate">Khách Trọng Tâm</div>
+                                </div>
+                                <div class="flex-1 bg-[#E2E8F0] p-2 overflow-y-auto space-y-1.5 custom-scrollbar flex flex-col">
+                                    <div class="text-center text-[8px] text-gray-400 font-medium">Hôm nay 09:41</div>
+                                    <div class="bg-white p-0.5 rounded-lg shadow-sm grid grid-cols-2 gap-0.5 w-[85%] self-end">
+                                        <div class="bg-[url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=200')] bg-cover bg-center h-9 rounded-tl"></div>
+                                        <div class="bg-[url('https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=200')] bg-cover bg-center h-9 rounded-tr"></div>
+                                        <div class="bg-[url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=200')] bg-cover bg-center h-9 rounded-bl"></div>
+                                        <div class="bg-[url('https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=200')] bg-cover bg-center h-9 rounded-br"></div>
+                                    </div>
+                                    <div class="bg-white p-1.5 rounded-lg shadow-sm text-[8px] text-gray-800 w-[85%] self-end">
+                                        Dạ em chào <b>{Tên}</b>, bộ sưu tập mới vừa cập bến ạ!
+                                    </div>
+                                </div>
+                                <div class="bg-white p-1.5 border-t border-gray-200 flex items-center gap-1 shrink-0">
+                                    <i class="fa-regular fa-face-smile text-gray-400 text-xs"></i>
+                                    <div class="flex-1 bg-gray-100 rounded-full h-5 px-2 flex items-center text-[8px] text-gray-400">Tin...</div>
+                                    <i class="fa-solid fa-paper-plane text-[#0068FF] text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Zalo OA Suggestion -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full border-l-[3px] border-l-[#0068FF] relative">
+                        <div class="p-2.5 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800 text-[11px] flex items-center gap-1.5"><i class="fa-solid fa-comment-dots text-[#0068FF] text-sm"></i> Zalo ZNS (OA)</h3>
+                        </div>
+                        <div class="p-2.5 flex-1 flex flex-col">
+                            <div class="mb-2 relative">
+                                <div class="flex items-center gap-1.5 mb-0.5">
+                                    <i class="fa-solid fa-robot text-purple-600 text-sm"></i>
+                                    <div class="text-[10px] font-bold text-purple-800">Mẫu:</div>
+                                </div>
+                                <div class="text-[9px] text-gray-600 leading-tight">Open Rate 85%. Dùng mẫu: <span class="font-bold">Chăm sóc khách hàng</span> hoặc <span class="font-bold">Khuyến mãi đặc biệt</span>.</div>
+                            </div>
+                            <div class="mx-auto w-[180px] h-[240px] bg-gray-100 rounded-[1.5rem] border-6 border-gray-800 relative overflow-hidden shadow-inner flex flex-col mt-auto shrink-0">
+                                <div class="bg-white text-gray-800 p-3 flex items-center gap-2 border-b border-gray-200 rounded-t-2xl shrink-0 z-10 shadow-sm">
+                                    <i class="fa-solid fa-chevron-left text-xs text-gray-500"></i>
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-6 h-6 rounded-full object-cover">
+                                    <div>
+                                        <div class="text-[11px] font-bold leading-tight">VIBE Official</div>
+                                        <div class="text-[8px] bg-gray-100 text-gray-500 px-1 py-0.5 rounded inline-block mt-0.5">Zalo Official Account</div>
+                                    </div>
+                                </div>
+                                <div class="flex-1 bg-[#E2E8F0] p-3 overflow-y-auto custom-scrollbar flex flex-col">
+                                    <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex flex-col mt-2">
+                                        <div class="bg-red-500 h-20 relative overflow-hidden flex items-center justify-center p-3">
+                                            <div class="absolute inset-0 bg-[#E32124]"></div>
+                                            <div class="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent"></div>
+                                            <div class="relative z-10 w-full">
+                                                <div class="text-white font-black text-xl leading-none">HAPPY NEW YEAR</div>
+                                            </div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="font-bold text-[10px] text-gray-800 mb-1">Chị {Tên} ơi, đón lộc năm mới ngay!</div>
+                                            <div class="text-[9px] text-gray-600 space-y-1">
+                                                <p>VIBE chúc <b>{Tên}</b> sức khỏe, may mắn.</p>
+                                                <p><b>{Tên}</b> có <b>9,243</b> điểm thưởng chờ sử dụng.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messenger FB Suggestion -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full border-l-[3px] border-l-[#A855F7] relative">
+                        <div class="p-2.5 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800 text-[11px] flex items-center gap-1.5"><i class="fa-brands fa-facebook-messenger text-[#0084FF] text-sm"></i> Facebook Messenger</h3>
+                        </div>
+                        <div class="p-2.5 flex-1 flex flex-col">
+                            <div class="mb-2 relative">
+                                <div class="flex items-center gap-1.5 mb-0.5">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-500 text-sm"></i>
+                                    <div class="text-[10px] font-bold text-gray-800">Cảnh báo:</div>
+                                </div>
+                                <div class="text-[9px] text-gray-600 leading-tight">24h rule: lọc khách tương tác hôm qua. Ngoài đó dùng tag <span class="bg-blue-50 text-blue-700 px-1 py-0.5 rounded text-[8px] font-mono font-bold">CONFIRMED_EVENT_UPDATE</span>.</div>
+                            </div>
+                            <div class="mx-auto w-[180px] h-[240px] bg-gray-100 rounded-[1.5rem] border-6 border-gray-800 relative overflow-hidden shadow-inner flex flex-col mt-auto shrink-0">
+                                <div class="bg-white text-gray-800 p-2 flex items-center gap-1.5 border-b border-gray-200 rounded-t-2xl shadow-sm z-10 shrink-0">
+                                    <i class="fa-solid fa-chevron-left text-xs text-[#0084FF]"></i>
+                                    <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center text-[#0084FF] text-xs shrink-0"><i class="fa-brands fa-facebook-messenger"></i></div>
+                                    <div class="text-[9px] font-bold leading-tight flex-1">VIBE Bot</div>
+                                </div>
+                                <div class="flex-1 bg-white p-2 overflow-y-auto space-y-2 custom-scrollbar flex flex-col">
+                                    <div class="flex gap-1.5">
+                                        <img src="https://images.unsplash.com/photo-1544117519-31a4b719223d?w=100" class="w-4 h-4 rounded-full object-cover shrink-0 mt-auto border border-gray-100">
+                                        <div class="bg-gray-100 p-1.5 rounded-2xl rounded-bl-sm text-[8px] text-gray-800 w-[85%] leading-tight">
+                                            Hè vừa ra mẫu mới, xem hợp style bạn không 👇
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-1 pl-6 w-[90%]">
+                                        <div class="h-12 w-1/2 bg-[url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=200')] bg-cover bg-center rounded-lg"></div>
+                                        <div class="h-12 w-1/2 bg-[url('https://images.unsplash.com/photo-1520006403909-838d6b92c22e?w=200')] bg-cover bg-center rounded-lg"></div>
+                                    </div>
+                                    <div class="bg-[#0084FF] text-white p-1.5 rounded-2xl rounded-br-sm text-[8px] w-fit max-w-[80%] self-end">
+                                        Được, lấy mẫu này
+                                    </div>
+                                </div>
+                                <div class="bg-white p-1.5 border-t border-gray-200 flex items-center gap-1.5 shrink-0">
+                                    <i class="fa-solid fa-circle-plus text-[#0084FF] text-xs"></i>
+                                    <div class="flex-1 bg-gray-100 rounded-full h-5 px-2 flex items-center text-[8px] text-gray-400">Aa</div>
+                                    <i class="fa-solid fa-thumbs-up text-[#0084FF] text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer: Smart Send -->
+            <div class="shrink-0 border-t border-gray-200 bg-white px-4 py-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2 text-[10px] text-gray-400">
+                    <i class="fa-solid fa-circle-info text-blue-300"></i>
+                    <span>Hệ thống tự động chọn kênh tốt nhất theo từng khách hàng</span>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="closeAiSuggestModal()" class="px-4 py-2 text-[11px] font-bold text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Hủy</button>
+                    <button onclick="openSmartSendModal()" class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-[11px] font-bold rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        <i class="fa-solid fa-bolt"></i> Gửi Linh Hoạt theo Kênh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smart Send Confirm Modal -->
+    <div id="smart-send-modal" class="fixed inset-0 z-[110] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-4 flex items-center gap-3">
+                <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-bolt text-white text-base"></i>
+                </div>
+                <div>
+                    <div class="text-white font-bold text-sm">Gửi Linh Hoạt theo Kênh</div>
+                    <div class="text-white/70 text-[10px]">Tự động phân phối theo kênh kết nối của từng khách</div>
+                </div>
+            </div>
+
+            <div class="p-4 space-y-3">
+                <!-- Priority Logic -->
+                <div class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Thứ tự ưu tiên kênh</div>
+
+                <div class="space-y-2">
+                    <!-- Zalo Cá Nhân -->
+                    <div class="flex items-center gap-3 p-2.5 bg-green-50 rounded-xl border border-green-100">
+                        <div class="w-7 h-7 bg-[#0068FF] rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fa-regular fa-comment text-white text-xs"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[11px] font-bold text-gray-800 flex items-center gap-1.5">
+                                <span class="w-4 h-4 bg-green-500 text-white rounded-full text-[9px] font-black flex items-center justify-center shrink-0">1</span>
+                                Zalo Cá Nhân
+                            </div>
+                            <div class="text-[9px] text-gray-500">Khách có SĐT kết nối Zalo · Chi phí 0đ</div>
+                        </div>
+                        <div id="count-zalo-personal" class="text-[11px] font-black text-green-600">62,400</div>
+                    </div>
+
+                    <!-- Zalo OA -->
+                    <div class="flex items-center gap-3 p-2.5 bg-blue-50 rounded-xl border border-blue-100">
+                        <div class="w-7 h-7 bg-[#0068FF]/20 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-comment-dots text-[#0068FF] text-xs"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[11px] font-bold text-gray-800 flex items-center gap-1.5">
+                                <span class="w-4 h-4 bg-blue-500 text-white rounded-full text-[9px] font-black flex items-center justify-center shrink-0">2</span>
+                                Zalo ZNS (OA)
+                            </div>
+                            <div class="text-[9px] text-gray-500">Khách đã follow OA · Phí theo template</div>
+                        </div>
+                        <div id="count-zalo-oa" class="text-[11px] font-black text-blue-600">24,100</div>
+                    </div>
+
+                    <!-- FB Messenger -->
+                    <div class="flex items-center gap-3 p-2.5 bg-purple-50 rounded-xl border border-purple-100">
+                        <div class="w-7 h-7 bg-[#0084FF]/15 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fa-brands fa-facebook-messenger text-[#0084FF] text-xs"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[11px] font-bold text-gray-800 flex items-center gap-1.5">
+                                <span class="w-4 h-4 bg-purple-500 text-white rounded-full text-[9px] font-black flex items-center justify-center shrink-0">3</span>
+                                Facebook Messenger
+                            </div>
+                            <div class="text-[9px] text-gray-500">Tương tác trong 24h gần nhất · Luật 24h</div>
+                        </div>
+                        <div id="count-messenger" class="text-[11px] font-black text-purple-600">8,300</div>
+                    </div>
+
+                    <!-- Không kết nối -->
+                    <div class="flex items-center gap-3 p-2.5 bg-gray-50 rounded-xl border border-gray-100">
+                        <div class="w-7 h-7 bg-gray-200 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-ban text-gray-400 text-xs"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[11px] font-bold text-gray-400 flex items-center gap-1.5">
+                                <span class="w-4 h-4 bg-gray-300 text-white rounded-full text-[9px] font-black flex items-center justify-center shrink-0">—</span>
+                                Không kết nối kênh nào
+                            </div>
+                            <div class="text-[9px] text-gray-400">Bỏ qua, không gửi</div>
+                        </div>
+                        <div class="text-[11px] font-black text-gray-400">5,200</div>
+                    </div>
+                </div>
+
+                <!-- Summary bar -->
+                <div class="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <div class="text-[10px] font-bold text-gray-600">Tổng sẽ gửi</div>
+                        <div class="text-[13px] font-black text-[#1B3DA1]">94,800 khách</div>
+                    </div>
+                    <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden flex gap-0.5">
+                        <div class="h-full bg-green-500 rounded-l-full" style="width: 65.8%"></div>
+                        <div class="h-full bg-blue-500" style="width: 25.4%"></div>
+                        <div class="h-full bg-purple-500 rounded-r-full" style="width: 8.8%"></div>
+                    </div>
+                    <div class="flex items-center gap-3 mt-1.5">
+                        <span class="flex items-center gap-1 text-[9px] text-gray-500"><span class="w-2 h-2 bg-green-500 rounded-full inline-block"></span>Zalo CN</span>
+                        <span class="flex items-center gap-1 text-[9px] text-gray-500"><span class="w-2 h-2 bg-blue-500 rounded-full inline-block"></span>Zalo OA</span>
+                        <span class="flex items-center gap-1 text-[9px] text-gray-500"><span class="w-2 h-2 bg-purple-500 rounded-full inline-block"></span>Messenger</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-4 pb-4 flex items-center gap-2">
+                <button onclick="closeSmartSendModal()" class="flex-1 py-2.5 text-[11px] font-bold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">Hủy</button>
+                <button onclick="confirmSmartSend()" class="flex-1 py-2.5 text-[11px] font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-paper-plane"></i> Xác nhận gửi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="send-toast" class="fixed bottom-6 right-6 z-[120] hidden">
+        <div class="bg-gray-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-[12px] font-medium max-w-xs">
+            <div class="w-7 h-7 bg-green-500 rounded-full flex items-center justify-center shrink-0 animate-bounce">
+                <i class="fa-solid fa-check text-white text-xs"></i>
+            </div>
+            <div>
+                <div class="font-bold">Đang gửi tin...</div>
+                <div class="text-gray-400 text-[10px]">94,800 khách · 3 kênh song song</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAiSuggestModal() {
+            const modal = document.getElementById('ai-suggest-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAiSuggestModal() {
+            const modal = document.getElementById('ai-suggest-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openSmartSendModal() {
+            document.getElementById('smart-send-modal').classList.remove('hidden');
+            document.getElementById('smart-send-modal').classList.add('flex');
+        }
+
+        function closeSmartSendModal() {
+            document.getElementById('smart-send-modal').classList.add('hidden');
+            document.getElementById('smart-send-modal').classList.remove('flex');
+        }
+
+        function confirmSmartSend() {
+            closeSmartSendModal();
+            closeAiSuggestModal();
+            const toast = document.getElementById('send-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        document.getElementById('ai-suggest-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeAiSuggestModal();
+        });
+        document.getElementById('smart-send-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeSmartSendModal();
+        });
+    </script>
 </body>
 
 </html>
