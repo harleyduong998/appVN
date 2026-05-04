@@ -121,7 +121,7 @@ Hiển thị 6 mô-đun chính:
   - Hiển thị modal (`manage-module-modal`)
   - Tải danh sách các module từ JS (mmModules)
   - Render các toggle bật/tắt module:
-    - **Với business mới**: Tất cả module ở trạng thái "tắt" (disabled = false)
+    - **Với business mới**: Module đang sử dụng và chưa sử dụng không có module nào
     - Người dùng click toggle để bật các module
     - Sau khi bật/tắt, cập nhật state của mmModules
     - Khi đóng modal: render lại grid với các module đang bật
@@ -181,18 +181,36 @@ Hiển thị 6 mô-đun chính:
   - Lưu reference của button: `afCurrentBtn = this`
   - Hiển thị modal (`add-feature-modal-overlay`)
   - Set tiêu đề modal: `#af-modal-title = "Thêm tính năng cho Module: {moduleName}"`
-  - Clear các input field (`#af-custom-input`, `#af-desc-input`, `#af-date-from`, `#af-date-to`)
-  - Uncheck checkbox `#af-custom-toggle`
-  - Ẩn form tùy chỉnh (`#af-custom-fields`)
+  - Clear các input field
+  - Ẩn form tùy chỉnh
   - Reset checkboxes gợi ý
   - Render danh sách tính năng gợi ý từ JS
+
+### 9.5 **Nút "Tạo tính năng tùy chỉnh"** - Modal "Thêm tính năng"
+- **Vị trí**: Bên dưới danh sách tính năng gợi ý (button riêng)
+- **Hành động**: Click → Mở popup "Tạo tính năng mới"
+- **Logic**:
+  - Hiển thị popup/modal nhỏ với form nhập:
+    - Input: "Tên tính năng" (placeholder: "Nhập tên tính năng...")
+    - Textarea: "Mô tả chi tiết" (nếu cần)
+    - Buttons: "Thêm" và "Hủy"
+  - Khi click "Thêm":
+    - Lấy tên tính năng từ input
+    - Kiểm tra: không được trống
+    - Tạo checkbox mới trong danh sách gợi ý
+    - **Tự động tick checkbox này** (checked = true)
+    - Thêm vào `afCheckedSuggests` set
+    - Đóng popup
+    - Form vẫn mở, sẵn sàng thêm tính năng tiếp theo
+  - Khi click "Hủy":
+    - Đóng popup
+    - Không lưu dữ liệu
 
 ### 10. **Modal "Thêm tính năng" - Nút "Xác nhận thêm"**
 - **Vị trí**: Footer modal add-feature
 - **Hành động**: Click → Xác nhận thêm tính năng mới
 - **Logic**:
-  - Lấy danh sách tính năng được chọn từ checkboxes gợi ý
-  - Lấy tính năng tùy chỉnh từ `#af-custom-input` (nếu nhập)
+  - Lấy danh sách tính năng được chọn từ `afCheckedSuggests` (set của checkbox đã tick)
   - Kiểm tra: phải có ít nhất 1 tính năng → alert nếu không
   - Lấy module từ `afCurrentBtn.closest('.amm-card')`
   - Lấy danh sách `.amm-list` của module
@@ -211,11 +229,13 @@ Hiển thị 6 mô-đun chính:
 - **Hành động**: Click → Đóng modal
 - **Logic**:
   - Ẩn overlay (`add-feature-modal-overlay`)
-  - Clear tất cả input
   - Reset tất cả state:
     - `afCurrentBtn = null`
     - `afCheckedSuggests.clear()`
     - `afSelectedTag = null`
+  - Clear tất cả input
+  - Reset checkboxes gợi ý
+  - Ẩn form tùy chỉnh (nếu đang mở)
 
 ### 12. **Modal "Sửa tính năng" - Nút "Lưu thay đổi"**
 - **Vị trí**: Footer modal edit-feature
