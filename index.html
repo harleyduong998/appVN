@@ -442,6 +442,65 @@
             display: inline-block;
         }
 
+        /* amm-list item hover actions */
+        .amm-list li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .amm-list li .amm-li-text {
+            flex: 1;
+            min-width: 0;
+        }
+        .amm-li-menu-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 22px; height: 22px;
+            border-radius: 6px;
+            border: none;
+            background: #f1f5f9;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 11px;
+            flex-shrink: 0;
+            transition: background 0.15s, color 0.15s;
+        }
+        .amm-li-menu-btn:hover { background: #e2e8f0; color: #475569; }
+        .amm-list li:hover .amm-li-menu-btn { display: flex; }
+        .amm-li-actions {
+            position: absolute;
+            right: 0; top: 100%;
+            z-index: 100;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-width: 110px;
+            padding: 4px;
+            display: none;
+            flex-direction: column;
+        }
+        .amm-li-actions.open { display: flex; }
+        .amm-li-action-btn {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: left;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+        }
+        .amm-li-action-btn.edit { color: #3b82f6; }
+        .amm-li-action-btn.edit:hover { background: #eff6ff; }
+        .amm-li-action-btn.delete { color: #ef4444; }
+        .amm-li-action-btn.delete:hover { background: #fef2f2; }
+
         /* Manage Module Modal */
         #manage-module-modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
@@ -4109,10 +4168,10 @@
                             <span class="amm-card-title">Khách hàng</span>
                         </div>
                         <ul class="amm-list">
-                            <li><span class="amm-radio"></span>Đồng bộ khách hàng</li>
-                            <li><span class="amm-radio"></span>Bổ sung định danh khách hàng</li>
-                            <li><span class="amm-radio"></span>Phân nhóm khách hàng</li>
-                            <li><span class="amm-radio"></span>Phân nhóm theo RFM</li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Đồng bộ khách hàng</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Bổ sung định danh khách hàng</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Phân nhóm khách hàng</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Phân nhóm theo RFM</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
                         </ul>
                         <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Khách hàng', this)"><i class="fa-solid fa-plus"></i></button>
                     </div>
@@ -4122,9 +4181,9 @@
                             <span class="amm-card-title">Bán hàng</span>
                         </div>
                         <ul class="amm-list">
-                            <li><span class="amm-radio"></span>Cấu hình trạng thái</li>
-                            <li><span class="amm-radio"></span>Kết nối vận chuyển</li>
-                            <li><span class="amm-radio"></span>Cấu hình bản in</li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Cấu hình trạng thái</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Kết nối vận chuyển</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Cấu hình bản in</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
                         </ul>
                                             <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Bán hàng', this)"><i class="fa-solid fa-plus"></i></button>
                     </div>
@@ -4134,9 +4193,9 @@
                             <span class="amm-card-title">Sản phẩm</span>
                         </div>
                         <ul class="amm-list">
-                            <li><span class="amm-radio"></span>Đồng bộ sản phẩm</li>
-                            <li><span class="amm-radio"></span>Quản lý danh mục</li>
-                            <li><span class="amm-radio"></span>Mapping sàn</li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Đồng bộ sản phẩm</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Quản lý danh mục</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Mapping sàn</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
                         </ul>
                                             <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Sản phẩm', this)"><i class="fa-solid fa-plus"></i></button>
                     </div>
@@ -4146,9 +4205,9 @@
                             <span class="amm-card-title">Loyalty</span>
                         </div>
                         <ul class="amm-list">
-                            <li><span class="amm-radio"></span>Thiết lập hạng</li>
-                            <li><span class="amm-radio"></span>Thiết lập cộng điểm</li>
-                            <li><span class="amm-radio"></span>Quy trình tự động hóa</li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Thiết lập hạng</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Thiết lập cộng điểm</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Quy trình tự động hóa</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
                         </ul>
                                             <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Loyalty', this)"><i class="fa-solid fa-plus"></i></button>
                     </div>
@@ -4158,8 +4217,8 @@
                             <span class="amm-card-title">Ưu đãi</span>
                         </div>
                         <ul class="amm-list">
-                            <li><span class="amm-radio"></span>Tạo danh sách ưu đãi</li>
-                            <li><span class="amm-radio"></span>Gắn vào luồng chăm sóc</li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Tạo danh sách ưu đãi</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Gắn vào luồng chăm sóc</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
                         </ul>
                                             <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('Ưu đãi', this)"><i class="fa-solid fa-plus"></i></button>
                     </div>
@@ -4169,9 +4228,9 @@
                             <span class="amm-card-title">MiniApp</span>
                         </div>
                         <ul class="amm-list">
-                            <li><span class="amm-radio"></span>Dựng Flow MiniApp</li>
-                            <li><span class="amm-radio"></span>Dựng UI MiniApp</li>
-                            <li><span class="amm-radio"></span>Xây dựng MiniApp</li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Dựng Flow MiniApp</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Dựng UI MiniApp</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
+                            <li><span class="amm-radio"></span><span class="amm-li-text">Xây dựng MiniApp</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span></li>
                         </ul>
                                             <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('MiniApp', this)"><i class="fa-solid fa-plus"></i></button>
                     </div>
@@ -4231,6 +4290,53 @@
     </div>
 
     <!-- Add Feature Modal -->
+    <!-- Edit Feature Modal -->
+    <div id="edit-feature-modal-overlay" onclick="if(event.target===this)closeEditFeatureModal()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:24000;align-items:center;justify-content:center;">
+        <div style="background:#fff;width:90%;max-width:520px;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;animation:ammSlideIn 0.25s ease;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid #f1f5f9;">
+                <span style="font-size:17px;font-weight:700;color:#1e293b;">Sửa tính năng</span>
+                <button onclick="closeEditFeatureModal()" style="background:none;border:none;cursor:pointer;color:#94a3b8;font-size:20px;line-height:1;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="padding:18px 22px;display:flex;flex-direction:column;gap:14px;">
+                <div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Tên tính năng</div>
+                    <input id="ef-name-input" type="text" placeholder="Nhập tên tính năng..." style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Mô tả chi tiết</div>
+                    <textarea id="ef-desc-input" placeholder="Mô tả chi tiết về tính năng..." rows="3" style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;font-family:inherit;"></textarea>
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Nhãn</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="ef-tag" data-tag="new" onclick="efSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Cần phát triển mới</button>
+                        <button class="ef-tag" data-tag="config" onclick="efSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Có sẵn - cần cấu hình</button>
+                        <button class="ef-tag" data-tag="priority" onclick="efSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Ưu tiên cao</button>
+                    </div>
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">Thời gian triển khai</div>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <div style="flex:1;">
+                            <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;font-weight:500;">Từ ngày</div>
+                            <input id="ef-date-from" type="date" onchange="efCalcDays()" style="width:100%;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;color:#374151;outline:none;box-sizing:border-box;cursor:pointer;">
+                        </div>
+                        <div style="color:#cbd5e1;font-size:18px;margin-top:16px;">→</div>
+                        <div style="flex:1;">
+                            <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;font-weight:500;">Đến ngày</div>
+                            <input id="ef-date-to" type="date" onchange="efCalcDays()" style="width:100%;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;color:#374151;outline:none;box-sizing:border-box;cursor:pointer;">
+                        </div>
+                    </div>
+                    <div id="ef-days-summary" style="display:none;font-size:12px;color:#2563eb;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:6px 12px;font-weight:500;margin-top:8px;"></div>
+                </div>
+            </div>
+            <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;justify-content:flex-end;gap:10px;">
+                <button onclick="closeEditFeatureModal()" style="padding:9px 18px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#64748b;font-size:14px;cursor:pointer;">Hủy</button>
+                <button onclick="efSubmit()" style="padding:9px 18px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
     <div id="add-feature-modal-overlay" onclick="if(event.target===this)closeAddFeatureModal()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:23000;align-items:center;justify-content:center;">
         <div style="background:#fff;width:90%;max-width:520px;max-height:90vh;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;animation:ammSlideIn 0.25s ease;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid #f1f5f9;">
@@ -4596,12 +4702,96 @@
                 const list = card.querySelector('.amm-list');
                 toAdd.forEach(text => {
                     const li = document.createElement('li');
-                    li.innerHTML = '<span class="amm-radio"></span>' + text;
+                    li.innerHTML = '<span class="amm-radio"></span><span class="amm-li-text">' + text + '</span><button class="amm-li-menu-btn" onclick="ammToggleActions(this)" title="Tùy chọn"><i class="fa-solid fa-ellipsis-vertical"></i></button><span class="amm-li-actions"><button class="amm-li-action-btn edit" onclick="ammEditFeature(this)"><i class="fa-solid fa-pen"></i> Sửa</button><button class="amm-li-action-btn delete" onclick="ammDeleteFeature(this)"><i class="fa-solid fa-trash"></i> Xóa</button></span>';
                     list.appendChild(li);
                 });
             }
             closeAddFeatureModal();
         }
+
+        function ammToggleActions(btn) {
+            const li = btn.closest('li');
+            const actions = li.querySelector('.amm-li-actions');
+            const isOpen = actions.classList.contains('open');
+            // close all other open action sets first
+            document.querySelectorAll('.amm-li-actions.open').forEach(a => a.classList.remove('open'));
+            if (!isOpen) actions.classList.add('open');
+        }
+        let efCurrentLi = null;
+        let efSelectedTag = null;
+
+        function ammEditFeature(btn) {
+            const li = btn.closest('li');
+            li.querySelector('.amm-li-actions').classList.remove('open');
+            efCurrentLi = li;
+            // Pre-fill name
+            document.getElementById('ef-name-input').value = li.querySelector('.amm-li-text').textContent;
+            document.getElementById('ef-desc-input').value = li.dataset.desc || '';
+            document.getElementById('ef-date-from').value = li.dataset.dateFrom || '';
+            document.getElementById('ef-date-to').value = li.dataset.dateTo || '';
+            document.getElementById('ef-days-summary').style.display = 'none';
+            // Reset tags
+            efSelectedTag = li.dataset.tag || null;
+            document.querySelectorAll('.ef-tag').forEach(t => {
+                const active = t.dataset.tag === efSelectedTag;
+                t.style.background = active ? '#eff6ff' : '#fff';
+                t.style.color = active ? '#2563eb' : '#64748b';
+                t.style.borderColor = active ? '#bfdbfe' : '#e2e8f0';
+            });
+            document.getElementById('edit-feature-modal-overlay').style.display = 'flex';
+        }
+        function closeEditFeatureModal() {
+            document.getElementById('edit-feature-modal-overlay').style.display = 'none';
+            efCurrentLi = null;
+        }
+        function efSelectTag(btn) {
+            const tag = btn.dataset.tag;
+            efSelectedTag = efSelectedTag === tag ? null : tag;
+            document.querySelectorAll('.ef-tag').forEach(t => {
+                const active = t.dataset.tag === efSelectedTag;
+                t.style.background = active ? '#eff6ff' : '#fff';
+                t.style.color = active ? '#2563eb' : '#64748b';
+                t.style.borderColor = active ? '#bfdbfe' : '#e2e8f0';
+            });
+        }
+        function efCalcDays() {
+            const from = document.getElementById('ef-date-from').value;
+            const to = document.getElementById('ef-date-to').value;
+            const summary = document.getElementById('ef-days-summary');
+            if (!from || !to) { summary.style.display = 'none'; return; }
+            const d1 = new Date(from), d2 = new Date(to);
+            if (d2 < d1) { summary.style.display = 'block'; summary.textContent = 'Ngày kết thúc phải sau ngày bắt đầu.'; summary.style.color = '#dc2626'; return; }
+            let workDays = 0;
+            const cur = new Date(d1);
+            while (cur <= d2) { if (cur.getDay() !== 0 && cur.getDay() !== 6) workDays++; cur.setDate(cur.getDate() + 1); }
+            summary.style.display = 'block';
+            summary.style.color = '#2563eb';
+            summary.textContent = 'Tổng cộng: ' + workDays + ' ngày làm việc';
+        }
+        function efSubmit() {
+            const name = document.getElementById('ef-name-input').value.trim();
+            if (!name) { document.getElementById('ef-name-input').focus(); return; }
+            if (efCurrentLi) {
+                efCurrentLi.querySelector('.amm-li-text').textContent = name;
+                efCurrentLi.dataset.desc = document.getElementById('ef-desc-input').value;
+                efCurrentLi.dataset.dateFrom = document.getElementById('ef-date-from').value;
+                efCurrentLi.dataset.dateTo = document.getElementById('ef-date-to').value;
+                efCurrentLi.dataset.tag = efSelectedTag || '';
+            }
+            closeEditFeatureModal();
+        }
+        function ammDeleteFeature(btn) {
+            const li = btn.closest('li');
+            if (confirm('Xóa tính năng "' + li.querySelector('.amm-li-text').textContent + '"?')) {
+                li.remove();
+            }
+        }
+        // Close actions on outside click
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.amm-li-menu-btn') && !e.target.closest('.amm-li-actions')) {
+                document.querySelectorAll('.amm-li-actions.open').forEach(a => a.classList.remove('open'));
+            }
+        });
 
         function toggleSideTab() {
             const sideTab = document.getElementById('side-tab');
