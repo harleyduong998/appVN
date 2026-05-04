@@ -4253,6 +4253,39 @@
     </div>
 
 
+    <!-- Custom Module Modal -->
+    <div id="custom-module-modal-overlay" onclick="if(event.target===this)closeCustomModuleModal()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:24000;align-items:center;justify-content:center;">
+        <div style="background:#fff;width:90%;max-width:420px;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;animation:ammSlideIn 0.25s ease;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid #f1f5f9;">
+                <span style="font-size:17px;font-weight:700;color:#1e293b;">Tạo Module tùy chỉnh</span>
+                <button onclick="closeCustomModuleModal()" style="background:none;border:none;cursor:pointer;color:#94a3b8;font-size:20px;line-height:1;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="padding:18px 22px;display:flex;flex-direction:column;gap:14px;">
+                <div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Tên module</div>
+                    <input id="cm-name-input" type="text" placeholder="Nhập tên module..." style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Màu sắc</div>
+                    <div id="cm-color-row" style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <span class="cm-color-dot" data-color="#2563eb" data-bg="#dbeafe" onclick="cmSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#dbeafe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#2563eb;display:block;"></span></span>
+                        <span class="cm-color-dot" data-color="#16a34a" data-bg="#dcfce7" onclick="cmSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#dcfce7;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#16a34a;display:block;"></span></span>
+                        <span class="cm-color-dot" data-color="#ea580c" data-bg="#ffedd5" onclick="cmSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ffedd5;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#ea580c;display:block;"></span></span>
+                        <span class="cm-color-dot" data-color="#7c3aed" data-bg="#ede9fe" onclick="cmSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ede9fe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#7c3aed;display:block;"></span></span>
+                        <span class="cm-color-dot" data-color="#dc2626" data-bg="#fee2e2" onclick="cmSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#fee2e2;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#dc2626;display:block;"></span></span>
+                        <span class="cm-color-dot" data-color="#0284c7" data-bg="#e0f2fe" onclick="cmSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#e0f2fe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#0284c7;display:block;"></span></span>
+                        <span class="cm-color-dot" data-color="#ca8a04" data-bg="#fef9c3" onclick="cmSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#fef9c3;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#ca8a04;display:block;"></span></span>
+                        <span class="cm-color-dot" data-color="#0f766e" data-bg="#ccfbf1" onclick="cmSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ccfbf1;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#0f766e;display:block;"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;justify-content:flex-end;gap:10px;">
+                <button onclick="closeCustomModuleModal()" style="padding:9px 18px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#64748b;font-size:14px;cursor:pointer;">Hủy</button>
+                <button onclick="cmSubmit()" style="padding:9px 18px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Tạo</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Add Module Modal -->
     <div id="add-module-modal-overlay" onclick="if(event.target===this)closeAddModuleModal()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:23000;align-items:center;justify-content:center;">
         <div style="background:#fff;width:90%;max-width:580px;max-height:88vh;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;animation:ammSlideIn 0.25s ease;">
@@ -4269,28 +4302,37 @@
                 <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:12px;">Thư viện module</div>
                 <div id="am-lib-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-bottom:20px;"></div>
                 <div id="am-no-result" style="display:none;text-align:center;padding:20px;color:#94a3b8;font-size:14px;">Không tìm thấy module</div>
-                <button onclick="amToggleCustomForm()" id="am-custom-toggle-btn" style="width:100%;padding:10px;border:1.5px dashed #cbd5e1;border-radius:10px;background:none;color:#64748b;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;">
+                <button onclick="openCustomModuleModal()" style="width:100%;padding:10px;border:1.5px dashed #cbd5e1;border-radius:10px;background:none;color:#64748b;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;">
                     <i class="fa-solid fa-plus" style="font-size:12px;"></i> Tạo Module tùy chỉnh
                 </button>
-                <div id="am-custom-form" style="display:none;margin-top:14px;padding:16px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;">
-                    <div style="font-size:13px;font-weight:600;color:#475569;margin-bottom:10px;">Tên module</div>
-                    <input id="am-custom-name" type="text" placeholder="Nhập tên module..." style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;margin-bottom:14px;">
-                    <div style="font-size:13px;font-weight:600;color:#475569;margin-bottom:8px;">Màu sắc</div>
-                    <div id="am-color-row" style="display:flex;gap:8px;flex-wrap:wrap;">
-                        <span class="am-color-dot" data-color="#2563eb" data-bg="#dbeafe" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#dbeafe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#2563eb;display:block;"></span></span>
-                        <span class="am-color-dot" data-color="#16a34a" data-bg="#dcfce7" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#dcfce7;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#16a34a;display:block;"></span></span>
-                        <span class="am-color-dot" data-color="#ea580c" data-bg="#ffedd5" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ffedd5;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#ea580c;display:block;"></span></span>
-                        <span class="am-color-dot" data-color="#7c3aed" data-bg="#ede9fe" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ede9fe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#7c3aed;display:block;"></span></span>
-                        <span class="am-color-dot" data-color="#dc2626" data-bg="#fee2e2" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#fee2e2;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#dc2626;display:block;"></span></span>
-                        <span class="am-color-dot" data-color="#0284c7" data-bg="#e0f2fe" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#e0f2fe;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#0284c7;display:block;"></span></span>
-                        <span class="am-color-dot" data-color="#ca8a04" data-bg="#fef9c3" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#fef9c3;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#ca8a04;display:block;"></span></span>
-                        <span class="am-color-dot" data-color="#0f766e" data-bg="#ccfbf1" onclick="amSelectColor(this)" style="width:26px;height:26px;border-radius:50%;background:#ccfbf1;cursor:pointer;border:2px solid transparent;display:inline-flex;align-items:center;justify-content:center;"><span style="width:14px;height:14px;border-radius:50%;background:#0f766e;display:block;"></span></span>
-                    </div>
-                </div>
             </div>
             <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;justify-content:flex-end;gap:10px;">
                 <button onclick="closeAddModuleModal()" style="padding:9px 18px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#64748b;font-size:14px;cursor:pointer;">Hủy</button>
                 <button onclick="amSubmit()" style="padding:9px 18px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Thêm vào bản đồ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Feature Modal -->
+    <div id="custom-feature-modal-overlay" onclick="if(event.target===this)closeCustomFeatureModal()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:24000;align-items:center;justify-content:center;">
+        <div style="background:#fff;width:90%;max-width:520px;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;animation:ammSlideIn 0.25s ease;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid #f1f5f9;">
+                <span style="font-size:17px;font-weight:700;color:#1e293b;">Tạo tính năng tùy chỉnh</span>
+                <button onclick="closeCustomFeatureModal()" style="background:none;border:none;cursor:pointer;color:#94a3b8;font-size:20px;line-height:1;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="padding:18px 22px;display:flex;flex-direction:column;gap:14px;">
+                <div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Tên tính năng</div>
+                    <input id="cf-name-input" type="text" placeholder="Nhập tên tính năng..." style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Mô tả chi tiết</div>
+                    <textarea id="cf-desc-input" placeholder="Mô tả chi tiết về tính năng..." rows="3" style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;font-family:inherit;"></textarea>
+                </div>
+            </div>
+            <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;justify-content:flex-end;gap:10px;">
+                <button onclick="closeCustomFeatureModal()" style="padding:9px 18px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#64748b;font-size:14px;cursor:pointer;">Hủy</button>
+                <button onclick="cfSubmit()" style="padding:9px 18px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Thêm</button>
             </div>
         </div>
     </div>
@@ -4352,11 +4394,11 @@
             <div style="flex:1;overflow-y:auto;padding:18px 22px;">
                 <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">Tính năng gợi ý</div>
                 <div id="af-suggest-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
-                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;margin-bottom:10px;" onclick="event.stopPropagation()">
-                    <input type="checkbox" id="af-custom-toggle" onchange="afToggleCustomFields(this)" style="accent-color:#2563eb;width:16px;height:16px;cursor:pointer;flex-shrink:0;">
-                    <span style="font-size:14px;font-weight:600;color:#374151;">Tính năng tùy chỉnh</span>
+                <button onclick="openCustomFeatureModal()" style="width:100%;display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;margin-bottom:10px;font-size:14px;font-weight:600;color:#374151;transition:all 0.2s;">
+                    <i class="fa-solid fa-plus" style="font-size:12px;flex-shrink:0;"></i>
+                    <span>Tạo tính năng tùy chỉnh</span>
                     <span style="font-size:12px;color:#94a3b8;margin-left:auto;">Tên, mô tả, nhãn, ngày...</span>
-                </label>
+                </button>
                 <div id="af-custom-fields" style="display:none;">
                     <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Tên tính năng</div>
                     <input id="af-custom-input" type="text" placeholder="Nhập tên tính năng..." style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;margin-bottom:14px;">
@@ -4528,13 +4570,34 @@
             mmModules.inactive.splice(i, 1);
             mmRender();
         }
+        function openCustomModuleModal() {
+            document.getElementById('custom-module-modal-overlay').style.display = 'flex';
+            document.getElementById('cm-name-input').value = '';
+            cmSelectedColor = null;
+            document.querySelectorAll('.cm-color-dot').forEach(d => d.style.border = '2px solid transparent');
+            document.getElementById('cm-name-input').focus();
+        }
+        function closeCustomModuleModal() {
+            document.getElementById('custom-module-modal-overlay').style.display = 'none';
+        }
+        let cmSelectedColor = null;
+        function cmSelectColor(el) {
+            document.querySelectorAll('.cm-color-dot').forEach(d => d.style.border = '2px solid transparent');
+            el.style.border = '2px solid #1e293b';
+            cmSelectedColor = { color: el.dataset.color, bg: el.dataset.bg };
+        }
+        function cmSubmit() {
+            const name = document.getElementById('cm-name-input').value.trim();
+            if (!name) { document.getElementById('cm-name-input').focus(); return; }
+            const c = cmSelectedColor || { color: '#2563eb', bg: '#dbeafe' };
+            mmModules.inactive.push({ id: 'custom_' + Date.now(), name: name, icon: 'fa-cube', bg: c.bg, color: c.color });
+            closeCustomModuleModal();
+            mmRender();
+        }
+
         function openAddModuleModal() {
             amRenderLibrary();
-            document.getElementById('am-custom-form').style.display = 'none';
-            document.getElementById('am-custom-name').value = '';
-            amSelectedColor = null;
             amSelectedLibId = null;
-            document.querySelectorAll('.am-color-dot').forEach(d => d.style.border = '2px solid transparent');
             document.getElementById('add-module-modal-overlay').style.display = 'flex';
         }
         function closeAddModuleModal() {
@@ -4706,6 +4769,28 @@
         }
         function closeAddFeatureModal() {
             document.getElementById('add-feature-modal-overlay').style.display = 'none';
+        }
+
+        function openCustomFeatureModal() {
+            document.getElementById('custom-feature-modal-overlay').style.display = 'flex';
+            document.getElementById('cf-name-input').value = '';
+            document.getElementById('cf-desc-input').value = '';
+            document.getElementById('cf-name-input').focus();
+        }
+        function closeCustomFeatureModal() {
+            document.getElementById('custom-feature-modal-overlay').style.display = 'none';
+        }
+        function cfSubmit() {
+            const name = document.getElementById('cf-name-input').value.trim();
+            if (!name) { document.getElementById('cf-name-input').focus(); return; }
+            const desc = document.getElementById('cf-desc-input').value.trim();
+            // Add to afCheckedSuggests and create checkbox in af-suggest-list
+            afCheckedSuggests.add(name);
+            const label = document.createElement('label');
+            label.style.cssText = 'display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 14px;border:1.5px solid #bfdbfe;border-radius:8px;background:#eff6ff;';
+            label.innerHTML = '<input type="checkbox" value="' + name + '" checked style="accent-color:#2563eb;width:16px;height:16px;cursor:pointer;flex-shrink:0;"><span style="font-size:13px;font-weight:500;color:#1e40af;">' + name + '</span>';
+            document.getElementById('af-suggest-list').appendChild(label);
+            closeCustomFeatureModal();
         }
         function afToggleCustomFields(cb) {
             document.getElementById('af-custom-fields').style.display = cb.checked ? 'block' : 'none';
