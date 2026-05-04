@@ -345,30 +345,66 @@
                 <div class="flex-1 flex overflow-hidden">
 
                 <!-- Left Category Menu -->
-                <div class="w-44 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col overflow-y-auto py-2 px-2 gap-0.5">
-                    <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest px-2 py-1 mt-1">Danh mục</p>
-                    <button onclick="filterCat('all')" class="cat-btn cat-all text-left px-3 py-2 text-xs font-semibold rounded-lg text-[#1B3DA1] bg-blue-50 transition">
-                        <i class="fa-solid fa-grip text-[10px] mr-1.5 opacity-70"></i>Tất cả
-                    </button>
-                    <button onclick="filterCat('ads')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
-                        <i class="fa-solid fa-bullhorn text-[10px] mr-1.5 text-blue-400"></i>Quảng cáo &amp; MKT
-                    </button>
-                    <button onclick="filterCat('retarget')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
-                        <i class="fa-solid fa-rotate text-[10px] mr-1.5 text-pink-400"></i>Tái tương tác
-                    </button>
-                    <button onclick="filterCat('loyalty')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
-                        <i class="fa-solid fa-star text-[10px] mr-1.5 text-amber-400"></i>Loyalty &amp; Upsell
-                    </button>
-                    <button onclick="filterCat('acquisition')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
-                        <i class="fa-solid fa-phone text-[10px] mr-1.5 text-cyan-400"></i>Acquisition
-                    </button>
-                    <button onclick="filterCat('service')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
-                        <i class="fa-solid fa-headset text-[10px] mr-1.5 text-rose-400"></i>Hậu mãi &amp; CSKH
-                    </button>
-                    <button onclick="filterCat('edu')" class="cat-btn text-left px-3 py-2 text-xs font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition">
-                        <i class="fa-solid fa-graduation-cap text-[10px] mr-1.5 text-emerald-500"></i>Giáo dục &amp; Sự kiện
-                    </button>
-                </div>
+                <aside class="w-56 flex-shrink-0 bg-gray-50 border-r border-gray-100 flex flex-col p-4 overflow-y-auto">
+                    <div class="space-y-1">
+                        <button id="cat-all" onclick="filterCat('all')" class="cat-btn w-full flex items-center justify-between px-4 py-3 bg-[#F7FAFF] text-[#313C62] rounded-lg border border-blue-100/50 shadow-sm transition-all group">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" viewBox="0 0 16 16" fill="currentColor">
+                                    <rect x="1" y="1" width="6" height="6" rx="1.2"/><rect x="9" y="1" width="6" height="6" rx="1.2"/><rect x="1" y="9" width="6" height="6" rx="1.2"/><rect x="9" y="9" width="6" height="6" rx="1.2"/>
+                                </svg>
+                                <span class="font-semibold text-sm">Tất cả</span>
+                            </div>
+                        </button>
+                        <button id="cat-ads" onclick="filterCat('ads')" class="cat-btn w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-3.5 h-3.5 opacity-30 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M3 11l19-9-9 19-2-8-8-2z"/>
+                                </svg>
+                                <span class="font-semibold text-sm">Quảng cáo &amp; MKT</span>
+                            </div>
+                        </button>
+                        <button id="cat-retarget" onclick="filterCat('retarget')" class="cat-btn w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-3.5 h-3.5 opacity-30 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>
+                                </svg>
+                                <span class="font-semibold text-sm">Tái tương tác</span>
+                            </div>
+                        </button>
+                        <button id="cat-loyalty" onclick="filterCat('loyalty')" class="cat-btn w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-3.5 h-3.5 opacity-30 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                <span class="font-semibold text-sm">Loyalty &amp; Upsell</span>
+                            </div>
+                        </button>
+                        <button id="cat-acquisition" onclick="filterCat('acquisition')" class="cat-btn w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-3.5 h-3.5 opacity-30 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.8h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.4a16 16 0 0 0 5.69 5.69l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                                <span class="font-semibold text-sm">Chuyên biệt</span>
+                            </div>
+                        </button>
+                        <button id="cat-service" onclick="filterCat('service')" class="cat-btn w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-3.5 h-3.5 opacity-30 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                                </svg>
+                                <span class="font-semibold text-sm">Hậu mãi &amp; CSKH</span>
+                            </div>
+                        </button>
+                        <button id="cat-edu" onclick="filterCat('edu')" class="cat-btn w-full flex items-center justify-between px-4 py-3 text-gray-400 hover:bg-white hover:text-[#313C62] rounded-lg transition-all group">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-3.5 h-3.5 opacity-30 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                                </svg>
+                                <span class="font-semibold text-sm">Giáo dục &amp; Sự kiện</span>
+                            </div>
+                        </button>
+                    </div>
+                </aside>
 
                 <!-- Right Scrollable Content -->
                 <div class="flex-1 overflow-y-auto bg-[#F9FAFB] px-5 py-4 space-y-6 custom-scrollbar">
@@ -872,11 +908,14 @@
         }
         function filterCat(cat) {
             document.querySelectorAll('.cat-btn').forEach(b => {
-                b.classList.remove('text-[#1B3DA1]', 'bg-blue-50', 'font-semibold');
-                b.classList.add('text-gray-600', 'font-medium');
+                b.classList.remove('bg-[#F7FAFF]', 'text-[#313C62]', 'border', 'border-blue-100/50', 'shadow-sm');
+                b.classList.add('text-gray-400');
+                b.querySelectorAll('svg').forEach(s => { s.classList.remove('opacity-60'); s.classList.add('opacity-30'); });
             });
-            event.currentTarget.classList.remove('text-gray-600', 'font-medium');
-            event.currentTarget.classList.add('text-[#1B3DA1]', 'bg-blue-50', 'font-semibold');
+            const active = event.currentTarget;
+            active.classList.remove('text-gray-400');
+            active.classList.add('bg-[#F7FAFF]', 'text-[#313C62]', 'border', 'border-blue-100/50', 'shadow-sm');
+            active.querySelectorAll('svg').forEach(s => { s.classList.remove('opacity-30'); s.classList.add('opacity-60'); });
             document.querySelectorAll('[data-cat]').forEach(g => {
                 g.style.display = (cat === 'all' || g.dataset.cat === cat) ? '' : 'none';
             });
