@@ -43,6 +43,31 @@
         .table-cell {
             @apply px-4 py-4 whitespace-nowrap border-b border-gray-50 align-top;
         }
+
+        /* Hero Banner Watermark */
+        .hero-banner-watermark::after {
+            content: "";
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 200px;
+            background-image: url("../LOGO APP VN BTHE 12.7-03.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.04;
+            pointer-events: none;
+            mask-image: linear-gradient(to left, black 30%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%);
+            z-index: 0;
+            filter: grayscale(1) brightness(0);
+        }
+
+        .hero-banner-watermark.collapsed {
+            height: auto;
+        }
     </style>
 </head>
 
@@ -291,50 +316,603 @@
             </div>
         </div>
 
-        <!-- Filter Bar -->
-        <div class="px-6 py-4 flex items-center justify-end gap-2">
-            <!-- Search -->
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="text" placeholder="Mã ĐH, Tên, SĐT khách..."
-                    class="pl-9 pr-3 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm w-64 bg-white">
-            </div>
-
-            <!-- Type Filter -->
-            <div class="relative">
-                <select
-                    class="pl-3 pr-8 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm bg-white appearance-none cursor-pointer min-w-[130px] text-gray-500">
-                    <option>Loại tích điểm</option>
-                    <option>Cộng điểm</option>
-                    <option>Giảm điểm</option>
-                </select>
-                <i
-                    class="fa-solid fa-caret-down absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-            </div>
-
-            <!-- Date Picker -->
-            <div class="relative">
-                <input type="text" placeholder="Tạo từ - đến ngày"
-                    class="pl-3 pr-8 py-1.5 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm bg-white min-w-[150px] text-gray-500">
-                <i
-                    class="fa-regular fa-calendar absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-            </div>
-
-            <!-- Reload Btn -->
-            <button
-                class="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-md border border-gray-200 shadow-sm hover:bg-gray-50 text-sm text-gray-600">
-                <i class="fa-solid fa-arrows-rotate"></i> Reload
+        <!-- Hero Section Dashboard -->
+        <div id="hero-section" class="mx-4 mt-4 p-5 rounded-2xl bg-[#F7FAFF] border border-blue-100/50 relative overflow-hidden group shadow-sm hero-banner-watermark transition-all duration-300">
+            <!-- Collapse Button -->
+            <button onclick="toggleHeroSection()" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-100/50 text-blue-400 hover:text-blue-600 transition-colors z-20" title="Thu gọn/Mở rộng">
+                <i id="hero-toggle-icon" class="fa-solid fa-compress"></i>
             </button>
 
-            <!-- Primary Action -->
-            <button
-                class="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 text-sm text-white font-medium ml-2">
-                <i class="fa-solid fa-plus"></i> Tích điểm thủ công
-            </button>
+            <!-- Expanded Content -->
+            <div id="hero-content" class="relative z-10 transition-all duration-300">
+                <h2 class="text-xl font-bold text-[#1B3DA1] mb-2 flex items-center gap-2">
+                 
+                    Loyalty Hub
+                </h2>
+                <p class="text-xs font-medium text-blue-900/70 mb-5 max-w-2xl leading-relaxed">
+                    Quản lý <span class="font-bold text-[#1B3DA1]">tích điểm & đổi thưởng</span> cho khách hàng theo từng đơn hàng.<br>
+                    <span class="font-bold text-[#1B3DA1]">Tự động cộng điểm</span>, phân hạng thành viên và kích hoạt ưu đãi để tăng tỷ lệ quay lại.
+                </p>
+                <div class="flex flex-wrap items-center gap-3 mt-4">
+                    <!-- AI Gợi ý thứ hạng -->
+                    <button onclick="openAiRankModal()" class="flex items-center gap-2 px-5 py-2.5 text-white text-[11px] font-bold rounded-lg transition-all uppercase tracking-wide shadow-md" style="background: linear-gradient(135deg, #1890ff, #722ed1);">
+                        <div class="w-5 h-5 rounded-md bg-white/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles text-[9px]"></i>
+                        </div>
+                        AI Gợi ý thứ hạng
+                    </button>
+                    <!-- AI Gợi ý luồng chăm sóc -->
+                    <button onclick="openAiCareModal()" class="flex items-center gap-2 px-5 py-2.5 text-[#1B3DA1] text-[11px] font-bold rounded-lg transition-all uppercase tracking-wide shadow-md" style="background: #eff6ff;">
+                        <div class="w-5 h-5 rounded-md bg-white/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-robot text-[9px]"></i>
+                        </div>
+                        AI Gợi ý luồng chăm sóc
+                    </button>
+                </div>
+            </div>
+
+            <!-- Collapsed State Content -->
+            <div id="hero-collapsed-content" class="hidden relative z-10">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button onclick="openAiRankModal()" class="flex items-center gap-1.5 px-3 py-1.5 text-white text-[10px] font-bold rounded-lg transition-all uppercase tracking-wide shadow-sm" style="background: linear-gradient(135deg, #1890ff, #722ed1);">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[9px]"></i> AI Thứ hạng
+                    </button>
+                    <button onclick="openAiCareModal()" class="flex items-center gap-1.5 px-3 py-1.5 text-white text-[10px] font-bold rounded-lg transition-all uppercase tracking-wide shadow-sm" style="background: linear-gradient(135deg, #722ed1, #1890ff);">
+                        <i class="fa-solid fa-robot text-[9px]"></i> AI Chăm sóc
+                    </button>
+                </div>
+            </div>
+
+            <!-- Abstract Decoration -->
+            <div class="absolute -top-10 -right-10 w-64 h-64 bg-amber-400 opacity-10 rounded-full blur-3xl z-0 pointer-events-none"></div>
+        </div>
+
+        <!-- AI Care Modal -->
+        <div id="ai-care-modal" class="hidden fixed inset-0 z-[999] items-center justify-center p-4">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeAiCareModal()"></div>
+            <div class="relative bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden" style="width:920px; max-width:100%; height:88vh;">
+
+                <!-- Header -->
+                <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-blue-50 to-purple-50 flex-shrink-0">
+                    <h2 class="text-base font-bold text-gray-800 flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style="background: linear-gradient(135deg, #722ed1, #1890ff);">
+                            <i class="fa-solid fa-robot text-sm"></i>
+                        </div>
+                        AI Gợi ý luồng chăm sóc Loyalty
+                    </h2>
+                    <button onclick="closeAiCareModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 transition">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="px-5 py-3 border-b border-gray-100 bg-white flex-shrink-0 flex items-center gap-3 flex-wrap">
+                    <!-- Group toggle -->
+                    <div class="flex items-center gap-1 bg-gray-100 p-0.5 rounded-lg">
+                        <button onclick="acFilter('all')" id="ac-cat-all" class="ac-cat-btn px-3 py-1.5 rounded-md text-xs font-semibold transition-all bg-white text-gray-800 shadow-sm">Tất cả (20)</button>
+                        <button onclick="acFilter('trigger')" id="ac-cat-trigger" class="ac-cat-btn px-3 py-1.5 rounded-md text-xs font-semibold transition-all text-gray-500 hover:text-gray-700">
+                            <i class="fa-solid fa-bolt text-purple-400 mr-1"></i>Trigger (10)
+                        </button>
+                        <button onclick="acFilter('broadcast')" id="ac-cat-broadcast" class="ac-cat-btn px-3 py-1.5 rounded-md text-xs font-semibold transition-all text-gray-500 hover:text-gray-700">
+                            <i class="fa-solid fa-bullhorn text-blue-400 mr-1"></i>Broadcast (10)
+                        </button>
+                    </div>
+                    <!-- Channel filter tags -->
+                    <div class="flex items-center gap-1.5 ml-1">
+                        <span class="text-[10px] text-gray-400 font-medium">Kênh:</span>
+                        <button onclick="acFilter('zalo')" id="ac-cat-zalo" class="ac-cat-btn px-2.5 py-1 rounded-full text-[11px] font-medium border border-blue-200 text-blue-600 bg-blue-50 hover:bg-blue-100 transition-all">Zalo OA</button>
+                        <button onclick="acFilter('fb')" id="ac-cat-fb" class="ac-cat-btn px-2.5 py-1 rounded-full text-[11px] font-medium border border-indigo-200 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-all">Messenger</button>
+                        <button onclick="acFilter('zalo_cn')" id="ac-cat-zalo_cn" class="ac-cat-btn px-2.5 py-1 rounded-full text-[11px] font-medium border border-teal-200 text-teal-600 bg-teal-50 hover:bg-teal-100 transition-all">Zalo cá nhân</button>
+                    </div>
+                </div>
+
+                <!-- Card Grid -->
+                <div class="flex-1 overflow-y-auto p-4 bg-[#F9FAFB]">
+                    <div id="ac-card-grid" class="grid grid-cols-2 gap-3">
+
+                        <!-- Card 1 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-300 hover:shadow-md transition cursor-pointer select-none" data-group="trigger" data-channels="zalo,fb" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-purple-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bolt text-purple-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0 text-purple-500">
+                                    <i class="fa-solid fa-hands"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Chào mừng thành viên mới</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Đăng ký thành công tài khoản Loyalty</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <i class="fa-brands fa-facebook-messenger text-[#0084FF]" style="font-size:15px" title="Messenger"></i>
+                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-300 hover:shadow-md transition cursor-pointer select-none" data-group="trigger" data-channels="zalo,zalo_cn" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-purple-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bolt text-purple-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0 text-green-500">
+                                    <i class="fa-solid fa-coins"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Xác nhận tích điểm sau mua hàng</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Đơn hàng chuyển sang "Hoàn tất"</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-300 hover:shadow-md transition cursor-pointer select-none" data-group="trigger" data-channels="zalo" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-purple-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bolt text-purple-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-yellow-50 flex items-center justify-center flex-shrink-0 text-yellow-500">
+                                    <i class="fa-solid fa-trophy"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Chúc mừng thăng hạng thành viên</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Tổng chi tiêu đạt ngưỡng hạng mới</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Card 5 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-300 hover:shadow-md transition cursor-pointer select-none" data-group="trigger" data-channels="zalo" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-purple-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bolt text-purple-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-sky-50 flex items-center justify-center flex-shrink-0 text-sky-500">
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Khảo sát mức độ hài lòng</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">24h sau khi đơn hàng giao thành công</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 6 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-300 hover:shadow-md transition cursor-pointer select-none" data-group="trigger" data-channels="zalo" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-purple-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bolt text-purple-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-pink-50 flex items-center justify-center flex-shrink-0 text-pink-500">
+                                    <i class="fa-solid fa-gift"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Xác nhận đổi quà thành công</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Khách hàng đổi điểm lấy Voucher/Quà tặng</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 7 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-purple-300 hover:shadow-md transition cursor-pointer select-none" data-group="trigger" data-channels="zalo,zalo_cn" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-purple-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bolt text-purple-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0 text-orange-500">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Cảnh báo hạ hạng thành viên</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">30 ngày trước khi kết thúc kỳ xét hạng</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Card 11 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-blue-300 hover:shadow-md transition cursor-pointer select-none" data-group="broadcast" data-channels="zalo,zalo_cn" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-blue-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bullhorn text-blue-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-pink-50 flex items-center justify-center flex-shrink-0 text-pink-500">
+                                    <i class="fa-solid fa-cake-candles"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Chúc mừng sinh nhật khách hàng</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">KH có ngày sinh là ngày hiện tại</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 12 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-blue-300 hover:shadow-md transition cursor-pointer select-none" data-group="broadcast" data-channels="zalo" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-blue-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bullhorn text-blue-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0 text-indigo-500">
+                                    <i class="fa-solid fa-heart-circle-bolt"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Tri ân khách hàng cũ</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Hạng Bạc trở lên, không đơn > 60 ngày</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 13 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-blue-300 hover:shadow-md transition cursor-pointer select-none" data-group="broadcast" data-channels="zalo_cn,zalo" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-blue-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bullhorn text-blue-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0 text-amber-500">
+                                    <i class="fa-solid fa-hourglass-end"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Cảnh báo điểm tích lũy sắp hết hạn</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">KH có số dư điểm > 0 vào tháng 12</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 14 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-blue-300 hover:shadow-md transition cursor-pointer select-none" data-group="broadcast" data-channels="zalo" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-blue-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bullhorn text-blue-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0 text-violet-500">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Thư mời sự kiện đặc quyền</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">KH hạng Kim Cương</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 15 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-blue-300 hover:shadow-md transition cursor-pointer select-none" data-group="broadcast" data-channels="zalo,fb" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-blue-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bullhorn text-blue-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-yellow-50 flex items-center justify-center flex-shrink-0 text-yellow-500">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Thông báo chiến dịch Mega Sale</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Toàn bộ khách hàng trong CDP</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <i class="fa-brands fa-facebook-messenger text-[#0084FF]" style="font-size:15px" title="Messenger"></i>
+                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 17 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-blue-300 hover:shadow-md transition cursor-pointer select-none" data-group="broadcast" data-channels="zalo,zalo_cn" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-blue-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bullhorn text-blue-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0 text-red-400">
+                                    <i class="fa-solid fa-calendar-xmark"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Thông báo lịch nghỉ Lễ/Tết</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Toàn bộ khách hàng</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                        <!-- Card 19 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-blue-300 hover:shadow-md transition cursor-pointer select-none" data-group="broadcast" data-channels="zalo,fb" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-blue-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bullhorn text-blue-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-rose-50 flex items-center justify-center flex-shrink-0 text-rose-500">
+                                    <i class="fa-solid fa-fire"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Đẩy hàng tồn</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">KH hạng Đồng/Bạc (nhạy cảm về giá)</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <i class="fa-brands fa-facebook-messenger text-[#0084FF]" style="font-size:15px" title="Messenger"></i>
+                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 20 -->
+                        <div class="ac-card relative overflow-hidden bg-white rounded-xl border border-gray-100 p-4 hover:border-blue-300 hover:shadow-md transition cursor-pointer select-none" data-group="broadcast" data-channels="zalo" onclick="acSelectCard(this)">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-blue-100 flex items-start justify-end pt-[5px] pr-[5px] rounded-bl-full">
+                                <i class="fa-solid fa-bullhorn text-blue-500 text-[10px]"></i>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0 text-blue-500">
+                                    <i class="fa-solid fa-file-lines"></i>
+                                </div>
+                                <div class="flex items-center justify-between gap-2 flex-1 pr-6">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-gray-800 leading-snug">Cập nhật chính sách Loyalty mới</div>
+                                        <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Toàn bộ khách hàng</div>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- end card grid -->
+
+                <!-- Footer -->
+                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center flex-shrink-0">
+                    <span class="text-xs text-gray-400"> </span>
+                    <div class="flex items-center gap-3">
+                        <button onclick="closeAiCareModal()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Đóng</button>
+                        <button class="flex items-center gap-2 px-5 py-2 text-sm font-bold text-white rounded-lg transition shadow-md" style="background: linear-gradient(135deg, #722ed1, #1890ff);">
+                            <i class="fa-solid fa-rocket text-xs"></i> Kích hoạt kịch bản
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Rank Modal -->
+        <div id="ai-rank-modal" class="hidden fixed inset-0 z-[999] flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeAiRankModal()"></div>
+            <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden">
+
+                <!-- Header -->
+                <div class="px-6 py-4 border-b border-gray-100 flex items-start justify-between bg-gradient-to-r from-blue-50 to-purple-50">
+                    <div>
+                        <h2 class="text-base font-bold text-gray-800 flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style="background: linear-gradient(135deg, #1890ff, #722ed1);">
+                                <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                            </div>
+                            Cấu hình thứ hạng thành viên tối ưu để tăng 30% tỷ lệ quay lại
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-1 ml-10">AI phân tích dựa trên mô hình RFM và dữ liệu ngành bán lẻ Việt Nam</p>
+                    </div>
+                    <button onclick="closeAiRankModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 transition flex-shrink-0 ml-4">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+
+                <!-- Tier Cards -->
+                <div class="p-6 grid grid-cols-4 gap-4">
+
+                    <!-- Hạng Đồng -->
+                    <div class="border-2 border-orange-200 rounded-xl overflow-hidden flex flex-col">
+                        <div class="h-1.5 bg-gradient-to-r from-orange-300 to-orange-400"></div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <div class="flex flex-col items-center mb-3">
+                                <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center mb-2">
+                                    <i class="fa-solid fa-medal text-2xl text-orange-400"></i>
+                                </div>
+                                <div class="text-base font-bold text-gray-800">Hạng ĐỒNG</div>
+                                <div class="text-xs text-gray-400 mt-0.5">Thành viên mới</div>
+                            </div>
+
+                            <div class="bg-orange-50 rounded-lg p-3 text-center mb-3">
+                                <div class="text-[10px] font-bold text-orange-500 uppercase tracking-wider mb-0.5">Mức hoàn tiền</div>
+                                <div class="text-2xl font-black text-orange-500">1%</div>
+                          
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Điều kiện</div>
+                                <div class="border border-orange-100 rounded-lg px-3 py-2 text-xs font-medium text-orange-700 bg-orange-50 text-center">Đăng ký tài khoản thành công</div>
+                            </div>
+
+                            <div class="mb-3 flex-1">
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Đặc quyền</div>
+                                <ul class="space-y-1.5">
+                                    <li class="flex items-start gap-2 text-xs text-gray-600"><i class="fa-solid fa-check text-orange-400 mt-0.5 flex-shrink-0"></i>Voucher chào mừng 20.000đ</li>
+                                    <li class="flex items-start gap-2 text-xs text-gray-600"><i class="fa-solid fa-check text-orange-400 mt-0.5 flex-shrink-0"></i>Nhận thông báo ưu đãi sớm nhất</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hạng Bạc -->
+                    <div class="border-2 border-slate-200 rounded-xl overflow-hidden flex flex-col">
+                        <div class="h-1.5 bg-gradient-to-r from-slate-300 to-slate-400"></div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <div class="flex flex-col items-center mb-3">
+                                <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-2">
+                                    <i class="fa-solid fa-medal text-2xl text-slate-400"></i>
+                                </div>
+                                <div class="text-base font-bold text-gray-800">Hạng BẠC</div>
+                                <div class="text-xs text-gray-400 mt-0.5">Khách tiềm năng</div>
+                            </div>
+
+                            <div class="bg-slate-50 rounded-lg p-3 text-center mb-3">
+                                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Mức hoàn tiền</div>
+                                <div class="text-2xl font-black text-slate-600">1.5%</div>
+                     
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Điều kiện</div>
+                                <div class="border border-slate-200 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 bg-slate-50 text-center">Tổng chi tiêu > 2.000.000đ</div>
+                            </div>
+
+                            <div class="mb-3 flex-1">
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Đặc quyền</div>
+                                <ul class="space-y-1.5">
+                                    <li class="flex items-start gap-2 text-xs text-gray-600"><i class="fa-solid fa-check text-slate-400 mt-0.5 flex-shrink-0"></i>Quà sinh nhật – Voucher 50.000đ</li>
+                                    <li class="flex items-start gap-2 text-xs text-gray-600"><i class="fa-solid fa-check text-slate-400 mt-0.5 flex-shrink-0"></i>Giảm 5% hóa đơn từ 1.000.000đ</li>
+                                </ul>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+
+                    <!-- Hạng Vàng (Phổ biến nhất) -->
+                    <div class="border-2 border-yellow-400 rounded-xl overflow-hidden flex flex-col relative shadow-lg shadow-yellow-100">
+                        <div class="absolute top-0 left-0 right-0 flex justify-center z-10">
+                            <span class="px-3 py-0.5 text-[10px] font-black text-white uppercase tracking-wider rounded-b-md" style="background: linear-gradient(135deg, #f59e0b, #d97706);">Phổ biến nhất</span>
+                        </div>
+                        <div class="h-1.5 bg-gradient-to-r from-yellow-400 to-amber-500"></div>
+                        <div class="p-5 pt-7 flex flex-col flex-1">
+                            <div class="flex flex-col items-center mb-3">
+                                <div class="w-12 h-12 rounded-full bg-yellow-50 flex items-center justify-center mb-2">
+                                    <i class="fa-solid fa-medal text-2xl text-yellow-500"></i>
+                                </div>
+                                <div class="text-base font-bold text-gray-800">Hạng VÀNG</div>
+                                <div class="text-xs text-gray-400 mt-0.5">Khách thân thiết</div>
+                            </div>
+
+                            <div class="rounded-lg p-3 text-center mb-3" style="background: linear-gradient(135deg, #fef9c3, #fef3c7);">
+                                <div class="text-[10px] font-bold text-yellow-600 uppercase tracking-wider mb-0.5">Mức hoàn tiền</div>
+                                <div class="text-2xl font-black text-yellow-500">3%</div>
+                 
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Điều kiện</div>
+                                <div class="border border-yellow-200 rounded-lg px-3 py-2 text-xs font-bold text-yellow-700 bg-yellow-50 text-center">Tổng chi tiêu > 10.000.000đ</div>
+                            </div>
+
+                            <div class="mb-3 flex-1">
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Đặc quyền</div>
+                                <ul class="space-y-1.5">
+                                    <li class="flex items-start gap-2 text-xs text-gray-600"><i class="fa-solid fa-check text-yellow-500 mt-0.5 flex-shrink-0"></i>Freeship mọi đơn hàng</li>
+                                    <li class="flex items-start gap-2 text-xs text-gray-600"><i class="fa-solid fa-check text-yellow-500 mt-0.5 flex-shrink-0"></i>Giảm 10% cho đơn hàng từ 1.000.000đ</li>
+                                    <li class="flex items-start gap-2 text-xs text-gray-600"><i class="fa-solid fa-check text-yellow-500 mt-0.5 flex-shrink-0"></i>Quà tặng sinh nhật 200.000đ</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Hạng Kim Cương -->
+                    <div class="rounded-xl overflow-hidden flex flex-col text-white" style="background: linear-gradient(160deg, #1B3DA1 0%, #722ed1 100%);">
+                        <div class="h-1.5" style="background: linear-gradient(90deg, #1890ff, #722ed1)"></div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <div class="flex flex-col items-center mb-3">
+                                <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-2">
+                                    <i class="fa-solid fa-gem text-2xl text-blue-200"></i>
+                                </div>
+                                <div class="text-base font-bold text-white">Hạng KIM CƯƠNG</div>
+                                <div class="text-xs text-blue-200 mt-0.5">Khách hàng VIP</div>
+                            </div>
+
+                            <div class="bg-white/10 rounded-lg p-3 text-center mb-3 border border-white/20">
+                                <div class="text-[10px] font-bold text-blue-200 uppercase tracking-wider mb-0.5">Mức hoàn tiền</div>
+                                <div class="text-2xl font-black text-white">5%</div>
+    
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="text-[10px] font-bold text-blue-200 uppercase tracking-wider mb-1.5">Điều kiện</div>
+                                <div class="border border-white/30 rounded-lg px-3 py-2 text-xs font-bold text-white bg-white/10 text-center">Tổng chi tiêu > 30.000.000đ</div>
+                            </div>
+
+                            <div class="mb-3 flex-1">
+                                <div class="text-[10px] font-bold text-blue-200 uppercase tracking-wider mb-1.5">Đặc quyền</div>
+                                <ul class="space-y-1.5">
+         <li class="flex items-start gap-2 text-xs text-blue-100"><i class="fa-solid fa-star text-yellow-300 mt-0.5 flex-shrink-0"></i>Quà tặng sinh nhật 500.000đ</li>
+                                    <li class="flex items-start gap-2 text-xs text-blue-100"><i class="fa-solid fa-star text-yellow-300 mt-0.5 flex-shrink-0"></i>Giảm 15% cho đơn hàng từ 1.000.000đ</li>
+                                    <li class="flex items-start gap-2 text-xs text-blue-100"><i class="fa-solid fa-star text-yellow-300 mt-0.5 flex-shrink-0"></i>Quà tri ân đặc biệt cuối năm</li>
+                                    <li class="flex items-start gap-2 text-xs text-blue-100"><i class="fa-solid fa-star text-yellow-300 mt-0.5 flex-shrink-0"></i>Vé mời sự kiện VIP thương hiệu</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end items-center gap-3">
+                    <button onclick="closeAiRankModal()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Đóng</button>
+                    <button class="flex items-center gap-2 px-5 py-2 text-sm font-bold text-white rounded-lg transition shadow-md" style="background: linear-gradient(135deg, #1890ff, #722ed1);">
+                        <i class="fa-solid fa-check text-xs"></i> Áp dụng cấu hình
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Scrollable Table Container -->
-        <div class="flex-1 overflow-auto px-6 pb-6">
+        <div class="flex-1 overflow-auto px-6 pt-4 pb-6">
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 <table class="w-full">
                     <thead>
@@ -597,6 +1175,85 @@
                 sidebar.classList.remove('w-64');
                 sidebar.classList.add('w-16');
                 toggleIcon.classList.add('rotate-180');
+            }
+        }
+
+        function openAiRankModal() {
+            const modal = document.getElementById('ai-rank-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeAiRankModal() {
+            const modal = document.getElementById('ai-rank-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        function openAiCareModal() {
+            const modal = document.getElementById('ai-care-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeAiCareModal() {
+            const modal = document.getElementById('ai-care-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        function acSelectCard(el) {
+            document.querySelectorAll('.ac-card').forEach(c => {
+                c.classList.remove('border-blue-400', 'border-purple-400', 'ring-2', 'ring-blue-200', 'ring-purple-200');
+            });
+            const isB = el.dataset.group === 'broadcast';
+            el.classList.add(isB ? 'border-blue-400' : 'border-purple-400', isB ? 'ring-2' : 'ring-2', isB ? 'ring-blue-200' : 'ring-purple-200');
+        }
+        function acFilter(type) {
+            // Reset group toggle buttons
+            ['all','trigger','broadcast'].forEach(id => {
+                const b = document.getElementById('ac-cat-' + id);
+                if (!b) return;
+                b.classList.remove('bg-white','text-gray-800','shadow-sm','text-gray-500');
+                b.classList.add(id === type ? 'bg-white' : 'text-gray-500', id === type ? 'text-gray-800' : '', id === type ? 'shadow-sm' : '');
+            });
+            // Reset channel tag buttons
+            ['zalo','fb','zalo_cn'].forEach(id => {
+                const b = document.getElementById('ac-cat-' + id);
+                if (!b) return;
+                b.classList.remove('opacity-100','ring-2','ring-offset-1');
+                b.style.opacity = (type === id) ? '1' : '';
+                if (type === id) b.classList.add('ring-2','ring-offset-1');
+            });
+            document.querySelectorAll('.ac-card').forEach(card => {
+                if (type === 'all') { card.style.display = ''; return; }
+                if (type === 'trigger' || type === 'broadcast') {
+                    card.style.display = card.dataset.group === type ? '' : 'none';
+                } else {
+                    card.style.display = (card.dataset.channels || '').includes(type) ? '' : 'none';
+                }
+            });
+            document.querySelectorAll('.ac-group').forEach(g => {
+                const visible = [...g.querySelectorAll('.ac-card')].some(c => c.style.display !== 'none');
+                g.style.display = visible ? '' : 'none';
+            });
+        }
+
+        function toggleHeroSection() {
+            const heroSection = document.getElementById('hero-section');
+            const heroContent = document.getElementById('hero-content');
+            const heroCollapsedContent = document.getElementById('hero-collapsed-content');
+            const toggleIcon = document.getElementById('hero-toggle-icon');
+
+            const isCollapsed = heroSection.classList.contains('collapsed');
+            if (isCollapsed) {
+                heroSection.classList.remove('collapsed', 'py-2', 'px-5');
+                heroSection.classList.add('p-5');
+                heroContent.classList.remove('hidden');
+                heroCollapsedContent.classList.add('hidden');
+                toggleIcon.className = 'fa-solid fa-compress';
+            } else {
+                heroSection.classList.add('collapsed', 'py-2', 'px-5');
+                heroSection.classList.remove('p-5');
+                heroContent.classList.add('hidden');
+                heroCollapsedContent.classList.remove('hidden');
+                toggleIcon.className = 'fa-solid fa-expand';
             }
         }
 
