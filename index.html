@@ -314,12 +314,38 @@
             from { transform: translateY(-30px); opacity: 0; }
             to   { transform: translateY(0);     opacity: 1; }
         }
+        /* ── AMM Hero Header — loyalty style ── */
         .amm-header {
+            background: #F7FAFF;
+   
+            padding: 20px 28px 20px;;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px 12px 0 0;
+        }
+        .amm-header::after {
+            content: "";
+            position: absolute;
+            right: -20px; top: 50%;
+            transform: translateY(-60%);
+            width: 320px; height: 160px;
+            background-image: url("LOGO APP VN BTHE 12.7-03.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center right;
+            opacity: 0.04;
+            pointer-events: none;
+            mask-image: linear-gradient(to left, black 20%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to left, black 20%, transparent 100%);
+            filter: grayscale(1) brightness(0);
+            z-index: 0;
+        }
+        .amm-header-top {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 20px 28px 16px;
-            border-bottom: 1px solid #e2e8f0;
+            align-items: flex-start;
+            margin-bottom: 6px;
+            position: relative; z-index: 1;
         }
         .amm-title {
             display: flex;
@@ -327,26 +353,102 @@
             gap: 10px;
             font-size: 18px;
             font-weight: 700;
-            color: #1e293b;
+            color: #1B3DA1;
         }
         .amm-robot-icon {
-            background: linear-gradient(135deg, #1B3DA1, #152e80);
-            color: white;
-            width: 34px; height: 34px;
-            border-radius: 8px;
+            width: 36px; height: 36px;
+            border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             font-size: 16px;
+      
+            color: #1B3DA1;
+            flex-shrink: 0;
         }
-        .amm-header-actions { display: flex; align-items: center; gap: 12px; }
+        .amm-subtitle {
+            font-size: 14px; color: #4a6bad; line-height: 1.65;
+            max-width: 1040px; margin-bottom: 14px;
+            position: relative; z-index: 1;
+        }
+        .amm-subtitle strong { color: #1B3DA1; font-weight: 600; }
+        .amm-header-actions {
+            display: flex; align-items: flex-start; gap: 8px;
+            position: relative; z-index: 1; flex-shrink: 0;
+        }
+        .amm-back-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: #fff; border: 1px solid #bfdbfe;
+            color: #1B3DA1; font-size: 12px; font-weight: 600;
+            cursor: pointer; padding: 6px 14px;
+            border-radius: 8px; transition: all 0.18s;
+        }
+        .amm-back-btn:hover { background: #eff6ff; border-color: #1B3DA1; }
+        /* Progress */
+        .amm-header-progress-row {
+            position: relative; z-index: 1;
+            display: flex; align-items: center; gap: 60px;
+            margin-bottom: 12px;
+        }
+        .amm-header-progress {
+            display: flex; align-items: center; gap: 12px;
+            flex: 1; min-width: 0;
+        }
+        .amm-header-progress-bar-wrap {
+            flex: 1; height: 7px; background: #dbeafe; border-radius: 4px; overflow: hidden;
+        }
+        .amm-header-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1B3DA1, #3b7af8);
+            border-radius: 4px; transition: width 0.4s;
+        }
+        .amm-header-progress-label {
+            font-size: 12px; color: #64748b; white-space: nowrap;
+        }
+        .amm-header-progress-pct {
+            font-size: 32px; font-weight: 800; color: #1B3DA1; white-space: nowrap;
+        }
+        /* Stat chips */
+        .amm-header-stats {
+            display: flex; gap: 8px; flex-wrap: wrap;
+            position: relative; z-index: 1; margin-bottom: 14px;
+        }
+        .amm-stat-chip {
+            display: flex; align-items: center; gap: 5px;
+            background: #fff; border: 1px solid #dbeafe;
+            border-radius: 20px; padding: 4px 12px;
+            font-size: 11px; font-weight: 500; color: #1e293b;
+        }
+        .amm-stat-chip i { color: #1B3DA1; font-size: 10px; }
+        /* Blob decoration */
+        .amm-header-blob {
+            position: absolute; pointer-events: none; z-index: 0;
+            border-radius: 50%; filter: blur(40px);
+        }
+        /* Tabs */
+        .amm-tabs {
+            position: relative; z-index: 1;
+            display: flex; padding: 0; flex-shrink: 0;
+        }
+        .amm-tabs-toggle {
+            display: inline-flex;
+            background: #dbeafe;
+            border-radius: 10px 10px 0 0;
+            padding: 4px 4px 0; gap: 2px;
+        }
+        .amm-tab {
+            padding: 7px 18px;
+            font-size: 12px; font-weight: 600;
+            color: #4a6bad; cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            border: none; background: transparent;
+            transition: all 0.18s; white-space: nowrap; user-select: none;
+        }
+        .amm-tab:hover:not(.active) { color: #1B3DA1; background: rgba(255,255,255,0.5); }
+        .amm-tab.active { color: #1B3DA1; font-weight: 700; background: #fff; }
+        .amm-body { padding: 20px 0px; overflow-y: auto; }
         .amm-config-btn {
-            background: #1B3DA1;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
+            background: #1B3DA1; color: white; border: none;
+            padding: 7px 16px; border-radius: 8px;
+            font-size: 13px; font-weight: 500; cursor: pointer;
             transition: background 0.2s;
         }
         .amm-config-btn:hover { background: #152e80; }
@@ -396,37 +498,115 @@
             border: 1px solid #e2e8f0;
             animation: none;
         }
+        /* ── Timeline styles ── */
+        .amm-timeline-toolbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 24px 12px; gap: 12px; flex-wrap: wrap;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .amm-tl-legend { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+        .amm-tl-legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #64748b; }
+        .amm-tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .amm-tl-nav { display: flex; align-items: center; gap: 6px; }
+        .amm-tl-nav-btn {
+            width: 28px; height: 28px; border-radius: 6px; border: 1px solid #e2e8f0;
+            background: #fff; color: #64748b; cursor: pointer; font-size: 11px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+        }
+        .amm-tl-nav-btn:hover { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+        .amm-tl-range-label { font-size: 13px; font-weight: 600; color: #1e293b; min-width: 160px; text-align: center; }
+        .amm-tl-today-btn {
+            padding: 5px 12px; border-radius: 6px; border: 1px solid #bfdbfe;
+            background: #eff6ff; color: #2563eb; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .amm-tl-today-btn:hover { background: #2563eb; color: #fff; border-color: #2563eb; }
+        .amm-tl-wrap { overflow-x: auto; overflow-y: auto; max-height: 420px; }
+        .amm-tl-header-row { display: flex; position: sticky; top: 0; z-index: 2; background: #fff; border-bottom: 1.5px solid #e2e8f0; }
+        .amm-tl-label-col { width: 190px; min-width: 190px; flex-shrink: 0; padding: 8px 14px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; background: #fff; }
+        .amm-tl-months { display: flex; flex: 1; }
+        .amm-tl-month-cell {
+            flex: 1; min-width: 80px; text-align: center; padding: 8px 4px;
+            font-size: 12px; font-weight: 600; color: #475569;
+            border-left: 1px solid #f1f5f9;
+        }
+        .amm-tl-month-cell.is-current { color: #2563eb; background: #eff6ff; }
+        .amm-tl-group { }
+        .amm-tl-group-header {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 14px 6px; background: #f8fafc;
+            border-bottom: 1px solid #f1f5f9; border-top: 1px solid #f1f5f9;
+            position: sticky; left: 0;
+        }
+        .amm-tl-group-icon {
+            width: 22px; height: 22px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; flex-shrink: 0;
+        }
+        .amm-tl-group-name { font-size: 12px; font-weight: 700; color: #1e293b; }
+        .amm-tl-row { display: flex; align-items: center; border-bottom: 1px solid #f8fafc; min-height: 38px; }
+        .amm-tl-row:hover { background: #fafbff; }
+        .amm-tl-row-label {
+            width: 190px; min-width: 190px; flex-shrink: 0;
+            padding: 6px 14px 6px 22px; font-size: 13px; color: #374151;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .amm-tl-row-label .amm-tl-status-dot {
+            width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+        }
+        .amm-tl-bar-track { display: flex; flex: 1; align-items: center; position: relative; height: 38px; }
+        .amm-tl-cell { flex: 1; min-width: 80px; height: 100%; border-left: 1px solid #f8fafc; position: relative; }
+        .amm-tl-cell.is-today-col { background: #fffbeb; border-left: 1px dashed #fbbf24; }
+        .amm-tl-bar {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            height: 18px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 600; color: #fff;
+            white-space: nowrap; overflow: hidden; padding: 0 8px;
+            min-width: 6px; transition: opacity 0.2s;
+            cursor: default;
+        }
+        .amm-tl-bar:hover { opacity: 0.85; }
+        .amm-tl-no-date {
+            font-size: 11px; color: #cbd5e1; font-style: italic;
+            padding-left: 8px;
+        }
+        .amm-tl-empty { padding: 40px 24px; text-align: center; color: #94a3b8; font-size: 14px; }
+        /* ── end Timeline styles ── */
         .amm-tabs {
             display: flex;
-            gap: 0;
-            padding: 0 28px;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 0px 12px;
+   
+        }
+        .amm-tabs-toggle {
+            display: inline-flex;
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 3px;
+            gap: 2px;
         }
         .amm-tab {
-            padding: 12px 4px;
-            margin-right: 28px;
-            font-size: 14px;
+            padding: 7px 18px;
+            font-size: 13px;
             font-weight: 500;
             color: #64748b;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
             transition: all 0.2s;
+            white-space: nowrap;
+            user-select: none;
         }
-        .amm-tab.active { color: #1B3DA1; border-bottom-color: #1B3DA1; font-weight: 600; }
-        .amm-body { padding: 24px 28px; overflow-y: auto; }
-        .amm-progress-banner {
-            background: linear-gradient(135deg, #F8F9FA 100%, #0072FF 0% );
-            border-radius: 12px; padding: 18px 22px; margin-bottom: 20px;
-            display: flex; align-items: center; gap: 20px; color: #38568d;
+        .amm-tab:hover:not(.active) { color: #1e293b; background: rgba(255,255,255,0.6); }
+        .amm-tab.active {
+            color: #1B3DA1;
+            font-weight: 600;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
         }
-        .amm-progress-text { flex: 1; }
-        .amm-progress-title { font-size: 13px; font-weight: 600; opacity: 1; margin-bottom: 6px; color: 1B3DA1 }
-        .amm-progress-track { height: 6px; background: #E9ECEF; border-radius: 3px; margin-bottom: 8px; overflow: hidden; }
-        .amm-progress-fill { height: 100%; background: #1B3DA1; border-radius: 3px; transition: width 0.4s ease; }
-        .amm-progress-meta { display: flex; align-items: center; justify-content: space-between; }
-        .amm-progress-label { font-size: 12px; opacity: 0.75; }
-        .amm-progress-steps { font-size: 12px; opacity: 0.75; }
-        .amm-progress-pct { font-size: 36px; font-weight: 800; line-height: 1; white-space: nowrap; }
         .amm-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -4168,37 +4348,54 @@
         </div>
     </div>
 
-    <!-- Automation Map Modal -->
-    <div id="automation-map-modal-overlay" onclick="if(event.target===this)closeAutomationMapModal()">
-        <div class="automation-map-modal">
-            <div class="amm-header">
+    <!-- Automation Map Inline Content -->
+    <template id="automation-map-tpl">
+        <div class="amm-header">
+            <!-- Blob decorations -->
+            <div class="amm-header-blob" style="width:200px;height:200px;background:#bfdbfe;opacity:0.25;top:-80px;right:60px;"></div>
+            <div class="amm-header-blob" style="width:120px;height:120px;background:#a5b4fc;opacity:0.18;bottom:-40px;right:200px;"></div>
+
+            <div class="amm-header-top">
                 <div class="amm-title">
                     <span class="amm-robot-icon"><i class="fa-solid fa-robot"></i></span>
-                    Tự động hóa doanh nghiệp với App.vn
+                    Hành trình tự động hóa
                 </div>
                 <div class="amm-header-actions">
-                    
+                    <button class="amm-back-btn" onclick="hideAutomationMapInline()"><i class="fa-solid fa-arrow-left"></i> Quay lại</button>
                 </div>
             </div>
-            <div class="amm-tabs">
-                <div class="amm-tab active" onclick="ammSwitchTab(this)">Danh sách thiết lập</div>
-                <div class="amm-tab" onclick="ammSwitchTab(this)">Timeline triển khai</div>
-            </div>
-            <div class="amm-body">
-                <div class="amm-progress-banner">
-                    <div class="amm-progress-text">
-                        <div class="amm-progress-title">Hoàn thành thiết lập để tự động hóa quy trình bán hàng của bạn</div>
-                        <div class="amm-progress-track">
-                            <div class="amm-progress-fill" id="amm-progress-fill" style="width: 18%"></div>
-                        </div>
-                        <div class="amm-progress-meta">
-                            <span class="amm-progress-label">Tiến trình tự động hóa</span>
-                            <span class="amm-progress-steps" id="amm-progress-steps">4 / 22 bước</span>
-                        </div>
+
+            <p class="amm-subtitle">
+                Hoàn thành từng bước thiết lập để <strong>tự động hóa quy trình bán hàng</strong>,
+                chăm sóc khách hàng và vận hành doanh nghiệp trên App.vn.
+            </p>
+
+    
+
+            <div class="amm-header-progress-row">
+              
+                <div class="amm-tabs">
+                    <div class="amm-tabs-toggle">
+                        <div class="amm-tab active" onclick="ammSwitchTab(this)">Danh sách thiết lập</div>
+                        <div class="amm-tab" onclick="ammSwitchTab(this)">Timeline triển khai</div>
                     </div>
-                    <div class="amm-progress-pct" id="amm-progress-pct">18%</div>
                 </div>
-                <div style="display:flex; justify-content:flex-end; margin-bottom:16px;">
+                  <div class="amm-header-progress">
+                   
+                    <div style="flex:1;">
+                        <div class="amm-header-progress-bar-wrap">
+                            <div class="amm-header-progress-bar-fill" style="width:18%"></div>
+                        </div>
+                        <div class="amm-header-progress-label" style="margin-top:4px;">4 / 22 bước hoàn thành · Tiếp tục thiết lập để tăng mức độ tự động hóa</div>
+                    </div>
+                     <div class="amm-header-progress-pct">18%</div>
+                </div>
+            </div>
+        </div>
+        <div class="amm-body">
+                <!-- Tab Panel: Danh sách thiết lập -->
+                <div id="amm-panel-list">
+<div style="display:flex; justify-content:flex-end; margin-bottom:16px;">
                     <button class="amm-config-btn" onclick="openManageModuleModal()">Quản lý module</button>
                 </div>
                 <div class="amm-grid">
@@ -4275,9 +4472,34 @@
                                             <button class="amm-card-add-btn" title="Thêm tính năng" onclick="openAddFeatureModal('MiniApp', this)"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
-            </div>
+                </div><!-- end amm-panel-list -->
+
+                <!-- Tab Panel: Timeline triển khai -->
+                <div id="amm-panel-timeline" style="display:none;">
+                    <div class="amm-timeline-toolbar">
+                        <div class="amm-tl-legend">
+                            <span class="amm-tl-legend-item"><span class="amm-tl-dot" style="background:#2563eb"></span>Đang triển khai</span>
+                            <span class="amm-tl-legend-item"><span class="amm-tl-dot" style="background:#16a34a"></span>Hoàn thành</span>
+                            <span class="amm-tl-legend-item"><span class="amm-tl-dot" style="background:#94a3b8"></span>Chưa có ngày</span>
+                        </div>
+                        <div class="amm-tl-nav">
+                            <button class="amm-tl-nav-btn" onclick="ammTlShift(-3)"><i class="fa-solid fa-chevron-left"></i></button>
+                            <span id="amm-tl-range-label" class="amm-tl-range-label"></span>
+                            <button class="amm-tl-nav-btn" onclick="ammTlShift(3)"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button class="amm-tl-today-btn" onclick="ammTlGoToday()">Hôm nay</button>
+                        </div>
+                    </div>
+                    <div class="amm-tl-wrap">
+                        <div class="amm-tl-header-row">
+                            <div class="amm-tl-label-col"></div>
+                            <div class="amm-tl-months" id="amm-tl-months"></div>
+                        </div>
+                        <div id="amm-tl-body"></div>
+                    </div>
+                </div><!-- end amm-panel-timeline -->
+
         </div>
-    </div>
+    </template>
 
     <!-- Manage Module Modal -->
     <div id="manage-module-modal-overlay" onclick="if(event.target===this)closeManageModuleModal()">
@@ -4489,19 +4711,10 @@
 
             _ammPreviousView = flatView.classList.contains('hidden') ? 'categorized' : 'flat';
 
-            // Clone nội dung từ modal vào inline view lần đầu
+            // Khởi tạo nội dung từ template lần đầu
             if (!inlineView._initialized) {
-                const modalContent = document.querySelector('.automation-map-modal');
-                const clone = modalContent.cloneNode(true);
-                const closeBtn = clone.querySelector('.amm-close-btn');
-                if (closeBtn) closeBtn.remove();
-                const headerActions = clone.querySelector('.amm-header-actions');
-                if (headerActions) {
-                    const backBtn = document.createElement('button');
-                    backBtn.onclick = hideAutomationMapInline;
-                    headerActions.appendChild(backBtn);
-                }
-                inlineView.appendChild(clone);
+                const tpl = document.getElementById('automation-map-tpl');
+                inlineView.appendChild(tpl.content.cloneNode(true));
                 inlineView._initialized = true;
             }
 
@@ -4541,8 +4754,152 @@
         }
 
         function ammSwitchTab(el) {
-            el.closest('.amm-tabs').querySelectorAll('.amm-tab').forEach(t => t.classList.remove('active'));
+            const tabs = el.closest('.amm-tabs');
+            tabs.querySelectorAll('.amm-tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
+            const idx = Array.from(tabs.querySelectorAll('.amm-tab')).indexOf(el);
+            const root = tabs.closest('#automation-map-inline') || tabs.closest('.automation-map-modal') || document;
+            const listPanel = root.querySelector('#amm-panel-list');
+            const tlPanel = root.querySelector('#amm-panel-timeline');
+            if (idx === 0) {
+                if (listPanel) listPanel.style.display = '';
+                if (tlPanel) tlPanel.style.display = 'none';
+            } else {
+                if (listPanel) listPanel.style.display = 'none';
+                if (tlPanel) {
+                    tlPanel.style.display = '';
+                    ammRenderTimeline(root);
+                }
+            }
+        }
+
+        // ── Timeline ──
+        let ammTlOffset = 0; // months offset from today
+
+        function ammTlGetMonths(offset, count) {
+            const months = [];
+            const now = new Date();
+            for (let i = 0; i < count; i++) {
+                const d = new Date(now.getFullYear(), now.getMonth() + offset + i, 1);
+                months.push({ year: d.getFullYear(), month: d.getMonth() });
+            }
+            return months;
+        }
+
+        function ammRenderTimeline(modal) {
+            const months = ammTlGetMonths(ammTlOffset, 6);
+            const tlPanel = modal.querySelector('#amm-panel-timeline');
+
+            // Update header months
+            const monthsEl = tlPanel.querySelector('#amm-tl-months');
+            const today = new Date();
+            const monthNames = ['Th1','Th2','Th3','Th4','Th5','Th6','Th7','Th8','Th9','Th10','Th11','Th12'];
+            monthsEl.innerHTML = months.map(m => {
+                const isCur = m.year === today.getFullYear() && m.month === today.getMonth();
+                return `<div class="amm-tl-month-cell${isCur?' is-current':''}">${monthNames[m.month]} ${m.year}</div>`;
+            }).join('');
+
+            // Range label
+            const first = months[0], last = months[months.length-1];
+            tlPanel.querySelector('#amm-tl-range-label').textContent =
+                `${monthNames[first.month]} ${first.year} – ${monthNames[last.month]} ${last.year}`;
+
+            // Timeline start/end boundaries
+            const tlStart = new Date(first.year, first.month, 1);
+            const tlEnd   = new Date(last.year, last.month + 1, 0); // last day of last month
+            const totalDays = (tlEnd - tlStart) / 86400000 + 1;
+
+            // Gather features from modal's amm-list
+            const cards = modal.querySelectorAll('.amm-card');
+            const moduleColors = ['#2563eb','#16a34a','#ea580c','#7c3aed','#dc2626','#0891b2'];
+            const moduleIconBgs = ['#dbeafe','#dcfce7','#ffedd5','#ede9fe','#fee2e2','#e0f2fe'];
+
+            let bodyHTML = '';
+            cards.forEach((card, ci) => {
+                const title = card.querySelector('.amm-card-title')?.textContent || '';
+                const icon  = card.querySelector('.amm-icon-wrap i')?.className || 'fa-solid fa-circle';
+                const color = moduleColors[ci % moduleColors.length];
+                const iconBg = moduleIconBgs[ci % moduleIconBgs.length];
+                const items = Array.from(card.querySelectorAll('li'));
+
+                bodyHTML += `<div class="amm-tl-group">
+                    <div class="amm-tl-group-header">
+                        <span class="amm-tl-group-icon" style="background:${iconBg};color:${color}"><i class="${icon}"></i></span>
+                        <span class="amm-tl-group-name">${title}</span>
+                    </div>`;
+
+                items.forEach(li => {
+                    const name = li.querySelector('.amm-li-text')?.textContent || '';
+                    const dateFrom = li.dataset.dateFrom || '';
+                    const dateTo   = li.dataset.dateTo   || '';
+                    const done     = li.querySelector('.amm-radio.done') !== null;
+
+                    let barHTML = '';
+                    if (dateFrom && dateTo) {
+                        const dFrom = new Date(dateFrom);
+                        const dTo   = new Date(dateTo);
+                        const clampedFrom = dFrom < tlStart ? tlStart : dFrom;
+                        const clampedTo   = dTo   > tlEnd   ? tlEnd   : dTo;
+
+                        if (clampedFrom <= tlEnd && clampedTo >= tlStart) {
+                            const leftPct  = ((clampedFrom - tlStart) / 86400000) / totalDays * 100;
+                            const widthPct = ((clampedTo - clampedFrom) / 86400000 + 1) / totalDays * 100;
+                            const now2 = new Date();
+                            const isActive = dFrom <= now2 && dTo >= now2;
+                            const isDone   = dTo < now2;
+                            const barColor = isDone ? '#16a34a' : isActive ? color : '#94a3b8';
+                            barHTML = `<div class="amm-tl-bar" style="left:${leftPct.toFixed(2)}%;width:${Math.max(widthPct,1).toFixed(2)}%;background:${barColor};" title="${name}: ${dateFrom} → ${dateTo}"></div>`;
+                        }
+                    }
+
+                    const hasDates = dateFrom && dateTo;
+                    const statusColor = hasDates ? (new Date(dateTo) < today ? '#16a34a' : color) : '#cbd5e1';
+
+                    // Cells background for today column
+                    const cellsHTML = months.map(m => {
+                        const isTodayCol = m.year === today.getFullYear() && m.month === today.getMonth();
+                        return `<div class="amm-tl-cell${isTodayCol?' is-today-col':''}"></div>`;
+                    }).join('');
+
+                    bodyHTML += `<div class="amm-tl-row">
+                        <div class="amm-tl-row-label" title="${name}">
+                            <span class="amm-tl-status-dot" style="background:${statusColor}"></span>
+                            ${name}
+                        </div>
+                        <div class="amm-tl-bar-track">
+                            ${cellsHTML}
+                            ${barHTML}
+                            ${!hasDates ? '<span class="amm-tl-no-date">Chưa có lịch</span>' : ''}
+                        </div>
+                    </div>`;
+                });
+
+                bodyHTML += `</div>`;
+            });
+
+            if (!bodyHTML) {
+                bodyHTML = `<div class="amm-tl-empty"><i class="fa-regular fa-calendar-xmark" style="font-size:32px;display:block;margin-bottom:10px;color:#e2e8f0;"></i>Chưa có tính năng nào được thêm vào.</div>`;
+            }
+
+            tlPanel.querySelector('#amm-tl-body').innerHTML = bodyHTML;
+        }
+
+        function ammTlShift(delta) {
+            ammTlOffset += delta;
+            const _ammRoot = document.getElementById('automation-map-inline') || document.querySelector('.automation-map-modal');
+            if (_ammRoot) {
+                const tlPanel = _ammRoot.querySelector('#amm-panel-timeline');
+                if (tlPanel && tlPanel.style.display !== 'none') ammRenderTimeline(_ammRoot);
+            }
+        }
+
+        function ammTlGoToday() {
+            ammTlOffset = 0;
+            const _ammRoot = document.getElementById('automation-map-inline') || document.querySelector('.automation-map-modal');
+            if (_ammRoot) {
+                const tlPanel = _ammRoot.querySelector('#amm-panel-timeline');
+                if (tlPanel && tlPanel.style.display !== 'none') ammRenderTimeline(_ammRoot);
+            }
         }
 
         // --- Manage Module Modal ---
