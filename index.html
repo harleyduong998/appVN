@@ -317,28 +317,50 @@
         /* ── AMM Hero Header — loyalty style ── */
         .amm-header {
             background: #F7FAFF;
-   
-            padding: 20px 28px 20px;;
+            padding: 20px 28px;
             position: relative;
             overflow: hidden;
-            border-radius: 12px 12px 0 0;
+            border-radius: 16px; /* rounded-2xl */
+            border: 1px solid rgba(219, 234, 254, 0.5); /* border-blue-100/50 */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+            margin: 16px 16px 0;
+            z-index: 10;
         }
+
+        /* Abstract Decorations for header */
+        .amm-header::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 256px;
+            height: 256px;
+            background: #3b82f6;
+            opacity: 0.1;
+            border-radius: 50%;
+            filter: blur(48px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .amm-header::after {
             content: "";
             position: absolute;
-            right: -20px; top: 50%;
-            transform: translateY(-60%);
-            width: 320px; height: 160px;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 200px;
             background-image: url("LOGO APP VN BTHE 12.7-03.svg");
             background-repeat: no-repeat;
             background-size: contain;
-            background-position: center right;
+            background-position: center;
             opacity: 0.04;
             pointer-events: none;
-            mask-image: linear-gradient(to left, black 20%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to left, black 20%, transparent 100%);
-            filter: grayscale(1) brightness(0);
+            mask-image: linear-gradient(to right, black 30%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%);
             z-index: 0;
+            filter: grayscale(1) brightness(0);
         }
         .amm-header-top {
             display: flex;
@@ -365,9 +387,12 @@
             flex-shrink: 0;
         }
         .amm-subtitle {
-            font-size: 14px; color: #4a6bad; line-height: 1.65;
+            font-size: 13px; /* Giảm nhẹ font size */
+            color: rgba(30, 58, 138, 0.7); /* text-blue-900/70 */
+            line-height: 1.6;
             max-width: 1040px; margin-bottom: 14px;
             position: relative; z-index: 1;
+            font-weight: 500;
         }
         .amm-subtitle strong { color: #1B3DA1; font-weight: 600; }
         .amm-header-actions {
