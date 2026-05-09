@@ -358,6 +358,44 @@
             transition: color 0.2s, background 0.2s;
         }
         .amm-close-btn:hover { color: #1e293b; background: #f1f5f9; }
+        @keyframes ammFadeSlideIn {
+            from { opacity: 0; transform: translateY(18px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0)    scale(1);    }
+        }
+        @keyframes ammFadeSlideOut {
+            from { opacity: 1; transform: translateY(0)    scale(1);    }
+            to   { opacity: 0; transform: translateY(-14px) scale(0.98); }
+        }
+        @keyframes ammViewFadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to   { opacity: 0; transform: translateY(8px); }
+        }
+        #automation-map-inline.amm-entering {
+            animation: ammFadeSlideIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        #automation-map-inline.amm-leaving {
+            animation: ammFadeSlideOut 0.22s ease forwards;
+        }
+        .amm-view-leaving {
+            animation: ammViewFadeOut 0.18s ease forwards;
+        }
+        .amm-back-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: none; border: 1px solid #e2e8f0;
+            color: #64748b; font-size: 13px; font-weight: 500;
+            cursor: pointer; padding: 6px 14px;
+            border-radius: 8px;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .amm-back-btn:hover { color: #1B3DA1; border-color: #1B3DA1; background: #eff6ff; }
+        /* Inline view: automation-map-modal bên trong không cần shadow/border-radius như modal */
+        #automation-map-inline .automation-map-modal {
+            width: 100%; max-width: 100%; max-height: none;
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+            animation: none;
+        }
         .amm-tabs {
             display: flex;
             gap: 0;
@@ -1830,7 +1868,7 @@
                         <i class="fa-solid fa-box-open text-xs"></i>
                         Gói cước
                     </button>
- <button onclick="openAutomationMapModal()"
+ <button id="btn-automation-map" onclick="showAutomationMapInline()"
                         class="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-600 rounded-md text-sm font-medium hover:bg-slate-50 hover:text-blue-600 transition-all whitespace-nowrap">
                         <i class="fa-solid fa-robot text-xs"></i>
                         Automation Map
@@ -2745,6 +2783,10 @@
         <div id="flat-view"
             class="hidden view-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 module-grid">
             <!-- Modules will be cloned here when flat view is enabled -->
+        </div>
+
+        <!-- Automation Map Inline View -->
+        <div id="automation-map-inline" class="hidden view-container">
         </div>
 
     </main>
@@ -4025,9 +4067,7 @@
             </div>
 
             <div class="survey-modal-footer">
-                <button type="button" class="btn btn-survey-nav btn-survey-prev" id="prev-survey-btn" onclick="prevSurveyStep()">
-                    <i class="bi bi-arrow-left"></i> Quay lại
-                </button>
+              
                 <div class="text-slate-400 small fw-medium" id="survey-counter">Câu 1 / 10</div>
                 <button type="button" class="btn btn-survey-nav btn-survey-next" id="next-survey-btn" onclick="nextSurveyStep()">
                     Tiếp theo <i class="bi bi-arrow-right"></i>
@@ -4137,7 +4177,7 @@
                     Tự động hóa doanh nghiệp với App.vn
                 </div>
                 <div class="amm-header-actions">
-                    <button class="amm-close-btn" onclick="closeAutomationMapModal()"><i class="fa-solid fa-xmark"></i></button>
+                    
                 </div>
             </div>
             <div class="amm-tabs">
@@ -4296,8 +4336,8 @@
             <div style="flex:1;overflow-y:auto;padding:18px 22px;">
                 <div style="display:flex;gap:8px;margin-bottom:12px;">
                     <input id="am-search-input" type="text" placeholder="Tìm module..." style="flex:1;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
-                    <button onclick="amSearchModule()" style="padding:9px 12px;border:none;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;font-size:13px;font-weight:600;transition:background 0.2s;"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <button onclick="amClearSearch()" style="padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#94a3b8;cursor:pointer;font-size:13px;transition:all 0.2s;"><i class="fa-solid fa-xmark"></i></button>
+                    
+           
                 </div>
                 <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:12px;">Thư viện module</div>
                 <div id="am-lib-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-bottom:20px;"></div>
@@ -4354,14 +4394,14 @@
                     <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Mô tả chi tiết</div>
                     <textarea id="ef-desc-input" placeholder="Mô tả chi tiết về tính năng..." rows="3" style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;font-family:inherit;"></textarea>
                 </div>
-                <div>
+                <!-- <div>
                     <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">Nhãn</div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
                         <button class="ef-tag" data-tag="new" onclick="efSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Cần phát triển mới</button>
                         <button class="ef-tag" data-tag="config" onclick="efSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Có sẵn - cần cấu hình</button>
                         <button class="ef-tag" data-tag="priority" onclick="efSelectTag(this)" style="padding:5px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12px;color:#64748b;cursor:pointer;transition:all 0.15s;">Ưu tiên cao</button>
                     </div>
-                </div>
+                </div> -->
                 <div>
                     <div style="font-size:12px;font-weight:600;color:#94a3b8;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">Thời gian triển khai</div>
                     <div style="display:flex;align-items:center;gap:10px;">
@@ -4438,6 +4478,68 @@
         function closeAutomationMapModal() {
             document.getElementById('automation-map-modal-overlay').style.display = 'none';
         }
+
+        let _ammPreviousView = 'categorized';
+
+        function showAutomationMapInline() {
+            const inlineView = document.getElementById('automation-map-inline');
+            const categorizedView = document.getElementById('categorized-view');
+            const flatView = document.getElementById('flat-view');
+            const btn = document.getElementById('btn-automation-map');
+
+            _ammPreviousView = flatView.classList.contains('hidden') ? 'categorized' : 'flat';
+
+            // Clone nội dung từ modal vào inline view lần đầu
+            if (!inlineView._initialized) {
+                const modalContent = document.querySelector('.automation-map-modal');
+                const clone = modalContent.cloneNode(true);
+                const closeBtn = clone.querySelector('.amm-close-btn');
+                if (closeBtn) closeBtn.remove();
+                const headerActions = clone.querySelector('.amm-header-actions');
+                if (headerActions) {
+                    const backBtn = document.createElement('button');
+                    backBtn.onclick = hideAutomationMapInline;
+                    headerActions.appendChild(backBtn);
+                }
+                inlineView.appendChild(clone);
+                inlineView._initialized = true;
+            }
+
+            // Animate current view out, then show inline
+            const currentView = _ammPreviousView === 'flat' ? flatView : categorizedView;
+            currentView.classList.add('amm-view-leaving');
+            setTimeout(() => {
+                currentView.classList.remove('amm-view-leaving');
+                currentView.classList.add('hidden');
+                inlineView.classList.remove('hidden');
+                inlineView.classList.remove('amm-leaving');
+                inlineView.classList.add('amm-entering');
+                inlineView.addEventListener('animationend', () => inlineView.classList.remove('amm-entering'), { once: true });
+            }, 170);
+
+            btn.classList.add('!bg-blue-600', '!text-white', '!border-blue-600');
+        }
+
+        function hideAutomationMapInline() {
+            const inlineView = document.getElementById('automation-map-inline');
+            const btn = document.getElementById('btn-automation-map');
+
+            inlineView.classList.add('amm-leaving');
+            inlineView.addEventListener('animationend', () => {
+                inlineView.classList.remove('amm-leaving');
+                inlineView.classList.add('hidden');
+
+                const restoreView = _ammPreviousView === 'flat'
+                    ? document.getElementById('flat-view')
+                    : document.getElementById('categorized-view');
+                restoreView.classList.remove('hidden');
+                restoreView.style.animation = 'ammFadeSlideIn 0.28s cubic-bezier(0.22,1,0.36,1) forwards';
+                restoreView.addEventListener('animationend', () => restoreView.style.animation = '', { once: true });
+            }, { once: true });
+
+            btn.classList.remove('!bg-blue-600', '!text-white', '!border-blue-600');
+        }
+
         function ammSwitchTab(el) {
             el.closest('.amm-tabs').querySelectorAll('.amm-tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
