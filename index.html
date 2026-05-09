@@ -679,9 +679,44 @@
         .amm-radio {
             width: 16px; height: 16px;
             border: 2px solid #cbd5e1;
-            border-radius: 50%;
+            border-radius: 4px; /* Đổi thành checkbox */
             flex-shrink: 0;
             display: inline-block;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .amm-radio:hover::after {
+            content: "Hoàn thành";
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1e293b;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .amm-radio.done {
+            background: #10b981;
+            border-color: #10b981;
+        }
+        .amm-radio.done::after {
+            content: "\f00c"; /* FontAwesome check icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 10px;
+        }
+        .amm-radio.done:hover::after {
+            content: "Bỏ hoàn thành";
         }
 
         /* amm-list item hover actions */
@@ -5429,6 +5464,14 @@
                 li.remove();
             }
         }
+
+        // --- Logic hoàn thành tính năng ---
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('amm-radio')) {
+                e.target.classList.toggle('done');
+            }
+        });
+
         // Close actions on outside click
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.amm-li-menu-btn') && !e.target.closest('.amm-li-actions')) {
