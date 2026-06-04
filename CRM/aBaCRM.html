@@ -411,7 +411,7 @@
                         </div>
 
                         <!-- Card 4 -->
-                        <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-md transition cursor-pointer">
+                        <div onclick="openLeadModal()" class="bg-white p-3 rounded-xl border border-gray-100 shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-md transition cursor-pointer">
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center relative shrink-0">
                                     <i class="fa-solid fa-user text-gray-400 text-lg"></i>
@@ -588,6 +588,18 @@
         function toggleLeadDropdown() {
             const dropdown = document.getElementById('lead-dropdown');
             dropdown.classList.toggle('hidden');
+        }
+
+        function openLeadModal() {
+            const modal = document.getElementById('lead-detail-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeLeadModal() {
+            const modal = document.getElementById('lead-detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function openAIFunnelPopup() {
@@ -1059,6 +1071,266 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lead Detail Modal -->
+    <div id="lead-detail-modal" class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-[1200px] max-h-[95vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden mx-4">
+            <!-- Header -->
+            <div class="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-filter text-[#1B3DA1] text-sm"></i>
+                    <span class="text-base font-bold text-gray-800">lead voucher</span>
+                </div>
+                <!-- Stage pipeline -->
+                <div class="flex items-center gap-1 text-xs font-semibold">
+                    <span class="px-3 py-1.5 bg-[#1B3DA1] text-white rounded-full">Lead Nóng</span>
+                    <i class="fa-solid fa-chevron-right text-gray-300 text-[10px]"></i>
+                    <span class="px-3 py-1.5 bg-blue-400 text-white rounded-full">Chờ phản hồi</span>
+                    <i class="fa-solid fa-chevron-right text-gray-300 text-[10px]"></i>
+                    <span class="px-3 py-1.5 bg-gray-100 text-gray-500 rounded-full">Thương lượng</span>
+                    <i class="fa-solid fa-chevron-right text-gray-300 text-[10px]"></i>
+                    <span class="px-3 py-1.5 bg-gray-100 text-gray-500 rounded-full">Đã Chuyển Đổi</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="px-4 py-1.5 bg-green-500 text-white text-xs font-semibold rounded-lg hover:bg-green-600 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-check text-[10px]"></i> Hoàn thành bước
+                    </button>
+                    <button class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 transition">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <button onclick="closeLeadModal()" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="flex flex-1 overflow-hidden">
+                <!-- Left panel -->
+                <div class="flex-1 overflow-y-auto p-5 custom-scrollbar">
+                    <!-- Meta info -->
+                    <div class="grid grid-cols-3 gap-x-6 gap-y-3 text-sm mb-5">
+                        <div class="flex items-center gap-2 text-gray-500">
+                            <span class="text-gray-400 text-xs w-16 shrink-0">Phễu:</span>
+                            <span class="font-medium text-gray-700">Lead nóng</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-500">
+                            <span class="text-gray-400 text-xs w-20 shrink-0">Nguồn lead:</span>
+                            <span class="px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-600 flex items-center gap-1">Nguồn đơn <i class="fa-solid fa-caret-down text-[9px]"></i></span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-500">
+                            <span class="text-gray-400 text-xs w-16 shrink-0">Chi nhánh:</span>
+                            <span class="px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-600 flex items-center gap-1">Trang Te... <i class="fa-solid fa-chevron-down text-[9px]"></i></span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-500">
+                            <span class="text-gray-400 text-xs w-16 shrink-0">Thẻ tag:</span>
+                            <span class="px-2 py-0.5 bg-[#1B3DA1] text-white text-[10px] font-bold rounded-full flex items-center gap-1"><i class="fa-solid fa-filter text-[7px]"></i> Test Event</span>
+                        </div>
+                        <div class="flex items-center gap-2 col-span-2 text-gray-500">
+                            <span class="text-gray-400 text-xs w-24 shrink-0">Nhân sự phụ trách:</span>
+                            <div class="flex items-center gap-1.5">
+                                <button class="w-6 h-6 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400 hover:border-blue-400 transition"><i class="fa-solid fa-plus text-[9px]"></i></button>
+                                <button class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition"><i class="fa-solid fa-phone text-[9px]"></i></button>
+                                <button class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition"><i class="fa-solid fa-bullhorn text-[9px]"></i></button>
+                                <button class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition"><i class="fa-solid fa-envelope text-[9px]"></i></button>
+                                <button class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition"><i class="fa-solid fa-id-card text-[9px]"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sự kiện tạo lead Facebook -->
+                    <div class="border border-blue-100 bg-blue-50/30 rounded-xl p-4 mb-5">
+                        <!-- Header sự kiện -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-[#1877F2]/10 rounded-lg flex items-center justify-center text-[#1877F2]">
+                                    <i class="fa-brands fa-facebook-f text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-[#1B3DA1]">SỰ KIỆN TẠO LEAD (FACEBOOK)</div>
+                                    <div class="text-xs text-gray-500">Lead đến từ Fanpage</div>
+                                </div>
+                            </div>
+                            <button class="w-7 h-7 flex items-center justify-center text-gray-400 hover:bg-gray-100 rounded-full">
+                                <i class="fa-solid fa-chevron-up text-xs"></i>
+                            </button>
+                        </div>
+
+                        <!-- Two columns -->
+                        <div class="flex gap-6">
+                            <!-- Cột trái: Thông tin nguồn -->
+                            <div class="flex-1">
+                                <div class="text-xs font-semibold mb-3 flex items-center gap-1.5" style="color:#787B83">
+                                    <i class="fa-solid fa-circle-info" style="color:#787B83"></i> Thông tin nguồn
+                                </div>
+                                <div class="space-y-2.5">
+                                    <!-- ID Fanpage -->
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs" style="color:#787B83">ID Fanpage</span>
+                                        <span class="text-xs font-medium" style="color:#333333">112938471029384</span>
+                                    </div>
+                                    <!-- Avt + Tên Fanpage -->
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs" style="color:#787B83">Fanpage</span>
+                                        <div class="flex items-center gap-1.5">
+                                            <div class="w-5 h-5 rounded-full bg-[#1877F2]/10 flex items-center justify-center shrink-0">
+                                                <i class="fa-brands fa-facebook-f text-[#1877F2] text-[9px]"></i>
+                                            </div>
+                                            <span class="text-xs font-medium" style="color:#333333">Fanpage Chính Thức</span>
+                                        </div>
+                                    </div>
+                                    <!-- Ads ID -->
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs" style="color:#787B83">Ads ID</span>
+                                        <span class="text-xs font-medium" style="color:#333333">act_23847291034</span>
+                                    </div>
+                                    <!-- Tin nhắn cuối -->
+                                    <div class="flex items-start justify-between gap-3">
+                                        <span class="text-xs shrink-0" style="color:#787B83">Tin nhắn cuối</span>
+                                        <span class="text-xs text-right leading-relaxed flex items-start gap-1" style="color:#333333">
+                                           
+                                            <span>Cho mình hỏi sản phẩm còn hàng không ạ?</span>
+                                          
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Divider -->
+                            <div class="w-px bg-gray-100 self-stretch"></div>
+
+                            <!-- Cột phải: Thông tin thuộc tính -->
+                            <div class="flex-1">
+                                <div class="text-xs font-semibold mb-3 flex items-center gap-1.5" style="color:#787B83">
+                                    <i class="fa-solid fa-sliders" style="color:#787B83"></i> Thông tin thuộc tính
+                                </div>
+                                <div class="space-y-2.5">
+                                    <!-- Tóm tắt AI -->
+                                    <div>
+                                        <div class="text-xs mb-1.5" style="color:#787B83">Tóm tắt hội thoại</div>
+                                        <div class="text-xs flex items-start gap-1 leading-relaxed" style="color:#333333; font-style: italic">
+                                            <span class="text-2xl font-serif leading-none text-gray-400 -mt-1 shrink-0">&ldquo;</span>
+                                            <span>Khách hỏi về tình trạng hàng tồn kho và giá sản phẩm. Có nhu cầu mua ngay, quan tâm chương trình ưu đãi. Cần tư vấn thêm về chính sách đổi trả.</span>
+                                            <span class="text-2xl font-serif leading-none text-gray-400 self-end shrink-0">&rdquo;</span>
+                                        </div>
+                                    </div>
+                                    <!-- Mã nguồn quảng cáo -->
+                                    <!-- <div>
+                                        <div class="text-xs mb-1.5" style="color:#787B83">Mã nguồn quảng cáo</div>
+                                        <div class="text-xs font-medium" style="color:#333333">AF-FB-CUONG-123</div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="flex items-center border-b border-gray-100 mb-4 gap-1 relative">
+                        <button class="px-3 py-2 text-xs font-semibold text-[#1B3DA1] border-b-2 border-[#1B3DA1] flex items-center gap-1.5"><i class="fa-solid fa-house text-[10px]"></i> Tổng quan</button>
+                        <button class="px-3 py-2 text-xs font-medium text-gray-500 hover:text-gray-700 flex items-center gap-1.5"><i class="fa-solid fa-user text-[10px]"></i> Khách hàng</button>
+                        <button class="px-3 py-2 text-xs font-medium text-gray-500 hover:text-gray-700 flex items-center gap-1.5"><i class="fa-regular fa-comment text-[10px]"></i> Thảo luận</button>
+                        <button class="px-3 py-2 text-xs font-medium text-gray-500 hover:text-gray-700 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-[10px]"></i> Tác vụ</button>
+                        <button class="px-3 py-2 text-xs font-medium text-gray-500 hover:text-gray-700 max-w-[120px] truncate">Tên dàiiiiiiiiiiiiiiiiii...</button>
+                        <button class="ml-auto px-2 py-2 text-gray-400 hover:text-gray-600 transition">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Tổng quan content placeholder -->
+                    <div class="text-xs text-gray-400 italic text-center py-6">Không có dữ liệu tổng quan</div>
+                </div>
+
+                <!-- Right panel -->
+                <div class="w-[360px] border-l border-gray-100 flex flex-col shrink-0 overflow-y-auto custom-scrollbar">
+                    <!-- Tabs Khách hàng / Lịch sử -->
+                    <div class="flex border-b border-gray-100 shrink-0">
+                        <button class="flex-1 py-2.5 text-xs font-semibold text-[#1B3DA1] border-b-2 border-[#1B3DA1] flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-user text-[10px]"></i> Khách hàng
+                        </button>
+                        <button class="flex-1 py-2.5 text-xs font-medium text-gray-500 hover:text-gray-700 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-clock-rotate-left text-[10px]"></i> Lịch sử
+                        </button>
+                    </div>
+
+                    <div class="p-4 flex-1">
+                        <!-- Thông tin khách hàng header -->
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold text-gray-700 flex items-center gap-1">Thông tin khách hàng <i class="fa-regular fa-circle-question text-gray-400 text-[10px]"></i></span>
+                        </div>
+                        <!-- Search -->
+                        <div class="relative mb-4">
+                            <input type="text" placeholder="Tìm kiếm khách trong Biz theo Họ tên, SĐT hoặc Email khá" class="w-full pl-7 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-[10px] focus:outline-none focus:border-blue-400">
+                            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[9px]"></i>
+                        </div>
+
+                        <!-- Khách hàng section -->
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-semibold text-gray-600 flex items-center gap-1">Khách hàng <i class="fa-regular fa-circle-question text-gray-400 text-[9px]"></i></span>
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-[9px]"></i>
+                            </div>
+                            <!-- Customer card -->
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-user text-gray-400"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-[#1B3DA1]">1321345645646</div>
+                                        <div class="text-[10px] text-gray-500 flex items-center gap-1.5 mt-0.5">
+                                            SĐT: <span class="text-gray-400">-</span>
+                                            <button class="w-4 h-4 bg-gray-100 rounded flex items-center justify-center hover:bg-gray-200"><i class="fa-regular fa-copy text-[8px]"></i></button>
+                                            <button class="w-4 h-4 bg-gray-100 rounded flex items-center justify-center hover:bg-gray-200"><i class="fa-solid fa-phone text-[8px]"></i></button>
+                                        </div>
+                                        <div class="text-[10px] text-gray-500 mt-0.5">Email: <span class="text-gray-400">-</span></div>
+                                        <div class="text-[10px] text-gray-500 mt-0.5">Địa chỉ: <span class="text-gray-400">-</span></div>
+                                    </div>
+                                </div>
+                                <button class="w-6 h-6 flex items-center justify-center text-gray-400 hover:bg-gray-100 rounded-full mt-0.5">
+                                    <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Custom tab -->
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between py-2 border-t border-gray-100">
+                                <span class="text-xs font-semibold text-gray-600">Custom tab</span>
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-[9px]"></i>
+                            </div>
+                        </div>
+
+                        <!-- mới nhất -->
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between py-2 border-t border-gray-100">
+                                <span class="text-xs font-semibold text-gray-600 flex items-center gap-1">mới nhất <span class="w-4 h-4 bg-gray-100 text-gray-500 text-[9px] font-bold rounded flex items-center justify-center">1</span></span>
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-[9px]"></i>
+                            </div>
+                            <div class="text-[11px] text-gray-600 mt-1">Giới tính khách hàng: <span class="text-gray-500">other</span></div>
+                        </div>
+
+                        <!-- Thuộc tính hệ thống -->
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between py-2 border-t border-gray-100">
+                                <span class="text-xs font-semibold text-gray-600">Thuộc tính hệ thống</span>
+                                <div class="flex items-center gap-1">
+                                    <button class="w-5 h-5 flex items-center justify-center text-gray-400 hover:bg-gray-100 rounded"><i class="fa-solid fa-chevron-left text-[9px]"></i></button>
+                                    <button class="w-5 h-5 flex items-center justify-center text-gray-400 hover:bg-gray-100 rounded"><i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+                                </div>
+                            </div>
+                            <div class="text-[11px] text-gray-600 mt-1">Ảnh khách hàng: <span class="text-blue-500 break-all text-[10px]">https://smax.app/assets/images/noavatar.png</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Footer buttons -->
+                    <div class="px-4 py-3 border-t border-gray-100 flex gap-2 shrink-0">
+                        <button onclick="closeLeadModal()" class="flex-1 py-2 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Hủy</button>
+                        <button class="flex-1 py-2 text-xs font-semibold text-white bg-[#1B3DA1] rounded-lg hover:bg-blue-800 transition">Xác nhận</button>
                     </div>
                 </div>
             </div>

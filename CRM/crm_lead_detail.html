@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -224,10 +224,10 @@
                             <!-- Lead Event Section -->
                             <div id="global-lead-event" class="mb-6 w-full -mx-6 px-6">
                                 <!-- Collapsible Content -->
-                                <div id="leadEventTimeline" class="bg-white rounded-b-lg overflow-hidden">
+                                <div id="leadEventTimeline" class="bg-white rounded-b-lg">
                                     <!-- Top Section: Lead Event Header -->
                                     <div
-                                        class="mb-5 bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start gap-3 shadow-sm relative overflow-hidden">
+                                        class="mb-5 bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center gap-3 shadow-sm relative">
                                         <div
                                             class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-blue-100/50 to-transparent pointer-events-none">
                                         </div>
@@ -244,9 +244,24 @@
                                                 Sự kiện tạo lead</div>
                                             <div class="text-[14px] font-bold text-[#1b3da1] leading-tight">Lead khách hàng
                                                 vào từ quảng cáo</div>
+                                            <!-- Collapsed summary (shown when collapsed) -->
+                                            <div id="ev-product-interest-summary" class="hidden mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                                                <span class="text-[11px] text-slate-500 flex items-center gap-1"><svg class="w-3 h-3 text-indigo-400" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg> Điền form nhận tư vấn</span>
+                                                <span class="text-[11px] text-slate-500 flex items-center gap-1"><svg class="w-3 h-3 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg> Đã tư vấn (Zalo)</span>
+                                                <span class="text-[11px] text-slate-500 flex items-center gap-1"><svg class="w-3 h-3 text-teal-400" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg> Nộp hồ sơ</span>
+                                                <span class="text-[11px] text-amber-500 font-medium flex items-center gap-1"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg> Đang chờ duyệt</span>
+                                                <span class="text-[11px] text-slate-400 ml-2">· CT Cao đẳng CNTT · Học bạ THPT</span>
+                                            </div>
                                         </div>
+                                        <button onclick="toggleEventCollapse('ev-product-interest')" id="ev-product-interest-btn" class="ml-2 w-7 h-7 flex items-center justify-center rounded-full hover:bg-blue-100 text-blue-400 transition z-10 shrink-0" title="Thu gọn / Mở rộng">
+                                            <svg id="ev-product-interest-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                            </svg>
+                                        </button>
                                     </div>
 
+                                    <!-- Collapsible body -->
+                                    <div id="ev-product-interest-body">
                                     <!-- Content Section: 2 Columns -->
                                     <div class="p-6 grid grid-cols-2 gap-8">
                                         <!-- Left Column: Hành trình xét tuyển -->
@@ -358,6 +373,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </div><!-- /ev-product-interest-body -->
                                 </div>
                             </div>
                         </div>
@@ -365,22 +381,33 @@
                         <!-- View for Order Completed Event -->
                         <div id="order-completed-event-view" class="event-view" style="display: none;">
                             <div class="mb-6 w-full -mx-6 px-6">
-                                <div class="bg-white rounded-b-lg overflow-hidden">
+                                <div class="bg-white rounded-b-lg">
                                     <!-- Top Section: Order Completed Header -->
-                                    <div class="mb-5 bg-emerald-50 border border-emerald-200 rounded-lg p-3 flex items-start gap-3 shadow-sm relative overflow-hidden">
+                                    <div class="mb-5 bg-emerald-50 border border-emerald-200 rounded-lg p-3 flex items-center gap-3 shadow-sm relative">
                                         <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-emerald-600 shrink-0 border border-emerald-100/50 z-10">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
                                         </div>
                                         <div class="z-10 flex-1">
-                                            <div class="text-[12px] text-emerald-500 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện đơn hàng</div>
-                                            <div class="text-[14px] font-bold text-emerald-900 leading-tight">Đơn hàng đã giao thành công</div>
+                                            <div class="text-[12px] text-emerald-500 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện đơn hàng thành công</div>
+                                         
+                                            <div id="ev-order-completed-summary" class="hidden mt-2 flex flex-wrap gap-x-5 gap-y-0.5">
+                                                <span class="text-[11px] text-slate-500">Mã đơn: <span class="font-semibold text-[#1b3da1]">DH60568</span></span>
+                                                <span class="text-[11px] text-slate-500">Tổng: <span class="font-semibold text-emerald-600">12.500.000 VND</span></span>
+                                                <span class="text-[11px] text-slate-500">SL: <span class="font-semibold text-slate-700">5 sản phẩm</span></span>
+                                            </div>
                                         </div>
-                                        <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">Thường</span>
+                                        
+                                        <button onclick="toggleEventCollapse('ev-order-completed')" id="ev-order-completed-btn" class="ml-1 w-7 h-7 flex items-center justify-center rounded-full hover:bg-emerald-100 text-emerald-400 transition shrink-0" title="Thu gọn / Mở rộng">
+                                            <svg id="ev-order-completed-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                            </svg>
+                                        </button>
                                     </div>
 
                                     <!-- CORRECT Content Section: Order Details -->
+                                    <div id="ev-order-completed-body">
                                     <div class="px-6 pb-6 pt-1">
                                         <div class="grid grid-cols-2 gap-8">
                                             <!-- Left Column: Order Stats -->
@@ -490,6 +517,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </div><!-- /ev-order-completed-body -->
                                 </div>
                             </div>
                         </div>
@@ -679,8 +707,8 @@
                                             </svg>
                                         </div>
                                         <div class="z-10 flex-1">
-                                            <div class="text-[12px] text-red-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện đơn hàng</div>
-                                            <div class="text-[14px] font-bold text-red-900 leading-tight">Đơn hàng có nguy cơ bị hoàn</div>
+                                            <div class="text-[12px] text-red-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện đơn hàng có nguy cơ hoàn</div>
+     
                                         </div>
                                     </div>
 
@@ -718,10 +746,331 @@
                             </div>
                         </div>
 
-                         <!-- Placeholder for other views -->
-                        <div id="loyalty-event-view" class="event-view" style="display: none;"><div class="p-6 text-slate-500">Nội dung cho sự kiện Loyalty sẽ được hiển thị ở đây.</div></div>
-                        <div id="coupon-event-view" class="event-view" style="display: none;"><div class="p-6 text-slate-500">Nội dung cho sự kiện Coupon sẽ được hiển thị ở đây.</div></div>
-                        <div id="livechat-event-view" class="event-view" style="display: none;"><div class="p-6 text-slate-500">Nội dung cho sự kiện Livechat sẽ được hiển thị ở đây.</div></div>
+                        <!-- View: Loyalty Event -->
+                        <div id="loyalty-event-view" class="event-view" style="display: none;">
+                            <div class="mb-6 w-full -mx-6 px-6">
+                                <div class="bg-white rounded-b-lg">
+                                    <div class="mb-5 bg-purple-50 border border-purple-200 rounded-lg p-3 flex items-center gap-3 shadow-sm relative">
+                                        <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-purple-600 shrink-0 border border-purple-100/50">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-[12px] text-purple-500 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện Loyalty</div>
+                                            <div class="text-[14px] font-bold text-purple-900 leading-tight">Khách hàng thăng hạng & tích điểm</div>
+                                            <div id="ev-auto-loyalty-event-view-summary" class="hidden mt-2 flex flex-wrap gap-x-5 gap-y-0.5">
+                                                <span class="text-[11px] text-slate-500">Hạng: <span class="font-semibold text-slate-400 line-through">Bạc</span> → <span class="font-bold text-yellow-600">Vàng</span></span>
+                                                <span class="text-[11px] text-slate-500">Mã đơn: <span class="font-semibold text-[#1b3da1]">DH60568</span></span>
+                                            </div>
+                                        </div>
+                                        <button onclick="toggleEventCollapse('ev-auto-loyalty-event-view')" id="ev-auto-loyalty-event-view-btn" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-purple-100 text-purple-400 transition shrink-0" title="Thu gọn / Mở rộng">
+                                            <svg id="ev-auto-loyalty-event-view-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div id="ev-auto-loyalty-event-view-body">
+                                    <div class="px-6 pb-6 pt-1 grid grid-cols-2 gap-8">
+                                        <!-- Left: Rank upgrade -->
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-4">
+                                                <svg class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                                                <h4 class="text-[13px] font-bold text-slate-700">Thăng hạng thành viên</h4>
+                                            </div>
+                                            <div class="flex items-center gap-4 bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-100 rounded-xl p-4">
+                                                <div class="text-center">
+                                                    <div class="text-[10px] text-slate-400 uppercase mb-1">Hạng cũ</div>
+                                                    <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center mx-auto mb-1">
+                                                        <svg class="w-6 h-6 text-slate-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                                                    </div>
+                                                    <div class="text-[12px] font-bold text-slate-500">Bạc</div>
+                                                </div>
+                                                <div class="flex-1 flex flex-col items-center gap-1">
+                                                    <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                                                    <span class="text-[10px] text-purple-500 font-semibold">THĂNG HẠNG</span>
+                                                </div>
+                                                <div class="text-center">
+                                                    <div class="text-[10px] text-slate-400 uppercase mb-1">Hạng mới</div>
+                                                    <div class="w-12 h-12 rounded-full bg-yellow-400 flex items-center justify-center mx-auto mb-1 shadow-md shadow-yellow-200">
+                                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                                                    </div>
+                                                    <div class="text-[12px] font-bold text-yellow-600">Vàng</div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3 text-[12px] text-slate-500 space-y-1.5">
+                                                <div class="flex justify-between"><span>Ngày thăng hạng:</span><span class="font-medium text-slate-700">03/04/2026</span></div>
+                                                <div class="flex justify-between"><span>Tổng chi tiêu đạt:</span><span class="font-bold text-purple-600">25.000.000 VND</span></div>
+                                                <div class="flex justify-between"><span>Ưu đãi hạng Vàng:</span><span class="font-medium text-slate-700">Giảm 10% mọi đơn</span></div>
+                                            </div>
+                                        </div>
+                                        <!-- Right: Point history -->
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-4">
+                                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 14.5h-1v-5h1v5zm0-7h-1V8h1v1.5z"/></svg>
+                                                <h4 class="text-[13px] font-bold text-slate-700">Lịch sử tích điểm</h4>
+                                            </div>
+                                            <div class="space-y-2">
+                                                <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                                                    <div>
+                                                        <div class="text-[12px] font-medium text-slate-700">Mua hàng DH60568</div>
+                                                        <div class="text-[11px] text-slate-400">03/04/2026</div>
+                                                    </div>
+                                                    <span class="text-[13px] font-black text-emerald-500">+1.250 điểm</span>
+                                                </div>
+                                                <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                                                    <div>
+                                                        <div class="text-[12px] font-medium text-slate-700">Bonus thăng hạng Vàng</div>
+                                                        <div class="text-[11px] text-slate-400">03/04/2026</div>
+                                                    </div>
+                                                    <span class="text-[13px] font-black text-purple-500">+500 điểm</span>
+                                                </div>
+                                                <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                                                    <div>
+                                                        <div class="text-[12px] font-medium text-slate-700">Đổi điểm voucher 50k</div>
+                                                        <div class="text-[11px] text-slate-400">01/04/2026</div>
+                                                    </div>
+                                                    <span class="text-[13px] font-black text-red-400">-500 điểm</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3 bg-purple-50 rounded-lg p-3 flex items-center justify-between border border-purple-100">
+                                                <span class="text-[12px] font-semibold text-purple-700">Tổng điểm hiện tại</span>
+                                                <span class="text-[18px] font-black text-purple-600">3.820 điểm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div><!-- /ev-auto-loyalty-event-view-body -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- View: Facebook Lead Event -->
+                        <div id="facebook-lead-event-view" class="event-view" style="display: none;">
+                            <div class="mb-6 w-full -mx-6 px-6">
+                                <div class="bg-white rounded-b-lg">
+                                    <!-- Header -->
+                                    <div class="mb-5 bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center gap-3 shadow-sm relative">
+                                        <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#1877F2] shrink-0 border border-blue-100/50">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                        </div>
+                                        <div class="flex-1">
+                                      
+                                            <div class="text-[14px] font-bold text-[#1b3da1] leading-tight">SỰ KIỆN TẠO LEAD TỪ FANPAGE</div>
+                                            <!-- Collapsed summary -->
+                                            <div id="ev-facebook-summary" class="hidden mt-2 flex items-center gap-2">
+                                                <div class="w-4 h-4 rounded-full bg-[#1877F2]/10 flex items-center justify-center shrink-0"><svg class="w-2.5 h-2.5 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+                                                <span class="text-[11px] font-semibold text-slate-700">Fanpage Chính Thức</span>
+                                                <span class="text-[11px] text-slate-400">(112938471029384)</span>
+                                            </div>
+                                        </div>
+                                        <button onclick="toggleEventCollapse('ev-facebook')" id="ev-facebook-btn" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-blue-100 text-blue-400 transition shrink-0" title="Thu gọn / Mở rộng">
+                                            <svg id="ev-facebook-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <!-- Collapsible body -->
+                                    <div id="ev-facebook-body">
+                                        <div class="p-6 grid grid-cols-2 gap-8">
+                                            <!-- Left: Thông tin nguồn -->
+                                            <div>
+                                                <div class="flex items-center gap-2 mb-4">
+                                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                    <h4 class="text-[13px] font-bold text-slate-700">Thông tin nguồn</h4>
+                                                </div>
+                                                <div class="text-[12px]">
+                                                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                                                        <span class="text-slate-400">ID Fanpage</span>
+                                                        <span class="font-semibold text-slate-700">112938471029384</span>
+                                                    </div>
+                                                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                                                        <span class="text-slate-400">Fanpage</span>
+                                                        <div class="flex items-center gap-1.5">
+                                                            <div class="w-5 h-5 rounded-full bg-[#1877F2]/10 flex items-center justify-center shrink-0"><svg class="w-3 h-3 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+                                                            <span class="font-semibold text-slate-700">Fanpage Chính Thức</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                                                        <span class="text-slate-400">Ads ID</span>
+                                                        <span class="font-semibold text-slate-700">act_23847291034</span>
+                                                    </div>
+                                                    <div class="flex items-start justify-between py-2 gap-3">
+                                                        <span class="text-slate-400 shrink-0">Tin nhắn cuối</span>
+                                                        <span class="text-slate-700 text-right flex items-start gap-0.5">
+                                                            
+                                                            <span>Cho mình hỏi sản phẩm còn hàng không ạ?</span>
+                                                           
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Right: Thông tin thuộc tính -->
+                                            <div>
+                                                <div class="flex items-center gap-2 mb-4">
+                                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                                                    <h4 class="text-[13px] font-bold text-slate-700">Thông tin thuộc tính</h4>
+                                                </div>
+                                                <div class="space-y-3">
+                                                    <div>
+                                                        <div class="text-[12px] text-slate-400 mb-1.5">Tóm tắt hội thoại</div>
+                                                        <div class="text-[12px] leading-relaxed flex items-start gap-1" style="color:#333333;font-style: italic;">
+                                                            <span class="text-2xl font-serif leading-none text-gray-400 -mt-1 shrink-0">&ldquo;</span>
+                                                            <span>Khách hỏi về tình trạng hàng tồn kho và giá sản phẩm. Có nhu cầu mua ngay, quan tâm chương trình ưu đãi. Cần tư vấn thêm về chính sách đổi trả.</span>
+                                                            <span class="text-2xl font-serif leading-none text-gray-400 self-end shrink-0">&rdquo;</span>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /ev-facebook-body -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- View: Coupon Event -->
+                        <div id="coupon-event-view" class="event-view" style="display: none;">
+                            <div class="mb-6 w-full -mx-6 px-6">
+                                <div class="bg-white rounded-b-lg">
+                                    <!-- Header -->
+                                    <div class="mb-5 bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center gap-3 shadow-sm relative">
+                                        <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-blue-600 shrink-0 border border-blue-100/50">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-[12px] text-blue-500 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện tạo lead: Mã giảm giá</div>
+                             
+                                            <div id="ev-auto-coupon-event-view-summary" class="hidden mt-2 flex flex-wrap gap-x-5 gap-y-0.5">
+                                                <span class="text-[11px] text-slate-500">Mã: <span class="font-semibold text-orange-600">zmMtc0bq</span></span>
+                                                <span class="text-[11px] text-slate-500">CT: <span class="font-semibold text-slate-700">Miễn phí vận chuyển tối đa 10.000đ</span></span>
+                                                <span class="text-[11px] text-slate-500">HH: <span class="font-semibold text-red-500">Không thời hạn</span></span>
+                                            </div>
+                                        </div>
+                                        <button onclick="toggleEventCollapse('ev-auto-coupon-event-view')" id="ev-auto-coupon-event-view-btn" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-blue-100 text-blue-400 transition shrink-0" title="Thu gọn / Mở rộng">
+                                            <svg id="ev-auto-coupon-event-view-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                        </button>
+                                    </div>
+                                    <div id="ev-auto-coupon-event-view-body">
+                                    <!-- Content: 2 columns -->
+                                    <div class="p-6 grid grid-cols-2 gap-8">
+                                        <!-- Left: Hành trình Voucher -->
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-4">
+                                                <svg class="w-4 h-4 text-slate-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 14.5h-1v-1h1v1zm0-3h-1V7h1v6.5z"/></svg>
+                                                <h4 class="text-[13px] font-bold text-slate-700">Hành trình Voucher</h4>
+                                            </div>
+                                            <div class="relative pl-5 border-l-2 border-slate-200 ml-2 flex flex-col gap-4">
+                                                <!-- Item 1: Thêm vào đơn hàng -->
+                                                <div class="relative">
+                                                    <div class="absolute -left-[31px] top-0 w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white shadow-sm ring-4 ring-white">
+                                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                                                    </div>
+                                                    <div class="pl-2">
+                                                        <div class="text-[12px] font-bold text-slate-800">Thêm vào đơn hàng</div>
+                                                        <div class="text-[11px] text-slate-500 mt-0.5">03/04/2026 14:32</div>
+                                                    </div>
+                                                </div>
+                                                <!-- Item 2: Khởi tạo -->
+                                                <div class="relative">
+                                                    <div class="absolute -left-[31px] top-0 w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-sm ring-4 ring-white">
+                                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                                                    </div>
+                                                    <div class="pl-2">
+                                                        <div class="text-[12px] font-bold text-slate-800">Khởi tạo</div>
+                                                        <div class="text-[11px] text-slate-500 mt-0.5">01/04/2026</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Right: Thông tin mã ưu đãi -->
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-4">
+                                                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                                                <h4 class="text-[13px] font-bold text-slate-700">Thông tin mã ưu đãi</h4>
+                                            </div>
+                                            <div class="border border-slate-200 rounded-lg p-3 bg-white shadow-sm">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <span class="text-[13px] font-bold text-[#1b3da1]">zmMtc0bq</span>
+                                                    <span class="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Đã sử dụng</span>
+                                                </div>
+                                                <div class="text-[12px] text-slate-600 mb-2">Miễn phí vận chuyển tối đa 10.000 đ</div>
+                                                <div class="flex items-center justify-between text-[12px]">
+                                                    <span class="text-slate-400">Ngày hết hạn:</span>
+                                                    <span class="text-red-500 font-semibold">Không thời hạn</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div><!-- /ev-auto-coupon-event-view-body -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- View: Livechat Event -->
+                        <div id="livechat-event-view" class="event-view" style="display: none;">
+                            <div class="mb-6 w-full -mx-6 px-6">
+                                <div class="bg-white rounded-b-lg">
+                                    <div class="mb-5 bg-sky-50 border border-sky-200 rounded-lg p-3 flex items-center gap-3 shadow-sm relative">
+                                        <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-sky-500 shrink-0 border border-sky-100/50">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-[12px] text-sky-500 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện Livechat</div>
+                                            <div class="text-[14px] font-bold text-sky-900 leading-tight">Hội thoại với khách hàng</div>
+                                        </div>
+                                        <span class="text-xs font-bold text-sky-600 bg-sky-100 px-2 py-1 rounded-md">Zalo Chat</span>
+                                    </div>
+                                    <div class="px-6 pb-6 pt-1 grid grid-cols-2 gap-8">
+                                        <!-- Left: Chat summary -->
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-3">
+                                                <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                <h4 class="text-[13px] font-bold text-slate-700">Tóm tắt hội thoại</h4>
+                                            </div>
+                                            <div class="space-y-2 text-[12px] mb-4">
+                                                <div class="flex justify-between"><span class="text-slate-400">Kênh:</span><span class="font-medium text-slate-700 flex items-center gap-1"><span class="w-3.5 h-3.5 bg-[#0068FF] text-white rounded-[3px] text-[7px] flex items-center justify-center font-bold">Z</span> Zalo Chat</span></div>
+                                                <div class="flex justify-between"><span class="text-slate-400">Thời gian:</span><span class="font-medium text-slate-700">03/04/2026 · 15:22–15:48</span></div>
+                                                <div class="flex justify-between"><span class="text-slate-400">Số tin nhắn:</span><span class="font-medium text-slate-700">18 tin</span></div>
+                                                <div class="flex justify-between"><span class="text-slate-400">Nhân viên tiếp nhận:</span><span class="font-medium text-slate-700">Nguyễn Văn A</span></div>
+                                                <div class="flex justify-between"><span class="text-slate-400">Kết quả:</span><span class="font-bold text-emerald-600">Chốt đơn thành công</span></div>
+                                            </div>
+                                            <!-- AI summary -->
+                                            <div class="bg-indigo-50/50 border border-indigo-100 rounded-lg p-3">
+                                                <div class="text-[11px] text-indigo-500 font-bold uppercase tracking-wide mb-1.5 flex items-center gap-1">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                                    AI Tóm tắt
+                                                </div>
+                                                <p class="text-[12px] text-slate-600 leading-relaxed">Khách hỏi về size áo cưới Luxury và chính sách đổi trả. Nhân viên tư vấn nhanh, chốt được đơn size L, giao Hà Nội. Khách hài lòng, có khả năng mua lại cao.</p>
+                                            </div>
+                                        </div>
+                                        <!-- Right: Message thread -->
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-3">
+                                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                                <h4 class="text-[13px] font-bold text-slate-700">Tin nhắn nổi bật</h4>
+                                            </div>
+                                            <div class="space-y-2.5">
+                                                <div class="flex gap-2 items-start">
+                                                    <div class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-500 shrink-0 mt-0.5">K</div>
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg rounded-tl-none px-3 py-2 text-[12px] text-slate-700 max-w-[85%]">Cho mình hỏi váy Luxury size L còn không ạ?</div>
+                                                </div>
+                                                <div class="flex gap-2 items-start flex-row-reverse">
+                                                    <div class="w-6 h-6 rounded-full bg-[#1b3da1] flex items-center justify-center text-[10px] font-bold text-white shrink-0 mt-0.5">NV</div>
+                                                    <div class="bg-blue-50 border border-blue-100 rounded-lg rounded-tr-none px-3 py-2 text-[12px] text-slate-700 max-w-[85%]">Dạ còn ạ! Mình có thể giao trong ngày nếu đặt trước 16h ạ.</div>
+                                                </div>
+                                                <div class="flex gap-2 items-start">
+                                                    <div class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-500 shrink-0 mt-0.5">K</div>
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg rounded-tl-none px-3 py-2 text-[12px] text-slate-700 max-w-[85%]">OK mình đặt 1 cái nhé, địa chỉ giao là 12 Lạc Long Quân.</div>
+                                                </div>
+                                                <div class="flex gap-2 items-start flex-row-reverse">
+                                                    <div class="w-6 h-6 rounded-full bg-[#1b3da1] flex items-center justify-center text-[10px] font-bold text-white shrink-0 mt-0.5">NV</div>
+                                                    <div class="bg-emerald-50 border border-emerald-100 rounded-lg rounded-tr-none px-3 py-2 text-[12px] text-slate-700 max-w-[85%]">Đã tạo đơn DH60568 cho bạn, cảm ơn đã tin tưởng! 🎉</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
                         <!-- View for AI Insight Event -->
                         <div id="ai-insight-event-view" class="event-view" style="display: none;">
@@ -1030,12 +1379,17 @@
                                             </svg>
                                         </div>
                                         <div class="z-10 flex-1">
-                                            <div class="text-[12px] text-rose-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện RFM</div>
-                                            <div class="text-[14px] font-bold text-rose-900 leading-tight">Phân khúc khách hàng thay đổi</div>
+                                            <div class="text-[12px] text-rose-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện RFM: Thay đổi phân khúc khách hàng</div>
+                                            <div id="ev-auto-rfm-score-changed-event-view-summary" class="hidden mt-2 flex flex-wrap gap-x-5 gap-y-0.5">
+                                                <span class="text-[11px] text-slate-500">Nhóm: <span class="font-semibold text-slate-400">At Risk</span> → <span class="font-bold text-emerald-600">Loyal</span></span>
+                                                <span class="text-[11px] text-slate-500">Mã đơn: <span class="font-semibold text-[#1b3da1]">DH60568</span></span>
+                                            </div>
                                         </div>
-                                        <span class="text-xs font-bold text-rose-700 bg-rose-100 px-2 py-1 rounded-md">Cập nhật tự động</span>
+                                        <button onclick="toggleEventCollapse('ev-auto-rfm-score-changed-event-view')" id="ev-auto-rfm-score-changed-event-view-btn" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-rose-100 text-rose-400 transition shrink-0" title="Thu gọn / Mở rộng">
+                                            <svg id="ev-auto-rfm-score-changed-event-view-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                        </button>
                                     </div>
-
+                                    <div id="ev-auto-rfm-score-changed-event-view-body">
                                     <!-- Content Section -->
                                     <div class="px-6 pb-6 pt-1">
                                         <div class="bg-white p-4 rounded-xl flex items-center justify-between mb-6">
@@ -1071,6 +1425,7 @@
                                         
                                     </div>
                                 </div>
+                                </div><!-- /ev-auto-rfm-score-changed-event-view-body -->
                             </div>
                         </div>
 
@@ -1161,12 +1516,18 @@
                                             </svg>
                                         </div>
                                         <div class="z-10 flex-1">
-                                            <div class="text-[12px] text-amber-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện Loyalty</div>
-                                            <div class="text-[14px] font-bold text-amber-900 leading-tight">Khách hàng được nâng hạng thành viên</div>
+                                            <div class="text-[12px] text-amber-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện Loyalty: Nâng hạng thành viên</div>
+               
+                                            <div id="ev-auto-loyalty-tier-upgraded-event-view-summary" class="hidden mt-2 flex flex-wrap gap-x-5 gap-y-0.5">
+                                                <span class="text-[11px] text-slate-500">Hạng: <span class="font-semibold text-slate-400">Bạc</span> → <span class="font-bold text-yellow-600">Vàng</span></span>
+                                                <span class="text-[11px] text-slate-500">Mã đơn: <span class="font-semibold text-[#1b3da1]">DH60568</span></span>
+                                            </div>
                                         </div>
-                                        <span class="text-xs font-bold text-amber-700 bg-amber-200/80 px-2 py-1 rounded-md">Quan trọng</span>
+                                        <button onclick="toggleEventCollapse('ev-auto-loyalty-tier-upgraded-event-view')" id="ev-auto-loyalty-tier-upgraded-event-view-btn" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-amber-100 text-amber-400 transition shrink-0" title="Thu gọn / Mở rộng">
+                                            <svg id="ev-auto-loyalty-tier-upgraded-event-view-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                        </button>
                                     </div>
-
+                                    <div id="ev-auto-loyalty-tier-upgraded-event-view-body">
                                     <!-- Main Content Section -->
                                     <div class="px-6 pb-6 pt-1">
                                         <div class="grid grid-cols-2 gap-6">
@@ -1255,6 +1616,7 @@
                                             </div>
                                     </div>
                                 </div>
+                                </div><!-- /ev-auto-loyalty-tier-upgraded-event-view-body -->
                             </div>
                         </div>
 
@@ -1270,14 +1632,26 @@
                                             </svg>
                                         </div>
                                         <div class="z-10 flex-1">
-                                            <div class="text-[12px] text-red-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện Loyalty</div>
-                                            <div class="text-[14px] font-bold text-red-900 leading-tight">Hết hạn điểm & Xét lại hạng</div>
+                                            <div class="text-[12px] text-red-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện Loyalty: Hết hạn điểm</div>
+                                            <!-- Collapsed summary -->
+                                            <div id="ev-expiring-summary" class="hidden mt-2 flex flex-wrap gap-x-4 gap-y-0.5">
+                                                <span class="text-[11px] text-slate-500">Điểm: <span class="font-semibold text-[#1b3da1]">1.250</span></span>
+                                                <span class="text-[11px] text-slate-500">Hạng: <span class="font-semibold text-yellow-600">Hạng Vàng</span></span>
+                                                <span class="text-[11px] text-slate-500">Hết hạn: <span class="font-semibold text-slate-700">15/06/2026</span></span>
+                                                <span class="text-[11px] font-bold text-red-500 flex items-center gap-1">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                    Còn 7 ngày
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="px-3 py-1 bg-red-600 text-white rounded text-[11px] font-bold animate-pulse">
-                                            CÒN 7 NGÀY
+                                        <div class="flex items-center gap-2 shrink-0">
+                                           
+                                            <button onclick="toggleEventCollapse('ev-expiring')" id="ev-expiring-btn" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-red-100 text-red-400 transition" title="Thu gọn / Mở rộng">
+                                                <svg id="ev-expiring-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                            </button>
                                         </div>
                                     </div>
-
+                                    <div id="ev-expiring-body">
                                     <!-- Content Section -->
                                     <div class="px-6 pb-6 pt-0">
                                         <div class="grid grid-cols-2 gap-0 border border-slate-100 rounded-xl overflow-hidden shadow-sm">
@@ -1333,6 +1707,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                </div><!-- /ev-expiring-body -->
                             </div>
                         </div>
 
@@ -1348,12 +1723,18 @@
                                             </svg>
                                         </div>
                                         <div class="z-10 flex-1">
-                                            <div class="text-[12px] text-sky-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện Loyalty</div>
-                                            <div class="text-[14px] font-bold text-sky-900 leading-tight">Khách hàng được cộng điểm Loyalty</div>
+                                            <div class="text-[12px] text-sky-600 font-semibold mb-0.5 uppercase tracking-wide">Sự kiện Loyalty: Tích điểm thành công</div>
+                    
+                                            <div id="ev-auto-loyalty-points-added-event-view-summary" class="hidden mt-2 flex flex-wrap gap-x-5 gap-y-0.5">
+                                                <span class="text-[11px] text-slate-500">Điểm: <span class="font-semibold text-[#1b3da1]">2.570 → 3.820</span></span>
+                                                <span class="text-[11px] text-slate-500">Mã đơn: <span class="font-semibold text-[#1b3da1]">DH60568</span></span>
+                                            </div>
                                         </div>
-                                        <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">Thường</span>
+                                        <button onclick="toggleEventCollapse('ev-auto-loyalty-points-added-event-view')" id="ev-auto-loyalty-points-added-event-view-btn" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-sky-100 text-sky-400 transition shrink-0" title="Thu gọn / Mở rộng">
+                                            <svg id="ev-auto-loyalty-points-added-event-view-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                        </button>
                                     </div>
-
+                                    <div id="ev-auto-loyalty-points-added-event-view-body">
                                     <!-- Main Content Section -->
                                     <div class="px-6 pb-6 pt-1">
                                         <div class="grid grid-cols-1 gap-6">
@@ -1398,6 +1779,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </div><!-- /ev-auto-loyalty-points-added-event-view-body -->
                                 </div>
                             </div>
                         </div>
@@ -1466,6 +1848,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <a href="#" onclick="showEventView('facebook-lead-event-view', event)" class="block px-4 py-2 text-sm text-[#1877F2] font-semibold hover:bg-blue-50" role="menuitem">Facebook Lead</a>
                                     <a href="#" onclick="showEventView('coupon-event-view', event)" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900" role="menuitem">Coupon Events</a>
                                     <div class="relative group/item" role="menuitem">
                                         <a href="#" class="flex justify-between items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">
@@ -1651,6 +2034,89 @@
     </div>
 
     <script>
+        /* ── Event Collapse/Expand ── */
+        function toggleEventCollapse(id) {
+            const body    = document.getElementById(id + '-body');
+            const summary = document.getElementById(id + '-summary');
+            const icon    = document.getElementById(id + '-icon');
+            if (!body) return;
+            const isCollapsed = body.classList.contains('hidden');
+            if (isCollapsed) {
+                // expand
+                body.classList.remove('hidden');
+                if (summary) summary.classList.add('hidden');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                // collapse
+                body.classList.add('hidden');
+                if (summary) summary.classList.remove('hidden');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        /* Auto-inject collapse button + body wrapper for every event-view
+           that doesn't already have one (= all except product-interest and
+           order-completed which were done manually). */
+        function autoWrapEventViews() {
+            const views = document.querySelectorAll('.event-view');
+            views.forEach(view => {
+                const id = view.id;
+                if (!id) return;
+                const key = 'ev-auto-' + id;
+                // Skip views already handled manually
+                const _manualViews = ['product-interest-event-view','order-completed-event-view','coupon-event-view','loyalty-points-added-event-view','loyalty-tier-upgraded-event-view','rfm-score-changed-event-view','loyalty-event-view','facebook-lead-event-view'];
+                if (_manualViews.includes(id)) return;
+                if (document.getElementById(key + '-body')) return;
+
+                // The inner wrapper is the first div > div
+                const outer = view.firstElementChild;
+                if (!outer) return;
+                const wrapper = outer.firstElementChild;
+                if (!wrapper) return;
+
+                // Header = first child element of wrapper
+                const headerEl = wrapper.firstElementChild;
+                if (!headerEl) return;
+
+                // Remove overflow-hidden so button isn't clipped
+                headerEl.classList.remove('overflow-hidden');
+                // Make sure it's flex items-center (not items-start which can clip)
+                headerEl.classList.add('flex');
+
+                // Get title text for summary
+                const allBolds = headerEl.querySelectorAll('[class*="font-bold"]');
+                let titleText = '';
+                allBolds.forEach(el => { if (!titleText && el.innerText.trim()) titleText = el.innerText.trim(); });
+
+                // Inject toggle button
+                const btn = document.createElement('button');
+                btn.id = key + '-btn';
+                btn.title = 'Thu gọn / Mở rộng';
+                btn.onclick = function() { toggleEventCollapse(key); };
+                
+                btn.innerHTML = `<svg id="${key}-icon" style="transition:transform .2s" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>`;
+                headerEl.appendChild(btn);
+
+                // Inject summary
+                const contentDiv = headerEl.querySelector('.flex-1') || headerEl.querySelector('div:not([class*="rounded-full"]):not([class*="absolute"])');
+                if (contentDiv && titleText) {
+                    const summary = document.createElement('div');
+                    summary.id = key + '-summary';
+                    summary.className = 'hidden mt-1 text-[11px] text-slate-400 italic';
+                    summary.textContent = titleText;
+                    contentDiv.appendChild(summary);
+                }
+
+                // Wrap body content
+                const body = document.createElement('div');
+                body.id = key + '-body';
+                Array.from(wrapper.children)
+                    .filter(c => c !== headerEl)
+                    .forEach(c => body.appendChild(c));
+                wrapper.appendChild(body);
+            });
+        }
+
         function closeLeadDetailModal() {
             const modal = document.getElementById('leadDetailModal');
             modal.style.display = 'none';
@@ -1677,7 +2143,8 @@
 
         // Set the initial view when the page loads
         document.addEventListener('DOMContentLoaded', function() {
-            showEventView('product-interest-event-view');
+            showEventView('order-completed-event-view');
+            autoWrapEventViews();
         });
     </script>
 </body>
