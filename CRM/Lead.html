@@ -1,0 +1,3166 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Lead - CRM Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --sidebar-width: 240px;
+            --header-height: 60px;
+            --border-color: #e5e7eb;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+
+            --col-blue-bg: #f0f4ff;
+            --col-blue-text: #3b82f6;
+            --col-orange-bg: #fff5eb;
+            --col-orange-text: #f97316;
+            --col-green-bg: #f0fdf4;
+            --col-green-text: #22c55e;
+            --col-pink-bg: #fdf2f8;
+            --col-pink-text: #ec4899;
+            --col-yellow-bg: #fefce8;
+            --col-yellow-text: #eab308;
+            --col-teal-bg: #f0fdfa;
+            --col-teal-text: #14b8a6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+                                                        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width, 240px);
+            background: linear-gradient(160deg, #1b3da1 0%, #17234e 100%);
+            border-right: none;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            z-index: 10;
+            position: relative;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        /* Collapsed Sidebar */
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar.collapsed .sidebar-header {
+            justify-content: center;
+            padding: 0;
+        }
+
+        .sidebar.collapsed .logo-text {
+            display: none;
+        }
+
+        .sidebar.collapsed .logo {
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .menu-group-title {
+            display: none;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            display: none;
+        }
+
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .sidebar.collapsed .menu-item i {
+            margin: 0;
+        }
+
+        .sidebar.collapsed .sidebar-bottom {
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px 0;
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .sidebar-bottom-user .user-info {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-bottom-user {
+            justify-content: center;
+            margin: 0;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .menu-items::-webkit-scrollbar {
+            width: 4px;
+        }
+        .menu-items::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+
+        .menu-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-group-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 20px;
+            margin-bottom: 5px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            gap: 12px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-left-color: #ffffff;
+        }
+
+        .menu-item i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 0;
+        }
+
+        .sidebar-bottom-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-bottom-user .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+        }
+
+        .sidebar-bottom-user .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-bottom-user .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .sidebar-bottom-user .user-role {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: var(--header-height);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        /* Sub Header / Filters */
+        .sub-header {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filters {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .filter-tag {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-tag span {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .filter-blue {
+            background-color: var(--col-blue-bg);
+            color: var(--col-blue-text);
+        }
+
+        .filter-purple {
+            background-color: #f3e8ff;
+            color: #9333ea;
+        }
+
+        .filter-green {
+            background-color: var(--col-green-bg);
+            color: var(--col-green-text);
+        }
+
+        .filter-orange {
+            background-color: var(--col-orange-bg);
+            color: var(--col-orange-text);
+        }
+
+        .filter-add {
+            background-color: var(--primary-bg);
+            color: var(--text-muted);
+            border: 1px dashed var(--border-color);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: var(--primary-bg);
+            border-radius: 20px;
+            padding: 6px 15px;
+            gap: 8px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 13px;
+            width: 200px;
+        }
+
+        .btn-filter {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Board */
+        .board {
+            flex: 1;
+            padding: 0 20px 20px;
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .board-column {
+            min-width: 280px;
+            max-width: 280px;
+            background-color: #f9fafb;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+        }
+
+        .col-blue {
+            background-color: var(--col-blue-bg);
+        }
+
+        .col-orange {
+            background-color: var(--col-orange-bg);
+        }
+
+        .col-green {
+            background-color: var(--col-green-bg);
+        }
+
+        .col-pink {
+            background-color: var(--col-pink-bg);
+        }
+
+        .col-yellow {
+            background-color: var(--col-yellow-bg);
+        }
+
+        .col-teal {
+            background-color: var(--col-teal-bg);
+        }
+
+        .column-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .column-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-blue {
+            background-color: var(--col-blue-text);
+        }
+
+        .dot-orange {
+            background-color: var(--col-orange-text);
+        }
+
+        .dot-green {
+            background-color: var(--col-green-text);
+        }
+
+        .dot-pink {
+            background-color: var(--col-pink-text);
+        }
+
+        .dot-yellow {
+            background-color: var(--col-yellow-text);
+        }
+
+        .dot-teal {
+            background-color: var(--col-teal-text);
+        }
+
+        .count {
+            font-size: 11px;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .column-cards {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 5px;
+        }
+
+        /* Scrollbar */
+        .column-cards::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .column-cards::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #e5e7eb;
+        }
+
+        .time-ago {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .card-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .card-id {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .tag-blue {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .tag-gray {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .tag-red {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .tag-yellow {
+            background: #fef9c3;
+            color: #ca8a04;
+        }
+
+        .tag-green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .sub-header {
+            padding: 15px 30px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-filter {
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4b5563;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-bottom {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .assignee-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+        }
+
+        .assignee-name {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .action-needed {
+            font-size: 11px;
+            color: var(--col-green-text);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .action-warn {
+            color: var(--col-orange-text);
+        }
+
+        .action-blue {
+            color: var(--col-blue-text);
+        }
+
+        /* Sub Sidebar for Funnels */
+        .sub-sidebar {
+            width: 240px;
+            background-color: #fafafa;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 15px;
+            z-index: 9;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .sub-sidebar.collapsed {
+            width: 0;
+            padding: 0;
+            border-right: none;
+            overflow: hidden;
+        }
+
+        .sub-sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 0 5px;
+            white-space: nowrap;
+        }
+
+        .sub-sidebar-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #111;
+        }
+
+        .tree-group {
+            margin-bottom: 20px;
+        }
+
+        .tree-group-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding-left: 5px;
+            white-space: nowrap;
+        }
+
+        .tree-group-title i {
+            transition: transform 0.3s ease;
+        }
+
+        .tree-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+
+        .tree-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-left: 10px;
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+            max-height: 500px;
+        }
+
+        .tree-group.collapsed .tree-list {
+            max-height: 0;
+        }
+
+        .tree-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4b5563;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .tree-item:hover {
+            background-color: #e5e7eb;
+            color: #111;
+        }
+
+        .tree-item.active {
+            background-color: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .tree-item .count {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .tree-item.active .count {
+            background: #bae6fd;
+            color: #0284c7;
+        }
+
+        .tree-sub-group {
+            margin-bottom: 8px;
+        }
+
+        .tree-sub-group-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .tree-sub-group-title:hover {
+            background-color: #f3f4f6;
+            color: #111;
+        }
+
+        .tree-sub-group-title i {
+            font-size: 10px;
+            transition: transform 0.3s ease;
+            color: #9ca3af;
+        }
+
+        .tree-sub-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+
+        .tree-sub-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-left: 12px;
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+            max-height: 500px;
+        }
+
+        .tree-sub-group.collapsed .tree-sub-list {
+            max-height: 0;
+        }
+
+        /* Modal & Tabs */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            width: 1200px;
+            max-width: 95%;
+            height: 85vh;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .modal-tabs {
+            display: flex;
+            padding: 0 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-tab {
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+
+        .modal-tab.active {
+            color: #1e3a8a;
+            border-bottom: 2px solid #1e3a8a;
+        }
+
+        .modal-body {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-tab-content {
+            display: none;
+        }
+
+        .modal-tab-content.active {
+            display: block;
+        }
+
+        .status-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f9fafb;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .status-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .status-actions button:hover {
+            color: #1e3a8a;
+        }
+
+        /* Lead Detail Specific */
+        .process-steps {
+            display: flex;
+            align-items: center;
+            background: #f9fafb;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            margin-right: 15px;
+        }
+
+        .process-step {
+            padding: 8px 15px 8px 25px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            position: relative;
+            cursor: pointer;
+            background: #f9fafb;
+        }
+
+        .process-step:first-child {
+            padding-left: 15px;
+        }
+
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -15px;
+            width: 0;
+            height: 0;
+            border-top: 17px solid transparent;
+            border-bottom: 17px solid transparent;
+            border-left: 15px solid #f9fafb;
+            z-index: 2;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -16px;
+            width: 0;
+            height: 0;
+            border-top: 17px solid transparent;
+            border-bottom: 17px solid transparent;
+            border-left: 16px solid var(--border-color);
+            z-index: 1;
+        }
+
+        .process-step:last-child::after,
+        .process-step:last-child::before {
+            display: none;
+        }
+
+        .process-step.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .process-step.active::after {
+            border-left-color: #3b82f6;
+        }
+
+        .lead-detail-left {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .lead-detail-right {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-box {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .detail-box-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #111;
+            padding-bottom: 10px;
+        }
+
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #1e3a8a;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.3);
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        /* Table View */
+        .table-view {
+            flex: 1;
+            padding: 0 20px 20px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .table-view.active {
+            display: block;
+        }
+
+        .board.hidden {
+            display: none !important;
+        }
+
+        .lead-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .lead-table th, .lead-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+
+        .lead-table th {
+            font-weight: 600;
+            color: var(--text-muted);
+            background-color: #f9fafb;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .lead-table tbody tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .lead-table tbody tr:hover {
+            background-color: #f0f4ff;
+        }
+
+        .lead-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    
+    /* App Drawer CSS */
+    .app-drawer-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999998;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .app-drawer-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .app-drawer {
+        position: fixed;
+        top: 0; left: -400px;
+        width: 380px; height: 100vh;
+        background: linear-gradient(160deg, #1b3da1 0%, #17234e 100%);
+        z-index: 999999;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.2);
+        font-family: 'Inter', sans-serif;
+    }
+    .app-drawer.open {
+        left: 0;
+    }
+
+    .drawer-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 20px 24px 15px 24px; background: transparent;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .drawer-header .drawer-logo {
+        display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; color: #ffffff;
+    }
+    .drawer-header .drawer-actions {
+        display: flex; gap: 15px; align-items: center;
+    }
+    .drawer-header .drawer-actions i {
+        font-size: 18px; color: rgba(255,255,255,0.75); cursor: pointer; transition: color 0.2s;
+    }
+    .drawer-header .drawer-actions i:hover { color: #ffffff; }
+    .drawer-avatar {
+        width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.2); overflow: hidden;
+        display: flex; align-items: center; justify-content: center; color: white;
+    }
+
+    .drawer-search {
+        padding: 15px 24px 20px 24px; background: transparent;
+    }
+    .drawer-search .search-box {
+        display: flex; align-items: center; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 15px;
+    }
+    .drawer-search .search-box input {
+        border: none; background: transparent; outline: none; width: 100%; margin-left: 10px; font-size: 14px; color: #ffffff;
+    }
+    .drawer-search .search-box input::placeholder { color: rgba(255,255,255,0.5); }
+    .drawer-search .search-box i { color: rgba(255,255,255,0.6); }
+
+    .drawer-content {
+        flex: 1; overflow-y: auto; padding: 20px 24px;
+    }
+    .drawer-content::-webkit-scrollbar { width: 6px; }
+    .drawer-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 10px; }
+
+    .drawer-category { margin-bottom: 25px; }
+    .drawer-category-title {
+        font-size: 14px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px; margin-bottom: 12px; padding-left: 5px;
+    }
+    .drawer-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 12px;
+       padding: 20px 15px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        backdrop-filter: blur(4px);
+    }
+    .drawer-item {
+        display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; text-decoration: none;
+    }
+    .drawer-item .icon-wrapper {
+        width: 46px; height: 46px; border-radius: 14px; background: #fff; color: #ffffff;
+        display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.2s;
+    }
+    .drawer-item:hover .icon-wrapper {
+        transform: translateY(-2px);
+    }
+    .drawer-item .item-name {
+        font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.85); text-align: center; line-height: 1.3;
+    }
+    .drawer-grid.layout-list .drawer-item .item-name {
+        font-size: 14px;
+    }
+
+    .drawer-bottom-nav {
+        display: flex; justify-content: space-between; padding: 12px 24px 20px 24px; background: transparent; border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .drawer-nav-item {
+        display: flex; flex-direction: column; align-items: center; gap: 4px; color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 600; cursor: pointer; transition: color 0.2s; text-decoration: none;
+    }
+    .drawer-nav-item .icon-bg {
+        width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s;
+    }
+    .drawer-nav-item i { font-size: 20px; }
+    .drawer-nav-item:hover { color: #ffffff; }
+    .drawer-nav-item.active { color: #ffffff; }
+    .drawer-nav-item.active .icon-bg { background: rgba(255,255,255,0.2); }
+
+
+    /* Drawer Layout CSS */
+    .drawer-grid.layout-expanded {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .drawer-grid.layout-expanded .drawer-item {
+        display: flex; flex-direction: row; align-items: center; text-align: left; gap: 12px;
+        padding: 8px; border-radius: 8px; transition: background 0.2s;
+    }
+    .drawer-grid.layout-expanded .drawer-item:hover {
+        background: transparent;
+    }
+    .drawer-grid.layout-expanded .drawer-item .icon-wrapper {
+        margin: 0; width: 40px; height: 40px; font-size: 16px; flex-shrink: 0;
+    }
+
+    .drawer-grid.layout-list {
+        grid-template-columns: 1fr;
+    }
+    .drawer-grid.layout-list .drawer-item {
+        display: flex; flex-direction: row; align-items: center; text-align: left; gap: 15px;
+        padding: 10px 12px; border-radius: 8px; transition: background 0.2s; border: 1px solid transparent;
+    }
+    .drawer-grid.layout-list .drawer-item:hover {
+        background: transparent; border-color: transparent;
+    }
+    .drawer-grid.layout-list .drawer-item .icon-wrapper {
+        margin: 0; width: 44px; height: 44px; font-size: 18px; flex-shrink: 0;
+    }
+
+
+
+</style>
+</head>
+
+<body>
+
+                            <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header" style="position: relative;">
+            <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+                <img src="app-auto-task.svg" style="height: 28px; width: 28px;" alt="logo" /> <span class="logo-text">CRM</span>
+            </div>
+        </div>
+        <div class="menu-items">
+            <div class="menu-group">
+                <div class="menu-group-title">Bán Hàng & CRM</div>
+                <a href="Customer.html" class="menu-item ">
+                    <i class="fa-solid fa-user-tag"></i>
+                    <span>Customer</span>
+                </a>
+                <a href="Lead.html" class="menu-item active">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Leads</span>
+                </a>
+                <a href="Task.html" class="menu-item ">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Task</span>
+                </a>
+                <a href="Order.html" class="menu-item ">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Đơn hàng</span>
+                </a>
+                <a href="Product.html" class="menu-item ">
+                    <i class="fa-solid fa-box-open"></i>
+                    <span>Sản phẩm</span>
+                </a>
+                <a href="Course.html" class="menu-item ">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Khóa học</span>
+                </a>
+                <a href="BeautyService.html" class="menu-item ">
+                    <i class="fa-solid fa-spa"></i>
+                    <span>Dịch Vụ Làm Đẹp</span>
+                </a>
+                <a href="Tour.html" class="menu-item ">
+                    <i class="fa-solid fa-plane-departure"></i>
+                    <span>Quản lý Tour</span>
+                </a>
+                <a href="Land.html" class="menu-item ">
+                    <i class="fa-solid fa-building"></i>
+                    <span>Bất động sản</span>
+                </a>
+            </div>
+
+            <div class="menu-group">
+                <div class="menu-group-title">Vận Hành & Dịch Vụ</div>
+                <a href="Project.html" class="menu-item ">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <span>Dự Án</span>
+                </a>
+            </div>
+
+            <div class="menu-group">
+                <div class="menu-group-title">Quản Trị & Marketing</div>
+                <a href="Marketing.html" class="menu-item ">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <span>Marketing</span>
+                </a>
+                <a href="Meta.html" class="menu-item ">
+                    <i class="fa-brands fa-meta"></i>
+                    <span>Meta</span>
+                </a>
+                <a href="Staff.html" class="menu-item ">
+                    <i class="fa-solid fa-id-badge"></i>
+                    <span>Nhân viên</span>
+                </a>
+                <a href="Finan.html" class="menu-item ">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                    <span>Tài Chính</span>
+                </a>
+            </div>
+        </div>
+        <div class="sidebar-bottom">
+            <div class="sidebar-bottom-user">
+                <img src="https://i.pravatar.cc/100?img=11" alt="Profile" class="avatar">
+                <div class="user-info">
+                    <span class="user-name">Phan Hiếu</span>
+                    <span class="user-role">Admin</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Toggle Button -->
+        <button id="toggleSidebarBtn" style="position: absolute; bottom: 40px; right: -14px; width: 28px; height: 28px; border-radius: 50%; background: white; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 100; color: #6b7280; font-size: 12px; transition: all 0.2s;">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <!-- Sub Sidebar (Funnels) -->
+    <div class="sub-sidebar">
+        <div class="sub-sidebar-header">
+            <div class="sub-sidebar-title">Quản lý Phễu</div>
+            <button class="btn-icon" title="Thêm phễu"
+                style="width: 28px; height: 28px; font-size: 12px; background: #e5e7eb; color: #4b5563;"><i
+                    class="fa-solid fa-plus"></i></button>
+        </div>
+
+        
+        <div class="tree-group">
+            <div class="tree-group-title" onclick="toggleTreeGroup(this)"><i class="fa-solid fa-chevron-down"></i> Phễu theo ngành</div>
+            <div class="tree-list">
+                <div class="tree-item active" onclick="changeIndustryFunnel('ban_hang', this)">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-box-open" style="color:#3b82f6; width:16px; text-align:center;"></i> Bán hàng
+                    </span> <span class="count">48</span>
+                </div>
+                <div class="tree-item" onclick="changeIndustryFunnel('khoa_hoc', this)">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-graduation-cap" style="color:#f97316; width:16px; text-align:center;"></i> Khóa học
+                    </span> <span class="count">12</span>
+                </div>
+                <div class="tree-item" onclick="changeIndustryFunnel('lam_dep', this)">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-spa" style="color:#ec4899; width:16px; text-align:center;"></i> Làm đẹp
+                    </span> <span class="count">25</span>
+                </div>
+                <div class="tree-item" onclick="changeIndustryFunnel('tour', this)">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-plane-departure" style="color:#14b8a6; width:16px; text-align:center;"></i> Tour du lịch
+                    </span> <span class="count">8</span>
+                </div>
+                <div class="tree-item" onclick="changeIndustryFunnel('bds', this)">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-building" style="color:#eab308; width:16px; text-align:center;"></i> Bất động sản
+                    </span> <span class="count">15</span>
+                </div>
+            </div>
+        </div>
+</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Quản lý Lead</h1>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="window.location.href='#'">Tạo Lead mới</button>
+                <button class="btn-icon"><i class="fa-regular fa-bell"></i></button>
+                <button class="btn-icon"><i class="fa-solid fa-gear"></i></button>
+            </div>
+        </div>
+
+        <!-- Sub Header -->
+        <div class="sub-header">
+            <div class="filters">
+                <button class="btn-filter" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i>
+                    Phễu</button>
+            </div>
+            <div class="filters" style="background: #f3f4f6; padding: 4px; border-radius: 20px;">
+                <button class="btn-filter active" id="btnBoardView" onclick="switchView('board')" style="border: none; box-shadow: none; background: white; color: #1e3a8a;"><i class="fa-solid fa-table-columns"></i> Kanban</button>
+                <button class="btn-filter" id="btnTableView" onclick="switchView('table')" style="border: none; box-shadow: none; background: transparent; color: #4b5563;"><i class="fa-solid fa-table-list"></i> Bảng</button>
+            </div>
+            <div class="filters">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                    <input type="text" placeholder="Tìm kiếm lead...">
+                </div>
+                <button class="btn-filter"><i class="fa-solid fa-sliders"></i> Bộ lọc</button>
+                <button class="btn-filter" onclick="openConfigModal()"><i class="fa-solid fa-gear"></i> Cấu
+                    hình</button>
+            </div>
+        </div>
+
+        <!-- Board -->
+        
+        <!-- Board Container -->
+        <div id="boardsContainer">
+            <!-- Board: Bán hàng -->
+            <div class="board" id="board-ban_hang" style="display: flex;">
+                <div class="board-column col-blue"><div class="column-header"><div class="column-title"><div class="dot dot-blue"></div>Tạo mới <span class="count text-blue">12</span></div></div><div class="column-cards" onclick="openLeadDetail(this, 'ban_hang')"><div class="card"><div class="card-name">Nguyễn Văn A</div><div class="card-tags"><span class="tag tag-blue">Giày dép</span></div></div></div></div>
+                <div class="board-column col-orange"><div class="column-header"><div class="column-title"><div class="dot dot-orange"></div>Đang tư vấn <span class="count text-orange">5</span></div></div><div class="column-cards" onclick="openLeadDetail(this, 'ban_hang')"><div class="card"><div class="card-name">Trần Thị B</div><div class="card-tags"><span class="tag tag-orange">Quần áo</span></div></div></div></div>
+                <div class="board-column col-green"><div class="column-header"><div class="column-title"><div class="dot dot-green"></div>Chốt đơn <span class="count text-green">8</span></div></div><div class="column-cards" onclick="openLeadDetail(this, 'ban_hang')"><div class="card"><div class="card-name">Lê Văn C</div><div class="card-tags"><span class="tag tag-green">Đã thanh toán</span></div></div></div></div>
+                <div class="board-column col-teal"><div class="column-header"><div class="column-title"><div class="dot dot-teal"></div>Đang giao <span class="count text-teal">3</span></div></div></div>
+                <div class="board-column" style="background:#f3f4f6;"><div class="column-header"><div class="column-title"><div class="dot" style="background:#6b7280;"></div>Hoàn thành <span class="count text-gray">15</span></div></div></div>
+            </div>
+
+            <!-- Board: Khóa học -->
+            <div class="board" id="board-khoa_hoc" style="display: none;">
+                <div class="board-column col-blue"><div class="column-header"><div class="column-title"><div class="dot dot-blue"></div>Tư vấn ban đầu <span class="count text-blue">8</span></div></div><div class="column-cards" onclick="openLeadDetail(this, 'khoa_hoc')"><div class="card"><div class="card-name">Học viên 1</div><div class="card-tags"><span class="tag tag-blue">IELTS</span></div></div></div></div>
+                <div class="board-column col-orange"><div class="column-header"><div class="column-title"><div class="dot dot-orange"></div>Học thử / Test <span class="count text-orange">4</span></div></div></div>
+                <div class="board-column col-green"><div class="column-header"><div class="column-title"><div class="dot dot-green"></div>Đóng học phí <span class="count text-green">2</span></div></div></div>
+                <div class="board-column col-teal"><div class="column-header"><div class="column-title"><div class="dot dot-teal"></div>Đang học <span class="count text-teal">20</span></div></div></div>
+                <div class="board-column" style="background:#f3f4f6;"><div class="column-header"><div class="column-title"><div class="dot" style="background:#6b7280;"></div>Đã tốt nghiệp <span class="count text-gray">45</span></div></div></div>
+            </div>
+
+            <!-- Board: Làm đẹp -->
+            <div class="board" id="board-lam_dep" style="display: none;">
+                <div class="board-column col-blue"><div class="column-header"><div class="column-title"><div class="dot dot-blue"></div>Hỏi đáp <span class="count text-blue">15</span></div></div><div class="column-cards" onclick="openLeadDetail(this, 'lam_dep')"><div class="card"><div class="card-name">Khách SPA 1</div><div class="card-tags"><span class="tag tag-pink" style="background:#fdf2f8; color:#ec4899;">Trị mụn</span></div></div></div></div>
+                <div class="board-column col-orange"><div class="column-header"><div class="column-title"><div class="dot dot-orange"></div>Đặt lịch <span class="count text-orange">6</span></div></div></div>
+                <div class="board-column col-teal"><div class="column-header"><div class="column-title"><div class="dot dot-teal"></div>Đã đến <span class="count text-teal">4</span></div></div></div>
+                <div class="board-column col-green"><div class="column-header"><div class="column-title"><div class="dot dot-green"></div>Đang liệu trình <span class="count text-green">10</span></div></div></div>
+                <div class="board-column" style="background:#f3f4f6;"><div class="column-header"><div class="column-title"><div class="dot" style="background:#6b7280;"></div>Hoàn thành <span class="count text-gray">30</span></div></div></div>
+            </div>
+
+            <!-- Board: Tour -->
+            <div class="board" id="board-tour" style="display: none;">
+                <div class="board-column col-blue"><div class="column-header"><div class="column-title"><div class="dot dot-blue"></div>Tìm hiểu Tour <span class="count text-blue">5</span></div></div><div class="column-cards" onclick="openLeadDetail(this, 'tour')"><div class="card"><div class="card-name">Khách Tour A</div><div class="card-tags"><span class="tag tag-teal">Đà Lạt</span></div></div></div></div>
+                <div class="board-column col-orange"><div class="column-header"><div class="column-title"><div class="dot dot-orange"></div>Giữ chỗ <span class="count text-orange">2</span></div></div></div>
+                <div class="board-column col-green"><div class="column-header"><div class="column-title"><div class="dot dot-green"></div>Đã chốt <span class="count text-green">8</span></div></div></div>
+                <div class="board-column col-teal"><div class="column-header"><div class="column-title"><div class="dot dot-teal"></div>Đang đi tour <span class="count text-teal">30</span></div></div></div>
+                <div class="board-column" style="background:#f3f4f6;"><div class="column-header"><div class="column-title"><div class="dot" style="background:#6b7280;"></div>Đã về <span class="count text-gray">12</span></div></div></div>
+            </div>
+
+            <!-- Board: BĐS -->
+            <div class="board" id="board-bds" style="display: none;">
+                <div class="board-column col-blue"><div class="column-header"><div class="column-title"><div class="dot dot-blue"></div>Tiềm năng <span class="count text-blue">20</span></div></div><div class="column-cards" onclick="openLeadDetail(this, 'bds')"><div class="card"><div class="card-name">Nhà đầu tư X</div><div class="card-tags"><span class="tag tag-yellow" style="background:#fefce8; color:#eab308;">Vinhome</span></div></div></div></div>
+                <div class="board-column col-orange"><div class="column-header"><div class="column-title"><div class="dot dot-orange"></div>Hẹn xem nhà <span class="count text-orange">5</span></div></div></div>
+                <div class="board-column col-yellow" style="background:#fefce8;"><div class="column-header"><div class="column-title"><div class="dot" style="background:#eab308;"></div>Đặt cọc <span class="count text-yellow" style="color:#eab308;">2</span></div></div></div>
+                <div class="board-column col-teal"><div class="column-header"><div class="column-title"><div class="dot dot-teal"></div>Làm thủ tục <span class="count text-teal">1</span></div></div></div>
+                <div class="board-column col-green"><div class="column-header"><div class="column-title"><div class="dot dot-green"></div>Bàn giao <span class="count text-green">10</span></div></div></div>
+            </div>
+        </div>
+
+
+        <!-- Table View -->
+        <div class="table-view" id="tableView">
+            <table class="lead-table">
+                <thead>
+                    <tr>
+                        <th>Lead Info</th>
+                        <th>Trạng thái</th>
+                        <th>Tags</th>
+                        <th>Thời gian</th>
+                        <th>Phụ trách</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="openLeadDetail(this)">
+                        <td>
+                            <div class="lead-info">
+                                <img src="https://i.pravatar.cc/100?img=1" class="avatar" alt="" style="width: 32px; height: 32px; border-radius: 50%;">
+                                <div>
+                                    <div class="card-name" style="font-weight: 600; color: #111; margin-bottom: 2px;">Nguyễn Văn Minh</div>
+                                    <div class="card-id" style="font-size: 11px; color: #6b7280;">#LEAD001</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px;">
+                                <div class="dot dot-blue" style="width: 8px; height: 8px; border-radius: 50%; background-color: #3b82f6;"></div>
+                                Biz tạo mới
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 4px;">
+                                <span class="tag tag-blue" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #e0e7ff; color: #4338ca;">Trial</span>
+                                <span class="tag tag-gray" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #f3f4f6; color: #4b5563;">Vitamin</span>
+                            </div>
+                        </td>
+                        <td style="color: #6b7280;">10 phút trước</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <img src="https://i.pravatar.cc/100?img=10" alt="" style="width: 24px; height: 24px; border-radius: 50%;">
+                                <span style="font-size: 12px; color: #4b5563;">Lê Văn A</span>
+                            </div>
+                        </td>
+                        <td style="text-align: right; color: #9ca3af;">
+                            <i class="fa-solid fa-ellipsis" style="cursor: pointer;"></i>
+                        </td>
+                    </tr>
+                    
+                    <tr onclick="openLeadDetail(this)">
+                        <td>
+                            <div class="lead-info">
+                                <img src="https://i.pravatar.cc/100?img=2" class="avatar" alt="" style="width: 32px; height: 32px; border-radius: 50%;">
+                                <div>
+                                    <div class="card-name" style="font-weight: 600; color: #111; margin-bottom: 2px;">Trần Thị Lan</div>
+                                    <div class="card-id" style="font-size: 11px; color: #6b7280;">#LEAD002</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px;">
+                                <div class="dot dot-orange" style="width: 8px; height: 8px; border-radius: 50%; background-color: #f97316;"></div>
+                                Biz đã nhận gói cước
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 4px;">
+                                <span class="tag tag-blue" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #e0e7ff; color: #4338ca;">Premium</span>
+                                <span class="tag tag-gray" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #f3f4f6; color: #4b5563;">FPT</span>
+                            </div>
+                        </td>
+                        <td style="color: #6b7280;">25 phút trước</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <img src="https://i.pravatar.cc/100?img=12" alt="" style="width: 24px; height: 24px; border-radius: 50%;">
+                                <span style="font-size: 12px; color: #4b5563;">Trần Văn B</span>
+                            </div>
+                        </td>
+                        <td style="text-align: right; color: #9ca3af;">
+                            <i class="fa-solid fa-ellipsis" style="cursor: pointer;"></i>
+                        </td>
+                    </tr>
+
+                    <tr onclick="openLeadDetail(this)">
+                        <td>
+                            <div class="lead-info">
+                                <img src="https://i.pravatar.cc/100?img=3" class="avatar" alt="" style="width: 32px; height: 32px; border-radius: 50%;">
+                                <div>
+                                    <div class="card-name" style="font-weight: 600; color: #111; margin-bottom: 2px;">Lê Hoàng Nam</div>
+                                    <div class="card-id" style="font-size: 11px; color: #6b7280;">#LEAD003</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px;">
+                                <div class="dot dot-green" style="width: 8px; height: 8px; border-radius: 50%; background-color: #22c55e;"></div>
+                                Biz đã kết nối channel
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 4px;">
+                                <span class="tag tag-yellow" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #fef9c3; color: #ca8a04;">Basic</span>
+                                <span class="tag tag-gray" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #f3f4f6; color: #4b5563;">VietinBank</span>
+                            </div>
+                        </td>
+                        <td style="color: #6b7280;">1 giờ trước</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <img src="https://i.pravatar.cc/100?img=13" alt="" style="width: 24px; height: 24px; border-radius: 50%;">
+                                <span style="font-size: 12px; color: #4b5563;">Nguyễn Văn C</span>
+                            </div>
+                        </td>
+                        <td style="text-align: right; color: #9ca3af;">
+                            <i class="fa-solid fa-ellipsis" style="cursor: pointer;"></i>
+                        </td>
+                    </tr>
+
+                    <tr onclick="openLeadDetail(this)">
+                        <td>
+                            <div class="lead-info">
+                                <img src="https://i.pravatar.cc/100?img=26" class="avatar" alt="" style="width: 32px; height: 32px; border-radius: 50%;">
+                                <div>
+                                    <div class="card-name" style="font-weight: 600; color: #111; margin-bottom: 2px;">Anh Duy</div>
+                                    <div class="card-id" style="font-size: 11px; color: #6b7280;">#LEAD027</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px;">
+                                <div class="dot dot-teal" style="width: 8px; height: 8px; border-radius: 50%; background-color: #14b8a6;"></div>
+                                Biz đã sử dụng livechat
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 4px;">
+                                <span class="tag tag-green" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #dcfce7; color: #16a34a;">VIP</span>
+                            </div>
+                        </td>
+                        <td style="color: #6b7280;">2 giờ trước</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <img src="https://i.pravatar.cc/100?img=10" alt="" style="width: 24px; height: 24px; border-radius: 50%;">
+                                <span style="font-size: 12px; color: #4b5563;">Lê Văn A</span>
+                            </div>
+                        </td>
+                        <td style="text-align: right; color: #9ca3af;">
+                            <i class="fa-solid fa-ellipsis" style="cursor: pointer;"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- FAB -->
+    <div class="fab">
+        <i class="fa-solid fa-plus"></i>
+    </div>
+
+    <!-- Config Modal -->
+    <div class="modal-overlay" id="configModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Cấu hình Trạng thái</h2>
+                <button class="modal-close" onclick="closeConfigModal()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchModalTab('tab-groups', this)">Nhóm trạng thái</button>
+                <button class="modal-tab" onclick="switchModalTab('tab-statuses', this)">Trạng thái Lead</button>
+            </div>
+            <div class="modal-body">
+                <!-- Tab 1: Trạng thái Lead -->
+                <div id="tab-statuses" class="modal-tab-content">
+                    <div
+                        style="display: flex; justify-content: space-between; margin-bottom: 15px; align-items: center;">
+                        <h3 style="font-size: 14px; font-weight: 600;">Danh sách Trạng thái</h3>
+                        <button class="btn-primary" onclick="addNewStatus()"
+                            style="padding: 6px 12px; font-size: 12px;"><i class="fa-solid fa-plus"></i> Thêm trạng
+                            thái</button>
+                    </div>
+                    <div class="status-list">
+                        <!-- Items -->
+                        <div class="status-item">
+                            <div class="status-item-left">
+                                <i class="fa-solid fa-grip-vertical text-muted" style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #3b82f6;"></div>
+                                <span style="font-size: 14px; font-weight: 500;">Biz tạo mới</span>
+                            </div>
+                            <div class="status-actions">
+                                <button onclick="editItem(this)"><i class="fa-solid fa-pen"></i></button>
+                                <button style="color: #ef4444;" onclick="deleteItem(this)"><i
+                                        class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left">
+                                <i class="fa-solid fa-grip-vertical text-muted" style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #f97316;"></div>
+                                <span style="font-size: 14px; font-weight: 500;">Biz đã nhận gói cước</span>
+                            </div>
+                            <div class="status-actions">
+                                <button onclick="editItem(this)"><i class="fa-solid fa-pen"></i></button>
+                                <button style="color: #ef4444;" onclick="deleteItem(this)"><i
+                                        class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left">
+                                <i class="fa-solid fa-grip-vertical text-muted" style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #22c55e;"></div>
+                                <span style="font-size: 14px; font-weight: 500;">Biz đã kết nối channel</span>
+                            </div>
+                            <div class="status-actions">
+                                <button onclick="editItem(this)"><i class="fa-solid fa-pen"></i></button>
+                                <button style="color: #ef4444;" onclick="deleteItem(this)"><i
+                                        class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Added 20 Mock Statuses -->
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #ec4899;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Biz chưa Verify Email</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #8b5cf6;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Biz lỗi cấu hình Cname</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #14b8a6;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Biz yêu cầu hỗ trợ</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #64748b;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Chưa login 7 ngày</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #eab308;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Gói Trial hết hạn</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #ef4444;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Tạm khóa Account</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #06b6d4;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Onboarding thành công</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #3b82f6;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Khởi tạo chuỗi Flow</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #10b981;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Thêm tên miền riêng</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #a855f7;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Tương tác cao (Top 10%)</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #6366f1;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Đã xuất dữ liệu Excel</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #f43f5e;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Lỗi kết nối Facebook</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #84cc16;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Có tích hợp ZaloOA</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #0ea5e9;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Sử dụng API</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #d946ef;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Tạo hơn 100 Lead/Tuần</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #fb923c;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Khách hàng VIP</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #94a3b8;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Tạm ngưng dự án</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #2dd4bf;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Đã Setup Landing Page</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #fb7185;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Phát sinh chi phí phụ</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-item-left"><i class="fa-solid fa-grip-vertical text-muted"
+                                    style="cursor: grab;"></i>
+                                <div class="status-color" style="background-color: #4ade80;"></div><span
+                                    style="font-size: 14px; font-weight: 500;">Hoàn tất đối soát</span>
+                            </div>
+                            <div class="status-actions"><button onclick="editItem(this)"><i
+                                        class="fa-solid fa-pen"></i></button><button style="color: #ef4444;"
+                                    onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Nhóm trạng thái -->
+                <div id="tab-groups" class="modal-tab-content active">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; align-items: center;">
+                        <h3 style="font-size: 14px; font-weight: 600;">Danh sách Nhóm trạng thái</h3>
+                        <button class="btn-primary" onclick="openAddGroupModal()"
+                            style="padding: 6px 12px; font-size: 12px;"><i class="fa-solid fa-plus"></i> Thêm nhóm</button>
+                    </div>
+
+                    <!-- New Groups Layout -->
+                    <div class="status-groups-list" style="display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px;">
+                        
+                        <!-- Group Card 1 -->
+                        <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; background: white; display: flex; gap: 16px; align-items: flex-start; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'" onmouseout="this.style.boxShadow='none'">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #65a30d;">
+                                <i class="fa-solid fa-seedling"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 700; color: #1e3a8a; text-transform: uppercase; margin-bottom: 4px;">LEAD TỪ QUẢNG CÁO B2C (FB/TIKTOK/GG)</div>
+                                <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">Phù hợp: Thời trang, gia dụng, mỹ phẩm, thực phẩm</div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Lead mới</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #ede9fe; color: #5b21b6; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Đã liên hệ</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #ffedd5; color: #c2410c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Đang tư vấn</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Hoàn tất</span>
+                                </div>
+                            </div>
+                            <div class="group-actions" style="display: flex; gap: 8px;">
+                                <button style="background: transparent; border: none; color: #6b7280; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#1e3a8a'" onmouseout="this.style.color='#6b7280'"><i class="fa-solid fa-pen"></i></button>
+                                <button style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#b91c1c'" onmouseout="this.style.color='#ef4444'"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Group Card 2 -->
+                        <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; background: white; display: flex; gap: 16px; align-items: flex-start; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'" onmouseout="this.style.boxShadow='none'">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #2563eb;">
+                                <i class="fa-solid fa-shirt"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 700; color: #1e3a8a; text-transform: uppercase; margin-bottom: 4px;">LEAD B2B</div>
+                                <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">Cần nhiều bước thẩm định, hành trình chăm sóc đường dài</div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Tiếp nhận</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #ede9fe; color: #5b21b6; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Đánh giá</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #ffedd5; color: #c2410c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Đặt lịch hẹn</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #fef3c7; color: #b45309; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Gửi báo giá</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #f3e8ff; color: #6b21a8; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Thương lượng</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #fce7f3; color: #be185d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Ký kết</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Triển khai</span>
+                                </div>
+                            </div>
+                            <div class="group-actions" style="display: flex; gap: 8px;">
+                                <button style="background: transparent; border: none; color: #6b7280; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#1e3a8a'" onmouseout="this.style.color='#6b7280'"><i class="fa-solid fa-pen"></i></button>
+                                <button style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#b91c1c'" onmouseout="this.style.color='#ef4444'"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Group Card 3 -->
+                        <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; background: white; display: flex; gap: 16px; align-items: flex-start; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'" onmouseout="this.style.boxShadow='none'">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white;">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 700; color: #1e3a8a; text-transform: uppercase; margin-bottom: 4px;">LEAD CHĂM SÓC LẠI</div>
+                                <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">Những khách cũ đã lâu không tương tác hoặc từng từ chối</div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span style="background: #fee2e2; color: #b91c1c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Cần hâm nóng</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #fce7f3; color: #be185d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Gửi ưu đãi</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Tương tác lại</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Tái chuyển đổi</span>
+                                </div>
+                            </div>
+                            <div class="group-actions" style="display: flex; gap: 8px;">
+                                <button style="background: transparent; border: none; color: #6b7280; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#1e3a8a'" onmouseout="this.style.color='#6b7280'"><i class="fa-solid fa-pen"></i></button>
+                                <button style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#b91c1c'" onmouseout="this.style.color='#ef4444'"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Group Card 4 -->
+                        <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; background: white; display: flex; gap: 16px; align-items: flex-start; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'" onmouseout="this.style.boxShadow='none'">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #dc2626; font-weight: 900; font-style: italic;">
+                                100
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 700; color: #1e3a8a; text-transform: uppercase; margin-bottom: 4px;">GỬI ƯU ĐÃI & KHUYẾN MÃI</div>
+                                <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">Quy trình biến một mã giảm giá thành một đơn hàng thành công</div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span style="background: #fee2e2; color: #b91c1c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Đã gửi ưu đãi</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Có tương tác</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #f3e8ff; color: #6b21a8; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Đang chốt đơn</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Hoàn tất</span>
+                                </div>
+                            </div>
+                            <div class="group-actions" style="display: flex; gap: 8px;">
+                                <button style="background: transparent; border: none; color: #6b7280; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#1e3a8a'" onmouseout="this.style.color='#6b7280'"><i class="fa-solid fa-pen"></i></button>
+                                <button style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#b91c1c'" onmouseout="this.style.color='#ef4444'"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Group Card 5 -->
+                        <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; background: white; display: flex; gap: 16px; align-items: flex-start; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'" onmouseout="this.style.boxShadow='none'">
+                            <div style="width: 40px; height: 40px; border-radius: 8px; background: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white;">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 700; color: #1e3a8a; text-transform: uppercase; margin-bottom: 4px;">TÁI ĐẶT HÀNG</div>
+                                <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">Dành cho sản phẩm có vòng đời sử dụng (thế là phải mua lại)</div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Nhận hàng thành công</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #fee2e2; color: #b91c1c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Sắp tới hạn tái mua</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #ffedd5; color: #c2410c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Đã liên hệ nhắc hẹn</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Đang chốt đơn</span>
+                                    <i class="fa-solid fa-chevron-right" style="color: #9ca3af; font-size: 10px;"></i>
+                                    <span style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">Hoàn tất</span>
+                                </div>
+                            </div>
+                            <div class="group-actions" style="display: flex; gap: 8px;">
+                                <button style="background: transparent; border: none; color: #6b7280; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#1e3a8a'" onmouseout="this.style.color='#6b7280'"><i class="fa-solid fa-pen"></i></button>
+                                <button style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 4px;" onmouseover="this.style.color='#b91c1c'" onmouseout="this.style.color='#ef4444'"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Form Modal -->
+    <div class="modal-overlay" id="formModal" style="z-index: 1010;">
+        <div class="modal" style="width: 400px; height: auto; min-height: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <div class="modal-header">
+                <h2 id="formModalTitle">Thêm mới</h2>
+                <button class="modal-close" onclick="closeFormModal()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <label style="font-size: 14px; font-weight: 500; display: block; margin-bottom: 8px;">Tên <span
+                        style="color:red">*</span></label>
+                <input type="text" id="formModalInput"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 20px; font-size: 14px;"
+                    placeholder="Nhập tên...">
+
+                <div id="formModalColorPicker" style="display: none; margin-bottom: 20px;">
+                    <label style="font-size: 14px; font-weight: 500; display: block; margin-bottom: 8px;">Màu
+                        sắc</label>
+                    <input type="color" id="formModalColor"
+                        style="width: 100%; height: 40px; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; padding: 2px;">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                    <button class="btn-filter"
+                        style="padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-color); background: white; cursor: pointer;"
+                        onclick="closeFormModal()">Hủy</button>
+                    <button class="btn-primary" style="padding: 8px 16px; border-radius: 6px;"
+                        onclick="submitFormModal()">Lưu lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lead Detail Modal -->
+    <div class="modal-overlay" id="leadDetailModal" style="z-index: 1005;">
+        <div class="modal" style="width: 1150px; max-width: 96%; height: 88vh; background: white; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden;">
+            <!-- Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: white; border-bottom: 1px solid #e5e7eb; height: 52px; flex-shrink: 0;">
+                <!-- Left: icon + name -->
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-filter" style="color: #6b7280; font-size: 14px;"></i>
+                    <span style="font-weight: 600; font-size: 15px; color: #1f2937;" id="leadDetailName">Trang</span>
+                </div>
+                <!-- Center: pipeline tabs -->
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button style="background: #3b82f6; color: white; border: none; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer;">Cần hàm nóng</button>
+                    <button style="background: none; border: none; padding: 6px 14px; font-size: 12px; color: #4b5563; cursor: pointer; border-radius: 20px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">Gửi ưu đãi</button>
+                    <button style="background: none; border: none; padding: 6px 14px; font-size: 12px; color: #4b5563; cursor: pointer; border-radius: 20px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">Tương tác ISI</button>
+                    <button style="background: none; border: none; padding: 6px 14px; font-size: 12px; color: #4b5563; cursor: pointer; border-radius: 20px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">Tái chuyển đổi</button>
+                    <button style="background: #16a34a; color: white; border: none; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-check" style="font-size: 10px;"></i> Hoàn thành bước</button>
+                    <button style="background: none; border: none; font-size: 16px; color: #6b7280; cursor: pointer; padding: 4px 6px;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                </div>
+                <!-- Right: close -->
+                <button class="modal-close" onclick="closeLeadDetail()" style="background: none; border: none; font-size: 18px; color: #9ca3af; cursor: pointer;"><i class="fa-solid fa-times"></i></button>
+            </div>
+
+            <!-- Body -->
+            <div style="display: flex; flex: 1; overflow: hidden;">
+                <!-- Left Column -->
+                <div style="flex: 1; display: flex; flex-direction: column; border-right: 1px solid #e5e7eb; overflow: hidden;">
+                    <!-- Sub-header info row -->
+                    <div style="padding: 10px 18px; border-bottom: 1px solid #e5e7eb; background: white; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 11px; color: #9ca3af;">Phễu:</span>
+                            <span style="font-size: 12px; font-weight: 600; color: #ef4444; letter-spacing: 0.2px;">LEAD CHĂM SÓC LẠI</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 11px; color: #9ca3af;">Nguồn lead:</span>
+                            <span style="font-size: 12px; color: #374151; display: flex; align-items: center; gap: 4px;">Nguồn đơn <i class="fa-solid fa-grip-dots" style="color: #9ca3af; font-size: 10px;"></i></span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 11px; color: #9ca3af;">Chi nhánh:</span>
+                            <span style="font-size: 12px; color: #374151; display: flex; align-items: center; gap: 4px;">Smax Demo <i class="fa-solid fa-chevron-down" style="font-size: 9px; color: #9ca3af;"></i></span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
+                            <span style="font-size: 11px; color: #9ca3af;">Nhân sự phụ trách:</span>
+                            <button style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 12px; color: #374151; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-plus"></i></button>
+                            <button style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 12px; color: #374151; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-phone"></i></button>
+                            <button style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 12px; color: #374151; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-bullhorn"></i></button>
+                            <button style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 12px; color: #374151; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-table-cells"></i></button>
+                        </div>
+                    </div>
+                    <!-- Tags row -->
+                    <div style="padding: 6px 18px; border-bottom: 1px solid #e5e7eb; background: white; display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 11px; color: #9ca3af;">Thẻ tag:</span>
+                        <span style="font-size: 12px; color: #9ca3af;">-</span>
+                    </div>
+
+                    <!-- Tabs: Tác vụ / Tổng quan / Thảo luận -->
+                    <div style="display: flex; border-bottom: 1px solid #e5e7eb; background: white; padding: 0 18px;">
+                        <button onclick="switchLeadTab('tacvu', this)" style="padding: 10px 16px; font-size: 13px; font-weight: 500; color: #6b7280; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 6px;" id="lead-tab-tacvu">
+                            <i class="fa-solid fa-list-check" style="font-size: 12px;"></i> Tác vụ
+                        </button>
+                        <button onclick="switchLeadTab('tongquan', this)" style="padding: 10px 16px; font-size: 13px; font-weight: 500; color: #6b7280; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 6px;" id="lead-tab-tongquan">
+                            <i class="fa-solid fa-house" style="font-size: 12px;"></i> Tổng quan
+                        </button>
+                        <button onclick="switchLeadTab('thaoluan', this)" style="padding: 10px 16px; font-size: 13px; font-weight: 500; color: #3b82f6; background: none; border: none; border-bottom: 2px solid #3b82f6; cursor: pointer; display: flex; align-items: center; gap: 6px;" id="lead-tab-thaoluan">
+                            <i class="fa-regular fa-comment" style="font-size: 12px;"></i> Thảo luận
+                        </button>
+                    </div>
+
+                    <!-- Tab contents -->
+                    <!-- Tác vụ -->
+                    <div id="lead-content-tacvu" style="flex: 1; overflow-y: auto; padding: 18px; display: none;">
+                        <div style="text-align: center; color: #9ca3af; padding: 40px 0; font-size: 13px;">Chưa có tác vụ nào</div>
+                    </div>
+
+                    <!-- Tổng quan -->
+                    <div id="lead-content-tongquan" style="flex: 1; overflow-y: auto; padding: 18px; display: none;">
+                        <div style="text-align: center; color: #9ca3af; padding: 40px 0; font-size: 13px;">Tổng quan lead</div>
+                    </div>
+
+                    <!-- Thảo luận -->
+                    <div id="lead-content-thaoluan" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column;">
+                        <!-- Chat messages area -->
+                        <div style="flex: 1; overflow-y: auto; padding: 18px 18px 0;">
+                            <!-- Message from TrangDT -->
+                            <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px;">
+                                <div style="width: 32px; height: 32px; border-radius: 50%; background: #d1d5db; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #6b7280;">T</div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+                                        <span style="font-size: 13px; font-weight: 600; color: #1f2937;">TrangDT</span>
+                                        <span style="font-size: 11px; color: #9ca3af;">2 phút trước</span>
+                                    </div>
+                                    <div style="font-size: 13px; color: #374151;">Em nhận lead này a</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chat input -->
+                        <div style="padding: 12px 18px; border-top: 1px solid #e5e7eb; background: white;">
+                            <div style="display: flex; align-items: center; gap: 8px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; background: white;">
+                                <button style="background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 14px; padding: 0;"><i class="fa-regular fa-image"></i></button>
+                                <button style="background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 14px; padding: 0;"><i class="fa-solid fa-paperclip"></i></button>
+                                <input type="text" placeholder="Nhp nội dung thảo lu_n..." style="flex: 1; border: none; outline: none; font-size: 13px; color: #374151; background: transparent;">
+                                <button style="background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 14px; padding: 0;"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Chân dung lead -->
+                <div style="width: 340px; flex-shrink: 0; display: flex; flex-direction: column; background: white; overflow: hidden;">
+                    <!-- Right tabs -->
+                    <div style="display: flex; border-bottom: 1px solid #e5e7eb; padding: 0 16px;">
+                        <button onclick="switchRightTab('chandung', this)" style="padding: 10px 14px; font-size: 13px; font-weight: 500; color: #3b82f6; background: none; border: none; border-bottom: 2px solid #3b82f6; cursor: pointer; display: flex; align-items: center; gap: 5px;" id="right-tab-chandung">
+                            <i class="fa-solid fa-user" style="font-size: 11px;"></i> Chân dung lead
+                        </button>
+                        <button onclick="switchRightTab('lichsu', this)" style="padding: 10px 14px; font-size: 13px; font-weight: 500; color: #6b7280; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 5px;" id="right-tab-lichsu">
+                            <i class="fa-solid fa-clock-rotate-left" style="font-size: 11px;"></i> Lịch sử
+                        </button>
+                    </div>
+
+                    <!-- Chân dung lead content -->
+                    <div id="right-content-chandung" style="flex: 1; overflow-y: auto; padding: 14px 16px;">
+                        <!-- Metric cards: 2x2 grid -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
+                            <!-- Loyalty -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; background: white;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                                    <span style="font-size: 12px; font-weight: 600; color: #d97706;">Loyalty</span>
+                                    <span style="font-size: 15px; font-weight: 700; color: #d97706;">2.500</span>
+                                </div>
+                                <div style="font-size: 11px; color: #9ca3af; font-weight: 500;">VÀNG</div>
+                            </div>
+                            <!-- RFM -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; background: white;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                                    <span style="font-size: 12px; font-weight: 600; color: #ef4444;">RFM</span>
+                                    <span style="font-size: 15px; font-weight: 700; color: #ef4444;">355</span>
+                                </div>
+                                <div style="font-size: 11px; color: #9ca3af; font-weight: 500;">LOYAL CUSTOMERS</div>
+                            </div>
+                            <!-- Tổng -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; background: white;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                                    <span style="font-size: 12px; font-weight: 600; color: #16a34a;">Tổng</span>
+                                    <span style="font-size: 15px; font-weight: 700; color: #16a34a;">150.000</span>
+                                </div>
+                                <div style="font-size: 11px; color: #9ca3af;">Gần nhất: 07/04/2026</div>
+                            </div>
+                            <!-- Số đơn -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; background: white;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                                    <span style="font-size: 12px; font-weight: 600; color: #1f2937;">Số đơn</span>
+                                    <span style="font-size: 15px; font-weight: 700; color: #1f2937;">8</span>
+                                </div>
+                                <div style="font-size: 11px; color: #9ca3af;">AOV: 465.298</div>
+                            </div>
+                        </div>
+
+                        <!-- Sản phẩm đang quan tâm -->
+                        <div style="margin-bottom: 14px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <span style="font-size: 13px; font-weight: 600; color: #1f2937;">Sản phẩm đang quan tâm</span>
+                                <div style="display: flex; gap: 6px;">
+                                    <button style="width: 22px; height: 22px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 10px; color: #6b7280; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-plus"></i></button>
+                                    <button style="width: 22px; height: 22px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 10px; color: #6b7280; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-chevron-down"></i></button>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <!-- Product 1 -->
+                                <div style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; background: white;">
+                                    <div style="height: 72px; background: linear-gradient(135deg, #1a5c2a, #2d7a3a); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="width: 44px; height: 60px; background: linear-gradient(180deg, #2d8a3e, #1a5c2a); border-radius: 4px; position: relative; display: flex; align-items: center; justify-content: center;">
+                                            <div style="width: 30px; height: 40px; background: rgba(255,255,255,0.15); border-radius: 3px;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 6px 8px;">
+                                        <div style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 2px;">PD2348938</div>
+                                        <div style="font-size: 11px; font-weight: 700; color: #374151;">1.200.000đ</div>
+                                    </div>
+                                </div>
+                                <!-- Product 2 -->
+                                <div style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; background: white;">
+                                    <div style="height: 72px; background: linear-gradient(135deg, #1a5c2a, #2d7a3a); display: flex; align-items: center; justify-content: center;">
+                                        <div style="width: 44px; height: 60px; background: linear-gradient(180deg, #2d8a3e, #1a5c2a); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                                            <div style="width: 30px; height: 40px; background: rgba(255,255,255,0.15); border-radius: 3px;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 6px 8px;">
+                                        <div style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 2px;">PD2348938</div>
+                                        <div style="font-size: 11px; font-weight: 700; color: #374151;">1.200.000đ</div>
+                                    </div>
+                                </div>
+                                <!-- Product 3 -->
+                                <div style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; background: white;">
+                                    <div style="height: 72px; background: linear-gradient(135deg, #1a5c2a, #2d7a3a); display: flex; align-items: center; justify-content: center;">
+                                        <div style="width: 44px; height: 60px; background: linear-gradient(180deg, #2d8a3e, #1a5c2a); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                                            <div style="width: 30px; height: 40px; background: rgba(255,255,255,0.15); border-radius: 3px;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 6px 8px;">
+                                        <div style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 2px;">PD2348938</div>
+                                        <div style="font-size: 11px; font-weight: 700; color: #374151;">1.200.000đ</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lịch sử đơn hàng -->
+                        <div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <span style="font-size: 13px; font-weight: 600; color: #1f2937;">Lịch sử đơn hàng</span>
+                                <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                            <!-- Order 1 -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; background: white;">
+                                <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px;">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <i class="fa-solid fa-cart-shopping" style="color: #3b82f6; font-size: 12px;"></i>
+                                        <span style="font-size: 12px; font-weight: 600; color: #3b82f6;">DH2607821</span>
+                                    </div>
+                                    <span style="font-size: 12px; font-weight: 600; color: #1f2937;">420.000đ</span>
+                                </div>
+                                <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Dầu gội nguyên xuân Set 9 Chai x1</div>
+                                <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px;">+3 mặt hàng khác</div>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Đã nhận</span>
+                                    <span style="font-size: 11px; color: #9ca3af;"><i class="fa-regular fa-clock" style="margin-right: 3px;"></i>19:39 07/04</span>
+                                </div>
+                            </div>
+                            <!-- Order 2 -->
+                            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; background: white;">
+                                <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px;">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <i class="fa-solid fa-cart-shopping" style="color: #3b82f6; font-size: 12px;"></i>
+                                        <span style="font-size: 12px; font-weight: 600; color: #3b82f6;">DH2607821</span>
+                                    </div>
+                                    <span style="font-size: 12px; font-weight: 600; color: #1f2937;">420.000đ</span>
+                                </div>
+                                <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Dầu gội nguyên xuân Set 9 Chai x1</div>
+                                <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px;">+3 mặt hàng khác</div>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Đã nhận</span>
+                                    <span style="font-size: 11px; color: #9ca3af;"><i class="fa-regular fa-clock" style="margin-right: 3px;"></i>19:39 07/04</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lịch sử content -->
+                    <div id="right-content-lichsu" style="flex: 1; overflow-y: auto; padding: 14px 16px; display: none;">
+                        <div style="text-align: center; color: #9ca3af; padding: 40px 0; font-size: 13px;">Chưa có lịch sử</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inline edit and add functions
+        let currentFormAction = null;
+        let currentEditNode = null;
+
+        function openFormModal(action, node = null) {
+            currentFormAction = action;
+            currentEditNode = node;
+
+            const title = document.getElementById('formModalTitle');
+            const input = document.getElementById('formModalInput');
+            const colorPicker = document.getElementById('formModalColorPicker');
+            const colorInput = document.getElementById('formModalColor');
+
+            input.value = '';
+            colorPicker.style.display = 'none';
+
+            if (action === 'addStatus') {
+                title.innerText = 'Thêm trạng thái mới';
+                colorPicker.style.display = 'block';
+                colorInput.value = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+            } else if (action === 'addGroup') {
+                title.innerText = 'Thêm nhóm mới';
+            } else if (action === 'editStatus') {
+                title.innerText = 'Chỉnh sửa trạng thái';
+                const span = node.closest('.status-item').querySelector('span');
+                const badge = node.closest('.status-item').querySelector('.status-color');
+                input.value = span.innerText;
+                colorPicker.style.display = 'block';
+                colorInput.value = rgbToHex(badge.style.backgroundColor);
+            } else if (action === 'editGroup') {
+                title.innerText = 'Chỉnh sửa nhóm';
+                const span = node.closest('.status-item').querySelector('span');
+                input.value = span.innerText;
+            }
+
+            document.getElementById('formModal').classList.add('active');
+            input.focus();
+        }
+
+        function closeFormModal() {
+            document.getElementById('formModal').classList.remove('active');
+        }
+
+        function submitFormModal() {
+            const input = document.getElementById('formModalInput').value.trim();
+            if (!input) {
+                alert("Vui lòng nhập tên.");
+                return;
+            }
+
+            const color = document.getElementById('formModalColor').value;
+
+            if (currentFormAction === 'addStatus') {
+                let list = document.querySelector('#tab-statuses .status-list');
+                let html = `
+                    <div class="status-item">
+                        <div class="status-item-left">
+                            <i class="fa-solid fa-grip-vertical text-muted" style="cursor: grab;"></i>
+                            <div class="status-color" style="background-color: ${color};"></div>
+                            <span style="font-size: 14px; font-weight: 500;">${input}</span>
+                        </div>
+                        <div class="status-actions">
+                            <button onclick="editItem(this)"><i class="fa-solid fa-pen"></i></button>
+                            <button style="color: #ef4444;" onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                list.insertAdjacentHTML('afterbegin', html);
+            } else if (currentFormAction === 'addGroup') {
+                let list = document.querySelector('#tab-groups .status-list');
+                let html = `
+                    <div class="status-item">
+                        <div class="status-item-left">
+                            <i class="fa-solid fa-grip-vertical text-muted" style="cursor: grab;"></i>
+                            <span style="font-size: 14px; font-weight: 500;">${input}</span>
+                        </div>
+                        <div class="status-actions">
+                            <button onclick="editItem(this)"><i class="fa-solid fa-pen"></i></button>
+                            <button style="color: #ef4444;" onclick="deleteItem(this)"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                list.insertAdjacentHTML('afterbegin', html);
+            } else if (currentFormAction === 'editStatus') {
+                let item = currentEditNode.closest('.status-item');
+                item.querySelector('span').innerText = input;
+                item.querySelector('.status-color').style.backgroundColor = color;
+            } else if (currentFormAction === 'editGroup') {
+                let item = currentEditNode.closest('.status-item');
+                item.querySelector('span').innerText = input;
+            }
+
+            closeFormModal();
+        }
+
+        function rgbToHex(rgb) {
+            if (!rgb || rgb.startsWith('#')) return rgb || '#000000';
+            let a = rgb.split("(")[1].split(")")[0].split(",");
+            let r = parseInt(a[0]).toString(16).padStart(2, '0');
+            let g = parseInt(a[1]).toString(16).padStart(2, '0');
+            let b = parseInt(a[2]).toString(16).padStart(2, '0');
+            return "#" + r + g + b;
+        }
+
+        function addNewStatus() { openFormModal('addStatus'); }
+        function addNewGroup() { openFormModal('addGroup'); }
+
+        function editItem(btn) {
+            let item = btn.closest('.status-item');
+            if (item.querySelector('.status-color')) {
+                openFormModal('editStatus', btn);
+            } else {
+                openFormModal('editGroup', btn);
+            }
+        }
+
+        function deleteItem(btn) {
+            if (confirm("Bạn có chắc chắn muốn xóa mục này không?")) {
+                btn.closest('.status-item').remove();
+            }
+        }
+
+        // Modal functions
+        function openConfigModal() {
+            document.getElementById('configModal').classList.add('active');
+        }
+
+        function closeConfigModal() {
+            document.getElementById('configModal').classList.remove('active');
+        }
+
+        function switchModalTab(tabId, btn) {
+            document.querySelectorAll('.modal-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.modal-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function toggleSubSidebar() {
+            document.querySelector('.sub-sidebar').classList.toggle('collapsed');
+        }
+
+        function toggleTreeGroup(element) {
+            if (element.classList.contains('tree-sub-group-title')) {
+                element.closest('.tree-sub-group').classList.toggle('collapsed');
+            } else {
+                element.closest('.tree-group').classList.toggle('collapsed');
+            }
+        }
+
+        // Init the board
+        document.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('.tree-item');
+
+            // Set draggable attribute on native cards so clones inherit it
+            document.querySelectorAll('.card').forEach(card => {
+                card.setAttribute('draggable', 'true');
+            });
+
+            if (items.length > 0) {
+                changeIndustryFunnel('ban_hang', items[0]);
+            }
+        });
+
+        // Event delegation for Clicks and Drag & Drop
+        document.addEventListener('DOMContentLoaded', () => {
+            const board = document.getElementById('boardsContainer');
+            if(!board) return;
+            let draggedCard = null;
+
+            // Click event for opening lead detail
+            board.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                if (card) {
+                    if (e.target.closest('button') || e.target.closest('.fa-ellipsis-vertical') || e.target.closest('.fa-ellipsis')) return;
+                    // Note: We use the onclick attribute on column-cards for openLeadDetail with specific industry, 
+                    // so we don't need to call it here again to prevent duplicate calls, but we leave it for cards without onclick.
+                    if (!e.target.closest('.column-cards[onclick]')) {
+                        openLeadDetail(card);
+                    }
+                }
+            });
+
+            // Drag Start
+            board.addEventListener('dragstart', (e) => {
+                const card = e.target.closest('.card');
+                if (card) {
+                    draggedCard = card;
+                    setTimeout(() => card.style.opacity = '0.4', 0);
+                    e.dataTransfer.effectAllowed = "move";
+                }
+            });
+
+            // Drag End
+            board.addEventListener('dragend', (e) => {
+                if (draggedCard) {
+                    draggedCard.style.opacity = '1';
+                    draggedCard = null;
+                }
+                board.querySelectorAll('.column-cards').forEach(col => col.style.background = '');
+            });
+
+            // Drag Over
+            board.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const dropZone = e.target.closest('.column-cards');
+                if (dropZone && draggedCard) {
+                    e.dataTransfer.dropEffect = "move";
+                    dropZone.style.background = 'rgba(0,0,0,0.03)';
+                }
+            });
+
+            // Drag Leave
+            board.addEventListener('dragleave', (e) => {
+                const dropZone = e.target.closest('.column-cards');
+                if (dropZone) {
+                    dropZone.style.background = '';
+                }
+            });
+
+            // Drop
+            board.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const dropZone = e.target.closest('.column-cards');
+                if (dropZone && draggedCard) {
+                    dropZone.style.background = '';
+                    const afterElement = getDragAfterElement(dropZone, e.clientY);
+                    if (afterElement == null) {
+                        dropZone.appendChild(draggedCard);
+                    } else {
+                        dropZone.insertBefore(draggedCard, afterElement);
+                    }
+
+                    // Update count in header
+                    updateColCounts();
+                }
+            });
+
+            // Helper to find position
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.card:not([style*="opacity: 0.4"])')];
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+
+            // Helper to update columns counts
+            function updateColCounts() {
+                document.querySelectorAll('.board-column').forEach(col => {
+                    const countSpan = col.querySelector('.column-title .count');
+                    const numCards = col.querySelectorAll('.column-cards .card').length;
+                    if (countSpan) countSpan.innerText = numCards;
+                });
+            }
+        });
+
+        function openLeadDetail(card) {
+            if (card) {
+                const nameNode = card.querySelector('.card-name');
+                if (nameNode) {
+                    const name = nameNode.innerText;
+                    const el = document.getElementById('leadDetailName');
+                    if (el) el.innerText = name;
+                }
+            }
+            document.getElementById('leadDetailModal').classList.add('active');
+        }
+
+        function closeLeadDetail() {
+            document.getElementById('leadDetailModal').classList.remove('active');
+        }
+
+        function switchLeadTab(tab, btn) {
+            ['tacvu','tongquan','thaoluan'].forEach(t => {
+                const c = document.getElementById('lead-content-' + t);
+                const b = document.getElementById('lead-tab-' + t);
+                if (c) c.style.display = 'none';
+                if (b) { b.style.color = '#6b7280'; b.style.borderBottom = '2px solid transparent'; }
+            });
+            const active = document.getElementById('lead-content-' + tab);
+            if (active) active.style.display = tab === 'thaoluan' ? 'flex' : 'block';
+            btn.style.color = '#3b82f6';
+            btn.style.borderBottom = '2px solid #3b82f6';
+        }
+
+        function switchRightTab(tab, btn) {
+            ['chandung','lichsu'].forEach(t => {
+                const c = document.getElementById('right-content-' + t);
+                const b = document.getElementById('right-tab-' + t);
+                if (c) c.style.display = 'none';
+                if (b) { b.style.color = '#6b7280'; b.style.borderBottom = '2px solid transparent'; }
+            });
+            const active = document.getElementById('right-content-' + tab);
+            if (active) active.style.display = 'block';
+            btn.style.color = '#3b82f6';
+            btn.style.borderBottom = '2px solid #3b82f6';
+        }
+
+        function switchView(view) {
+            const boardView = document.getElementById('boardView');
+            const tableView = document.getElementById('tableView');
+            const btnBoard = document.getElementById('btnBoardView');
+            const btnTable = document.getElementById('btnTableView');
+
+            if (view === 'table') {
+                boardView.classList.add('hidden');
+                tableView.classList.add('active');
+                
+                btnTable.classList.add('active');
+                btnTable.style.background = 'white';
+                btnTable.style.color = '#1e3a8a';
+                
+                btnBoard.classList.remove('active');
+                btnBoard.style.background = 'transparent';
+                btnBoard.style.color = '#4b5563';
+            } else {
+                boardView.classList.remove('hidden');
+                tableView.classList.remove('active');
+                
+                btnBoard.classList.add('active');
+                btnBoard.style.background = 'white';
+                btnBoard.style.color = '#1e3a8a';
+                
+                btnTable.classList.remove('active');
+                btnTable.style.background = 'transparent';
+                btnTable.style.color = '#4b5563';
+            }
+        }
+
+        // Toggle Sidebar
+        document.getElementById('toggleSidebarBtn').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+            
+            const icon = this.querySelector('i');
+            if(sidebar.classList.contains('collapsed')) {
+                icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
+            } else {
+                icon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+            }
+        });
+    
+        let currentIndustry = 'ban_hang';
+
+        function changeIndustryFunnel(industry, element) {
+            // Update active state in sidebar
+            document.querySelectorAll('.sub-sidebar .tree-item').forEach(item => item.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            // Hide all boards
+            document.querySelectorAll('#boardsContainer .board').forEach(board => board.style.display = 'none');
+            
+            // Show selected board
+            document.getElementById('board-' + industry).style.display = 'flex';
+            currentIndustry = industry;
+        }
+
+        // Override openLeadDetail to show correct 360 info
+        const originalOpenLeadDetail = openLeadDetail;
+        openLeadDetail = function(elem, industryOverride) {
+            originalOpenLeadDetail(elem); // Ensure name and avatar are populated
+
+            let ind = industryOverride || currentIndustry;
+            
+            // Hide all 360 views
+            document.querySelectorAll('.industry-360').forEach(el => el.style.display = 'none');
+            
+            // Show the correct 360 view
+            const target360 = document.getElementById('360-' + ind);
+            if(target360) target360.style.display = 'block';
+
+            // Show modal
+            document.getElementById('leadDetailModal').classList.add('active');
+        };
+
+
+
+        function openAddGroupModal() {
+            document.getElementById('addGroupModal').style.display = 'flex';
+        }
+        function closeAddGroupModal() {
+            document.getElementById('addGroupModal').style.display = 'none';
+        }
+</script>
+
+    <!-- Add Group Modal -->
+    <div class="modal-overlay" id="addGroupModal" style="z-index: 1010; display: none;">
+        <div class="modal" style="width: 500px; height: auto; min-height: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding: 15px 20px;">
+                <h2 style="font-size: 16px; font-weight: 700; color: #111;">Thêm Nhóm Trạng Thái</h2>
+                <button class="modal-close" onclick="closeAddGroupModal()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <label style="font-size: 13px; font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">Tên nhóm <span style="color:red">*</span></label>
+                        <input type="text" placeholder="Ví dụ: LEAD TỪ QUẢNG CÁO" style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="font-size: 13px; font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">Mô tả</label>
+                        <input type="text" placeholder="Nhập mô tả ngắn gọn..." style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="font-size: 13px; font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">Chọn trạng thái cho nhóm</label>
+                        <div style="border: 1px solid #d1d5db; border-radius: 6px; padding: 12px; max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f9fafb;">
+                            <!-- Checkbox List -->
+                            <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 12px; font-weight: 500; font-size: 12px;">Lead mới</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="background: #ede9fe; color: #5b21b6; padding: 2px 8px; border-radius: 12px; font-weight: 500; font-size: 12px;">Đã liên hệ</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="background: #ffedd5; color: #c2410c; padding: 2px 8px; border-radius: 12px; font-weight: 500; font-size: 12px;">Đang tư vấn</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 12px; font-weight: 500; font-size: 12px;">Gửi báo giá</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 12px; font-weight: 500; font-size: 12px;">Hoàn tất</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="background: #f3e8ff; color: #6b21a8; padding: 2px 8px; border-radius: 12px; font-weight: 500; font-size: 12px;">Thương lượng</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="background: #fce7f3; color: #be185d; padding: 2px 8px; border-radius: 12px; font-weight: 500; font-size: 12px;">Ký kết</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="background: #fee2e2; color: #b91c1c; padding: 2px 8px; border-radius: 12px; font-weight: 500; font-size: 12px;">Cần hâm nóng</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button class="btn-filter" style="padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-color); background: white; cursor: pointer;" onclick="closeAddGroupModal()">Hủy</button>
+                    <button class="btn-primary" style="padding: 8px 16px; border-radius: 6px;" onclick="closeAddGroupModal()">Lưu lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- App Drawer Overlay -->
+    <div class="app-drawer-overlay" id="appDrawerOverlay"></div>
+    <!-- App Drawer -->
+    <div class="app-drawer" id="app-drawer">
+        <!-- Header -->
+        <div class="drawer-header">
+            <div class="drawer-logo">
+                <img src="logo2.png" style="height: 36px; width: 128px;" alt="logo">
+            </div>
+            
+        </div>
+
+        <!-- Search -->
+        <div class="drawer-search" style="display: flex; gap: 10px; align-items: center;">
+            <div class="search-box" style="flex: 1;">
+                <i class="fa-solid fa-magnifying-glass" style="color: rgba(255,255,255,0.5);"></i>
+                <input type="text" placeholder="Tìm kiếm tính năng...">
+            </div>
+            <!-- Layout gear button -->
+            <div style="position:relative; flex-shrink:0;" id="drawer-layout-btn-wrap">
+                <button onclick="toggleDrawerLayoutMenu()" title="Chế độ xem" style="width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+                <div id="drawer-layout-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1e3a8a;border:1px solid rgba(255,255,255,0.15);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.3);min-width:130px;z-index:999999;overflow:hidden;">
+                    <div class="drawer-layout-opt" data-layout="grid" onclick="setDrawerLayout('grid',this)" style="padding:9px 14px;font-size:14px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s;">
+                        <i class="fa-solid fa-grip" style="width:14px;"></i> Chia ô
+                    </div>
+                    <div class="drawer-layout-opt" data-layout="expanded" onclick="setDrawerLayout('expanded',this)" style="padding:9px 14px;font-size:14px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s;">
+                        <i class="fa-solid fa-table-list" style="width:14px;"></i> Mở rộng
+                    </div>
+                    <div class="drawer-layout-opt" data-layout="list" onclick="setDrawerLayout('list',this)" style="padding:9px 14px;font-size:14px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s;">
+                        <i class="fa-solid fa-list" style="width:14px;"></i> 1 dòng
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content (Grid) -->
+        <div class="drawer-content">
+            
+            <!-- Category 1 -->
+            <div class="drawer-category">
+                <div class="drawer-category-title">Bán hàng &amp; Marketing</div>
+                <div class="drawer-grid">
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/ban-hang.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Quản lý bán hàng</div>
+                    </a>
+                    <a href="Promotion.html" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/uu-dai.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Khuyến mãi</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/combo.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Combo</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/quan-ly-quang-cao.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Quảng cáo</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/dich-vu-lam-dep.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Dịch vụ</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/su-kien.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Sự kiện</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/loyalty.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Loyalty</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/flash-sale.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Flash Sale</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="drawer-category">
+                <div class="drawer-category-title">Khách hàng &amp; Liên lạc</div>
+                <div class="drawer-grid">
+                    <a href="Customer.html" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/khach-hang.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Khách hàng</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/work-chat.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">WorkChatV2</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/zalo-oa.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Zalo OA</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/canh-bao-khach-xau.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Cảnh báo</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/cong-tac-vien.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Cộng tác viên</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/rfm.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">RFM</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/feedback.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Feedback</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/tong-dai.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Tổng đài</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="drawer-category">
+                <div class="drawer-category-title">Kho vận &amp; Vận hành</div>
+                <div class="drawer-grid">
+                    <a href="Product.html" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/san-pham.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Sản phẩm</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/kho-hang.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Kho hàng</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/mau-in.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Mẫu In</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/content.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Content</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/bao-hanh.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Bảo hành</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/van-chuyen.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Giao hàng</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/luu-tru.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Lưu trữ</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/bang-du-lieu.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Dữ liệu</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category 4 -->
+            <div class="drawer-category">
+                <div class="drawer-category-title">Xây dựng &amp; Kỹ thuật số</div>
+                <div class="drawer-grid">
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/mini-app-builder.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Mini App</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/thiet-ke-anh.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Thiết kế ảnh</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/web-builder.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Website</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/rut-gon-link.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Rút gọn link</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category 5 -->
+            <div class="drawer-category">
+                <div class="drawer-category-title">Tự động hóa &amp; Công cụ</div>
+                <div class="drawer-grid">
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/automation.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Automation</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/thanh-toan.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Thanh toán</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/wallet.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Wallet</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/bat-dong-san.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Bất động sản</div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Category 6 -->
+            <div class="drawer-category">
+                <div class="drawer-category-title">Tài chính &amp; Báo cáo</div>
+                <div class="drawer-grid">
+                    <a href="Finan.html" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/cong-no.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Công nợ</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/bao-cao.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Báo cáo</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/the-tra-truoc.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Thẻ trả trước</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/qua-tang-xoay-vong.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Quà tặng</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category 7 -->
+            <div class="drawer-category">
+                <div class="drawer-category-title">System</div>
+                <div class="drawer-grid">
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/system-warning.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">System</div>
+                    </a>
+                    <a href="#" class="drawer-item">
+                        <div class="icon-wrapper"><img src="../iconFa/tich-hop.svg" style="width:22px;height:22px;"></div>
+                        <div class="item-name">Dev Test</div>
+                    </a>
+                </div>
+            </div>
+
+        </div> <!-- End Drawer Content -->
+
+        <!-- Bottom Nav -->
+        
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logos = document.querySelectorAll('.logo, .logo-area, .sidebar-header .logo');
+            const appDrawer = document.getElementById('app-drawer');
+            const appDrawerOverlay = document.getElementById('appDrawerOverlay');
+            
+            logos.forEach(logo => {
+                // Ensure we don't duplicate events if script runs multiple times
+                logo.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if(appDrawerOverlay && appDrawer) {
+                        appDrawerOverlay.classList.add('active');
+                        // Remove inline style that might interfere with CSS class
+                        appDrawer.style.display = ''; 
+                        appDrawer.classList.add('open');
+                    }
+                });
+            });
+
+            if(appDrawerOverlay) {
+                appDrawerOverlay.addEventListener('click', function() {
+                    appDrawerOverlay.classList.remove('active');
+                    appDrawer.classList.remove('open');
+                });
+            }
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Close layout menu when clicking outside
+            document.addEventListener('click', function(e) {
+                const wrap = document.getElementById('drawer-layout-btn-wrap');
+                if (wrap && !wrap.contains(e.target)) {
+                    const menu = document.getElementById('drawer-layout-menu');
+                    if (menu) menu.style.display = 'none';
+                }
+            });
+
+            
+            const drawerThemeToggles = document.querySelectorAll('.drawer-theme-toggle');
+            const appDrawerElem = document.getElementById('app-drawer');
+
+            if(drawerThemeToggles.length > 0 && appDrawerElem) {
+                drawerThemeToggles.forEach(toggle => {
+                    toggle.addEventListener('click', function() {
+                        appDrawerElem.classList.toggle('drawer-dark-mode');
+                        const isDark = appDrawerElem.classList.contains('drawer-dark-mode');
+                        
+                        drawerThemeToggles.forEach(t => {
+                            if(isDark) {
+                                t.classList.remove('fa-moon');
+                                t.classList.add('fa-sun');
+                                t.title = 'Chế độ sáng';
+                            } else {
+                                t.classList.remove('fa-sun');
+                                t.classList.add('fa-moon');
+                                t.title = 'Chế độ tối';
+                            }
+                        });
+                    });
+                });
+            }
+
+            const drawerThemeSelects = document.querySelectorAll('.drawer-icon-theme-select');
+            const drawerIcons = document.querySelectorAll('.drawer-item .icon-wrapper');
+            
+            const multiThemePairs = [
+                { bg: '#fee2e2', color: '#ef4444' }, // red
+                { bg: '#ffedd5', color: '#f97316' }, // orange
+                { bg: '#fef3c7', color: '#f59e0b' }, // amber
+                { bg: '#ecfccb', color: '#84cc16' }, // lime
+                { bg: '#dcfce7', color: '#22c55e' }, // green
+                { bg: '#d1fae5', color: '#10b981' }, // emerald
+                { bg: '#cffafe', color: '#06b6d4' }, // cyan
+                { bg: '#e0f2fe', color: '#0ea5e9' }, // sky
+                { bg: '#dbeafe', color: '#3b82f6' }, // blue
+                { bg: '#e0e7ff', color: '#6366f1' }, // indigo
+                { bg: '#ede9fe', color: '#8b5cf6' }, // violet
+                { bg: '#fae8ff', color: '#c026d3' }, // fuchsia
+                { bg: '#fce7f3', color: '#ec4899' }, // pink
+                { bg: '#ffe4e6', color: '#e11d48' }  // rose
+            ];
+            
+            if(drawerThemeSelects.length > 0) {
+                // Store original inline styles
+                drawerIcons.forEach(icon => {
+                    icon.dataset.origStyle = icon.getAttribute('style') || '';
+                });
+
+                drawerThemeSelects.forEach(select => {
+                    select.addEventListener('change', function() {
+                        const mode = this.value;
+                        
+                        drawerThemeSelects.forEach(s => {
+                            if (s !== this) s.value = mode;
+                        });
+                        
+                        drawerIcons.forEach((icon, index) => {
+                            // Reset to default
+                            if (icon.dataset.origStyle) {
+                                icon.setAttribute('style', icon.dataset.origStyle);
+                            } else {
+                                icon.removeAttribute('style');
+                            }
+                            
+                            if (mode === 'mono') {
+                                icon.style.background = '#eef2ff';
+                                icon.style.color = '#1e3a8a';
+                            } else if (mode === 'multi') {
+                                const pair = multiThemePairs[index % multiThemePairs.length];
+                                icon.style.background = pair.bg;
+                                icon.style.color = pair.color;
+                            }
+                        });
+                    });
+                });
+            }
+        });
+    </script>
+
+    <script>
+        function toggleDrawerLayoutMenu() {
+            const menu = document.getElementById('drawer-layout-menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+        function setDrawerLayout(layout, el) {
+            document.querySelectorAll('.drawer-grid').forEach(grid => {
+                grid.classList.remove('layout-expanded', 'layout-list');
+                if (layout !== 'grid') grid.classList.add('layout-' + layout);
+            });
+            document.querySelectorAll('.drawer-layout-opt').forEach(opt => {
+                opt.style.background = opt === el ? 'rgba(255,255,255,0.15)' : '';
+                opt.style.color = opt === el ? '#ffffff' : 'rgba(255,255,255,0.85)';
+            });
+            document.getElementById('drawer-layout-menu').style.display = 'none';
+        }
+    </script>
+
+</body>
+
+</html>
+
