@@ -336,24 +336,16 @@
         <input type="text" id="search" placeholder="Tìm tên dịch vụ..." oninput="applyFilters()">
       </div>
       <div class="filter-field">
-        <label>Khoảng giá</label>
+        <label>Trạng thái</label>
         <select id="priceFilter" onchange="applyFilters()">
           <option value="">Tất cả</option>
-          <option value="0-500">Dưới 500K</option>
-          <option value="500-1000">500K - 1tr</option>
-          <option value="1000-3000">1tr - 3tr</option>
-          <option value="3000-99999">Trên 3tr</option>
+          <option value="0-500">Nháp</option>
+          <option value="500-1000">Đang bán</option>
+          <option value="1000-3000">Tạm ngưng</option>
+          <option value="3000-99999">Ngừng hẳn</option>
         </select>
       </div>
-      <div class="filter-field">
-        <label>KTV yêu cầu</label>
-        <select id="techFilter" onchange="applyFilters()">
-          <option value="">Tất cả</option>
-          <option value="1">1 KTV</option>
-          <option value="2">2 KTV</option>
-          <option value="3">3+ KTV</option>
-        </select>
-      </div>
+ 
   
     </div>
   </div>
