@@ -437,22 +437,18 @@
 
         <div class="form-group full">
           <label>Sản phẩm upsale</label>
-          <select id="fUpsell">
-            <option value="">— Không có —</option>
-            <optgroup label="Sản phẩm vật lý">
-              <option value="Serum HA cấp ẩm">Serum HA cấp ẩm</option>
-              <option value="Kem chống nắng SPF50">Kem chống nắng SPF50</option>
-              <option value="Mặt nạ phục hồi (hộp 10)">Mặt nạ phục hồi (hộp 10)</option>
-              <option value="Tinh chất trị mụn">Tinh chất trị mụn</option>
-              <option value="Sữa rửa mặt dịu nhẹ">Sữa rửa mặt dịu nhẹ</option>
-            </optgroup>
-            <optgroup label="Dịch vụ">
-              <option value="Hydrating Facial cấp ẩm chuyên sâu">Hydrating Facial cấp ẩm</option>
-              <option value="Massage đá nóng thư giãn">Massage đá nóng thư giãn</option>
-              <option value="Peel da AHA/BHA tái tạo">Peel da AHA/BHA tái tạo</option>
-              <option value="Nâng cơ RF trẻ hóa da">Nâng cơ RF trẻ hóa da</option>
-            </optgroup>
-          </select>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <select id="fUpsellType" onchange="fillUpsellItems()">
+              <option value="product" selected>Sản phẩm</option>
+              <option value="combo">Combo</option>
+              <option value="course">Khóa học / sự kiện</option>
+              <option value="beauty">Dịch vụ làm đẹp</option>
+              <option value="prepaid">Thẻ trả trước</option>
+            </select>
+            <select id="fUpsell" disabled>
+              <option value="">Chọn sản phẩm</option>
+            </select>
+          </div>
         </div>
 
         <div class="form-group full">
@@ -864,6 +860,27 @@
     if (at >= 0) pickedSpecs.splice(at, 1); else pickedSpecs.push(i);
     renderSpecPicker();
   }
+  /* ===== UPSALE: loại SP -> danh sách sản phẩm ===== */
+  const UPSELL_ITEMS = {
+    product: ['Serum HA cấp ẩm', 'Kem chống nắng SPF50', 'Mặt nạ phục hồi (hộp 10)', 'Tinh chất trị mụn', 'Sữa rửa mặt dịu nhẹ'],
+    combo: ['Combo Chăm sóc da Cơ bản', 'Combo Massage Thư giãn 8 buổi', 'Triệt lông Laser 10 buổi', 'Gói Cưới Bridal Glow'],
+    course: ['Khóa Skincare cơ bản', 'Workshop trang điểm cá nhân', 'Sự kiện tri ân khách VIP'],
+    beauty: ['Hydrating Facial cấp ẩm chuyên sâu', 'Massage đá nóng thư giãn', 'Peel da AHA/BHA tái tạo', 'Nâng cơ RF trẻ hóa da'],
+    prepaid: ['Thẻ trả trước 5 triệu', 'Thẻ trả trước 10 triệu', 'Thẻ thành viên VIP 20 triệu']
+  };
+  function fillUpsellItems() {
+    const type = document.getElementById('fUpsellType').value;
+    const sel = document.getElementById('fUpsell');
+    if (!type) {
+      sel.innerHTML = '<option value="">Chọn sản phẩm</option>';
+      sel.disabled = true;
+      return;
+    }
+    const list = UPSELL_ITEMS[type] || [];
+    sel.innerHTML = '<option value="">Chọn sản phẩm</option>' + list.map(x => `<option value="${x}">${x}</option>`).join('');
+    sel.disabled = false;
+  }
+
   function openAdd() { if (mode === 'package') openAddPackage(); else openAddModal(); }
   function openAddModal() {
     document.getElementById('addForm').reset();
@@ -873,6 +890,7 @@
     document.getElementById('packageGrid').style.display = 'none';
     document.getElementById('addModalTitle').textContent = 'Thêm dịch vụ mới';
     document.getElementById('saveBtnLabel').textContent = 'Lưu dịch vụ';
+    fillUpsellItems();
     document.getElementById('addModal').classList.add('open');
   }
   function openAddPackage() {
@@ -906,6 +924,7 @@
       tech: 1,
       equip: 'no',
       spec: [0],
+      upsellType: g('fUpsellType') || '',
       upsell: g('fUpsell') || '',
       stage: g('fStage'),
       tag: ''
