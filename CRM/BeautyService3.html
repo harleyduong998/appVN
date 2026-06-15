@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kho Tour - Quản lý chuyến khởi hành - CRM</title>
+  <title>Kho Dịch vụ Làm đẹp - CRM</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -24,7 +24,7 @@
     }
     #sidebar.collapsed { width: 64px; min-width: 64px; }
     .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 18px 20px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
-    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--royal), var(--royal-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
+    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #ec4899, #f43f5e); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
     .sidebar-logo .logo-text { font-size: 17px; font-weight: 700; color: #ffffff; white-space: nowrap; }
     #sidebar.collapsed .logo-text { display: none; }
     .sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 0; }
@@ -54,30 +54,31 @@
     #sidebar.collapsed .sidebar-bottom { padding: 12px 0; justify-content: center; }
     #sidebar.collapsed .user-info { display: none; }
 
-    /* ===== SUB SIDEBAR (white) ===== */
+    /* ===== SUB SIDEBAR (gradient blue) ===== */
     #subSidebar {
-      width: 220px; min-width: 220px; background: #ffffff; border-right: 1px solid var(--border);
+      width: 220px; min-width: 220px; background: linear-gradient(160deg, #1b3da1 0%, #17234e 100%); border-right: none;
       display: flex; flex-direction: column; transition: width .25s, min-width .25s; overflow: hidden; z-index: 99;
     }
     #subSidebar.collapsed { width: 0; min-width: 0; }
-    .sub-sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px 10px; border-bottom: 1px solid #f1f2f4; }
-    .sub-sidebar-title { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
-    .sub-sidebar-add { width: 22px; height: 22px; border-radius: 6px; background: #eef2ff; color: var(--royal); border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
-    .sub-search { padding: 8px 12px; border-bottom: 1px solid #f1f2f4; }
+    .sub-sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sub-sidebar-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; }
+    .sub-sidebar-add { width: 22px; height: 22px; border-radius: 6px; background: rgba(255,255,255,0.18); color: #fff; border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .sub-search { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .sub-search-wrap { position: relative; }
-    .sub-search-wrap input { width: 100%; background: #f3f4f6; border: none; border-radius: 6px; padding: 6px 10px 6px 28px; font-size: 12px; color: #374151; outline: none; }
-    .sub-search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 11px; }
+    .sub-search-wrap input { width: 100%; background: rgba(255,255,255,0.12); border: none; border-radius: 6px; padding: 6px 10px 6px 28px; font-size: 12px; color: #fff; outline: none; }
+    .sub-search-wrap input::placeholder { color: rgba(255,255,255,0.55); }
+    .sub-search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.6); font-size: 11px; }
     .sub-sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
     .sub-sidebar-nav::-webkit-scrollbar { width: 3px; }
-    .sub-sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; }
-    .sub-group-title { font-size: 10px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .6px; padding: 6px 15px; }
-    .cat-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 15px; font-size: 13px; color: #374151; cursor: pointer; border-left: 3px solid transparent; transition: all .12s; }
-    .cat-item:hover { background: #f7f8fa; }
-    .cat-item.active { background: #e8edff; border-left-color: var(--royal); color: var(--royal-dark); font-weight: 600; }
+    .sub-sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); }
+    .sub-group-title { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: .6px; padding: 6px 15px; }
+    .cat-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 15px; font-size: 13px; color: rgba(255,255,255,0.78); cursor: pointer; border-left: 3px solid transparent; transition: all .12s; }
+    .cat-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .cat-item.active { background: rgba(255,255,255,0.18); border-left-color: #fff; color: #fff; font-weight: 600; }
     .cat-left { display: flex; align-items: center; gap: 9px; }
-    .cat-flag { font-size: 15px; flex-shrink: 0; }
-    .cat-count { font-size: 10px; background: #f1f2f4; color: #6b7280; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
-    .cat-item.active .cat-count { background: #d4ddff; color: var(--royal-dark); }
+    .cat-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+    .cat-count { font-size: 10px; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+    .cat-item.active .cat-count { background: rgba(255,255,255,0.3); color: #fff; }
 
     /* ===== MAIN ===== */
     #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -99,7 +100,7 @@
     .btn-outline.indigo { color: var(--royal); border-color: #bfd0ff; }
     .btn-outline.indigo:hover { background: #eef2ff; }
     .search-wrap { position: relative; }
-    .search-wrap input { background: #f3f4f6; border: none; border-radius: 8px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 180px; }
+    .search-wrap input { background: #f3f4f6; border: none; border-radius: 8px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 190px; }
     .search-wrap input:focus { background: #fff; box-shadow: 0 0 0 2px #bfd0ff; }
     .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 13px; }
     .filter-field { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 12px; }
@@ -115,7 +116,7 @@
     #kanbanView { flex: 1; display: flex; gap: 14px; padding: 16px 20px 20px; overflow-x: auto; }
     #kanbanView::-webkit-scrollbar { height: 7px; }
     #kanbanView::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-    .kanban-col { min-width: 282px; max-width: 282px; background: #f1f3f7; border-radius: 12px; display: flex; flex-direction: column; padding: 12px 10px; max-height: 100%; }
+    .kanban-col { min-width: 286px; max-width: 286px; background: #f1f3f7; border-radius: 12px; display: flex; flex-direction: column; padding: 12px 10px; max-height: 100%; }
     .col-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
     .col-head-left { display: flex; align-items: center; gap: 7px; }
     .col-dot { width: 9px; height: 9px; border-radius: 50%; }
@@ -125,25 +126,24 @@
     .col-cards::-webkit-scrollbar { width: 3px; }
     .col-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
 
-    .tcard { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: box-shadow .15s, transform .15s; border: 1px solid transparent; }
-    .tcard:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); border-color: #dbe3ff; }
-    .tcard.dragging { opacity: .5; }
-    .tcard-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .tour-code { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 2px 8px; border-radius: 5px; letter-spacing: .3px; }
-    .flag { font-size: 14px; }
-    .tcard-title { font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 8px; line-height: 1.35; }
-    .tcard-meta { display: flex; gap: 8px; margin-bottom: 9px; flex-wrap: wrap; }
-    .meta-pill { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #6b7280; font-weight: 500; }
-    .meta-pill i { font-size: 10px; color: #9ca3af; }
-    .seat-wrap { margin-bottom: 9px; }
-    .seat-label { display: flex; justify-content: space-between; font-size: 10px; color: #6b7280; margin-bottom: 3px; font-weight: 600; }
-    .seat-bar { height: 6px; background: #eef0f3; border-radius: 3px; overflow: hidden; }
-    .seat-fill { height: 100%; border-radius: 3px; }
-    .tcard-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 9px; border-top: 1px solid #f1f2f4; }
-    .guide-cell { display: flex; align-items: center; gap: 6px; }
-    .guide-cell img { width: 24px; height: 24px; border-radius: 50%; }
-    .guide-cell span { font-size: 11px; color: #4b5563; font-weight: 500; }
-    .card-price { font-size: 13px; font-weight: 700; color: #15803d; }
+    .scard { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: box-shadow .15s, transform .15s; border: 1px solid transparent; }
+    .scard:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); border-color: #dbe3ff; }
+    .scard.dragging { opacity: .5; }
+    .scard-thumb { position: relative; height: 96px; background: #e5e7eb; overflow: hidden; }
+    .scard-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .scard-dur { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+    .scard-body { padding: 11px 12px 12px; }
+    .scard-name { font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 7px; line-height: 1.35; }
+    .scard-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+    .scard-price { font-size: 15px; font-weight: 700; color: #be185d; }
+    .scard-sales { font-size: 11px; color: #6b7280; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+    .scard-sales i { color: #22c55e; font-size: 10px; }
+    .scard-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 9px; border-top: 1px solid #f1f2f4; }
+    .spec-label { font-size: 11px; color: #9ca3af; font-weight: 500; }
+    .avatars { display: flex; }
+    .avatars img { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; margin-left: -7px; }
+    .avatars img:first-child { margin-left: 0; }
+    .avatars .more { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; margin-left: -7px; background: #e8edff; color: var(--royal-dark); font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 
     /* ===== TABLE ===== */
     #tableView { flex: 1; padding: 16px 20px 20px; overflow: auto; display: none; }
@@ -157,7 +157,7 @@
     .table-scroll { overflow-x: auto; }
     .table-scroll::-webkit-scrollbar { height: 8px; }
     .table-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-    .data-table { width: 100%; border-collapse: collapse; min-width: 1180px; }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 1140px; }
     .data-table thead th { padding: 12px 16px; font-size: 11px; font-weight: 700; color: #6b7280; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; background: #f9fafb; text-transform: uppercase; letter-spacing: .4px; position: sticky; top: 0; z-index: 2; }
     .data-table thead th.center { text-align: center; }
     .data-table thead th.right { text-align: right; }
@@ -166,30 +166,24 @@
     .data-table tbody tr { cursor: pointer; transition: background .12s; }
     .data-table tbody tr:hover td { background: #f8fafc; }
     .cb { width: 15px; height: 15px; accent-color: var(--royal); cursor: pointer; }
-    .code-pill { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 3px 8px; border-radius: 5px; }
-    .tour-name-cell { font-weight: 600; color: #374151; }
-    .tour-name-cell small { display: block; font-weight: 500; color: #9ca3af; font-size: 11px; }
-    .date-cell { font-weight: 600; color: #1f2937; }
-    .date-cell small { display: block; font-weight: 500; color: #9ca3af; font-size: 11px; }
-    .num-cell { font-weight: 600; color: #374151; text-align: center; }
-    .avail-cell { font-weight: 700; text-align: center; }
-    .avail-cell.ok { color: #15803d; }
-    .avail-cell.low { color: #b45309; }
-    .avail-cell.full { color: #b91c1c; }
+    .id-pill { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 3px 8px; border-radius: 5px; }
+    .svc-cell { display: flex; align-items: center; gap: 10px; }
+    .svc-thumb { width: 40px; height: 32px; border-radius: 6px; object-fit: cover; flex-shrink: 0; background: #e5e7eb; }
+    .svc-name { font-weight: 600; color: #1f2937; font-size: 13px; }
+    .svc-cat { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+    .price-std { font-weight: 600; color: #374151; }
+    .price-promo { font-weight: 700; color: #be185d; }
+    .price-promo small { display: block; color: #9ca3af; font-weight: 500; font-size: 10px; text-decoration: line-through; }
+    .dur-cell { color: #4b5563; font-weight: 500; }
     .cost-cell { color: #6b7280; font-weight: 500; }
-    .sell-cell { font-weight: 700; color: #1f2937; }
-    .margin-cell { font-weight: 700; }
-    .margin-cell .pct { font-size: 11px; padding: 2px 8px; border-radius: 12px; }
-    .margin-good { color: #15803d; } .margin-good .pct { background: #dcfce7; }
-    .margin-mid { color: #b45309; } .margin-mid .pct { background: #fef3c7; }
+    .rev-cell { font-weight: 700; color: #15803d; }
     .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
     .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .bg-green { background: #dcfce7; color: #15803d; } .bg-green::before { background: #22c55e; }
+    .bg-pink { background: #fce7f3; color: #be185d; } .bg-pink::before { background: #ec4899; }
     .bg-blue { background: #dbeafe; color: #1d4ed8; } .bg-blue::before { background: #3b82f6; }
     .bg-amber { background: #fef3c7; color: #b45309; } .bg-amber::before { background: #f59e0b; }
-    .bg-indigo { background: #e0e7ff; color: #4338ca; } .bg-indigo::before { background: #6366f1; }
-    .bg-teal { background: #ccfbf1; color: #0f766e; } .bg-teal::before { background: #14b8a6; }
-    .bg-green { background: #dcfce7; color: #15803d; } .bg-green::before { background: #22c55e; }
-    .bg-red { background: #fee2e2; color: #b91c1c; } .bg-red::before { background: #ef4444; }
+    .bg-gray { background: #f1f2f4; color: #4b5563; } .bg-gray::before { background: #9ca3af; }
     .row-actions { display: flex; align-items: center; gap: 4px; justify-content: center; }
     .row-act { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; color: #9ca3af; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
     .row-act:hover { background: #f1f2f4; color: #374151; }
@@ -214,7 +208,7 @@
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-icon"><i class="fa-solid fa-plane-departure"></i></div>
+    <div class="logo-icon"><i class="fa-solid fa-spa"></i></div>
     <span class="logo-text">AppVN CRM</span>
   </div>
   <nav class="sidebar-nav">
@@ -225,8 +219,8 @@
     <a href="Order.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Đơn hàng</span></a>
     <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
     <a href="Course.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
-    <a href="BeautyService3.html" class="nav-item"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
-    <a href="Tour2.html" class="nav-item active"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
+    <a href="BeautyService3.html" class="nav-item active"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+    <a href="Tour2.html" class="nav-item"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
     <a href="Land2.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
     <div class="nav-group-title">Vận hành &amp; Dịch vụ</div>
     <a href="Project.html" class="nav-item"><i class="fa-solid fa-diagram-project"></i><span>Dự Án</span></a>
@@ -249,46 +243,42 @@
 <!-- SUB SIDEBAR -->
 <div id="subSidebar">
   <div class="sub-sidebar-header">
-    <span class="sub-sidebar-title">Điểm đến</span>
+    <span class="sub-sidebar-title">Danh mục dịch vụ</span>
     <button class="sub-sidebar-add"><i class="fa-solid fa-plus"></i></button>
   </div>
   <div class="sub-search">
     <div class="sub-search-wrap">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="catSearch" placeholder="Tìm điểm đến..." oninput="filterCats(this.value)">
+      <input type="text" id="catSearch" placeholder="Tìm danh mục..." oninput="filterCats(this.value)">
     </div>
   </div>
   <div class="sub-sidebar-nav" id="catList">
     <div class="sub-group-title">Tất cả</div>
-    <div class="cat-item active" onclick="selectCat(this,'Tất cả')"><div class="cat-left"><span class="cat-flag">🌏</span><span>Tất cả điểm đến</span></div><span class="cat-count">64</span></div>
-    <div class="sub-group-title">Quốc tế</div>
-    <div class="cat-item" onclick="selectCat(this,'Nhật Bản')"><div class="cat-left"><span class="cat-flag">🇯🇵</span><span>Nhật Bản</span></div><span class="cat-count">12</span></div>
-    <div class="cat-item" onclick="selectCat(this,'Hàn Quốc')"><div class="cat-left"><span class="cat-flag">🇰🇷</span><span>Hàn Quốc</span></div><span class="cat-count">9</span></div>
-    <div class="cat-item" onclick="selectCat(this,'Thái Lan')"><div class="cat-left"><span class="cat-flag">🇹🇭</span><span>Thái Lan</span></div><span class="cat-count">15</span></div>
-    <div class="cat-item" onclick="selectCat(this,'Dubai')"><div class="cat-left"><span class="cat-flag">🇦🇪</span><span>Dubai - UAE</span></div><span class="cat-count">5</span></div>
-    <div class="cat-item" onclick="selectCat(this,'Châu Âu')"><div class="cat-left"><span class="cat-flag">🇪🇺</span><span>Châu Âu</span></div><span class="cat-count">7</span></div>
-    <div class="sub-group-title">Trong nước</div>
-    <div class="cat-item" onclick="selectCat(this,'Đà Nẵng')"><div class="cat-left"><span class="cat-flag">🇻🇳</span><span>Đà Nẵng</span></div><span class="cat-count">8</span></div>
-    <div class="cat-item" onclick="selectCat(this,'Phú Quốc')"><div class="cat-left"><span class="cat-flag">🇻🇳</span><span>Phú Quốc</span></div><span class="cat-count">8</span></div>
+    <div class="cat-item active" onclick="selectCat(this,'Tất cả')"><div class="cat-left"><span class="cat-dot" style="background:#fff"></span><span>Tất cả dịch vụ</span></div><span class="cat-count">48</span></div>
+    <div class="sub-group-title">Theo nhóm</div>
+    <div class="cat-item" onclick="selectCat(this,'Facial')"><div class="cat-left"><span class="cat-dot" style="background:#22c55e"></span><span>Chăm sóc da (Facial)</span></div><span class="cat-count">16</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Body')"><div class="cat-left"><span class="cat-dot" style="background:#3b82f6"></span><span>Body Treatment</span></div><span class="cat-count">12</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Laser')"><div class="cat-left"><span class="cat-dot" style="background:#f59e0b"></span><span>Laser &amp; Công nghệ</span></div><span class="cat-count">11</span></div>
+    <div class="cat-item" onclick="selectCat(this,'VIP')"><div class="cat-left"><span class="cat-dot" style="background:#9333ea"></span><span>Gói VIP</span></div><span class="cat-count">9</span></div>
   </div>
 </div>
 
 <!-- MAIN -->
 <div id="mainContent">
   <div class="top-header">
-    <div class="top-header-left"><h1><i class="fa-solid fa-suitcase-rolling"></i>Kho Tour &amp; Chuyến khởi hành</h1></div>
+    <div class="top-header-left"><h1><i class="fa-solid fa-clipboard-list"></i>Kho Dịch vụ Làm đẹp</h1></div>
     <div class="top-header-right">
       <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
       <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
-      <button class="btn-primary" onclick="showToast('Mở form tạo chuyến khởi hành mới')"><i class="fa-solid fa-plus"></i> Tạo chuyến mới</button>
+      <button class="btn-primary" onclick="showToast('Mở form thêm dịch vụ mới')"><i class="fa-solid fa-plus"></i> Thêm dịch vụ</button>
     </div>
   </div>
 
   <!-- TOOLBAR -->
   <div class="toolbar">
     <div class="toolbar-left">
-      <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Điểm đến</button>
-      <a class="btn-outline indigo" href="Tour.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
+      <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Danh mục</button>
+      <a class="btn-outline indigo" href="BeautyService.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
       <div class="view-switch">
         <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
         <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
@@ -297,41 +287,36 @@
     <div class="toolbar-right">
       <div class="search-wrap">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="search" placeholder="Tìm mã tour..." oninput="applyFilters()">
+        <input type="text" id="search" placeholder="Tìm tên dịch vụ..." oninput="applyFilters()">
       </div>
       <div class="filter-field">
-        <label>Tháng KH</label>
-        <select id="monthFilter" onchange="applyFilters()">
+        <label>Khoảng giá</label>
+        <select id="priceFilter" onchange="applyFilters()">
           <option value="">Tất cả</option>
-          <option value="06">Tháng 6</option>
-          <option value="07">Tháng 7</option>
-          <option value="08">Tháng 8</option>
+          <option value="0-500">Dưới 500K</option>
+          <option value="500-1000">500K - 1tr</option>
+          <option value="1000-3000">1tr - 3tr</option>
+          <option value="3000-99999">Trên 3tr</option>
         </select>
       </div>
       <div class="filter-field">
-        <label>HDV</label>
-        <select id="guideFilter" onchange="applyFilters()">
+        <label>KTV yêu cầu</label>
+        <select id="techFilter" onchange="applyFilters()">
           <option value="">Tất cả</option>
-          <option value="Lê Quang Vinh">Lê Quang Vinh</option>
-          <option value="Trần Thu Hương">Trần Thu Hương</option>
-          <option value="Nguyễn Đức Anh">Nguyễn Đức Anh</option>
-          <option value="Phạm Mai Chi">Phạm Mai Chi</option>
+          <option value="1">1 KTV</option>
+          <option value="2">2 KTV</option>
+          <option value="3">3+ KTV</option>
         </select>
       </div>
       <div class="filter-field">
-        <label>Trạng thái</label>
-        <select id="statusFilter" onchange="applyFilters()">
+        <label>Thiết bị</label>
+        <select id="equipFilter" onchange="applyFilters()">
           <option value="">Tất cả</option>
-          <option value="opening">Đang mở bán</option>
-          <option value="nearly">Sắp đầy</option>
-          <option value="confirmed">Đã chốt</option>
-          <option value="running">Đang chạy</option>
-          <option value="finished">Đã kết thúc</option>
-          <option value="cancelled">Đã hủy</option>
+          <option value="yes">Cần máy móc</option>
+          <option value="no">Thủ công</option>
         </select>
       </div>
-      <button class="btn-outline indigo" onclick="importList()"><i class="fa-solid fa-file-import"></i> Nhập DS Tour</button>
-      <button class="btn-outline" onclick="exportExcel()"><i class="fa-solid fa-file-export"></i> Xuất Excel</button>
+      <button class="btn-outline" onclick="exportPrice()"><i class="fa-solid fa-file-export"></i> Xuất bảng giá</button>
     </div>
   </div>
 
@@ -342,8 +327,8 @@
   <div id="tableView">
     <div class="table-card">
       <div class="table-summary">
-        <div class="summary-stat">Tổng chuyến: <b id="stTotal">0</b></div>
-        <div class="summary-stat green">Tổng lợi nhuận dự kiến: <b id="stProfit">—</b></div>
+        <div class="summary-stat">Tổng dịch vụ: <b id="stTotal">0</b></div>
+        <div class="summary-stat green">Tổng doanh thu/tháng: <b id="stRev">—</b></div>
         <div class="summary-stat" id="stVisible"></div>
       </div>
       <div class="table-scroll">
@@ -351,14 +336,13 @@
           <thead>
             <tr>
               <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
-              <th>Mã Tour</th>
-              <th>Tên Tour</th>
-              <th>Ngày khởi hành</th>
-              <th class="center">Tổng chỗ</th>
-              <th class="center">Chỗ trống</th>
-              <th class="right">Giá vốn</th>
-              <th class="right">Giá bán</th>
-              <th class="center">Lợi nhuận</th>
+              <th>Mã DV</th>
+              <th>Tên dịch vụ</th>
+              <th class="right">Giá chuẩn</th>
+              <th class="right">Giá KM</th>
+              <th class="center">Thời lượng</th>
+              <th class="right">Chi phí VT</th>
+              <th class="right">Doanh thu/tháng</th>
               <th class="center">Trạng thái</th>
               <th class="center" style="width:96px;">Thao tác</th>
             </tr>
@@ -374,7 +358,7 @@
           <button class="pg-btn">2</button>
           <button class="pg-btn">3</button>
           <button class="pg-btn">…</button>
-          <button class="pg-btn">6</button>
+          <button class="pg-btn">5</button>
           <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </div>
@@ -386,47 +370,51 @@
 
 <script>
   const STAGES = [
-    { key:'opening',   name:'Đang mở bán',  dot:'#3b82f6', badge:'bg-blue' },
-    { key:'nearly',    name:'Sắp đầy',      dot:'#f59e0b', badge:'bg-amber' },
-    { key:'confirmed', name:'Đã chốt đoàn', dot:'#6366f1', badge:'bg-indigo' },
-    { key:'running',   name:'Đang chạy',    dot:'#14b8a6', badge:'bg-teal' },
-    { key:'finished',  name:'Đã kết thúc',  dot:'#22c55e', badge:'bg-green' },
-    { key:'cancelled', name:'Đã hủy',       dot:'#ef4444', badge:'bg-red' }
+    { key:'active',   name:'Đang kinh doanh', dot:'#22c55e', badge:'bg-green' },
+    { key:'hot',      name:'Khuyến mãi HOT',  dot:'#ec4899', badge:'bg-pink' },
+    { key:'soon',     name:'Sắp ra mắt',      dot:'#3b82f6', badge:'bg-blue' },
+    { key:'hold',     name:'Bảo trì / Tạm dừng', dot:'#f59e0b', badge:'bg-amber' },
+    { key:'stopped',  name:'Ngừng cung cấp',  dot:'#9ca3af', badge:'bg-gray' }
   ];
-  const STAGE_LABEL = { opening:'Đang mở bán', nearly:'Sắp đầy', confirmed:'Đã chốt đoàn', running:'Đang chạy', finished:'Đã kết thúc', cancelled:'Đã hủy' };
-  const STAGE_BADGE = { opening:'bg-blue', nearly:'bg-amber', confirmed:'bg-indigo', running:'bg-teal', finished:'bg-green', cancelled:'bg-red' };
+  const STAGE_LABEL = { active:'Đang kinh doanh', hot:'Khuyến mãi HOT', soon:'Sắp ra mắt', hold:'Bảo trì', stopped:'Ngừng cung cấp' };
+  const STAGE_BADGE = { active:'bg-green', hot:'bg-pink', soon:'bg-blue', hold:'bg-amber', stopped:'bg-gray' };
 
-  // tour = một chuyến khởi hành cụ thể (SKU). cost & sell tính theo đầu khách (đơn vị triệu đồng)
-  const tours = [
-    { code:'JP-OSAKA-JUN18', flag:'🇯🇵', name:'Nhật Bản: Osaka - Kyoto - Tokyo', dest:'Nhật Bản', depart:'18/06/2026', dur:'5N4Đ', sold:12, total:30, cost:24.5, sell:32.9, guide:'Trần Thu Hương', guideImg:'https://i.pravatar.cc/150?img=5', stage:'opening' },
-    { code:'KR-SEOUL-JUN22', flag:'🇰🇷', name:'Hàn Quốc: Seoul - Nami - Everland', dest:'Hàn Quốc', depart:'22/06/2026', dur:'5N4Đ', sold:8, total:25, cost:16.2, sell:21.5, guide:'Nguyễn Đức Anh', guideImg:'https://i.pravatar.cc/150?img=15', stage:'opening' },
-    { code:'TH-BKK-JUN20', flag:'🇹🇭', name:'Thái Lan: Bangkok - Pattaya', dest:'Thái Lan', depart:'20/06/2026', dur:'5N4Đ', sold:26, total:30, cost:6.4, sell:8.99, guide:'Phạm Mai Chi', guideImg:'https://i.pravatar.cc/150?img=9', stage:'nearly' },
-    { code:'DXB-JUN15', flag:'🇦🇪', name:'Dubai - Abu Dhabi sang trọng', dest:'Dubai', depart:'15/06/2026', dur:'6N5Đ', sold:17, total:20, cost:34.0, sell:45.9, guide:'Lê Quang Vinh', guideImg:'https://i.pravatar.cc/150?img=51', stage:'nearly' },
-    { code:'JP-TOKYO-JUL25', flag:'🇯🇵', name:'Nhật Bản: Tokyo - Núi Phú Sĩ', dest:'Nhật Bản', depart:'25/07/2026', dur:'6N5Đ', sold:20, total:20, cost:29.5, sell:38.9, guide:'Trần Thu Hương', guideImg:'https://i.pravatar.cc/150?img=5', stage:'confirmed' },
-    { code:'EU-PARIS-JUL02', flag:'🇪🇺', name:'Châu Âu: Pháp - Ý - Thụy Sĩ', dest:'Châu Âu', depart:'02/07/2026', dur:'9N8Đ', sold:18, total:18, cost:62.0, sell:78.9, guide:'Nguyễn Đức Anh', guideImg:'https://i.pravatar.cc/150?img=15', stage:'confirmed' },
-    { code:'VN-PQ-JUN14', flag:'🇻🇳', name:'Phú Quốc nghỉ dưỡng 4N3Đ', dest:'Phú Quốc', depart:'14/06/2026', dur:'4N3Đ', sold:28, total:28, cost:4.3, sell:6.29, guide:'Lê Quang Vinh', guideImg:'https://i.pravatar.cc/150?img=51', stage:'running' },
-    { code:'TH-PHUKET-JUN13', flag:'🇹🇭', name:'Thái Lan: Phuket - Krabi', dest:'Thái Lan', depart:'13/06/2026', dur:'5N4Đ', sold:27, total:30, cost:8.6, sell:11.9, guide:'Phạm Mai Chi', guideImg:'https://i.pravatar.cc/150?img=9', stage:'running' },
-    { code:'KR-JEJU-MAY28', flag:'🇰🇷', name:'Hàn Quốc: Jeju - Seoul', dest:'Hàn Quốc', depart:'28/05/2026', dur:'6N5Đ', sold:25, total:25, cost:18.5, sell:24.9, guide:'Nguyễn Đức Anh', guideImg:'https://i.pravatar.cc/150?img=15', stage:'finished' },
-    { code:'VN-DN-MAY20', flag:'🇻🇳', name:'Đà Nẵng - Hội An - Bà Nà', dest:'Đà Nẵng', depart:'20/05/2026', dur:'4N3Đ', sold:35, total:35, cost:3.9, sell:5.49, guide:'Lê Quang Vinh', guideImg:'https://i.pravatar.cc/150?img=51', stage:'finished' },
-    { code:'JP-OSAKA-MAY15', flag:'🇯🇵', name:'Nhật Bản: Osaka - Kyoto', dest:'Nhật Bản', depart:'15/05/2026', dur:'5N4Đ', sold:6, total:20, cost:24.5, sell:32.9, guide:'Trần Thu Hương', guideImg:'https://i.pravatar.cc/150?img=5', stage:'cancelled' },
+  // service product. price/promo/cost/revenue đơn vị nghìn đồng
+  const specs = [
+    { name:'Thu Hà',     img:'https://i.pravatar.cc/150?img=5' },
+    { name:'Minh Anh',   img:'https://i.pravatar.cc/150?img=9' },
+    { name:'Thị Phương', img:'https://i.pravatar.cc/150?img=16' },
+    { name:'Thanh Loan', img:'https://i.pravatar.cc/150?img=20' }
+  ];
+  const services = [
+    { id:'SV-001', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop', name:'Hydrating Facial cấp ẩm chuyên sâu', cat:'Facial', dur:60, price:850, promo:0, cost:120, rev:42500, sales:50, tech:1, equip:'no', spec:[0,1], stage:'active' },
+    { id:'SV-002', img:'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=300&h=200&fit=crop', name:'Trị mụn chuyên sâu y khoa', cat:'Facial', dur:75, price:990, promo:0, cost:160, rev:35640, sales:36, tech:1, equip:'yes', spec:[2], stage:'active' },
+    { id:'SV-003', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop', name:'Massage đá nóng thư giãn', cat:'Body', dur:90, price:1200, promo:0, cost:90, rev:30000, sales:25, tech:1, equip:'no', spec:[1,3], stage:'active' },
+    { id:'SV-004', img:'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=300&h=200&fit=crop', name:'Peel da AHA/BHA tái tạo', cat:'Facial', dur:60, price:1100, promo:880, cost:140, rev:26400, sales:30, tech:1, equip:'yes', spec:[0], stage:'hot' },
+    { id:'SV-005', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop', name:'Triệt lông Laser Diode toàn thân', cat:'Laser', dur:120, price:3500, promo:2490, cost:300, rev:74700, sales:30, tech:2, equip:'yes', spec:[2,3], stage:'hot' },
+    { id:'SV-006', img:'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=300&h=200&fit=crop', name:'Nâng cơ RF trẻ hóa da', cat:'Laser', dur:75, price:1800, promo:1490, cost:200, rev:35760, sales:24, tech:1, equip:'yes', spec:[0,2], stage:'hot' },
+    { id:'SV-007', img:'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=200&fit=crop', name:'Liệu trình Carbon Laser mới', cat:'Laser', dur:60, price:1600, promo:0, cost:180, rev:0, sales:0, tech:1, equip:'yes', spec:[2], stage:'soon' },
+    { id:'SV-008', img:'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=300&h=200&fit=crop', name:'Gói chăm sóc Mẹ bầu cao cấp', cat:'VIP', dur:120, price:2500, promo:0, cost:250, rev:0, sales:0, tech:2, equip:'no', spec:[1,3], stage:'soon' },
+    { id:'SV-009', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=300&h=200&fit=crop', name:'Tắm trắng phi thuyền', cat:'Body', dur:90, price:1400, promo:0, cost:170, rev:0, sales:0, tech:2, equip:'yes', spec:[3], stage:'hold' },
+    { id:'SV-010', img:'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=300&h=200&fit=crop', name:'Gói cưới trọn gói Bridal Glow', cat:'VIP', dur:180, price:6800, promo:0, cost:600, rev:0, sales:0, tech:3, equip:'yes', spec:[0,1,2], stage:'hold' },
+    { id:'SV-011', img:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&h=200&fit=crop', name:'Thải độc da bằng tế bào gốc (cũ)', cat:'Facial', dur:75, price:1300, promo:0, cost:200, rev:0, sales:0, tech:1, equip:'no', spec:[0], stage:'stopped' },
   ];
 
-  let filtered = [...tours];
+  let filtered = [...services];
 
-  const fmt = (n) => n.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-  const seatColor = (sold, total) => {
-    const r = sold / total;
-    if (r >= 1) return '#ef4444';
-    if (r >= 0.8) return '#f59e0b';
-    return '#22c55e';
-  };
-  const marginPct = (t) => Math.round((t.sell - t.cost) / t.sell * 100);
+  const fmtK = (n) => n >= 1000 ? (n/1000).toLocaleString('vi-VN',{maximumFractionDigits:1}) + 'tr' : n + 'K';
+
+  function avatarsHtml(idx) {
+    const shown = idx.slice(0, 3).map(i => `<img src="${specs[i].img}" title="${specs[i].name}" alt="">`).join('');
+    const more = idx.length > 3 ? `<div class="more">+${idx.length-3}</div>` : '';
+    return shown + more;
+  }
 
   /* ===== KANBAN ===== */
   function renderKanban() {
     const board = document.getElementById('kanbanView');
     board.innerHTML = STAGES.map(stg => {
-      const items = filtered.filter(t => t.stage === stg.key);
+      const items = filtered.filter(s => s.stage === stg.key);
       return `
       <div class="kanban-col" data-stage="${stg.key}" ondragover="event.preventDefault()" ondrop="dropCard(event,'${stg.key}')">
         <div class="col-head">
@@ -434,71 +422,68 @@
           <span class="col-count">${items.length}</span>
         </div>
         <div class="col-cards">
-          ${items.map(t => `
-            <div class="tcard" draggable="true" data-code="${t.code}" ondragstart="dragStart(event,'${t.code}')" ondragend="dragEnd(event)" onclick="showToast('Mở chuyến ${t.code}')">
-              <div class="tcard-head"><span class="tour-code">${t.code}</span><span class="flag">${t.flag}</span></div>
-              <div class="tcard-title">${t.name}</div>
-              <div class="tcard-meta">
-                <span class="meta-pill"><i class="fa-regular fa-calendar"></i> ${t.depart}</span>
-                <span class="meta-pill"><i class="fa-regular fa-clock"></i> ${t.dur}</span>
+          ${items.map(s => {
+            const price = s.promo ? s.promo : s.price;
+            return `
+            <div class="scard" draggable="true" data-id="${s.id}" ondragstart="dragStart(event,'${s.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở dịch vụ ${s.name}')">
+              <div class="scard-thumb">
+                <img src="${s.img}" alt="">
+                <span class="scard-dur"><i class="fa-regular fa-clock"></i> ${s.dur} phút</span>
               </div>
-              <div class="seat-wrap">
-                <div class="seat-label"><span>Đã bán</span><span>${t.sold}/${t.total} chỗ</span></div>
-                <div class="seat-bar"><div class="seat-fill" style="width:${Math.round(t.sold/t.total*100)}%;background:${seatColor(t.sold,t.total)}"></div></div>
+              <div class="scard-body">
+                <div class="scard-name">${s.name}</div>
+                <div class="scard-meta">
+                  <span class="scard-price">${fmtK(price)}${s.promo ? ' <small style="font-size:10px;color:#9ca3af;text-decoration:line-through;font-weight:500;">'+fmtK(s.price)+'</small>' : ''}</span>
+                  <span class="scard-sales"><i class="fa-solid fa-arrow-trend-up"></i> ${s.sales} lượt/tháng</span>
+                </div>
+                <div class="scard-foot">
+                  <span class="spec-label">KTV phụ trách</span>
+                  <div class="avatars">${avatarsHtml(s.spec)}</div>
+                </div>
               </div>
-              <div class="tcard-foot">
-                <div class="guide-cell"><img src="${t.guideImg}" alt=""><span>${t.guide}</span></div>
-                <span class="card-price">${fmt(t.sell)}tr</span>
-              </div>
-            </div>`).join('')}
+            </div>`;
+          }).join('')}
         </div>
       </div>`;
     }).join('');
   }
 
-  let dragCode = null;
-  function dragStart(e, code) { dragCode = code; e.target.classList.add('dragging'); }
-  function dragEnd(e) { e.target.classList.remove('dragging'); }
+  let dragId = null;
+  function dragStart(e, id) { dragId = id; e.currentTarget.classList.add('dragging'); }
+  function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
   function dropCard(e, stage) {
     e.preventDefault();
-    const t = tours.find(x => x.code === dragCode);
-    if (t) { t.stage = stage; applyFilters(); showToast(`Chuyển ${t.code} → ${STAGE_LABEL[stage]}`); }
+    const s = services.find(x => x.id === dragId);
+    if (s) { s.stage = stage; applyFilters(); showToast(`Chuyển ${s.name} → ${STAGE_LABEL[stage]}`); }
   }
 
   /* ===== TABLE ===== */
   function renderTable() {
     const tb = document.getElementById('tableBody');
-    tb.innerHTML = filtered.map(t => {
-      const avail = t.total - t.sold;
-      const availCls = avail === 0 ? 'full' : (avail <= t.total * 0.2 ? 'low' : 'ok');
-      const m = marginPct(t);
-      const mCls = m >= 25 ? 'margin-good' : 'margin-mid';
-      return `
-      <tr onclick="showToast('Mở chuyến ${t.code}')">
+    tb.innerHTML = filtered.map(s => `
+      <tr onclick="showToast('Mở dịch vụ ${s.name}')">
         <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
-        <td><span class="code-pill">${t.code}</span></td>
-        <td><div class="tour-name-cell">${t.name}<small>${t.flag} ${t.dest} · ${t.dur}</small></div></td>
-        <td><div class="date-cell">${t.depart}</div></td>
-        <td class="num-cell">${t.total}</td>
-        <td><div class="avail-cell ${availCls}">${avail}</div></td>
-        <td style="text-align:right;"><span class="cost-cell">${fmt(t.cost)}tr</span></td>
-        <td style="text-align:right;"><span class="sell-cell">${fmt(t.sell)}tr</span></td>
-        <td style="text-align:center;"><span class="margin-cell ${mCls}"><span class="pct">${m}%</span></span></td>
-        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[t.stage]}">${STAGE_LABEL[t.stage]}</span></td>
+        <td><span class="id-pill">${s.id}</span></td>
+        <td><div class="svc-cell"><img class="svc-thumb" src="${s.img}" alt=""><div><div class="svc-name">${s.name}</div><div class="svc-cat">${s.cat}</div></div></div></td>
+        <td style="text-align:right;"><span class="price-std">${fmtK(s.price)}</span></td>
+        <td style="text-align:right;">${s.promo ? `<span class="price-promo">${fmtK(s.promo)}<small>${fmtK(s.price)}</small></span>` : '<span style="color:#d1d5db;">—</span>'}</td>
+        <td style="text-align:center;"><span class="dur-cell">${s.dur}'</span></td>
+        <td style="text-align:right;"><span class="cost-cell">${fmtK(s.cost)}</span></td>
+        <td style="text-align:right;"><span class="rev-cell">${s.rev ? fmtK(s.rev) : '—'}</span></td>
+        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[s.stage]}">${STAGE_LABEL[s.stage]}</span></td>
         <td onclick="event.stopPropagation()">
           <div class="row-actions">
-            <button class="row-act blue" title="Xem" onclick="showToast('Xem ${t.code}')"><i class="fa-solid fa-eye"></i></button>
-            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${t.code}')"><i class="fa-solid fa-pen"></i></button>
-            <button class="row-act red" title="Xóa" onclick="showToast('Xóa ${t.code}')"><i class="fa-solid fa-trash"></i></button>
+            <button class="row-act blue" title="Xem" onclick="showToast('Xem ${s.id}')"><i class="fa-solid fa-eye"></i></button>
+            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${s.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="row-act red" title="Xóa" onclick="showToast('Xóa ${s.id}')"><i class="fa-solid fa-trash"></i></button>
           </div>
         </td>
-      </tr>`;
-    }).join('');
-    const profit = filtered.reduce((s, t) => s + (t.sell - t.cost) * t.sold, 0);
-    document.getElementById('stTotal').textContent = tours.length;
-    document.getElementById('stProfit').textContent = fmt(profit) + ' tr';
-    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${tours.length} chuyến`;
-    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${tours.length} chuyến khởi hành`;
+      </tr>`).join('');
+    const rev = filtered.reduce((a, s) => a + s.rev, 0);
+    document.getElementById('stTotal').textContent = services.length;
+    document.getElementById('stRev').textContent = fmtK(rev);
+    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${services.length} dịch vụ`;
+    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${services.length} dịch vụ`;
   }
 
   function render() { renderKanban(); renderTable(); }
@@ -514,14 +499,14 @@
   /* ===== FILTER ===== */
   function applyFilters() {
     const q = (document.getElementById('search').value || '').toLowerCase().trim();
-    const month = document.getElementById('monthFilter').value;
-    const guide = document.getElementById('guideFilter').value;
-    const status = document.getElementById('statusFilter').value;
-    filtered = tours.filter(t => {
-      if (q && !(t.code.toLowerCase().includes(q) || t.name.toLowerCase().includes(q))) return false;
-      if (month && t.depart.split('/')[1] !== month) return false;
-      if (guide && t.guide !== guide) return false;
-      if (status && t.stage !== status) return false;
+    const priceR = document.getElementById('priceFilter').value;
+    const tech = document.getElementById('techFilter').value;
+    const equip = document.getElementById('equipFilter').value;
+    filtered = services.filter(s => {
+      if (q && !s.name.toLowerCase().includes(q)) return false;
+      if (priceR) { const [a,b] = priceR.split('-').map(Number); const p = s.promo || s.price; if (p < a || p >= b) return false; }
+      if (tech) { if (tech === '3' ? s.tech < 3 : String(s.tech) !== tech) return false; }
+      if (equip && s.equip !== equip) return false;
       return true;
     });
     render();
@@ -530,7 +515,7 @@
   function selectCat(el, name) {
     document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
     el.classList.add('active');
-    showToast('Lọc theo điểm đến: ' + name);
+    showToast('Lọc theo danh mục: ' + name);
   }
   function filterCats(q) {
     q = q.toLowerCase();
@@ -539,8 +524,7 @@
   function toggleSubSidebar() { document.getElementById('subSidebar').classList.toggle('collapsed'); }
   function toggleAll(cb) { document.querySelectorAll('.rowcb').forEach(c => c.checked = cb.checked); }
   function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
-  function exportExcel() { showToast('Đang xuất ' + filtered.length + ' chuyến ra file Excel...'); }
-  function importList() { showToast('Mở hộp thoại nhập danh sách Tour từ file...'); }
+  function exportPrice() { showToast('Đang xuất bảng giá ' + filtered.length + ' dịch vụ ra file...'); }
 
   document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('collapsed');
