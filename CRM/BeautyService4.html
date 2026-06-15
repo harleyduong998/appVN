@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kho Dịch vụ Làm đẹp - CRM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --royal: #2545d3;
+      --royal-dark: #1b3aa8;
+      --border: #e5e7eb;
+      --text: #1f2937;
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { display: flex; height: 100vh; overflow: hidden; background: #f7f8fa; color: var(--text); }
+
+    /* ===== SIDEBAR (gradient blue) ===== */
+    #sidebar {
+      width: 240px; min-width: 240px; background: linear-gradient(160deg, #1b3da1 0%, #17234e 100%); border-right: none;
+      display: flex; flex-direction: column; position: relative; transition: width .25s, min-width .25s; overflow: hidden; z-index: 100;
+    }
+    #sidebar.collapsed { width: 64px; min-width: 64px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 18px 20px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #ec4899, #f43f5e); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
+    .sidebar-logo .logo-text { font-size: 17px; font-weight: 700; color: #ffffff; white-space: nowrap; }
+    #sidebar.collapsed .logo-text { display: none; }
+    .sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 0; }
+    .sidebar-nav::-webkit-scrollbar { width: 4px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+    .nav-group-title { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: .5px; padding: 10px 20px 4px; white-space: nowrap; overflow: hidden; font-weight: 600; }
+    #sidebar.collapsed .nav-group-title { padding: 10px 0 4px; text-align: center; font-size: 8px; letter-spacing: 0; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 20px; font-size: 14px; color: rgba(255,255,255,0.75); cursor: pointer; text-decoration: none; border-left: 3px solid transparent; transition: all .15s; white-space: nowrap; }
+    .nav-item:hover { color: #ffffff; background: rgba(255,255,255,0.15); border-left-color: #ffffff; }
+    .nav-item.active { color: #ffffff; background: rgba(255,255,255,0.2); border-left-color: #ffffff; font-weight: 600; }
+    .nav-item i { width: 18px; text-align: center; font-size: 15px; flex-shrink: 0; color: rgba(255,255,255,0.6); }
+    .nav-item:hover i, .nav-item.active i { color: #ffffff; }
+    .nav-item span { white-space: nowrap; overflow: hidden; }
+    #sidebar.collapsed .nav-item { padding: 9px 0; justify-content: center; gap: 0; }
+    #sidebar.collapsed .nav-item span { display: none; }
+    .sidebar-toggle-btn {
+      position: absolute; right: -14px; bottom: 80px; width: 28px; height: 28px;
+      background: #fff; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 101; color: var(--muted); font-size: 11px; box-shadow: 0 1px 4px rgba(0,0,0,.1); transition: all .2s;
+    }
+    .sidebar-toggle-btn:hover { background: #eef2ff; }
+    #sidebar.collapsed .sidebar-toggle-btn i { transform: rotate(180deg); }
+    .sidebar-bottom { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 10px; }
+    .sidebar-bottom img { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-bottom .user-name { font-size: 13px; font-weight: 600; color: #ffffff; white-space: nowrap; }
+    .sidebar-bottom .user-role { font-size: 11px; color: rgba(255,255,255,0.6); white-space: nowrap; }
+    #sidebar.collapsed .sidebar-bottom { padding: 12px 0; justify-content: center; }
+    #sidebar.collapsed .user-info { display: none; }
+
+    /* ===== SUB SIDEBAR (white) ===== */
+    #subSidebar {
+      width: 220px; min-width: 220px; background: #ffffff; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; transition: width .25s, min-width .25s; overflow: hidden; z-index: 99;
+    }
+    #subSidebar.collapsed { width: 0; min-width: 0; }
+    .sub-sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px 10px; border-bottom: 1px solid #f1f2f4; }
+    .sub-sidebar-title { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .sub-sidebar-add { width: 22px; height: 22px; border-radius: 6px; background: #eef2ff; color: var(--royal); border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .sub-search { padding: 8px 12px; border-bottom: 1px solid #f1f2f4; }
+    .sub-search-wrap { position: relative; }
+    .sub-search-wrap input { width: 100%; background: #f3f4f6; border: none; border-radius: 6px; padding: 6px 10px 6px 28px; font-size: 12px; color: #374151; outline: none; }
+    .sub-search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 11px; }
+    .sub-sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
+    .sub-sidebar-nav::-webkit-scrollbar { width: 3px; }
+    .sub-sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; }
+    .sub-group-title { font-size: 10px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .6px; padding: 6px 15px; }
+    .cat-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 15px; font-size: 13px; color: #374151; cursor: pointer; border-left: 3px solid transparent; transition: all .12s; }
+    .cat-item:hover { background: #f7f8fa; }
+    .cat-item.active { background: #e8edff; border-left-color: var(--royal); color: var(--royal-dark); font-weight: 600; }
+    .cat-left { display: flex; align-items: center; gap: 9px; }
+    .cat-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+    .cat-count { font-size: 10px; background: #f1f2f4; color: #6b7280; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+    .cat-item.active .cat-count { background: #d4ddff; color: var(--royal-dark); }
+
+    /* ===== MAIN ===== */
+    #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .top-header { height: 60px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+    .top-header-left h1 { font-size: 18px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+    .top-header-left h1 i { color: var(--royal); }
+    .top-header-right { display: flex; align-items: center; gap: 10px; }
+    .icon-btn { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); font-size: 15px; transition: all .15s; }
+    .icon-btn:hover { background: #f3f4f6; color: #374151; }
+    .btn-primary { background: var(--royal); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background .15s; }
+    .btn-primary:hover { background: var(--royal-dark); }
+
+    /* ===== TOOLBAR ===== */
+    .toolbar { padding: 10px 20px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn-outline { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .15s; text-decoration: none; }
+    .btn-outline:hover { background: #f7f8fa; border-color: #d1d5db; }
+    .btn-outline.indigo { color: var(--royal); border-color: #bfd0ff; }
+    .btn-outline.indigo:hover { background: #eef2ff; }
+    .search-wrap { position: relative; }
+    .search-wrap input { background: #f3f4f6; border: none; border-radius: 8px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 190px; }
+    .search-wrap input:focus { background: #fff; box-shadow: 0 0 0 2px #bfd0ff; }
+    .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 13px; }
+    .filter-field { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 12px; }
+    .filter-field label { color: #9ca3af; font-size: 11px; }
+    .filter-field select { border: none; background: none; outline: none; font-size: 12px; font-weight: 600; color: var(--royal-dark); cursor: pointer; }
+
+    /* ===== VIEW SWITCH ===== */
+    .view-switch { display: flex; background: #f1f2f4; border-radius: 8px; padding: 3px; gap: 2px; }
+    .view-btn { padding: 6px 14px; border-radius: 6px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; color: #6b7280; background: transparent; display: flex; align-items: center; gap: 5px; transition: all .15s; }
+    .view-btn.active { background: #fff; color: var(--royal-dark); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+    /* ===== MODULE TABS ===== */
+    .module-tabs { display:flex; gap:4px; padding:0 20px; background:#fff; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .module-tab { padding:11px 16px; font-size:13px; font-weight:600; color:#6b7280; cursor:pointer; border-bottom:2px solid transparent; display:flex; align-items:center; gap:7px; }
+    .module-tab.active { color:var(--royal-dark); border-bottom-color:var(--royal); }
+    .module-tab .cnt { font-size:11px; background:#f1f2f4; color:#6b7280; padding:1px 7px; border-radius:10px; font-weight:600; }
+
+    /* ===== KANBAN ===== */
+    #kanbanView { flex: 1; display: flex; gap: 14px; padding: 16px 20px 20px; overflow-x: auto; }
+    #kanbanView::-webkit-scrollbar { height: 7px; }
+    #kanbanView::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .kanban-col { min-width: 286px; max-width: 286px; background: #f1f3f7; border-radius: 12px; display: flex; flex-direction: column; padding: 12px 10px; max-height: 100%; }
+    .col-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
+    .col-head-left { display: flex; align-items: center; gap: 7px; }
+    .col-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .col-name { font-size: 13px; font-weight: 700; color: #1f2937; }
+    .col-count { font-size: 11px; font-weight: 600; background: rgba(0,0,0,.07); padding: 2px 7px; border-radius: 10px; color: #374151; }
+    .col-cards { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 2px; }
+    .col-cards::-webkit-scrollbar { width: 3px; }
+    .col-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+    .scard { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: box-shadow .15s, transform .15s; border: 1px solid transparent; }
+    .scard:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); border-color: #dbe3ff; }
+    .scard.dragging { opacity: .5; }
+    .scard-thumb { position: relative; height: 96px; background: #e5e7eb; overflow: hidden; }
+    .scard-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .scard-dur { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+    .scard-tag { position: absolute; top: 8px; left: 8px; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+    .name-chip { display: inline-flex; align-items: center; font-size: 9px; font-weight: 700; color: #fff; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+    /* ===== PACKAGE CARD ===== */
+    .pkg-items { font-size: 11px; color: #6b7280; line-height: 1.4; margin-bottom: 8px; }
+    .pkg-save { font-size: 10px; font-weight: 700; background: #dcfce7; color: #15803d; padding: 2px 7px; border-radius: 5px; }
+    .pkg-validity { font-size: 11px; color: #9ca3af; display: flex; align-items: center; gap: 4px; }
+    .defer-cell { color: #b45309; font-weight: 600; }
+    .scard-body { padding: 11px 12px 12px; }
+    .scard-name { font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 7px; line-height: 1.35; }
+    .scard-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+    .scard-price { font-size: 15px; font-weight: 700; color: #be185d; }
+    .scard-sales { font-size: 11px; color: #6b7280; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+    .scard-sales i { color: #22c55e; font-size: 10px; }
+    .scard-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 9px; border-top: 1px solid #f1f2f4; }
+    .spec-label { font-size: 11px; color: #9ca3af; font-weight: 500; }
+    .avatars { display: flex; }
+    .avatars img { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; margin-left: -7px; }
+    .avatars img:first-child { margin-left: 0; }
+    .avatars .more { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; margin-left: -7px; background: #e8edff; color: var(--royal-dark); font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+    /* ===== TABLE ===== */
+    #tableView { flex: 1; padding: 16px 20px 20px; overflow: auto; display: none; }
+    #tableView.active { display: block; }
+    #kanbanView.hidden { display: none; }
+    .table-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); overflow: hidden; }
+    .table-summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid #f1f2f4; flex-wrap: wrap; gap: 10px; }
+    .summary-stat { font-size: 12px; color: #6b7280; }
+    .summary-stat b { font-size: 15px; font-weight: 700; color: var(--royal-dark); }
+    .summary-stat.green b { color: #15803d; }
+    .table-scroll { overflow-x: auto; }
+    .table-scroll::-webkit-scrollbar { height: 8px; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 1140px; }
+    .data-table thead th { padding: 12px 16px; font-size: 11px; font-weight: 700; color: #6b7280; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; background: #f9fafb; text-transform: uppercase; letter-spacing: .4px; position: sticky; top: 0; z-index: 2; }
+    .data-table thead th.center { text-align: center; }
+    .data-table thead th.right { text-align: right; }
+    .data-table tbody td { padding: 11px 16px; font-size: 13px; color: #374151; border-bottom: 1px solid #f1f2f4; white-space: nowrap; }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr { cursor: pointer; transition: background .12s; }
+    .data-table tbody tr:hover td { background: #f8fafc; }
+    .cb { width: 15px; height: 15px; accent-color: var(--royal); cursor: pointer; }
+    .id-pill { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 3px 8px; border-radius: 5px; }
+    .svc-cell { display: flex; align-items: center; gap: 10px; }
+    .svc-thumb { width: 40px; height: 32px; border-radius: 6px; object-fit: cover; flex-shrink: 0; background: #e5e7eb; }
+    .svc-name { font-weight: 600; color: #1f2937; font-size: 13px; }
+    .svc-cat { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+    .price-std { font-weight: 600; color: #374151; }
+    .price-promo { font-weight: 700; color: #be185d; }
+    .price-promo small { display: block; color: #9ca3af; font-weight: 500; font-size: 10px; text-decoration: line-through; }
+    .dur-cell { color: #4b5563; font-weight: 500; }
+    .cost-cell { color: #6b7280; font-weight: 500; }
+    .rev-cell { font-weight: 700; color: #15803d; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .bg-green { background: #dcfce7; color: #15803d; } .bg-green::before { background: #22c55e; }
+    .bg-pink { background: #fce7f3; color: #be185d; } .bg-pink::before { background: #ec4899; }
+    .bg-blue { background: #dbeafe; color: #1d4ed8; } .bg-blue::before { background: #3b82f6; }
+    .bg-amber { background: #fef3c7; color: #b45309; } .bg-amber::before { background: #f59e0b; }
+    .bg-gray { background: #f1f2f4; color: #4b5563; } .bg-gray::before { background: #9ca3af; }
+    .bg-red { background: #fee2e2; color: #b91c1c; } .bg-red::before { background: #ef4444; }
+    .row-actions { display: flex; align-items: center; gap: 4px; justify-content: center; }
+    .row-act { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; color: #9ca3af; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .row-act:hover { background: #f1f2f4; color: #374151; }
+    .row-act.blue:hover { background: #eef2ff; color: var(--royal); }
+    .row-act.red:hover { background: #fee2e2; color: #b91c1c; }
+    .table-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-top: 1px solid #f1f2f4; flex-wrap: wrap; gap: 10px; }
+    .ftr-info { font-size: 12px; color: #6b7280; }
+    .pagination { display: flex; align-items: center; gap: 4px; }
+    .pg-btn { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid var(--border); background: #fff; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 500; color: #374151; display: flex; align-items: center; justify-content: center; }
+    .pg-btn:hover { background: #f7f8fa; }
+    .pg-btn.active { background: var(--royal); color: #fff; border-color: var(--royal); }
+    .pg-btn:disabled { opacity: .4; cursor: default; }
+
+    /* ===== MODAL ===== */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: center; justify-content: center; z-index: 400; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 14px; width: 560px; max-width: 100%; max-height: 92vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.25); overflow: hidden; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f1f2f4; }
+    .modal-header h3 { font-size: 16px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+    .modal-header h3 i { color: var(--royal); }
+    .modal-close { width: 30px; height: 30px; border-radius: 8px; border: none; background: #f1f2f4; color: #6b7280; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .modal-close:hover { background: #e5e7eb; color: #374151; }
+    .modal-body { padding: 18px 20px; overflow-y: auto; }
+    .modal-body::-webkit-scrollbar { width: 5px; }
+    .modal-body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 12px; font-weight: 600; color: #374151; }
+    .form-group label .req { color: #ef4444; }
+    .form-group input, .form-group select, .form-group textarea {
+      border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; font-size: 13px; color: #1f2937; outline: none; background: #fff; transition: all .15s; font-family: 'Inter', sans-serif;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--royal); box-shadow: 0 0 0 3px rgba(37,69,211,.12); }
+    .form-group textarea { resize: vertical; min-height: 64px; }
+    .input-suffix { position: relative; }
+    .input-suffix input { width: 100%; padding-right: 42px; }
+    .input-suffix .suffix { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #9ca3af; font-weight: 500; }
+    .spec-picker { display: flex; flex-wrap: wrap; gap: 8px; }
+    .spec-opt { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 5px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 12px; color: #4b5563; transition: all .15s; user-select: none; }
+    .spec-opt img { width: 22px; height: 22px; border-radius: 50%; }
+    .spec-opt:hover { border-color: #bfd0ff; }
+    .spec-opt.sel { background: #eef2ff; border-color: var(--royal); color: var(--royal-dark); font-weight: 600; }
+    .modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid #f1f2f4; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1e293b; color: #fff; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.2); display: flex; align-items: center; gap: 8px; opacity: 0; transition: all .3s; z-index: 300; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast i { color: #4ade80; }
+    @media (max-width: 1100px) { #subSidebar { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><i class="fa-solid fa-spa"></i></div>
+    <span class="logo-text">AppVN CRM</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-title">Bán hàng &amp; CRM</div>
+    <a href="Customer.html" class="nav-item"><i class="fa-solid fa-user-tag"></i><span>Khách hàng</span></a>
+    <a href="Lead.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i><span>Leads</span></a>
+    <a href="Task.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>Task</span></a>
+    <a href="Order.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Đơn hàng</span></a>
+    <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
+    <a href="Course2.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
+    <a href="BeautyService4.html" class="nav-item active"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+    <a href="CustomerPackage.html" class="nav-item"><i class="fa-solid fa-clipboard-user"></i><span>Liệu trình khách</span></a>
+    <a href="Tour2.html" class="nav-item"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
+    <a href="Land2.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
+    <div class="nav-group-title">Vận hành &amp; Dịch vụ</div>
+    <a href="Project.html" class="nav-item"><i class="fa-solid fa-diagram-project"></i><span>Dự Án</span></a>
+    <div class="nav-group-title">Quản trị &amp; Marketing</div>
+    <a href="Marketing.html" class="nav-item"><i class="fa-solid fa-bullhorn"></i><span>Marketing</span></a>
+    <a href="Meta.html" class="nav-item"><i class="fa-brands fa-meta"></i><span>Meta</span></a>
+    <a href="Staff.html" class="nav-item"><i class="fa-solid fa-id-badge"></i><span>Nhân viên</span></a>
+    <a href="Finan.html" class="nav-item"><i class="fa-solid fa-sack-dollar"></i><span>Tài Chính</span></a>
+  </nav>
+  <button class="sidebar-toggle-btn" id="toggleSidebarBtn"><i class="fa-solid fa-chevron-left"></i></button>
+  <div class="sidebar-bottom">
+    <img src="https://i.pravatar.cc/150?img=11" alt="avatar">
+    <div class="user-info">
+      <div class="user-name">Phan Hiếu</div>
+      <div class="user-role">Quản trị viên</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUB SIDEBAR -->
+<div id="subSidebar">
+  <div class="sub-sidebar-header">
+    <span class="sub-sidebar-title">Danh mục dịch vụ</span>
+    <button class="sub-sidebar-add"><i class="fa-solid fa-plus"></i></button>
+  </div>
+  <div class="sub-search">
+    <div class="sub-search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="catSearch" placeholder="Tìm danh mục..." oninput="filterCats(this.value)">
+    </div>
+  </div>
+  <div class="sub-sidebar-nav" id="catList">
+    <div class="sub-group-title">Tất cả</div>
+    <div class="cat-item active" onclick="selectCat(this,'Tất cả')"><div class="cat-left"><span class="cat-dot" style="background:var(--royal)"></span><span>Tất cả dịch vụ</span></div><span class="cat-count">48</span></div>
+    <div class="sub-group-title">Theo nhóm</div>
+    <div class="cat-item" onclick="selectCat(this,'Facial')"><div class="cat-left"><span class="cat-dot" style="background:#22c55e"></span><span>Chăm sóc da (Facial)</span></div><span class="cat-count">16</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Body')"><div class="cat-left"><span class="cat-dot" style="background:#3b82f6"></span><span>Body Treatment</span></div><span class="cat-count">12</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Laser')"><div class="cat-left"><span class="cat-dot" style="background:#f59e0b"></span><span>Laser &amp; Công nghệ</span></div><span class="cat-count">11</span></div>
+    <div class="cat-item" onclick="selectCat(this,'VIP')"><div class="cat-left"><span class="cat-dot" style="background:#9333ea"></span><span>Gói VIP</span></div><span class="cat-count">9</span></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="mainContent">
+  <div class="top-header">
+    <div class="top-header-left"><h1><i class="fa-solid fa-clipboard-list"></i>Kho Dịch vụ Làm đẹp</h1></div>
+    <div class="top-header-right">
+      <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
+      <button class="btn-primary" id="addBtn" onclick="openAdd()"><i class="fa-solid fa-plus"></i> <span id="addBtnLabel">Thêm dịch vụ</span></button>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Danh mục</button>
+      <!-- <a class="btn-outline indigo" href="BeautyService.html"><i class="fa-solid fa-chart-simple"></i> Lead</a> -->
+      <div class="view-switch">
+        <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
+        <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search" placeholder="Tìm tên dịch vụ..." oninput="applyFilters()">
+      </div>
+      <div class="filter-field">
+        <label>Trạng thái</label>
+        <select id="priceFilter" onchange="applyFilters()">
+          <option value="">Tất cả</option>
+          <option value="0-500">Nháp</option>
+          <option value="500-1000">Đang bán</option>
+          <option value="1000-3000">Tạm ngưng</option>
+          <option value="3000-99999">Ngừng hẳn</option>
+        </select>
+      </div>
+ 
+  
+    </div>
+  </div>
+
+  <!-- MODULE TABS -->
+  <div class="module-tabs">
+    <div class="module-tab active" id="tabSingle" onclick="switchModule('single')"><i class="fa-solid fa-spa"></i> Dịch vụ lẻ <span class="cnt" id="cntSingle">0</span></div>
+    <div class="module-tab" id="tabPackage" onclick="switchModule('package')"><i class="fa-solid fa-layer-group"></i> Gói liệu trình <span class="cnt" id="cntPackage">0</span></div>
+  </div>
+
+  <!-- KANBAN VIEW -->
+  <div id="kanbanView"></div>
+
+  <!-- TABLE VIEW -->
+  <div id="tableView">
+    <div class="table-card">
+      <div class="table-summary">
+        <div class="summary-stat"><span id="stTotalLabel">Tổng dịch vụ: </span><b id="stTotal">0</b></div>
+        <div class="summary-stat green"><span id="stRevLabel">Tổng doanh thu/tháng: </span><b id="stRev">—</b></div>
+        <div class="summary-stat" id="stVisible"></div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <div class="ftr-info" id="ftrInfo"></div>
+        <div class="pagination">
+          <button class="pg-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn">2</button>
+          <button class="pg-btn">3</button>
+          <button class="pg-btn">…</button>
+          <button class="pg-btn">5</button>
+          <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Thêm dịch vụ mới -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-plus"></i> <span id="addModalTitle">Thêm dịch vụ mới</span></h3>
+      <button class="modal-close" onclick="closeAddModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="modal-body" id="addForm" onsubmit="submitService(event)">
+      <div class="form-grid" id="singleGrid">
+        <div class="form-group full">
+          <label>Tên dịch vụ <span class="req">*</span></label>
+          <input type="text" id="fName" placeholder="VD: Hydrating Facial cấp ẩm chuyên sâu">
+        </div>
+
+        <div class="form-group">
+          <label>Danh mục <span class="req">*</span></label>
+          <select id="fCat">
+            <option value="Facial">Chăm sóc da (Facial)</option>
+            <option value="Body">Body Treatment</option>
+            <option value="Laser">Laser &amp; Công nghệ</option>
+            <option value="VIP">Gói VIP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Trạng thái</label>
+          <select id="fStage">
+            <option value="draft">Nháp</option>
+            <option value="active" selected>Đang bán</option>
+            <option value="paused">Tạm ngừng</option>
+            <option value="stopped">Ngừng hẳn</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Thời lượng <span class="req">*</span></label>
+          <div class="input-suffix"><input type="number" id="fDur" min="5" step="5" placeholder="60"><span class="suffix">phút</span></div>
+        </div>
+        <div class="form-group">
+          <label>Số KTV cần</label>
+          <select id="fTech">
+            <option value="1">1 KTV</option>
+            <option value="2">2 KTV</option>
+            <option value="3">3+ KTV</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Giá chuẩn <span class="req">*</span></label>
+          <div class="input-suffix"><input type="number" id="fPrice" min="0" step="10" placeholder="850"><span class="suffix">K</span></div>
+        </div>
+        <div class="form-group">
+          <label>Giá khuyến mãi</label>
+          <div class="input-suffix"><input type="number" id="fPromo" min="0" step="10" placeholder="0"><span class="suffix">K</span></div>
+        </div>
+
+        <div class="form-group">
+          <label>Chi phí vật tư</label>
+          <div class="input-suffix"><input type="number" id="fCost" min="0" step="10" placeholder="120"><span class="suffix">K</span></div>
+        </div>
+     
+
+        <div class="form-group full">
+          <label>Ảnh đại diện (URL)</label>
+          <input type="url" id="fImg" placeholder="https://...">
+        </div>
+
+        <div class="form-group full">
+          <label>KTV phụ trách</label>
+          <div class="spec-picker" id="specPicker"></div>
+        </div>
+      </div>
+
+      <div class="form-grid" id="packageGrid" style="display:none;">
+        <div class="form-group full">
+          <label>Tên gói <span class="req">*</span></label>
+          <input type="text" id="pName" placeholder="VD: Combo Chăm sóc da Cơ bản">
+        </div>
+
+        <div class="form-group">
+          <label>Danh mục <span class="req">*</span></label>
+          <select id="pCat">
+            <option value="Facial">Chăm sóc da (Facial)</option>
+            <option value="Body">Body Treatment</option>
+            <option value="Laser">Laser &amp; Công nghệ</option>
+            <option value="VIP">Gói VIP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Trạng thái</label>
+          <select id="pStage">
+            <option value="draft">Nháp</option>
+            <option value="active" selected>Đang bán</option>
+            <option value="paused">Tạm ngừng</option>
+            <option value="stopped">Ngừng hẳn</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Thời hạn sử dụng</label>
+          <div class="input-suffix"><input type="number" id="pValidity" min="1" step="1" placeholder="6"><span class="suffix">tháng</span></div>
+        </div>
+        <div class="form-group">
+          <label>Giá gói <span class="req">*</span></label>
+          <div class="input-suffix"><input type="number" id="pPrice" min="0" step="10" placeholder="4500"><span class="suffix">K</span></div>
+        </div>
+
+        <div class="form-group full">
+          <label>Quyền lợi combo</label>
+          <div class="form-grid" style="gap:8px 12px;">
+            <div class="form-group"><input type="text" id="pSvc1" placeholder="Tên dịch vụ 1"></div>
+            <div class="form-group"><div class="input-suffix"><input type="number" id="pSes1" min="1" placeholder="6"><span class="suffix">buổi</span></div></div>
+            <div class="form-group"><input type="text" id="pSvc2" placeholder="Tên dịch vụ 2"></div>
+            <div class="form-group"><div class="input-suffix"><input type="number" id="pSes2" min="1" placeholder="4"><span class="suffix">buổi</span></div></div>
+            <div class="form-group"><input type="text" id="pSvc3" placeholder="Tên dịch vụ 3 (tùy chọn)"></div>
+            <div class="form-group"><div class="input-suffix"><input type="number" id="pSes3" min="1" placeholder="0"><span class="suffix">buổi</span></div></div>
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>Ảnh đại diện (URL)</label>
+          <input type="url" id="pImg" placeholder="https://...">
+        </div>
+
+        <div class="form-group full">
+          <label>KTV phụ trách</label>
+          <div class="spec-picker" id="pSpecPicker"></div>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeAddModal()">Hủy</button>
+      <button class="btn-primary" type="submit" form="addForm"><i class="fa-solid fa-check"></i> <span id="saveBtnLabel">Lưu dịch vụ</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg"></span></div>
+
+<script>
+  const STAGES = [
+    { key:'draft',    name:'Nháp',       dot:'#9ca3af', badge:'bg-gray' },
+    { key:'active',   name:'Đang bán',   dot:'#22c55e', badge:'bg-green' },
+    { key:'paused',   name:'Tạm ngừng',  dot:'#f59e0b', badge:'bg-amber' },
+    { key:'stopped',  name:'Ngừng hẳn',  dot:'#ef4444', badge:'bg-red' }
+  ];
+  const STAGE_LABEL = { draft:'Nháp', active:'Đang bán', paused:'Tạm ngừng', stopped:'Ngừng hẳn' };
+  const STAGE_BADGE = { draft:'bg-gray', active:'bg-green', paused:'bg-amber', stopped:'bg-red' };
+
+  // tag chip (HOT/MỚI/BÁN CHẠY)
+  const TAG_META = {
+    hot:  { label:'HOT',      bg:'#ec4899' },
+    new:  { label:'MỚI',      bg:'#3b82f6' },
+    best: { label:'BÁN CHẠY', bg:'#16a34a' }
+  };
+
+  // service product. price/promo/cost/revenue đơn vị nghìn đồng
+  const specs = [
+    { name:'Thu Hà',     img:'https://i.pravatar.cc/150?img=5' },
+    { name:'Minh Anh',   img:'https://i.pravatar.cc/150?img=9' },
+    { name:'Thị Phương', img:'https://i.pravatar.cc/150?img=16' },
+    { name:'Thanh Loan', img:'https://i.pravatar.cc/150?img=20' }
+  ];
+  const services = [
+    { id:'SV-001', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop', name:'Hydrating Facial cấp ẩm chuyên sâu', cat:'Facial', dur:60, price:850, promo:0, cost:120, rev:42500, sales:50, tech:1, equip:'no', spec:[0,1], stage:'active', tag:'best' },
+    { id:'SV-002', img:'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=300&h=200&fit=crop', name:'Trị mụn chuyên sâu y khoa', cat:'Facial', dur:75, price:990, promo:0, cost:160, rev:35640, sales:36, tech:1, equip:'yes', spec:[2], stage:'active', tag:'best' },
+    { id:'SV-003', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop', name:'Massage đá nóng thư giãn', cat:'Body', dur:90, price:1200, promo:0, cost:90, rev:30000, sales:25, tech:1, equip:'no', spec:[1,3], stage:'active', tag:'' },
+    { id:'SV-004', img:'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=300&h=200&fit=crop', name:'Peel da AHA/BHA tái tạo', cat:'Facial', dur:60, price:1100, promo:880, cost:140, rev:26400, sales:30, tech:1, equip:'yes', spec:[0], stage:'active', tag:'hot' },
+    { id:'SV-005', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop', name:'Triệt lông Laser Diode toàn thân', cat:'Laser', dur:120, price:3500, promo:2490, cost:300, rev:74700, sales:30, tech:2, equip:'yes', spec:[2,3], stage:'active', tag:'hot' },
+    { id:'SV-006', img:'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=300&h=200&fit=crop', name:'Nâng cơ RF trẻ hóa da', cat:'Laser', dur:75, price:1800, promo:1490, cost:200, rev:35760, sales:24, tech:1, equip:'yes', spec:[0,2], stage:'active', tag:'hot' },
+    { id:'SV-007', img:'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=200&fit=crop', name:'Liệu trình Carbon Laser mới', cat:'Laser', dur:60, price:1600, promo:0, cost:180, rev:0, sales:0, tech:1, equip:'yes', spec:[2], stage:'draft', tag:'new' },
+    { id:'SV-008', img:'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=300&h=200&fit=crop', name:'Gói chăm sóc Mẹ bầu cao cấp', cat:'VIP', dur:120, price:2500, promo:0, cost:250, rev:0, sales:0, tech:2, equip:'no', spec:[1,3], stage:'draft', tag:'new' },
+    { id:'SV-009', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=300&h=200&fit=crop', name:'Tắm trắng phi thuyền', cat:'Body', dur:90, price:1400, promo:0, cost:170, rev:0, sales:0, tech:2, equip:'yes', spec:[3], stage:'paused', tag:'' },
+    { id:'SV-010', img:'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=300&h=200&fit=crop', name:'Gói cưới trọn gói Bridal Glow', cat:'VIP', dur:180, price:6800, promo:0, cost:600, rev:0, sales:0, tech:3, equip:'yes', spec:[0,1,2], stage:'paused', tag:'' },
+    { id:'SV-011', img:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&h=200&fit=crop', name:'Thải độc da bằng tế bào gốc (cũ)', cat:'Facial', dur:75, price:1300, promo:0, cost:200, rev:0, sales:0, tech:1, equip:'no', spec:[0], stage:'stopped', tag:'' },
+  ];
+
+  // gói liệu trình (combo cố định). listPrice/pkgPrice/deferred đơn vị nghìn đồng
+  const packages = [
+    { id:'PKG-001', name:'Combo Chăm sóc da Cơ bản', cat:'Facial', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop',
+      items:[{svc:'Hydrating Facial', sessions:6},{svc:'Trị mụn chuyên sâu', sessions:4}],
+      listPrice:9060, pkgPrice:6900, validityMonths:6, sold:42, deferred:128000, spec:[0,1], stage:'active', tag:'best' },
+    { id:'PKG-002', name:'Combo Massage Thư giãn 8 buổi', cat:'Body', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop',
+      items:[{svc:'Massage đá nóng', sessions:8}],
+      listPrice:9600, pkgPrice:7200, validityMonths:4, sold:28, deferred:86400, spec:[1,3], stage:'active', tag:'hot' },
+    { id:'PKG-003', name:'Triệt lông Laser toàn thân 10 buổi', cat:'Laser', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop',
+      items:[{svc:'Triệt lông Laser Diode', sessions:10}],
+      listPrice:35000, pkgPrice:24900, validityMonths:12, sold:35, deferred:520000, spec:[2,3], stage:'active', tag:'best' },
+    { id:'PKG-004', name:'Gói Cưới Bridal Glow trọn gói', cat:'VIP', img:'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=300&h=200&fit=crop',
+      items:[{svc:'Facial cấp ẩm', sessions:4},{svc:'Tắm trắng phi thuyền', sessions:2},{svc:'Nâng cơ RF', sessions:2}],
+      listPrice:18200, pkgPrice:13900, validityMonths:6, sold:12, deferred:96000, spec:[0,1,2], stage:'paused', tag:'' },
+    { id:'PKG-005', name:'Gói VIP Tháng không giới hạn', cat:'VIP', img:'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=300&h=200&fit=crop',
+      items:[{svc:'Facial cao cấp', sessions:4},{svc:'Massage thư giãn', sessions:4}],
+      listPrice:8200, pkgPrice:5900, validityMonths:1, sold:0, deferred:0, spec:[1,3], stage:'draft', tag:'new' },
+    { id:'PKG-006', name:'Gói Detox & Thải độc da', cat:'Facial', img:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&h=200&fit=crop',
+      items:[{svc:'Thải độc tế bào gốc', sessions:5},{svc:'Peel da AHA/BHA', sessions:3}],
+      listPrice:9140, pkgPrice:6900, validityMonths:5, sold:18, deferred:42000, spec:[0], stage:'stopped', tag:'' },
+  ];
+
+  let mode = 'single';
+  let filtered = [...services];
+
+  const fmtK = (n) => n >= 1000 ? (n/1000).toLocaleString('vi-VN',{maximumFractionDigits:1}) + 'tr' : n + 'K';
+
+  function avatarsHtml(idx) {
+    const shown = idx.slice(0, 3).map(i => `<img src="${specs[i].img}" title="${specs[i].name}" alt="">`).join('');
+    const more = idx.length > 3 ? `<div class="more">+${idx.length-3}</div>` : '';
+    return shown + more;
+  }
+
+  function tagChip(tag) {
+    if (!tag || !TAG_META[tag]) return '';
+    const m = TAG_META[tag];
+    return `<span class="scard-tag" style="background:${m.bg}">${m.label}</span>`;
+  }
+  function nameChip(tag) {
+    if (!tag || !TAG_META[tag]) return '';
+    const m = TAG_META[tag];
+    return `<span class="name-chip" style="background:${m.bg}">${m.label}</span>`;
+  }
+
+  /* ===== KANBAN ===== */
+  function renderKanban() {
+    const board = document.getElementById('kanbanView');
+    board.innerHTML = STAGES.map(stg => {
+      const items = filtered.filter(s => s.stage === stg.key);
+      return `
+      <div class="kanban-col" data-stage="${stg.key}" ondragover="event.preventDefault()" ondrop="dropCard(event,'${stg.key}')">
+        <div class="col-head">
+          <div class="col-head-left"><span class="col-dot" style="background:${stg.dot}"></span><span class="col-name">${stg.name}</span></div>
+          <span class="col-count">${items.length}</span>
+        </div>
+        <div class="col-cards">
+          ${items.map(s => mode === 'package' ? pkgCardHtml(s) : svcCardHtml(s)).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function svcCardHtml(s) {
+    const price = s.promo ? s.promo : s.price;
+    return `
+    <div class="scard" draggable="true" data-id="${s.id}" ondragstart="dragStart(event,'${s.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở dịch vụ ${s.name}')">
+      <div class="scard-thumb">
+        <img src="${s.img}" alt="">
+        <span class="scard-dur"><i class="fa-regular fa-clock"></i> ${s.dur} phút</span>
+      </div>
+      <div class="scard-body">
+        <div class="scard-name">${s.name}</div>
+        <div class="scard-meta" style="margin-bottom:0;">
+          <span class="scard-price">${fmtK(price)}${s.promo ? ' <small style="font-size:10px;color:#9ca3af;text-decoration:line-through;font-weight:500;">'+fmtK(s.price)+'</small>' : ''}</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function totalSessions(p) { return p.items.reduce((a, it) => a + it.sessions, 0); }
+  function savePct(p) { return p.listPrice > 0 ? Math.round((1 - p.pkgPrice / p.listPrice) * 100) : 0; }
+  function pkgItemsText(p) { return p.items.map(it => `${it.sessions}× ${it.svc}`).join(' • '); }
+
+  function pkgCardHtml(p) {
+    const pct = savePct(p);
+    return `
+    <div class="scard" draggable="true" data-id="${p.id}" ondragstart="dragStart(event,'${p.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở gói ${p.name}')">
+      <div class="scard-thumb">
+        <img src="${p.img}" alt="">
+        <span class="scard-dur"><i class="fa-solid fa-layer-group"></i> GÓI ${totalSessions(p)} buổi</span>
+      </div>
+      <div class="scard-body">
+        <div class="scard-name">${p.name}</div>
+        <div class="pkg-items">${pkgItemsText(p)}</div>
+        <div class="scard-meta">
+          <span class="scard-price">${fmtK(p.pkgPrice)} <small style="font-size:10px;color:#9ca3af;text-decoration:line-through;font-weight:500;">${fmtK(p.listPrice)}</small></span>
+          ${pct > 0 ? `<span class="pkg-save">−${pct}%</span>` : ''}
+        </div>
+        <div class="scard-meta" style="margin-bottom:0;">
+          <span class="pkg-validity"><i class="fa-regular fa-clock"></i> HSD ${p.validityMonths} tháng</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  let dragId = null;
+  function dragStart(e, id) { dragId = id; e.currentTarget.classList.add('dragging'); }
+  function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
+  function dropCard(e, stage) {
+    e.preventDefault();
+    const arr = mode === 'package' ? packages : services;
+    const s = arr.find(x => x.id === dragId);
+    if (s) { s.stage = stage; applyFilters(); showToast(`Chuyển ${s.name} → ${STAGE_LABEL[stage]}`); }
+  }
+
+  /* ===== TABLE ===== */
+  const THEAD_SINGLE = `
+    <tr>
+      <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
+      <th>Mã DV</th>
+      <th>Tên dịch vụ</th>
+      <th class="right">Giá chuẩn</th>
+      <th class="right">Giá KM</th>
+      <th class="center">Thời lượng</th>
+      <th class="right">Doanh thu/tháng</th>
+      <th class="center">Trạng thái</th>
+      <th class="center" style="width:96px;">Thao tác</th>
+    </tr>`;
+  const THEAD_PACKAGE = `
+    <tr>
+      <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
+      <th>Mã gói</th>
+      <th>Tên gói</th>
+      <th class="center">Số buổi</th>
+      <th class="right">Giá gốc</th>
+      <th class="right">Giá gói</th>
+      <th class="center">Tiết kiệm</th>
+      <th class="center">Đã bán</th>
+      <th class="right">DT chưa thực hiện</th>
+      <th class="center">Trạng thái</th>
+      <th class="center" style="width:96px;">Thao tác</th>
+    </tr>`;
+
+  function renderTable() {
+    document.getElementById('tableHead').innerHTML = mode === 'package' ? THEAD_PACKAGE : THEAD_SINGLE;
+    if (mode === 'package') renderTablePackage(); else renderTableSingle();
+  }
+
+  function renderTableSingle() {
+    const tb = document.getElementById('tableBody');
+    tb.innerHTML = filtered.map(s => `
+      <tr onclick="showToast('Mở dịch vụ ${s.name}')">
+        <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
+        <td><span class="id-pill">${s.id}</span></td>
+        <td><div class="svc-cell"><img class="svc-thumb" src="${s.img}" alt=""><div><div class="svc-name">${s.name}</div><div class="svc-cat">${s.cat}</div></div></div></td>
+        <td style="text-align:right;"><span class="price-std">${fmtK(s.price)}</span></td>
+        <td style="text-align:right;">${s.promo ? `<span class="price-promo">${fmtK(s.promo)}<small>${fmtK(s.price)}</small></span>` : '<span style="color:#d1d5db;">—</span>'}</td>
+        <td style="text-align:center;"><span class="dur-cell">${s.dur}'</span></td>
+        <td style="text-align:right;"><span class="rev-cell">${s.rev ? fmtK(s.rev) : '—'}</span></td>
+        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[s.stage]}">${STAGE_LABEL[s.stage]}</span></td>
+        <td onclick="event.stopPropagation()">
+          <div class="row-actions">
+            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${s.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="row-act red" title="Xóa" onclick="showToast('Xóa ${s.id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`).join('');
+    const rev = filtered.reduce((a, s) => a + s.rev, 0);
+    document.getElementById('stTotal').textContent = services.length;
+    document.getElementById('stRev').textContent = fmtK(rev);
+    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${services.length} dịch vụ`;
+    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${services.length} dịch vụ`;
+  }
+
+  function renderTablePackage() {
+    const tb = document.getElementById('tableBody');
+    tb.innerHTML = filtered.map(p => {
+      const pct = savePct(p);
+      return `
+      <tr onclick="showToast('Mở gói ${p.name}')">
+        <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
+        <td><span class="id-pill">${p.id}</span></td>
+        <td><div class="svc-cell"><img class="svc-thumb" src="${p.img}" alt=""><div><div class="svc-name">${p.name}</div><div class="svc-cat">${pkgItemsText(p)}</div></div></div></td>
+        <td style="text-align:center;"><span class="dur-cell">${totalSessions(p)} buổi</span></td>
+        <td style="text-align:right;"><span class="price-std" style="text-decoration:line-through;color:#9ca3af;">${fmtK(p.listPrice)}</span></td>
+        <td style="text-align:right;"><span class="price-promo">${fmtK(p.pkgPrice)}</span></td>
+        <td style="text-align:center;">${pct > 0 ? `<span class="pkg-save">−${pct}%</span>` : '<span style="color:#d1d5db;">—</span>'}</td>
+        <td style="text-align:center;"><span class="cost-cell">${p.sold}</span></td>
+        <td style="text-align:right;"><span class="defer-cell">${p.deferred ? fmtK(p.deferred) : '—'}</span></td>
+        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[p.stage]}">${STAGE_LABEL[p.stage]}</span></td>
+        <td onclick="event.stopPropagation()">
+          <div class="row-actions">
+            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${p.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="row-act red" title="Xóa" onclick="showToast('Xóa ${p.id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+    const totalDeferred = filtered.reduce((a, p) => a + p.deferred, 0);
+    document.getElementById('stTotal').textContent = packages.length;
+    document.getElementById('stRev').textContent = fmtK(totalDeferred);
+    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${packages.length} gói`;
+    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${packages.length} gói`;
+  }
+
+  function render() {
+    renderKanban();
+    renderTable();
+    updateSummaryLabels();
+    document.getElementById('cntSingle').textContent = services.length;
+    document.getElementById('cntPackage').textContent = packages.length;
+  }
+
+  function updateSummaryLabels() {
+    const lblTotal = document.getElementById('stTotalLabel');
+    const lblRev = document.getElementById('stRevLabel');
+    if (mode === 'package') {
+      lblTotal.textContent = 'Tổng gói mẫu: ';
+      lblRev.textContent = 'Tổng DT chưa thực hiện: ';
+    } else {
+      lblTotal.textContent = 'Tổng dịch vụ: ';
+      lblRev.textContent = 'Tổng doanh thu/tháng: ';
+    }
+  }
+
+  /* ===== MODULE SWITCH ===== */
+  function switchModule(m) {
+    mode = m;
+    document.getElementById('tabSingle').classList.toggle('active', m === 'single');
+    document.getElementById('tabPackage').classList.toggle('active', m === 'package');
+    document.getElementById('addBtnLabel').textContent = m === 'package' ? 'Thêm gói' : 'Thêm dịch vụ';
+    applyFilters();
+  }
+
+  /* ===== VIEW SWITCH ===== */
+  function switchView(v) {
+    document.getElementById('kanbanView').classList.toggle('hidden', v !== 'kanban');
+    document.getElementById('tableView').classList.toggle('active', v === 'table');
+    document.getElementById('vbKanban').classList.toggle('active', v === 'kanban');
+    document.getElementById('vbTable').classList.toggle('active', v === 'table');
+  }
+
+  /* ===== FILTER ===== */
+  function applyFilters() {
+    const q = (document.getElementById('search').value || '').toLowerCase().trim();
+    const priceR = document.getElementById('priceFilter').value;
+    const tech = document.getElementById('techFilter').value;
+    const equip = document.getElementById('equipFilter').value;
+    if (mode === 'package') {
+      filtered = packages.filter(p => {
+        if (q && !(p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q))) return false;
+        if (priceR) { const [a,b] = priceR.split('-').map(Number); if (p.pkgPrice < a || p.pkgPrice >= b) return false; }
+        if (window._catFilter && window._catFilter !== 'Tất cả' && p.cat !== window._catFilter) return false;
+        return true;
+      });
+    } else {
+      filtered = services.filter(s => {
+        if (q && !s.name.toLowerCase().includes(q)) return false;
+        if (priceR) { const [a,b] = priceR.split('-').map(Number); const p = s.promo || s.price; if (p < a || p >= b) return false; }
+        if (tech) { if (tech === '3' ? s.tech < 3 : String(s.tech) !== tech) return false; }
+        if (equip && s.equip !== equip) return false;
+        if (window._catFilter && window._catFilter !== 'Tất cả' && s.cat !== window._catFilter) return false;
+        return true;
+      });
+    }
+    render();
+  }
+
+  function selectCat(el, name) {
+    document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    window._catFilter = name;
+    applyFilters();
+    showToast('Lọc theo danh mục: ' + name);
+  }
+  function filterCats(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.cat-item').forEach(i => { i.style.display = i.innerText.toLowerCase().includes(q) ? '' : 'none'; });
+  }
+  function toggleSubSidebar() { document.getElementById('subSidebar').classList.toggle('collapsed'); }
+  function toggleAll(cb) { document.querySelectorAll('.rowcb').forEach(c => c.checked = cb.checked); }
+  function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
+  function exportPrice() { showToast('Đang xuất bảng giá ' + filtered.length + ' dịch vụ ra file...'); }
+
+  /* ===== ADD MODAL (2 chế độ) ===== */
+  let pickedSpecs = [];
+  function specPickerHtml(targetId) {
+    return specs.map((s, i) =>
+      `<div class="spec-opt${pickedSpecs.includes(i) ? ' sel' : ''}" data-i="${i}" onclick="toggleSpec(${i})">
+         <img src="${s.img}" alt=""> ${s.name}
+       </div>`).join('');
+  }
+  function renderSpecPicker() {
+    const html = specPickerHtml();
+    document.getElementById('specPicker').innerHTML = html;
+    document.getElementById('pSpecPicker').innerHTML = html;
+  }
+  function toggleSpec(i) {
+    const at = pickedSpecs.indexOf(i);
+    if (at >= 0) pickedSpecs.splice(at, 1); else pickedSpecs.push(i);
+    renderSpecPicker();
+  }
+  function openAdd() { if (mode === 'package') openAddPackage(); else openAddModal(); }
+  function openAddModal() {
+    document.getElementById('addForm').reset();
+    pickedSpecs = [];
+    renderSpecPicker();
+    document.getElementById('singleGrid').style.display = '';
+    document.getElementById('packageGrid').style.display = 'none';
+    document.getElementById('addModalTitle').textContent = 'Thêm dịch vụ mới';
+    document.getElementById('saveBtnLabel').textContent = 'Lưu dịch vụ';
+    document.getElementById('addModal').classList.add('open');
+  }
+  function openAddPackage() {
+    document.getElementById('addForm').reset();
+    pickedSpecs = [];
+    renderSpecPicker();
+    document.getElementById('singleGrid').style.display = 'none';
+    document.getElementById('packageGrid').style.display = '';
+    document.getElementById('addModalTitle').textContent = 'Thêm gói liệu trình mới';
+    document.getElementById('saveBtnLabel').textContent = 'Lưu gói';
+    document.getElementById('addModal').classList.add('open');
+  }
+  function closeAddModal() { document.getElementById('addModal').classList.remove('open'); }
+
+  function submitService(e) {
+    e.preventDefault();
+    if (mode === 'package') { submitPackage(); return; }
+    const g = (id) => document.getElementById(id).value;
+    if (!g('fName').trim()) { showToast('Vui lòng nhập tên dịch vụ'); return; }
+    const nextId = 'SV-' + String(services.length + 1).padStart(3, '0');
+    const svc = {
+      id: nextId,
+      img: g('fImg') || 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop',
+      name: g('fName').trim(),
+      cat: g('fCat'),
+      dur: Number(g('fDur')) || 60,
+      price: Number(g('fPrice')) || 0,
+      promo: Number(g('fPromo')) || 0,
+      cost: Number(g('fCost')) || 0,
+      rev: 0, sales: 0,
+      tech: Number(g('fTech')) || 1,
+      equip: g('fEquip'),
+      spec: pickedSpecs.length ? [...pickedSpecs] : [0],
+      stage: g('fStage'),
+      tag: ''
+    };
+    services.unshift(svc);
+    closeAddModal();
+    applyFilters();
+    showToast('Đã thêm dịch vụ: ' + svc.name);
+  }
+
+  function submitPackage() {
+    const g = (id) => document.getElementById(id).value;
+    if (!g('pName').trim()) { showToast('Vui lòng nhập tên gói'); return; }
+    const items = [];
+    [['pSvc1','pSes1'],['pSvc2','pSes2'],['pSvc3','pSes3']].forEach(([sv, se]) => {
+      const name = g(sv).trim();
+      const ses = Number(g(se)) || 0;
+      if (name && ses > 0) items.push({ svc: name, sessions: ses });
+    });
+    if (!items.length) items.push({ svc: g('pName').trim(), sessions: 1 });
+    const nextId = 'PKG-' + String(packages.length + 1).padStart(3, '0');
+    const pkgPrice = Number(g('pPrice')) || 0;
+    const pkg = {
+      id: nextId,
+      name: g('pName').trim(),
+      cat: g('pCat'),
+      img: g('pImg') || 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop',
+      items,
+      listPrice: pkgPrice,
+      pkgPrice: pkgPrice,
+      validityMonths: Number(g('pValidity')) || 6,
+      sold: 0,
+      deferred: 0,
+      spec: pickedSpecs.length ? [...pickedSpecs] : [0],
+      stage: g('pStage'),
+      tag: ''
+    };
+    packages.unshift(pkg);
+    closeAddModal();
+    applyFilters();
+    showToast('Đã thêm gói: ' + pkg.name);
+  }
+
+  // đóng modal khi bấm nền tối
+  document.getElementById('addModal').addEventListener('click', (e) => {
+    if (e.target.id === 'addModal') closeAddModal();
+  });
+
+  document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('collapsed');
+  });
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  render();
+</script>
+</body>
+</html>
