@@ -94,7 +94,7 @@
     .toolbar { padding: 10px 20px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
     .toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .btn-outline { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .15s; }
+    .btn-outline { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .15s; text-decoration: none; }
     .btn-outline:hover { background: #f7f8fa; border-color: #d1d5db; }
     .btn-outline.indigo { color: var(--royal); border-color: #bfd0ff; }
     .btn-outline.indigo:hover { background: #eef2ff; }
@@ -288,6 +288,7 @@
   <div class="toolbar">
     <div class="toolbar-left">
       <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Điểm đến</button>
+      <a class="btn-outline indigo" href="Tour.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
       <div class="view-switch">
         <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
         <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
