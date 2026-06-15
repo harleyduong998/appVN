@@ -111,6 +111,12 @@
     .view-btn { padding: 6px 14px; border-radius: 6px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; color: #6b7280; background: transparent; display: flex; align-items: center; gap: 5px; transition: all .15s; }
     .view-btn.active { background: #fff; color: var(--royal-dark); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
 
+    /* ===== MODULE TABS ===== */
+    .module-tabs { display:flex; gap:4px; padding:0 20px; background:#fff; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .module-tab { padding:11px 16px; font-size:13px; font-weight:600; color:#6b7280; cursor:pointer; border-bottom:2px solid transparent; display:flex; align-items:center; gap:7px; }
+    .module-tab.active { color:var(--royal-dark); border-bottom-color:var(--royal); }
+    .module-tab .cnt { font-size:11px; background:#f1f2f4; color:#6b7280; padding:1px 7px; border-radius:10px; font-weight:600; }
+
     /* ===== KANBAN ===== */
     #kanbanView { flex: 1; display: flex; gap: 14px; padding: 16px 20px 20px; overflow-x: auto; }
     #kanbanView::-webkit-scrollbar { height: 7px; }
@@ -131,6 +137,13 @@
     .scard-thumb { position: relative; height: 96px; background: #e5e7eb; overflow: hidden; }
     .scard-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .scard-dur { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+    .scard-tag { position: absolute; top: 8px; left: 8px; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+    .name-chip { display: inline-flex; align-items: center; font-size: 9px; font-weight: 700; color: #fff; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+    /* ===== PACKAGE CARD ===== */
+    .pkg-items { font-size: 11px; color: #6b7280; line-height: 1.4; margin-bottom: 8px; }
+    .pkg-save { font-size: 10px; font-weight: 700; background: #dcfce7; color: #15803d; padding: 2px 7px; border-radius: 5px; }
+    .pkg-validity { font-size: 11px; color: #9ca3af; display: flex; align-items: center; gap: 4px; }
+    .defer-cell { color: #b45309; font-weight: 600; }
     .scard-body { padding: 11px 12px 12px; }
     .scard-name { font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 7px; line-height: 1.35; }
     .scard-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
@@ -183,6 +196,7 @@
     .bg-blue { background: #dbeafe; color: #1d4ed8; } .bg-blue::before { background: #3b82f6; }
     .bg-amber { background: #fef3c7; color: #b45309; } .bg-amber::before { background: #f59e0b; }
     .bg-gray { background: #f1f2f4; color: #4b5563; } .bg-gray::before { background: #9ca3af; }
+    .bg-red { background: #fee2e2; color: #b91c1c; } .bg-red::before { background: #ef4444; }
     .row-actions { display: flex; align-items: center; gap: 4px; justify-content: center; }
     .row-act { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; color: #9ca3af; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
     .row-act:hover { background: #f1f2f4; color: #374151; }
@@ -301,7 +315,7 @@
     <div class="top-header-right">
       <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
       <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
-      <button class="btn-primary" onclick="openAddModal()"><i class="fa-solid fa-plus"></i> Thêm dịch vụ</button>
+      <button class="btn-primary" id="addBtn" onclick="openAdd()"><i class="fa-solid fa-plus"></i> <span id="addBtnLabel">Thêm dịch vụ</span></button>
     </div>
   </div>
 
@@ -347,8 +361,14 @@
           <option value="no">Thủ công</option>
         </select>
       </div>
-      <button class="btn-outline" onclick="exportPrice()"><i class="fa-solid fa-file-export"></i> Xuất bảng giá</button>
+     
     </div>
+  </div>
+
+  <!-- MODULE TABS -->
+  <div class="module-tabs">
+    <div class="module-tab active" id="tabSingle" onclick="switchModule('single')"><i class="fa-solid fa-spa"></i> Dịch vụ lẻ <span class="cnt" id="cntSingle">0</span></div>
+    <div class="module-tab" id="tabPackage" onclick="switchModule('package')"><i class="fa-solid fa-layer-group"></i> Gói liệu trình <span class="cnt" id="cntPackage">0</span></div>
   </div>
 
   <!-- KANBAN VIEW -->
@@ -358,26 +378,13 @@
   <div id="tableView">
     <div class="table-card">
       <div class="table-summary">
-        <div class="summary-stat">Tổng dịch vụ: <b id="stTotal">0</b></div>
-        <div class="summary-stat green">Tổng doanh thu/tháng: <b id="stRev">—</b></div>
+        <div class="summary-stat"><span id="stTotalLabel">Tổng dịch vụ: </span><b id="stTotal">0</b></div>
+        <div class="summary-stat green"><span id="stRevLabel">Tổng doanh thu/tháng: </span><b id="stRev">—</b></div>
         <div class="summary-stat" id="stVisible"></div>
       </div>
       <div class="table-scroll">
         <table class="data-table">
-          <thead>
-            <tr>
-              <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
-              <th>Mã DV</th>
-              <th>Tên dịch vụ</th>
-              <th class="right">Giá chuẩn</th>
-              <th class="right">Giá KM</th>
-              <th class="center">Thời lượng</th>
-              <th class="right">Chi phí VT</th>
-              <th class="right">Doanh thu/tháng</th>
-              <th class="center">Trạng thái</th>
-              <th class="center" style="width:96px;">Thao tác</th>
-            </tr>
-          </thead>
+          <thead id="tableHead"></thead>
           <tbody id="tableBody"></tbody>
         </table>
       </div>
@@ -401,19 +408,19 @@
 <div class="modal-overlay" id="addModal">
   <div class="modal">
     <div class="modal-header">
-      <h3><i class="fa-solid fa-plus"></i> Thêm dịch vụ mới</h3>
+      <h3><i class="fa-solid fa-plus"></i> <span id="addModalTitle">Thêm dịch vụ mới</span></h3>
       <button class="modal-close" onclick="closeAddModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <form class="modal-body" id="addForm" onsubmit="submitService(event)">
-      <div class="form-grid">
+      <div class="form-grid" id="singleGrid">
         <div class="form-group full">
           <label>Tên dịch vụ <span class="req">*</span></label>
-          <input type="text" id="fName" placeholder="VD: Hydrating Facial cấp ẩm chuyên sâu" required>
+          <input type="text" id="fName" placeholder="VD: Hydrating Facial cấp ẩm chuyên sâu">
         </div>
 
         <div class="form-group">
           <label>Danh mục <span class="req">*</span></label>
-          <select id="fCat" required>
+          <select id="fCat">
             <option value="Facial">Chăm sóc da (Facial)</option>
             <option value="Body">Body Treatment</option>
             <option value="Laser">Laser &amp; Công nghệ</option>
@@ -423,17 +430,16 @@
         <div class="form-group">
           <label>Trạng thái</label>
           <select id="fStage">
-            <option value="active">Đang kinh doanh</option>
-            <option value="hot">Khuyến mãi HOT</option>
-            <option value="soon">Sắp ra mắt</option>
-            <option value="hold">Bảo trì / Tạm dừng</option>
-            <option value="stopped">Ngừng cung cấp</option>
+            <option value="draft">Nháp</option>
+            <option value="active" selected>Đang bán</option>
+            <option value="paused">Tạm ngừng</option>
+            <option value="stopped">Ngừng hẳn</option>
           </select>
         </div>
 
         <div class="form-group">
           <label>Thời lượng <span class="req">*</span></label>
-          <div class="input-suffix"><input type="number" id="fDur" min="5" step="5" placeholder="60" required><span class="suffix">phút</span></div>
+          <div class="input-suffix"><input type="number" id="fDur" min="5" step="5" placeholder="60"><span class="suffix">phút</span></div>
         </div>
         <div class="form-group">
           <label>Số KTV cần</label>
@@ -446,7 +452,7 @@
 
         <div class="form-group">
           <label>Giá chuẩn <span class="req">*</span></label>
-          <div class="input-suffix"><input type="number" id="fPrice" min="0" step="10" placeholder="850" required><span class="suffix">K</span></div>
+          <div class="input-suffix"><input type="number" id="fPrice" min="0" step="10" placeholder="850"><span class="suffix">K</span></div>
         </div>
         <div class="form-group">
           <label>Giá khuyến mãi</label>
@@ -475,10 +481,67 @@
           <div class="spec-picker" id="specPicker"></div>
         </div>
       </div>
+
+      <div class="form-grid" id="packageGrid" style="display:none;">
+        <div class="form-group full">
+          <label>Tên gói <span class="req">*</span></label>
+          <input type="text" id="pName" placeholder="VD: Combo Chăm sóc da Cơ bản">
+        </div>
+
+        <div class="form-group">
+          <label>Danh mục <span class="req">*</span></label>
+          <select id="pCat">
+            <option value="Facial">Chăm sóc da (Facial)</option>
+            <option value="Body">Body Treatment</option>
+            <option value="Laser">Laser &amp; Công nghệ</option>
+            <option value="VIP">Gói VIP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Trạng thái</label>
+          <select id="pStage">
+            <option value="draft">Nháp</option>
+            <option value="active" selected>Đang bán</option>
+            <option value="paused">Tạm ngừng</option>
+            <option value="stopped">Ngừng hẳn</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Thời hạn sử dụng</label>
+          <div class="input-suffix"><input type="number" id="pValidity" min="1" step="1" placeholder="6"><span class="suffix">tháng</span></div>
+        </div>
+        <div class="form-group">
+          <label>Giá gói <span class="req">*</span></label>
+          <div class="input-suffix"><input type="number" id="pPrice" min="0" step="10" placeholder="4500"><span class="suffix">K</span></div>
+        </div>
+
+        <div class="form-group full">
+          <label>Quyền lợi combo</label>
+          <div class="form-grid" style="gap:8px 12px;">
+            <div class="form-group"><input type="text" id="pSvc1" placeholder="Tên dịch vụ 1"></div>
+            <div class="form-group"><div class="input-suffix"><input type="number" id="pSes1" min="1" placeholder="6"><span class="suffix">buổi</span></div></div>
+            <div class="form-group"><input type="text" id="pSvc2" placeholder="Tên dịch vụ 2"></div>
+            <div class="form-group"><div class="input-suffix"><input type="number" id="pSes2" min="1" placeholder="4"><span class="suffix">buổi</span></div></div>
+            <div class="form-group"><input type="text" id="pSvc3" placeholder="Tên dịch vụ 3 (tùy chọn)"></div>
+            <div class="form-group"><div class="input-suffix"><input type="number" id="pSes3" min="1" placeholder="0"><span class="suffix">buổi</span></div></div>
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>Ảnh đại diện (URL)</label>
+          <input type="url" id="pImg" placeholder="https://...">
+        </div>
+
+        <div class="form-group full">
+          <label>KTV phụ trách</label>
+          <div class="spec-picker" id="pSpecPicker"></div>
+        </div>
+      </div>
     </form>
     <div class="modal-footer">
       <button class="btn-outline" onclick="closeAddModal()">Hủy</button>
-      <button class="btn-primary" type="submit" form="addForm"><i class="fa-solid fa-check"></i> Lưu dịch vụ</button>
+      <button class="btn-primary" type="submit" form="addForm"><i class="fa-solid fa-check"></i> <span id="saveBtnLabel">Lưu dịch vụ</span></button>
     </div>
   </div>
 </div>
@@ -487,14 +550,20 @@
 
 <script>
   const STAGES = [
-    { key:'active',   name:'Đang kinh doanh', dot:'#22c55e', badge:'bg-green' },
-    { key:'hot',      name:'Khuyến mãi HOT',  dot:'#ec4899', badge:'bg-pink' },
-    { key:'soon',     name:'Sắp ra mắt',      dot:'#3b82f6', badge:'bg-blue' },
-    { key:'hold',     name:'Bảo trì / Tạm dừng', dot:'#f59e0b', badge:'bg-amber' },
-    { key:'stopped',  name:'Ngừng cung cấp',  dot:'#9ca3af', badge:'bg-gray' }
+    { key:'draft',    name:'Nháp',       dot:'#9ca3af', badge:'bg-gray' },
+    { key:'active',   name:'Đang bán',   dot:'#22c55e', badge:'bg-green' },
+    { key:'paused',   name:'Tạm ngừng',  dot:'#f59e0b', badge:'bg-amber' },
+    { key:'stopped',  name:'Ngừng hẳn',  dot:'#ef4444', badge:'bg-red' }
   ];
-  const STAGE_LABEL = { active:'Đang kinh doanh', hot:'Khuyến mãi HOT', soon:'Sắp ra mắt', hold:'Bảo trì', stopped:'Ngừng cung cấp' };
-  const STAGE_BADGE = { active:'bg-green', hot:'bg-pink', soon:'bg-blue', hold:'bg-amber', stopped:'bg-gray' };
+  const STAGE_LABEL = { draft:'Nháp', active:'Đang bán', paused:'Tạm ngừng', stopped:'Ngừng hẳn' };
+  const STAGE_BADGE = { draft:'bg-gray', active:'bg-green', paused:'bg-amber', stopped:'bg-red' };
+
+  // tag chip (HOT/MỚI/BÁN CHẠY)
+  const TAG_META = {
+    hot:  { label:'HOT',      bg:'#ec4899' },
+    new:  { label:'MỚI',      bg:'#3b82f6' },
+    best: { label:'BÁN CHẠY', bg:'#16a34a' }
+  };
 
   // service product. price/promo/cost/revenue đơn vị nghìn đồng
   const specs = [
@@ -504,19 +573,42 @@
     { name:'Thanh Loan', img:'https://i.pravatar.cc/150?img=20' }
   ];
   const services = [
-    { id:'SV-001', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop', name:'Hydrating Facial cấp ẩm chuyên sâu', cat:'Facial', dur:60, price:850, promo:0, cost:120, rev:42500, sales:50, tech:1, equip:'no', spec:[0,1], stage:'active' },
-    { id:'SV-002', img:'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=300&h=200&fit=crop', name:'Trị mụn chuyên sâu y khoa', cat:'Facial', dur:75, price:990, promo:0, cost:160, rev:35640, sales:36, tech:1, equip:'yes', spec:[2], stage:'active' },
-    { id:'SV-003', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop', name:'Massage đá nóng thư giãn', cat:'Body', dur:90, price:1200, promo:0, cost:90, rev:30000, sales:25, tech:1, equip:'no', spec:[1,3], stage:'active' },
-    { id:'SV-004', img:'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=300&h=200&fit=crop', name:'Peel da AHA/BHA tái tạo', cat:'Facial', dur:60, price:1100, promo:880, cost:140, rev:26400, sales:30, tech:1, equip:'yes', spec:[0], stage:'hot' },
-    { id:'SV-005', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop', name:'Triệt lông Laser Diode toàn thân', cat:'Laser', dur:120, price:3500, promo:2490, cost:300, rev:74700, sales:30, tech:2, equip:'yes', spec:[2,3], stage:'hot' },
-    { id:'SV-006', img:'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=300&h=200&fit=crop', name:'Nâng cơ RF trẻ hóa da', cat:'Laser', dur:75, price:1800, promo:1490, cost:200, rev:35760, sales:24, tech:1, equip:'yes', spec:[0,2], stage:'hot' },
-    { id:'SV-007', img:'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=200&fit=crop', name:'Liệu trình Carbon Laser mới', cat:'Laser', dur:60, price:1600, promo:0, cost:180, rev:0, sales:0, tech:1, equip:'yes', spec:[2], stage:'soon' },
-    { id:'SV-008', img:'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=300&h=200&fit=crop', name:'Gói chăm sóc Mẹ bầu cao cấp', cat:'VIP', dur:120, price:2500, promo:0, cost:250, rev:0, sales:0, tech:2, equip:'no', spec:[1,3], stage:'soon' },
-    { id:'SV-009', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=300&h=200&fit=crop', name:'Tắm trắng phi thuyền', cat:'Body', dur:90, price:1400, promo:0, cost:170, rev:0, sales:0, tech:2, equip:'yes', spec:[3], stage:'hold' },
-    { id:'SV-010', img:'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=300&h=200&fit=crop', name:'Gói cưới trọn gói Bridal Glow', cat:'VIP', dur:180, price:6800, promo:0, cost:600, rev:0, sales:0, tech:3, equip:'yes', spec:[0,1,2], stage:'hold' },
-    { id:'SV-011', img:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&h=200&fit=crop', name:'Thải độc da bằng tế bào gốc (cũ)', cat:'Facial', dur:75, price:1300, promo:0, cost:200, rev:0, sales:0, tech:1, equip:'no', spec:[0], stage:'stopped' },
+    { id:'SV-001', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop', name:'Hydrating Facial cấp ẩm chuyên sâu', cat:'Facial', dur:60, price:850, promo:0, cost:120, rev:42500, sales:50, tech:1, equip:'no', spec:[0,1], stage:'active', tag:'best' },
+    { id:'SV-002', img:'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=300&h=200&fit=crop', name:'Trị mụn chuyên sâu y khoa', cat:'Facial', dur:75, price:990, promo:0, cost:160, rev:35640, sales:36, tech:1, equip:'yes', spec:[2], stage:'active', tag:'best' },
+    { id:'SV-003', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop', name:'Massage đá nóng thư giãn', cat:'Body', dur:90, price:1200, promo:0, cost:90, rev:30000, sales:25, tech:1, equip:'no', spec:[1,3], stage:'active', tag:'' },
+    { id:'SV-004', img:'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=300&h=200&fit=crop', name:'Peel da AHA/BHA tái tạo', cat:'Facial', dur:60, price:1100, promo:880, cost:140, rev:26400, sales:30, tech:1, equip:'yes', spec:[0], stage:'active', tag:'hot' },
+    { id:'SV-005', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop', name:'Triệt lông Laser Diode toàn thân', cat:'Laser', dur:120, price:3500, promo:2490, cost:300, rev:74700, sales:30, tech:2, equip:'yes', spec:[2,3], stage:'active', tag:'hot' },
+    { id:'SV-006', img:'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=300&h=200&fit=crop', name:'Nâng cơ RF trẻ hóa da', cat:'Laser', dur:75, price:1800, promo:1490, cost:200, rev:35760, sales:24, tech:1, equip:'yes', spec:[0,2], stage:'active', tag:'hot' },
+    { id:'SV-007', img:'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=200&fit=crop', name:'Liệu trình Carbon Laser mới', cat:'Laser', dur:60, price:1600, promo:0, cost:180, rev:0, sales:0, tech:1, equip:'yes', spec:[2], stage:'draft', tag:'new' },
+    { id:'SV-008', img:'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=300&h=200&fit=crop', name:'Gói chăm sóc Mẹ bầu cao cấp', cat:'VIP', dur:120, price:2500, promo:0, cost:250, rev:0, sales:0, tech:2, equip:'no', spec:[1,3], stage:'draft', tag:'new' },
+    { id:'SV-009', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=300&h=200&fit=crop', name:'Tắm trắng phi thuyền', cat:'Body', dur:90, price:1400, promo:0, cost:170, rev:0, sales:0, tech:2, equip:'yes', spec:[3], stage:'paused', tag:'' },
+    { id:'SV-010', img:'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=300&h=200&fit=crop', name:'Gói cưới trọn gói Bridal Glow', cat:'VIP', dur:180, price:6800, promo:0, cost:600, rev:0, sales:0, tech:3, equip:'yes', spec:[0,1,2], stage:'paused', tag:'' },
+    { id:'SV-011', img:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&h=200&fit=crop', name:'Thải độc da bằng tế bào gốc (cũ)', cat:'Facial', dur:75, price:1300, promo:0, cost:200, rev:0, sales:0, tech:1, equip:'no', spec:[0], stage:'stopped', tag:'' },
   ];
 
+  // gói liệu trình (combo cố định). listPrice/pkgPrice/deferred đơn vị nghìn đồng
+  const packages = [
+    { id:'PKG-001', name:'Combo Chăm sóc da Cơ bản', cat:'Facial', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop',
+      items:[{svc:'Hydrating Facial', sessions:6},{svc:'Trị mụn chuyên sâu', sessions:4}],
+      listPrice:9060, pkgPrice:6900, validityMonths:6, sold:42, deferred:128000, spec:[0,1], stage:'active', tag:'best' },
+    { id:'PKG-002', name:'Combo Massage Thư giãn 8 buổi', cat:'Body', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop',
+      items:[{svc:'Massage đá nóng', sessions:8}],
+      listPrice:9600, pkgPrice:7200, validityMonths:4, sold:28, deferred:86400, spec:[1,3], stage:'active', tag:'hot' },
+    { id:'PKG-003', name:'Triệt lông Laser toàn thân 10 buổi', cat:'Laser', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop',
+      items:[{svc:'Triệt lông Laser Diode', sessions:10}],
+      listPrice:35000, pkgPrice:24900, validityMonths:12, sold:35, deferred:520000, spec:[2,3], stage:'active', tag:'best' },
+    { id:'PKG-004', name:'Gói Cưới Bridal Glow trọn gói', cat:'VIP', img:'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=300&h=200&fit=crop',
+      items:[{svc:'Facial cấp ẩm', sessions:4},{svc:'Tắm trắng phi thuyền', sessions:2},{svc:'Nâng cơ RF', sessions:2}],
+      listPrice:18200, pkgPrice:13900, validityMonths:6, sold:12, deferred:96000, spec:[0,1,2], stage:'paused', tag:'' },
+    { id:'PKG-005', name:'Gói VIP Tháng không giới hạn', cat:'VIP', img:'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=300&h=200&fit=crop',
+      items:[{svc:'Facial cao cấp', sessions:4},{svc:'Massage thư giãn', sessions:4}],
+      listPrice:8200, pkgPrice:5900, validityMonths:1, sold:0, deferred:0, spec:[1,3], stage:'draft', tag:'new' },
+    { id:'PKG-006', name:'Gói Detox & Thải độc da', cat:'Facial', img:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&h=200&fit=crop',
+      items:[{svc:'Thải độc tế bào gốc', sessions:5},{svc:'Peel da AHA/BHA', sessions:3}],
+      listPrice:9140, pkgPrice:6900, validityMonths:5, sold:18, deferred:42000, spec:[0], stage:'stopped', tag:'' },
+  ];
+
+  let mode = 'single';
   let filtered = [...services];
 
   const fmtK = (n) => n >= 1000 ? (n/1000).toLocaleString('vi-VN',{maximumFractionDigits:1}) + 'tr' : n + 'K';
@@ -525,6 +617,17 @@
     const shown = idx.slice(0, 3).map(i => `<img src="${specs[i].img}" title="${specs[i].name}" alt="">`).join('');
     const more = idx.length > 3 ? `<div class="more">+${idx.length-3}</div>` : '';
     return shown + more;
+  }
+
+  function tagChip(tag) {
+    if (!tag || !TAG_META[tag]) return '';
+    const m = TAG_META[tag];
+    return `<span class="scard-tag" style="background:${m.bg}">${m.label}</span>`;
+  }
+  function nameChip(tag) {
+    if (!tag || !TAG_META[tag]) return '';
+    const m = TAG_META[tag];
+    return `<span class="name-chip" style="background:${m.bg}">${m.label}</span>`;
   }
 
   /* ===== KANBAN ===== */
@@ -539,30 +642,61 @@
           <span class="col-count">${items.length}</span>
         </div>
         <div class="col-cards">
-          ${items.map(s => {
-            const price = s.promo ? s.promo : s.price;
-            return `
-            <div class="scard" draggable="true" data-id="${s.id}" ondragstart="dragStart(event,'${s.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở dịch vụ ${s.name}')">
-              <div class="scard-thumb">
-                <img src="${s.img}" alt="">
-                <span class="scard-dur"><i class="fa-regular fa-clock"></i> ${s.dur} phút</span>
-              </div>
-              <div class="scard-body">
-                <div class="scard-name">${s.name}</div>
-                <div class="scard-meta">
-                  <span class="scard-price">${fmtK(price)}${s.promo ? ' <small style="font-size:10px;color:#9ca3af;text-decoration:line-through;font-weight:500;">'+fmtK(s.price)+'</small>' : ''}</span>
-                  <span class="scard-sales"><i class="fa-solid fa-arrow-trend-up"></i> ${s.sales} lượt/tháng</span>
-                </div>
-                <div class="scard-foot">
-                  <span class="spec-label">KTV phụ trách</span>
-                  <div class="avatars">${avatarsHtml(s.spec)}</div>
-                </div>
-              </div>
-            </div>`;
-          }).join('')}
+          ${items.map(s => mode === 'package' ? pkgCardHtml(s) : svcCardHtml(s)).join('')}
         </div>
       </div>`;
     }).join('');
+  }
+
+  function svcCardHtml(s) {
+    const price = s.promo ? s.promo : s.price;
+    return `
+    <div class="scard" draggable="true" data-id="${s.id}" ondragstart="dragStart(event,'${s.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở dịch vụ ${s.name}')">
+      <div class="scard-thumb">
+        <img src="${s.img}" alt="">
+        ${tagChip(s.tag)}
+        <span class="scard-dur"><i class="fa-regular fa-clock"></i> ${s.dur} phút</span>
+      </div>
+      <div class="scard-body">
+        <div class="scard-name">${s.name}</div>
+        <div class="scard-meta">
+          <span class="scard-price">${fmtK(price)}${s.promo ? ' <small style="font-size:10px;color:#9ca3af;text-decoration:line-through;font-weight:500;">'+fmtK(s.price)+'</small>' : ''}</span>
+          <span class="scard-sales"><i class="fa-solid fa-arrow-trend-up"></i> ${s.sales} lượt/tháng</span>
+        </div>
+        <div class="scard-foot">
+          <span class="spec-label">KTV phụ trách</span>
+          <div class="avatars">${avatarsHtml(s.spec)}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function totalSessions(p) { return p.items.reduce((a, it) => a + it.sessions, 0); }
+  function savePct(p) { return p.listPrice > 0 ? Math.round((1 - p.pkgPrice / p.listPrice) * 100) : 0; }
+  function pkgItemsText(p) { return p.items.map(it => `${it.sessions}× ${it.svc}`).join(' • '); }
+
+  function pkgCardHtml(p) {
+    const pct = savePct(p);
+    return `
+    <div class="scard" draggable="true" data-id="${p.id}" ondragstart="dragStart(event,'${p.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở gói ${p.name}')">
+      <div class="scard-thumb">
+        <img src="${p.img}" alt="">
+        ${tagChip(p.tag)}
+        <span class="scard-dur"><i class="fa-solid fa-layer-group"></i> GÓI ${totalSessions(p)} buổi</span>
+      </div>
+      <div class="scard-body">
+        <div class="scard-name">${p.name}</div>
+        <div class="pkg-items">${pkgItemsText(p)}</div>
+        <div class="scard-meta">
+          <span class="scard-price">${fmtK(p.pkgPrice)} <small style="font-size:10px;color:#9ca3af;text-decoration:line-through;font-weight:500;">${fmtK(p.listPrice)}</small></span>
+          ${pct > 0 ? `<span class="pkg-save">−${pct}%</span>` : ''}
+        </div>
+        <div class="scard-meta" style="margin-bottom:0;">
+          <span class="pkg-validity"><i class="fa-regular fa-clock"></i> HSD ${p.validityMonths} tháng</span>
+          <div class="avatars">${avatarsHtml(p.spec)}</div>
+        </div>
+      </div>
+    </div>`;
   }
 
   let dragId = null;
@@ -570,18 +704,52 @@
   function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
   function dropCard(e, stage) {
     e.preventDefault();
-    const s = services.find(x => x.id === dragId);
+    const arr = mode === 'package' ? packages : services;
+    const s = arr.find(x => x.id === dragId);
     if (s) { s.stage = stage; applyFilters(); showToast(`Chuyển ${s.name} → ${STAGE_LABEL[stage]}`); }
   }
 
   /* ===== TABLE ===== */
+  const THEAD_SINGLE = `
+    <tr>
+      <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
+      <th>Mã DV</th>
+      <th>Tên dịch vụ</th>
+      <th class="right">Giá chuẩn</th>
+      <th class="right">Giá KM</th>
+      <th class="center">Thời lượng</th>
+      <th class="right">Chi phí VT</th>
+      <th class="right">Doanh thu/tháng</th>
+      <th class="center">Trạng thái</th>
+      <th class="center" style="width:96px;">Thao tác</th>
+    </tr>`;
+  const THEAD_PACKAGE = `
+    <tr>
+      <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
+      <th>Mã gói</th>
+      <th>Tên gói</th>
+      <th class="center">Số buổi</th>
+      <th class="right">Giá gốc</th>
+      <th class="right">Giá gói</th>
+      <th class="center">Tiết kiệm</th>
+      <th class="center">Đã bán</th>
+      <th class="right">DT chưa thực hiện</th>
+      <th class="center">Trạng thái</th>
+      <th class="center" style="width:96px;">Thao tác</th>
+    </tr>`;
+
   function renderTable() {
+    document.getElementById('tableHead').innerHTML = mode === 'package' ? THEAD_PACKAGE : THEAD_SINGLE;
+    if (mode === 'package') renderTablePackage(); else renderTableSingle();
+  }
+
+  function renderTableSingle() {
     const tb = document.getElementById('tableBody');
     tb.innerHTML = filtered.map(s => `
       <tr onclick="showToast('Mở dịch vụ ${s.name}')">
         <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
         <td><span class="id-pill">${s.id}</span></td>
-        <td><div class="svc-cell"><img class="svc-thumb" src="${s.img}" alt=""><div><div class="svc-name">${s.name}</div><div class="svc-cat">${s.cat}</div></div></div></td>
+        <td><div class="svc-cell"><img class="svc-thumb" src="${s.img}" alt=""><div><div class="svc-name">${s.name}${nameChip(s.tag)}</div><div class="svc-cat">${s.cat}</div></div></div></td>
         <td style="text-align:right;"><span class="price-std">${fmtK(s.price)}</span></td>
         <td style="text-align:right;">${s.promo ? `<span class="price-promo">${fmtK(s.promo)}<small>${fmtK(s.price)}</small></span>` : '<span style="color:#d1d5db;">—</span>'}</td>
         <td style="text-align:center;"><span class="dur-cell">${s.dur}'</span></td>
@@ -603,7 +771,66 @@
     document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${services.length} dịch vụ`;
   }
 
-  function render() { renderKanban(); renderTable(); }
+  function renderTablePackage() {
+    const tb = document.getElementById('tableBody');
+    tb.innerHTML = filtered.map(p => {
+      const pct = savePct(p);
+      return `
+      <tr onclick="showToast('Mở gói ${p.name}')">
+        <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
+        <td><span class="id-pill">${p.id}</span></td>
+        <td><div class="svc-cell"><img class="svc-thumb" src="${p.img}" alt=""><div><div class="svc-name">${p.name}${nameChip(p.tag)}</div><div class="svc-cat">${pkgItemsText(p)}</div></div></div></td>
+        <td style="text-align:center;"><span class="dur-cell">${totalSessions(p)} buổi</span></td>
+        <td style="text-align:right;"><span class="price-std" style="text-decoration:line-through;color:#9ca3af;">${fmtK(p.listPrice)}</span></td>
+        <td style="text-align:right;"><span class="price-promo">${fmtK(p.pkgPrice)}</span></td>
+        <td style="text-align:center;">${pct > 0 ? `<span class="pkg-save">−${pct}%</span>` : '<span style="color:#d1d5db;">—</span>'}</td>
+        <td style="text-align:center;"><span class="cost-cell">${p.sold}</span></td>
+        <td style="text-align:right;"><span class="defer-cell">${p.deferred ? fmtK(p.deferred) : '—'}</span></td>
+        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[p.stage]}">${STAGE_LABEL[p.stage]}</span></td>
+        <td onclick="event.stopPropagation()">
+          <div class="row-actions">
+            <button class="row-act blue" title="Xem" onclick="showToast('Xem ${p.id}')"><i class="fa-solid fa-eye"></i></button>
+            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${p.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="row-act red" title="Xóa" onclick="showToast('Xóa ${p.id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+    const totalDeferred = filtered.reduce((a, p) => a + p.deferred, 0);
+    document.getElementById('stTotal').textContent = packages.length;
+    document.getElementById('stRev').textContent = fmtK(totalDeferred);
+    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${packages.length} gói`;
+    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${packages.length} gói`;
+  }
+
+  function render() {
+    renderKanban();
+    renderTable();
+    updateSummaryLabels();
+    document.getElementById('cntSingle').textContent = services.length;
+    document.getElementById('cntPackage').textContent = packages.length;
+  }
+
+  function updateSummaryLabels() {
+    const lblTotal = document.getElementById('stTotalLabel');
+    const lblRev = document.getElementById('stRevLabel');
+    if (mode === 'package') {
+      lblTotal.textContent = 'Tổng gói mẫu: ';
+      lblRev.textContent = 'Tổng DT chưa thực hiện: ';
+    } else {
+      lblTotal.textContent = 'Tổng dịch vụ: ';
+      lblRev.textContent = 'Tổng doanh thu/tháng: ';
+    }
+  }
+
+  /* ===== MODULE SWITCH ===== */
+  function switchModule(m) {
+    mode = m;
+    document.getElementById('tabSingle').classList.toggle('active', m === 'single');
+    document.getElementById('tabPackage').classList.toggle('active', m === 'package');
+    document.getElementById('addBtnLabel').textContent = m === 'package' ? 'Thêm gói' : 'Thêm dịch vụ';
+    applyFilters();
+  }
 
   /* ===== VIEW SWITCH ===== */
   function switchView(v) {
@@ -619,19 +846,31 @@
     const priceR = document.getElementById('priceFilter').value;
     const tech = document.getElementById('techFilter').value;
     const equip = document.getElementById('equipFilter').value;
-    filtered = services.filter(s => {
-      if (q && !s.name.toLowerCase().includes(q)) return false;
-      if (priceR) { const [a,b] = priceR.split('-').map(Number); const p = s.promo || s.price; if (p < a || p >= b) return false; }
-      if (tech) { if (tech === '3' ? s.tech < 3 : String(s.tech) !== tech) return false; }
-      if (equip && s.equip !== equip) return false;
-      return true;
-    });
+    if (mode === 'package') {
+      filtered = packages.filter(p => {
+        if (q && !(p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q))) return false;
+        if (priceR) { const [a,b] = priceR.split('-').map(Number); if (p.pkgPrice < a || p.pkgPrice >= b) return false; }
+        if (window._catFilter && window._catFilter !== 'Tất cả' && p.cat !== window._catFilter) return false;
+        return true;
+      });
+    } else {
+      filtered = services.filter(s => {
+        if (q && !s.name.toLowerCase().includes(q)) return false;
+        if (priceR) { const [a,b] = priceR.split('-').map(Number); const p = s.promo || s.price; if (p < a || p >= b) return false; }
+        if (tech) { if (tech === '3' ? s.tech < 3 : String(s.tech) !== tech) return false; }
+        if (equip && s.equip !== equip) return false;
+        if (window._catFilter && window._catFilter !== 'Tất cả' && s.cat !== window._catFilter) return false;
+        return true;
+      });
+    }
     render();
   }
 
   function selectCat(el, name) {
     document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
     el.classList.add('active');
+    window._catFilter = name;
+    applyFilters();
     showToast('Lọc theo danh mục: ' + name);
   }
   function filterCats(q) {
@@ -643,30 +882,52 @@
   function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
   function exportPrice() { showToast('Đang xuất bảng giá ' + filtered.length + ' dịch vụ ra file...'); }
 
-  /* ===== ADD SERVICE MODAL ===== */
+  /* ===== ADD MODAL (2 chế độ) ===== */
   let pickedSpecs = [];
-  function renderSpecPicker() {
-    document.getElementById('specPicker').innerHTML = specs.map((s, i) =>
+  function specPickerHtml(targetId) {
+    return specs.map((s, i) =>
       `<div class="spec-opt${pickedSpecs.includes(i) ? ' sel' : ''}" data-i="${i}" onclick="toggleSpec(${i})">
          <img src="${s.img}" alt=""> ${s.name}
        </div>`).join('');
+  }
+  function renderSpecPicker() {
+    const html = specPickerHtml();
+    document.getElementById('specPicker').innerHTML = html;
+    document.getElementById('pSpecPicker').innerHTML = html;
   }
   function toggleSpec(i) {
     const at = pickedSpecs.indexOf(i);
     if (at >= 0) pickedSpecs.splice(at, 1); else pickedSpecs.push(i);
     renderSpecPicker();
   }
+  function openAdd() { if (mode === 'package') openAddPackage(); else openAddModal(); }
   function openAddModal() {
     document.getElementById('addForm').reset();
     pickedSpecs = [];
     renderSpecPicker();
+    document.getElementById('singleGrid').style.display = '';
+    document.getElementById('packageGrid').style.display = 'none';
+    document.getElementById('addModalTitle').textContent = 'Thêm dịch vụ mới';
+    document.getElementById('saveBtnLabel').textContent = 'Lưu dịch vụ';
+    document.getElementById('addModal').classList.add('open');
+  }
+  function openAddPackage() {
+    document.getElementById('addForm').reset();
+    pickedSpecs = [];
+    renderSpecPicker();
+    document.getElementById('singleGrid').style.display = 'none';
+    document.getElementById('packageGrid').style.display = '';
+    document.getElementById('addModalTitle').textContent = 'Thêm gói liệu trình mới';
+    document.getElementById('saveBtnLabel').textContent = 'Lưu gói';
     document.getElementById('addModal').classList.add('open');
   }
   function closeAddModal() { document.getElementById('addModal').classList.remove('open'); }
 
   function submitService(e) {
     e.preventDefault();
+    if (mode === 'package') { submitPackage(); return; }
     const g = (id) => document.getElementById(id).value;
+    if (!g('fName').trim()) { showToast('Vui lòng nhập tên dịch vụ'); return; }
     const nextId = 'SV-' + String(services.length + 1).padStart(3, '0');
     const svc = {
       id: nextId,
@@ -681,12 +942,46 @@
       tech: Number(g('fTech')) || 1,
       equip: g('fEquip'),
       spec: pickedSpecs.length ? [...pickedSpecs] : [0],
-      stage: g('fStage')
+      stage: g('fStage'),
+      tag: ''
     };
     services.unshift(svc);
     closeAddModal();
     applyFilters();
     showToast('Đã thêm dịch vụ: ' + svc.name);
+  }
+
+  function submitPackage() {
+    const g = (id) => document.getElementById(id).value;
+    if (!g('pName').trim()) { showToast('Vui lòng nhập tên gói'); return; }
+    const items = [];
+    [['pSvc1','pSes1'],['pSvc2','pSes2'],['pSvc3','pSes3']].forEach(([sv, se]) => {
+      const name = g(sv).trim();
+      const ses = Number(g(se)) || 0;
+      if (name && ses > 0) items.push({ svc: name, sessions: ses });
+    });
+    if (!items.length) items.push({ svc: g('pName').trim(), sessions: 1 });
+    const nextId = 'PKG-' + String(packages.length + 1).padStart(3, '0');
+    const pkgPrice = Number(g('pPrice')) || 0;
+    const pkg = {
+      id: nextId,
+      name: g('pName').trim(),
+      cat: g('pCat'),
+      img: g('pImg') || 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop',
+      items,
+      listPrice: pkgPrice,
+      pkgPrice: pkgPrice,
+      validityMonths: Number(g('pValidity')) || 6,
+      sold: 0,
+      deferred: 0,
+      spec: pickedSpecs.length ? [...pickedSpecs] : [0],
+      stage: g('pStage'),
+      tag: ''
+    };
+    packages.unshift(pkg);
+    closeAddModal();
+    applyFilters();
+    showToast('Đã thêm gói: ' + pkg.name);
   }
 
   // đóng modal khi bấm nền tối
