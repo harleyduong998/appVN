@@ -314,8 +314,7 @@
   <div class="top-header">
     <div class="top-header-left"><h1><i class="fa-solid fa-clipboard-list"></i>Kho Dịch vụ Làm đẹp</h1></div>
     <div class="top-header-right">
-      <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
-      <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
+
     </div>
   </div>
 
@@ -425,15 +424,6 @@
           <div class="input-suffix"><input type="number" id="fDur" min="5" step="5" placeholder="60"><span class="suffix">phút</span></div>
         </div>
         <div class="form-group">
-          <label>Số KTV cần</label>
-          <select id="fTech">
-            <option value="1">1 KTV</option>
-            <option value="2">2 KTV</option>
-            <option value="3">3+ KTV</option>
-          </select>
-        </div>
-
-        <div class="form-group">
           <label>Giá chuẩn <span class="req">*</span></label>
           <div class="input-suffix"><input type="number" id="fPrice" min="0" step="10" placeholder="850"><span class="suffix">K</span></div>
         </div>
@@ -442,20 +432,32 @@
           <div class="input-suffix"><input type="number" id="fPromo" min="0" step="10" placeholder="0"><span class="suffix">K</span></div>
         </div>
 
-        <div class="form-group">
-          <label>Chi phí vật tư</label>
-          <div class="input-suffix"><input type="number" id="fCost" min="0" step="10" placeholder="120"><span class="suffix">K</span></div>
-        </div>
+       
      
+
+        <div class="form-group full">
+          <label>Sản phẩm upsale</label>
+          <select id="fUpsell">
+            <option value="">— Không có —</option>
+            <optgroup label="Sản phẩm vật lý">
+              <option value="Serum HA cấp ẩm">Serum HA cấp ẩm</option>
+              <option value="Kem chống nắng SPF50">Kem chống nắng SPF50</option>
+              <option value="Mặt nạ phục hồi (hộp 10)">Mặt nạ phục hồi (hộp 10)</option>
+              <option value="Tinh chất trị mụn">Tinh chất trị mụn</option>
+              <option value="Sữa rửa mặt dịu nhẹ">Sữa rửa mặt dịu nhẹ</option>
+            </optgroup>
+            <optgroup label="Dịch vụ">
+              <option value="Hydrating Facial cấp ẩm chuyên sâu">Hydrating Facial cấp ẩm</option>
+              <option value="Massage đá nóng thư giãn">Massage đá nóng thư giãn</option>
+              <option value="Peel da AHA/BHA tái tạo">Peel da AHA/BHA tái tạo</option>
+              <option value="Nâng cơ RF trẻ hóa da">Nâng cơ RF trẻ hóa da</option>
+            </optgroup>
+          </select>
+        </div>
 
         <div class="form-group full">
           <label>Ảnh đại diện (URL)</label>
           <input type="url" id="fImg" placeholder="https://...">
-        </div>
-
-        <div class="form-group full">
-          <label>KTV phụ trách</label>
-          <div class="spec-picker" id="specPicker"></div>
         </div>
       </div>
 
@@ -855,9 +857,7 @@
        </div>`).join('');
   }
   function renderSpecPicker() {
-    const html = specPickerHtml();
-    document.getElementById('specPicker').innerHTML = html;
-    document.getElementById('pSpecPicker').innerHTML = html;
+    document.getElementById('pSpecPicker').innerHTML = specPickerHtml();
   }
   function toggleSpec(i) {
     const at = pickedSpecs.indexOf(i);
@@ -903,9 +903,10 @@
       promo: Number(g('fPromo')) || 0,
       cost: Number(g('fCost')) || 0,
       rev: 0, sales: 0,
-      tech: Number(g('fTech')) || 1,
-      equip: g('fEquip'),
-      spec: pickedSpecs.length ? [...pickedSpecs] : [0],
+      tech: 1,
+      equip: 'no',
+      spec: [0],
+      upsell: g('fUpsell') || '',
       stage: g('fStage'),
       tag: ''
     };
