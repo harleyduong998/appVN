@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liệu trình khách - CRM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --royal: #2545d3;
+      --royal-dark: #1b3aa8;
+      --border: #e5e7eb;
+      --text: #1f2937;
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { display: flex; height: 100vh; overflow: hidden; background: #f7f8fa; color: var(--text); }
+
+    /* ===== SIDEBAR (gradient blue) ===== */
+    #sidebar {
+      width: 240px; min-width: 240px; background: linear-gradient(160deg, #1b3da1 0%, #17234e 100%); border-right: none;
+      display: flex; flex-direction: column; position: relative; transition: width .25s, min-width .25s; overflow: hidden; z-index: 100;
+    }
+    #sidebar.collapsed { width: 64px; min-width: 64px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 18px 20px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #ec4899, #f43f5e); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
+    .sidebar-logo .logo-text { font-size: 17px; font-weight: 700; color: #ffffff; white-space: nowrap; }
+    #sidebar.collapsed .logo-text { display: none; }
+    .sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 0; }
+    .sidebar-nav::-webkit-scrollbar { width: 4px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+    .nav-group-title { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: .5px; padding: 10px 20px 4px; white-space: nowrap; overflow: hidden; font-weight: 600; }
+    #sidebar.collapsed .nav-group-title { padding: 10px 0 4px; text-align: center; font-size: 8px; letter-spacing: 0; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 20px; font-size: 14px; color: rgba(255,255,255,0.75); cursor: pointer; text-decoration: none; border-left: 3px solid transparent; transition: all .15s; white-space: nowrap; }
+    .nav-item:hover { color: #ffffff; background: rgba(255,255,255,0.15); border-left-color: #ffffff; }
+    .nav-item.active { color: #ffffff; background: rgba(255,255,255,0.2); border-left-color: #ffffff; font-weight: 600; }
+    .nav-item i { width: 18px; text-align: center; font-size: 15px; flex-shrink: 0; color: rgba(255,255,255,0.6); }
+    .nav-item:hover i, .nav-item.active i { color: #ffffff; }
+    .nav-item span { white-space: nowrap; overflow: hidden; }
+    #sidebar.collapsed .nav-item { padding: 9px 0; justify-content: center; gap: 0; }
+    #sidebar.collapsed .nav-item span { display: none; }
+    .sidebar-toggle-btn {
+      position: absolute; right: -14px; bottom: 80px; width: 28px; height: 28px;
+      background: #fff; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 101; color: var(--muted); font-size: 11px; box-shadow: 0 1px 4px rgba(0,0,0,.1); transition: all .2s;
+    }
+    .sidebar-toggle-btn:hover { background: #eef2ff; }
+    #sidebar.collapsed .sidebar-toggle-btn i { transform: rotate(180deg); }
+    .sidebar-bottom { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 10px; }
+    .sidebar-bottom img { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-bottom .user-name { font-size: 13px; font-weight: 600; color: #ffffff; white-space: nowrap; }
+    .sidebar-bottom .user-role { font-size: 11px; color: rgba(255,255,255,0.6); white-space: nowrap; }
+    #sidebar.collapsed .sidebar-bottom { padding: 12px 0; justify-content: center; }
+    #sidebar.collapsed .user-info { display: none; }
+
+    /* ===== SUB SIDEBAR (white) ===== */
+    #subSidebar {
+      width: 220px; min-width: 220px; background: #ffffff; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; transition: width .25s, min-width .25s; overflow: hidden; z-index: 99;
+    }
+    #subSidebar.collapsed { width: 0; min-width: 0; }
+    .sub-sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px 10px; border-bottom: 1px solid #f1f2f4; }
+    .sub-sidebar-title { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .sub-sidebar-add { width: 22px; height: 22px; border-radius: 6px; background: #eef2ff; color: var(--royal); border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .sub-search { padding: 8px 12px; border-bottom: 1px solid #f1f2f4; }
+    .sub-search-wrap { position: relative; }
+    .sub-search-wrap input { width: 100%; background: #f3f4f6; border: none; border-radius: 6px; padding: 6px 10px 6px 28px; font-size: 12px; color: #374151; outline: none; }
+    .sub-search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 11px; }
+    .sub-sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
+    .sub-sidebar-nav::-webkit-scrollbar { width: 3px; }
+    .sub-sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; }
+    .sub-group-title { font-size: 10px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .6px; padding: 6px 15px; }
+    .cat-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 15px; font-size: 13px; color: #374151; cursor: pointer; border-left: 3px solid transparent; transition: all .12s; }
+    .cat-item:hover { background: #f7f8fa; }
+    .cat-item.active { background: #e8edff; border-left-color: var(--royal); color: var(--royal-dark); font-weight: 600; }
+    .cat-left { display: flex; align-items: center; gap: 9px; }
+    .cat-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+    .cat-count { font-size: 10px; background: #f1f2f4; color: #6b7280; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+    .cat-item.active .cat-count { background: #d4ddff; color: var(--royal-dark); }
+
+    /* ===== MAIN ===== */
+    #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .top-header { height: 60px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+    .top-header-left h1 { font-size: 18px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+    .top-header-left h1 i { color: var(--royal); }
+    .top-header-right { display: flex; align-items: center; gap: 10px; }
+    .icon-btn { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); font-size: 15px; transition: all .15s; }
+    .icon-btn:hover { background: #f3f4f6; color: #374151; }
+    .btn-primary { background: var(--royal); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background .15s; }
+    .btn-primary:hover { background: var(--royal-dark); }
+
+    /* ===== TOOLBAR ===== */
+    .toolbar { padding: 10px 20px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn-outline { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .15s; text-decoration: none; }
+    .btn-outline:hover { background: #f7f8fa; border-color: #d1d5db; }
+    .btn-outline.indigo { color: var(--royal); border-color: #bfd0ff; }
+    .btn-outline.indigo:hover { background: #eef2ff; }
+    .search-wrap { position: relative; }
+    .search-wrap input { background: #f3f4f6; border: none; border-radius: 8px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 190px; }
+    .search-wrap input:focus { background: #fff; box-shadow: 0 0 0 2px #bfd0ff; }
+    .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 13px; }
+    .filter-field { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 12px; }
+    .filter-field label { color: #9ca3af; font-size: 11px; }
+    .filter-field select { border: none; background: none; outline: none; font-size: 12px; font-weight: 600; color: var(--royal-dark); cursor: pointer; }
+
+    /* ===== VIEW SWITCH ===== */
+    .view-switch { display: flex; background: #f1f2f4; border-radius: 8px; padding: 3px; gap: 2px; }
+    .view-btn { padding: 6px 14px; border-radius: 6px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; color: #6b7280; background: transparent; display: flex; align-items: center; gap: 5px; transition: all .15s; }
+    .view-btn.active { background: #fff; color: var(--royal-dark); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+    /* ===== KANBAN ===== */
+    #kanbanView { flex: 1; display: flex; gap: 14px; padding: 16px 20px 20px; overflow-x: auto; }
+    #kanbanView::-webkit-scrollbar { height: 7px; }
+    #kanbanView::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .kanban-col { min-width: 290px; max-width: 290px; background: #f1f3f7; border-radius: 12px; display: flex; flex-direction: column; padding: 12px 10px; max-height: 100%; }
+    .col-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
+    .col-head-left { display: flex; align-items: center; gap: 7px; }
+    .col-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .col-name { font-size: 13px; font-weight: 700; color: #1f2937; }
+    .col-count { font-size: 11px; font-weight: 600; background: rgba(0,0,0,.07); padding: 2px 7px; border-radius: 10px; color: #374151; }
+    .col-cards { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 2px; }
+    .col-cards::-webkit-scrollbar { width: 3px; }
+    .col-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+    .scard { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: box-shadow .15s, transform .15s; border: 1px solid transparent; }
+    .scard:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); border-color: #dbe3ff; }
+    .scard.dragging { opacity: .5; }
+    .scard-body { padding: 11px 12px 12px; }
+
+    /* customer header inside card */
+    .cust-head { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+    .cust-head img { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; object-fit: cover; }
+    .cust-name { font-size: 13px; font-weight: 700; color: #1f2937; line-height: 1.2; }
+    .cust-phone { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+    .pkg-id-row { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; flex-wrap: wrap; }
+    .id-pill { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 3px 8px; border-radius: 5px; }
+    .pkg-name-card { font-size: 12px; font-weight: 600; color: #374151; }
+
+    /* benefit progress rows */
+    .ben-row { margin-bottom: 8px; }
+    .ben-top { display: flex; align-items: center; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+    .ben-name { color: #4b5563; font-weight: 500; }
+    .ben-frac { color: #6b7280; font-weight: 700; }
+    .ben-bar { height: 6px; background: #eef0f3; border-radius: 4px; overflow: hidden; }
+    .ben-fill { height: 100%; border-radius: 4px; transition: width .3s; }
+
+    .card-summary { display: flex; align-items: center; justify-content: space-between; margin: 9px 0; font-size: 12px; }
+    .remain-tag { font-size: 11px; font-weight: 700; color: var(--royal-dark); background: #e8edff; padding: 2px 8px; border-radius: 5px; }
+    .exp-tag { font-size: 11px; color: #9ca3af; display: flex; align-items: center; gap: 4px; }
+    .warn-badge { font-size: 10px; font-weight: 700; background: #fee2e2; color: #b91c1c; padding: 2px 7px; border-radius: 5px; display: inline-flex; align-items: center; gap: 4px; }
+    .scard-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 9px; border-top: 1px solid #f1f2f4; }
+    .ktv-foot { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #6b7280; }
+    .ktv-foot img { width: 24px; height: 24px; border-radius: 50%; }
+    .fin-line { font-size: 11px; color: #6b7280; margin-top: 8px; }
+    .fin-line .defer-cell { color: #b45309; font-weight: 700; }
+    .fin-line .earn-cell { color: #15803d; font-weight: 700; }
+
+    /* ===== TABLE ===== */
+    #tableView { flex: 1; padding: 16px 20px 20px; overflow: auto; display: none; }
+    #tableView.active { display: block; }
+    #kanbanView.hidden { display: none; }
+    .table-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); overflow: hidden; }
+    .table-summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid #f1f2f4; flex-wrap: wrap; gap: 10px; }
+    .summary-stat { font-size: 12px; color: #6b7280; }
+    .summary-stat b { font-size: 15px; font-weight: 700; color: var(--royal-dark); }
+    .summary-stat.green b { color: #15803d; }
+    .summary-stat.amber b { color: #b45309; }
+    .table-scroll { overflow-x: auto; }
+    .table-scroll::-webkit-scrollbar { height: 8px; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+    .data-table thead th { padding: 12px 16px; font-size: 11px; font-weight: 700; color: #6b7280; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; background: #f9fafb; text-transform: uppercase; letter-spacing: .4px; position: sticky; top: 0; z-index: 2; }
+    .data-table thead th.center { text-align: center; }
+    .data-table thead th.right { text-align: right; }
+    .data-table tbody td { padding: 11px 16px; font-size: 13px; color: #374151; border-bottom: 1px solid #f1f2f4; white-space: nowrap; }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr { cursor: pointer; transition: background .12s; }
+    .data-table tbody tr:hover td { background: #f8fafc; }
+    .cb { width: 15px; height: 15px; accent-color: var(--royal); cursor: pointer; }
+    .svc-cell { display: flex; align-items: center; gap: 10px; }
+    .svc-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #e5e7eb; }
+    .svc-name { font-weight: 600; color: #1f2937; font-size: 13px; }
+    .svc-cat { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+    .prog-cell { min-width: 130px; }
+    .prog-top { font-size: 12px; color: #4b5563; font-weight: 600; margin-bottom: 4px; }
+    .prog-bar { height: 6px; background: #eef0f3; border-radius: 4px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--royal); border-radius: 4px; }
+    .date-cell { font-size: 12px; color: #4b5563; }
+    .date-cell .exp { color: #6b7280; }
+    .date-cell .warn { color: #b91c1c; font-weight: 700; }
+    .ktv-cell { display: flex; align-items: center; gap: 7px; }
+    .ktv-cell img { width: 26px; height: 26px; border-radius: 50%; }
+    .rev-cell { font-weight: 700; color: #15803d; }
+    .defer-cell { font-weight: 700; color: #b45309; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .bg-green { background: #dcfce7; color: #15803d; } .bg-green::before { background: #22c55e; }
+    .bg-pink { background: #fce7f3; color: #be185d; } .bg-pink::before { background: #ec4899; }
+    .bg-blue { background: #dbeafe; color: #1d4ed8; } .bg-blue::before { background: #3b82f6; }
+    .bg-amber { background: #fef3c7; color: #b45309; } .bg-amber::before { background: #f59e0b; }
+    .bg-gray { background: #f1f2f4; color: #4b5563; } .bg-gray::before { background: #9ca3af; }
+    .bg-red { background: #fee2e2; color: #b91c1c; } .bg-red::before { background: #ef4444; }
+    .row-actions { display: flex; align-items: center; gap: 4px; justify-content: center; }
+    .row-act { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; color: #9ca3af; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .row-act:hover { background: #f1f2f4; color: #374151; }
+    .row-act.blue:hover { background: #eef2ff; color: var(--royal); }
+    .row-act.amber:hover { background: #fef3c7; color: #b45309; }
+    .table-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-top: 1px solid #f1f2f4; flex-wrap: wrap; gap: 10px; }
+    .ftr-info { font-size: 12px; color: #6b7280; }
+    .pagination { display: flex; align-items: center; gap: 4px; }
+    .pg-btn { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid var(--border); background: #fff; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 500; color: #374151; display: flex; align-items: center; justify-content: center; }
+    .pg-btn:hover { background: #f7f8fa; }
+    .pg-btn.active { background: var(--royal); color: #fff; border-color: var(--royal); }
+    .pg-btn:disabled { opacity: .4; cursor: default; }
+
+    /* ===== MODAL ===== */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: center; justify-content: center; z-index: 400; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 14px; width: 600px; max-width: 100%; max-height: 92vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.25); overflow: hidden; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f1f2f4; }
+    .modal-header h3 { font-size: 16px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+    .modal-header h3 i { color: var(--royal); }
+    .modal-close { width: 30px; height: 30px; border-radius: 8px; border: none; background: #f1f2f4; color: #6b7280; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .modal-close:hover { background: #e5e7eb; color: #374151; }
+    .modal-body { padding: 18px 20px; overflow-y: auto; }
+    .modal-body::-webkit-scrollbar { width: 5px; }
+    .modal-body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 12px; font-weight: 600; color: #374151; }
+    .form-group label .req { color: #ef4444; }
+    .form-group input, .form-group select, .form-group textarea {
+      border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; font-size: 13px; color: #1f2937; outline: none; background: #fff; transition: all .15s; font-family: 'Inter', sans-serif;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--royal); box-shadow: 0 0 0 3px rgba(37,69,211,.12); }
+    .input-suffix { position: relative; }
+    .input-suffix input { width: 100%; padding-right: 42px; }
+    .input-suffix .suffix { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #9ca3af; font-weight: 500; }
+    .modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid #f1f2f4; }
+
+    /* detail modal blocks */
+    .det-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .det-head img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+    .det-head .dh-name { font-size: 16px; font-weight: 700; color: #1f2937; }
+    .det-head .dh-sub { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; background: #f9fafb; border: 1px solid #f1f2f4; border-radius: 10px; padding: 14px; margin-bottom: 16px; }
+    .info-item { font-size: 12px; }
+    .info-item .lbl { color: #9ca3af; margin-bottom: 2px; }
+    .info-item .val { color: #1f2937; font-weight: 600; }
+    .sec-title { font-size: 13px; font-weight: 700; color: var(--royal-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .ben-detail-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+    .ben-detail-table th { font-size: 11px; color: #9ca3af; text-transform: uppercase; text-align: left; padding: 6px 8px; border-bottom: 1px solid #f1f2f4; font-weight: 700; }
+    .ben-detail-table td { font-size: 12px; padding: 9px 8px; border-bottom: 1px solid #f1f2f4; vertical-align: middle; }
+    .ben-detail-table .b-name { font-weight: 600; color: #1f2937; }
+    .mini-bar { height: 6px; background: #eef0f3; border-radius: 4px; overflow: hidden; width: 90px; }
+    .mini-fill { height: 100%; background: var(--royal); border-radius: 4px; }
+    .btn-checkin { background: #eef2ff; color: var(--royal); border: 1px solid #bfd0ff; border-radius: 7px; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all .15s; }
+    .btn-checkin:hover:not(:disabled) { background: var(--royal); color: #fff; }
+    .btn-checkin:disabled { opacity: .45; cursor: default; }
+    .fin-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .fin-box { background: #f9fafb; border: 1px solid #f1f2f4; border-radius: 10px; padding: 12px; text-align: center; }
+    .fin-box .fb-lbl { font-size: 11px; color: #9ca3af; margin-bottom: 4px; }
+    .fin-box .fb-val { font-size: 17px; font-weight: 700; }
+    .fin-box.earn .fb-val { color: #15803d; }
+    .fin-box.defer .fb-val { color: #b45309; }
+    .fin-box.paid .fb-val { color: var(--royal-dark); }
+    .log-item { font-size: 12px; color: #4b5563; padding: 8px 12px; background: #f9fafb; border-radius: 8px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .log-item i { color: var(--royal); }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1e293b; color: #fff; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.2); display: flex; align-items: center; gap: 8px; opacity: 0; transition: all .3s; z-index: 300; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast i { color: #4ade80; }
+    @media (max-width: 1100px) { #subSidebar { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><i class="fa-solid fa-spa"></i></div>
+    <span class="logo-text">AppVN CRM</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-title">Bán hàng &amp; CRM</div>
+    <a href="Customer.html" class="nav-item"><i class="fa-solid fa-user-tag"></i><span>Khách hàng</span></a>
+    <a href="Lead.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i><span>Leads</span></a>
+    <a href="Task.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>Task</span></a>
+    <a href="Order.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Đơn hàng</span></a>
+    <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
+    <a href="Course2.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
+    <a href="BeautyService3.html" class="nav-item"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+    <a href="CustomerPackage.html" class="nav-item active"><i class="fa-solid fa-clipboard-user"></i><span>Liệu trình khách</span></a>
+    <a href="Tour2.html" class="nav-item"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
+    <a href="Land2.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
+    <div class="nav-group-title">Vận hành &amp; Dịch vụ</div>
+    <a href="Project.html" class="nav-item"><i class="fa-solid fa-diagram-project"></i><span>Dự Án</span></a>
+    <div class="nav-group-title">Quản trị &amp; Marketing</div>
+    <a href="Marketing.html" class="nav-item"><i class="fa-solid fa-bullhorn"></i><span>Marketing</span></a>
+    <a href="Meta.html" class="nav-item"><i class="fa-brands fa-meta"></i><span>Meta</span></a>
+    <a href="Staff.html" class="nav-item"><i class="fa-solid fa-id-badge"></i><span>Nhân viên</span></a>
+    <a href="Finan.html" class="nav-item"><i class="fa-solid fa-sack-dollar"></i><span>Tài Chính</span></a>
+  </nav>
+  <button class="sidebar-toggle-btn" id="toggleSidebarBtn"><i class="fa-solid fa-chevron-left"></i></button>
+  <div class="sidebar-bottom">
+    <img src="https://i.pravatar.cc/150?img=11" alt="avatar">
+    <div class="user-info">
+      <div class="user-name">Phan Hiếu</div>
+      <div class="user-role">Quản trị viên</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUB SIDEBAR -->
+<div id="subSidebar">
+  <div class="sub-sidebar-header">
+    <span class="sub-sidebar-title">Bộ lọc nhanh</span>
+    <button class="sub-sidebar-add"><i class="fa-solid fa-plus"></i></button>
+  </div>
+  <div class="sub-search">
+    <div class="sub-search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="catSearch" placeholder="Tìm bộ lọc..." oninput="filterCats(this.value)">
+    </div>
+  </div>
+  <div class="sub-sidebar-nav" id="catList">
+    <div class="sub-group-title">Trạng thái liệu trình</div>
+    <div class="cat-item active" onclick="selectCat(this,'all')"><div class="cat-left"><span class="cat-dot" style="background:var(--royal)"></span><span>Tất cả</span></div><span class="cat-count" id="cnt-all">0</span></div>
+    <div class="cat-item" onclick="selectCat(this,'active')"><div class="cat-left"><span class="cat-dot" style="background:#22c55e"></span><span>Đang sử dụng</span></div><span class="cat-count" id="cnt-active">0</span></div>
+    <div class="cat-item" onclick="selectCat(this,'expiring')"><div class="cat-left"><span class="cat-dot" style="background:#f59e0b"></span><span>Sắp hết hạn</span></div><span class="cat-count" id="cnt-expiring">0</span></div>
+    <div class="cat-item" onclick="selectCat(this,'lowSessions')"><div class="cat-left"><span class="cat-dot" style="background:#ec4899"></span><span>Sắp hết buổi</span></div><span class="cat-count" id="cnt-lowSessions">0</span></div>
+    <div class="cat-item" onclick="selectCat(this,'expired')"><div class="cat-left"><span class="cat-dot" style="background:#ef4444"></span><span>Hết hạn / Hết buổi</span></div><span class="cat-count" id="cnt-expired">0</span></div>
+    <div class="cat-item" onclick="selectCat(this,'reserved')"><div class="cat-left"><span class="cat-dot" style="background:#3b82f6"></span><span>Bảo lưu</span></div><span class="cat-count" id="cnt-reserved">0</span></div>
+    <div class="cat-item" onclick="selectCat(this,'transferred')"><div class="cat-left"><span class="cat-dot" style="background:#9ca3af"></span><span>Đã chuyển nhượng</span></div><span class="cat-count" id="cnt-transferred">0</span></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="mainContent">
+  <div class="top-header">
+    <div class="top-header-left"><h1><i class="fa-solid fa-clipboard-user"></i>Liệu trình khách</h1></div>
+    <div class="top-header-right">
+      <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
+      <button class="btn-primary" onclick="openSell()"><i class="fa-solid fa-plus"></i> Bán gói mới</button>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-filter"></i> Bộ lọc</button>
+      <a class="btn-outline indigo" href="BeautyService.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
+      <div class="view-switch">
+        <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
+        <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search" placeholder="Tìm khách / mã gói..." oninput="applyFilters()">
+      </div>
+      <div class="filter-field">
+        <label>KTV phụ trách</label>
+        <select id="ktvFilter" onchange="applyFilters()">
+          <option value="">Tất cả</option>
+          <option value="Thu Hà">Thu Hà</option>
+          <option value="Minh Anh">Minh Anh</option>
+          <option value="Thị Phương">Thị Phương</option>
+          <option value="Thanh Loan">Thanh Loan</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label>Trạng thái</label>
+        <select id="statusFilter" onchange="applyFilters()">
+          <option value="">Tất cả</option>
+          <option value="active">Đang sử dụng</option>
+          <option value="expiring">Sắp hết hạn</option>
+          <option value="lowSessions">Sắp hết buổi</option>
+          <option value="expired">Hết hạn / Hết buổi</option>
+          <option value="reserved">Bảo lưu</option>
+          <option value="transferred">Đã chuyển nhượng</option>
+        </select>
+      </div>
+      <button class="btn-outline" onclick="showToast('Đang xuất ' + filtered.length + ' liệu trình ra Excel...')"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+    </div>
+  </div>
+
+  <!-- KANBAN VIEW -->
+  <div id="kanbanView"></div>
+
+  <!-- TABLE VIEW -->
+  <div id="tableView">
+    <div class="table-card">
+      <div class="table-summary">
+        <div class="summary-stat">Tổng liệu trình: <b id="stTotal">0</b></div>
+        <div class="summary-stat green">Tổng đã thu: <b id="stEarned">—</b></div>
+        <div class="summary-stat amber">Tổng còn treo: <b id="stDefer">—</b></div>
+        <div class="summary-stat" id="stVisible"></div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
+              <th>Mã LT</th>
+              <th>Khách hàng</th>
+              <th>Gói</th>
+              <th>Tiến độ</th>
+              <th>Mua / HSD</th>
+              <th>KTV</th>
+              <th class="right">Đã thu</th>
+              <th class="right">Còn treo</th>
+              <th class="center">Trạng thái</th>
+              <th class="center" style="width:110px;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <div class="ftr-info" id="ftrInfo"></div>
+        <div class="pagination">
+          <button class="pg-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn">2</button>
+          <button class="pg-btn">3</button>
+          <button class="pg-btn">…</button>
+          <button class="pg-btn">5</button>
+          <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Chi tiết liệu trình -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-clipboard-user"></i> Chi tiết liệu trình</h3>
+      <button class="modal-close" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="openTransfer()"><i class="fa-solid fa-right-left"></i> Chuyển nhượng</button>
+      <button class="btn-outline" onclick="renewPkg()"><i class="fa-solid fa-rotate-right"></i> Gia hạn</button>
+      <button class="btn-primary" onclick="closeDetail()"><i class="fa-solid fa-check"></i> Đóng</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Bán gói mới -->
+<div class="modal-overlay" id="sellModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-plus"></i> Bán gói liệu trình mới</h3>
+      <button class="modal-close" onclick="closeSell()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="modal-body" id="sellForm" onsubmit="submitSell(event)">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tên khách hàng <span class="req">*</span></label>
+          <input type="text" id="sName" placeholder="VD: Nguyễn Thị Bảo Châu">
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại</label>
+          <input type="text" id="sPhone" placeholder="0912 345 678">
+        </div>
+        <div class="form-group full">
+          <label>Gói liệu trình <span class="req">*</span></label>
+          <select id="sPkg" onchange="onPkgChange()">
+            <option value="Combo Chăm sóc da Cơ bản">Combo Chăm sóc da Cơ bản</option>
+            <option value="Combo Massage thư giãn">Combo Massage thư giãn</option>
+            <option value="Triệt lông Laser 10 buổi">Triệt lông Laser 10 buổi</option>
+            <option value="Gói cưới Bridal Glow">Gói cưới Bridal Glow</option>
+            <option value="Gói VIP tháng">Gói VIP tháng</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Quyền lợi combo</label>
+          <div id="sBenefitsPreview" style="font-size:12px;color:#6b7280;background:#f9fafb;border:1px solid #f1f2f4;border-radius:8px;padding:10px;line-height:1.6;"></div>
+        </div>
+        <div class="form-group">
+          <label>KTV phụ trách</label>
+          <select id="sKtv">
+            <option value="Thu Hà">Thu Hà</option>
+            <option value="Minh Anh">Minh Anh</option>
+            <option value="Thị Phương">Thị Phương</option>
+            <option value="Thanh Loan">Thanh Loan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ngày kích hoạt</label>
+          <input type="text" id="sActivate" placeholder="15/06/2026" value="15/06/2026">
+        </div>
+        <div class="form-group">
+          <label>Thời hạn</label>
+          <div class="input-suffix"><input type="number" id="sValidity" min="1" step="1" placeholder="6"><span class="suffix">tháng</span></div>
+        </div>
+        <div class="form-group">
+          <label>Giá đã thu <span class="req">*</span></label>
+          <div class="input-suffix"><input type="number" id="sPrice" min="0" step="10" placeholder="4800"><span class="suffix">K</span></div>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeSell()">Hủy</button>
+      <button class="btn-primary" type="submit" form="sellForm"><i class="fa-solid fa-check"></i> Bán gói</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg"></span></div>
+
+<script>
+  /* ===== HẰNG NGÀY CỐ ĐỊNH (không dùng Date.now/new Date không tham số) ===== */
+  const TODAY = '15/06/2026';
+
+  /* ===== STATUS META ===== */
+  const STATUS = [
+    { key:'active',      name:'Đang sử dụng',      dot:'#22c55e', badge:'bg-green' },
+    { key:'expiring',    name:'Sắp hết hạn',       dot:'#f59e0b', badge:'bg-amber' },
+    { key:'lowSessions', name:'Sắp hết buổi',      dot:'#ec4899', badge:'bg-pink'  },
+    { key:'expired',     name:'Hết hạn/Hết buổi',  dot:'#ef4444', badge:'bg-red'   },
+    { key:'reserved',    name:'Bảo lưu',           dot:'#3b82f6', badge:'bg-blue'  },
+    { key:'transferred', name:'Đã chuyển',         dot:'#9ca3af', badge:'bg-gray'  }
+  ];
+  const STATUS_LABEL = {}, STATUS_BADGE = {};
+  STATUS.forEach(s => { STATUS_LABEL[s.key] = s.name; STATUS_BADGE[s.key] = s.badge; });
+
+  /* ===== BENEFIT BAR COLOR ===== */
+  const BEN_COLORS = ['#2545d3', '#ec4899', '#22c55e'];
+
+  /* ===== KTV ===== */
+  const ktvImgMap = {
+    'Thu Hà':'https://i.pravatar.cc/150?img=5',
+    'Minh Anh':'https://i.pravatar.cc/150?img=9',
+    'Thị Phương':'https://i.pravatar.cc/150?img=16',
+    'Thanh Loan':'https://i.pravatar.cc/150?img=20'
+  };
+
+  /* ===== PKG TEMPLATES (cho modal bán gói) ===== */
+  const PKG_TEMPLATES = {
+    'Combo Chăm sóc da Cơ bản': { cat:'Facial', defaultPrice:4800, validity:6, benefits:[{svc:'Hydrating Facial',total:6},{svc:'Trị mụn chuyên sâu',total:4}] },
+    'Combo Massage thư giãn':   { cat:'Body',   defaultPrice:7200, validity:4, benefits:[{svc:'Massage đá nóng',total:8}] },
+    'Triệt lông Laser 10 buổi': { cat:'Laser',  defaultPrice:24900, validity:12, benefits:[{svc:'Triệt lông Laser Diode',total:10}] },
+    'Gói cưới Bridal Glow':     { cat:'VIP',    defaultPrice:13900, validity:6, benefits:[{svc:'Facial cấp ẩm',total:4},{svc:'Tắm trắng phi thuyền',total:2},{svc:'Nâng cơ RF',total:2}] },
+    'Gói VIP tháng':            { cat:'VIP',    defaultPrice:5900, validity:1, benefits:[{svc:'Facial cao cấp',total:4},{svc:'Massage thư giãn',total:4}] }
+  };
+
+  /* ===== DỮ LIỆU: gói đã bán (lớp ③) ===== */
+  const cpackages = [
+    { id:'LT-2401', customer:'Nguyễn Thị Bảo Châu', phone:'0912 345 678', avatar:'https://i.pravatar.cc/150?img=32',
+      pkgName:'Combo Chăm sóc da Cơ bản', cat:'Facial',
+      benefits:[{svc:'Hydrating Facial',used:3,total:6},{svc:'Trị mụn chuyên sâu',used:1,total:4}],
+      buyDate:'10/05/2026', activateDate:'10/05/2026', expireDate:'10/11/2026',
+      ktv:'Thu Hà', ktvImg:'https://i.pravatar.cc/150?img=5', pkgPrice:4800, status:'active', transferLog:[] },
+
+    { id:'LT-2402', customer:'Trần Mỹ Linh', phone:'0987 654 321', avatar:'https://i.pravatar.cc/150?img=45',
+      pkgName:'Combo Massage thư giãn', cat:'Body',
+      benefits:[{svc:'Massage đá nóng',used:5,total:8}],
+      buyDate:'02/03/2026', activateDate:'02/03/2026', expireDate:'25/06/2026',
+      ktv:'Minh Anh', ktvImg:'https://i.pravatar.cc/150?img=9', pkgPrice:7200, status:'active', transferLog:[] },
+
+    { id:'LT-2403', customer:'Lê Hoàng Yến', phone:'0901 223 344', avatar:'https://i.pravatar.cc/150?img=47',
+      pkgName:'Triệt lông Laser 10 buổi', cat:'Laser',
+      benefits:[{svc:'Triệt lông Laser Diode',used:9,total:10}],
+      buyDate:'15/01/2026', activateDate:'15/01/2026', expireDate:'15/01/2027',
+      ktv:'Thị Phương', ktvImg:'https://i.pravatar.cc/150?img=16', pkgPrice:24900, status:'active', transferLog:[] },
+
+    { id:'LT-2404', customer:'Phạm Thu Trang', phone:'0934 556 778', avatar:'https://i.pravatar.cc/150?img=20',
+      pkgName:'Combo Chăm sóc da Cơ bản', cat:'Facial',
+      benefits:[{svc:'Hydrating Facial',used:5,total:6},{svc:'Trị mụn chuyên sâu',used:4,total:4}],
+      buyDate:'01/01/2026', activateDate:'01/01/2026', expireDate:'28/06/2026',
+      ktv:'Thu Hà', ktvImg:'https://i.pravatar.cc/150?img=5', pkgPrice:4800, status:'active', transferLog:[] },
+
+    { id:'LT-2405', customer:'Đỗ Khánh Vy', phone:'0978 112 233', avatar:'https://i.pravatar.cc/150?img=49',
+      pkgName:'Gói VIP tháng', cat:'VIP',
+      benefits:[{svc:'Facial cao cấp',used:4,total:4},{svc:'Massage thư giãn',used:4,total:4}],
+      buyDate:'10/05/2026', activateDate:'10/05/2026', expireDate:'10/06/2026',
+      ktv:'Thanh Loan', ktvImg:'https://i.pravatar.cc/150?img=20', pkgPrice:5900, status:'active', transferLog:[] },
+
+    { id:'LT-2406', customer:'Vũ Ngọc Hân', phone:'0911 445 667', avatar:'https://i.pravatar.cc/150?img=31',
+      pkgName:'Gói cưới Bridal Glow', cat:'VIP',
+      benefits:[{svc:'Facial cấp ẩm',used:1,total:4},{svc:'Tắm trắng phi thuyền',used:0,total:2},{svc:'Nâng cơ RF',used:1,total:2}],
+      buyDate:'20/04/2026', activateDate:'20/04/2026', expireDate:'20/10/2026',
+      ktv:'Minh Anh', ktvImg:'https://i.pravatar.cc/150?img=9', pkgPrice:13900, status:'active', transferLog:[] },
+
+    { id:'LT-2407', customer:'Bùi Phương Anh', phone:'0962 778 990', avatar:'https://i.pravatar.cc/150?img=44',
+      pkgName:'Combo Massage thư giãn', cat:'Body',
+      benefits:[{svc:'Massage đá nóng',used:8,total:8}],
+      buyDate:'05/02/2026', activateDate:'05/02/2026', expireDate:'05/06/2026',
+      ktv:'Thị Phương', ktvImg:'https://i.pravatar.cc/150?img=16', pkgPrice:7200, status:'active', transferLog:[] },
+
+    { id:'LT-2408', customer:'Hoàng Thị Diệu', phone:'0903 334 556', avatar:'https://i.pravatar.cc/150?img=24',
+      pkgName:'Combo Chăm sóc da Cơ bản', cat:'Facial',
+      benefits:[{svc:'Hydrating Facial',used:2,total:6},{svc:'Trị mụn chuyên sâu',used:0,total:4}],
+      buyDate:'01/12/2025', activateDate:'01/12/2025', expireDate:'01/06/2026',
+      ktv:'Thu Hà', ktvImg:'https://i.pravatar.cc/150?img=5', pkgPrice:4800, status:'active', transferLog:[] },
+
+    { id:'LT-2409', customer:'Ngô Thanh Hằng', phone:'0945 667 889', avatar:'https://i.pravatar.cc/150?img=27',
+      pkgName:'Triệt lông Laser 10 buổi', cat:'Laser',
+      benefits:[{svc:'Triệt lông Laser Diode',used:4,total:10}],
+      buyDate:'10/03/2026', activateDate:'10/03/2026', expireDate:'10/03/2027',
+      ktv:'Thanh Loan', ktvImg:'https://i.pravatar.cc/150?img=20', pkgPrice:24900, status:'reserved', transferLog:[] },
+
+    { id:'LT-2410', customer:'Đặng Kiều My', phone:'0918 990 112', avatar:'https://i.pravatar.cc/150?img=48',
+      pkgName:'Gói VIP tháng', cat:'VIP',
+      benefits:[{svc:'Facial cao cấp',used:1,total:4},{svc:'Massage thư giãn',used:2,total:4}],
+      buyDate:'12/04/2026', activateDate:'12/04/2026', expireDate:'12/10/2026',
+      ktv:'Minh Anh', ktvImg:'https://i.pravatar.cc/150?img=9', pkgPrice:5900, status:'reserved', transferLog:[] },
+
+    { id:'LT-2411', customer:'Trịnh Bảo Ngọc', phone:'0977 223 445', avatar:'https://i.pravatar.cc/150?img=26',
+      pkgName:'Combo Massage thư giãn', cat:'Body',
+      benefits:[{svc:'Massage đá nóng',used:6,total:8}],
+      buyDate:'18/02/2026', activateDate:'18/02/2026', expireDate:'18/08/2026',
+      ktv:'Thị Phương', ktvImg:'https://i.pravatar.cc/150?img=16', pkgPrice:7200, status:'transferred',
+      transferLog:[{from:'Lý Thu Thảo', to:'Trịnh Bảo Ngọc', date:'01/05/2026'}] },
+
+    { id:'LT-2412', customer:'Cao Minh Châu', phone:'0938 556 778', avatar:'https://i.pravatar.cc/150?img=36',
+      pkgName:'Gói cưới Bridal Glow', cat:'VIP',
+      benefits:[{svc:'Facial cấp ẩm',used:3,total:4},{svc:'Tắm trắng phi thuyền',used:2,total:2},{svc:'Nâng cơ RF',used:2,total:2}],
+      buyDate:'01/03/2026', activateDate:'01/03/2026', expireDate:'01/09/2026',
+      ktv:'Thu Hà', ktvImg:'https://i.pravatar.cc/150?img=5', pkgPrice:13900, status:'active', transferLog:[] }
+  ];
+
+  /* ===== HÀM TIỆN ÍCH ===== */
+  const fmtK = (n) => n >= 1000 ? (n/1000).toLocaleString('vi-VN',{maximumFractionDigits:1}) + 'tr' : n + 'K';
+
+  // parse dd/mm/yyyy -> Date(yyyy, mm-1, dd) an toàn
+  function parseDMY(s) {
+    const [d, m, y] = s.split('/').map(Number);
+    return new Date(y, m - 1, d);
+  }
+  function daysBetween(fromStr, toStr) {
+    const a = parseDMY(fromStr), b = parseDMY(toStr);
+    return Math.round((b - a) / 86400000);
+  }
+
+  // các giá trị phái sinh
+  function calc(p) {
+    const totalSessions = p.benefits.reduce((a, b) => a + b.total, 0);
+    const usedSessions   = p.benefits.reduce((a, b) => a + b.used, 0);
+    const remaining = totalSessions - usedSessions;
+    const pricePerSession = totalSessions > 0 ? p.pkgPrice / totalSessions : 0;
+    const earned   = Math.round(usedSessions * pricePerSession);
+    const deferred = Math.round(remaining * pricePerSession);
+    const daysLeft = daysBetween(TODAY, p.expireDate);
+    return { totalSessions, usedSessions, remaining, pricePerSession, earned, deferred, daysLeft };
+  }
+
+  // trạng thái auto theo quy tắc ưu tiên
+  function effStatus(p) {
+    const c = calc(p);
+    if (p.status === 'reserved') return 'reserved';
+    if (p.status === 'transferred') return 'transferred';
+    if (c.daysLeft < 0) return 'expired';
+    if (c.remaining === 0) return 'expired';        // hết buổi -> nhóm "Hết hạn/Hết buổi"
+    if (c.daysLeft <= 15) return 'expiring';
+    if (c.remaining <= 1) return 'lowSessions';
+    return 'active';
+  }
+
+  let filtered = [...cpackages];
+
+  /* ===== KANBAN ===== */
+  function renderKanban() {
+    const board = document.getElementById('kanbanView');
+    board.innerHTML = STATUS.map(stg => {
+      const items = filtered.filter(p => effStatus(p) === stg.key);
+      return `
+      <div class="kanban-col" data-status="${stg.key}" ondragover="event.preventDefault()" ondrop="dropCard(event,'${stg.key}')">
+        <div class="col-head">
+          <div class="col-head-left"><span class="col-dot" style="background:${stg.dot}"></span><span class="col-name">${stg.name}</span></div>
+          <span class="col-count">${items.length}</span>
+        </div>
+        <div class="col-cards">
+          ${items.map(p => cardHtml(p)).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function benefitRowsHtml(p) {
+    return p.benefits.map((b, i) => {
+      const pct = b.total > 0 ? Math.round(b.used / b.total * 100) : 0;
+      const color = BEN_COLORS[i % BEN_COLORS.length];
+      return `
+      <div class="ben-row">
+        <div class="ben-top"><span class="ben-name">${b.svc}</span><span class="ben-frac">${b.used}/${b.total}</span></div>
+        <div class="ben-bar"><div class="ben-fill" style="width:${pct}%;background:${color}"></div></div>
+      </div>`;
+    }).join('');
+  }
+
+  function cardHtml(p) {
+    const c = calc(p);
+    const warn = (c.daysLeft >= 0 && c.daysLeft <= 15 && c.remaining > 0)
+      ? `<span class="warn-badge"><i class="fa-solid fa-triangle-exclamation"></i> Còn ${c.daysLeft} ngày</span>` : '';
+    return `
+    <div class="scard" draggable="true" data-id="${p.id}" ondragstart="dragStart(event,'${p.id}')" ondragend="dragEnd(event)" onclick="openDetail('${p.id}')">
+      <div class="scard-body">
+        <div class="cust-head">
+          <img src="${p.avatar}" alt="">
+          <div><div class="cust-name">${p.customer}</div><div class="cust-phone">${p.phone}</div></div>
+        </div>
+        <div class="pkg-id-row">
+          <span class="id-pill">${p.id}</span><span class="pkg-name-card">${p.pkgName}</span>
+        </div>
+        ${benefitRowsHtml(p)}
+        <div class="card-summary">
+          <span class="remain-tag">Còn ${c.remaining}/${c.totalSessions} buổi</span>
+          <span class="exp-tag"><i class="fa-regular fa-clock"></i> HSD ${p.expireDate}</span>
+        </div>
+        ${warn ? `<div style="margin-bottom:8px;">${warn}</div>` : ''}
+        <div class="fin-line">Còn treo: <span class="defer-cell">${fmtK(c.deferred)}</span> • Đã dùng: <span class="earn-cell">${fmtK(c.earned)}</span></div>
+        <div class="scard-foot">
+          <span class="ktv-foot"><img src="${p.ktvImg}" alt=""> ${p.ktv}</span>
+          <span class="badge ${STATUS_BADGE[effStatus(p)]}">${STATUS_LABEL[effStatus(p)]}</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  let dragId = null;
+  function dragStart(e, id) { dragId = id; e.currentTarget.classList.add('dragging'); }
+  function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
+  function dropCard(e, status) {
+    e.preventDefault();
+    const p = cpackages.find(x => x.id === dragId);
+    if (p) { p.status = status; applyFilters(); showToast(`Chuyển ${p.customer} → ${STATUS_LABEL[status]}`); }
+  }
+
+  /* ===== TABLE ===== */
+  function renderTable() {
+    const tb = document.getElementById('tableBody');
+    tb.innerHTML = filtered.map(p => {
+      const c = calc(p);
+      const pct = c.totalSessions > 0 ? Math.round(c.usedSessions / c.totalSessions * 100) : 0;
+      const st = effStatus(p);
+      const warn = (c.daysLeft >= 0 && c.daysLeft <= 15 && c.remaining > 0)
+        ? `<div class="warn">⚠ Còn ${c.daysLeft} ngày</div>` : (c.daysLeft < 0 ? `<div class="warn">Đã quá hạn</div>` : '');
+      return `
+      <tr onclick="openDetail('${p.id}')">
+        <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
+        <td><span class="id-pill">${p.id}</span></td>
+        <td><div class="svc-cell"><img class="svc-avatar" src="${p.avatar}" alt=""><div><div class="svc-name">${p.customer}</div><div class="svc-cat">${p.phone}</div></div></div></td>
+        <td><div class="svc-name">${p.pkgName}</div><div class="svc-cat">${p.cat}</div></td>
+        <td><div class="prog-cell"><div class="prog-top">${c.usedSessions}/${c.totalSessions} buổi · ${pct}%</div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div></div></td>
+        <td><div class="date-cell">${p.buyDate}<div class="exp">HSD: ${p.expireDate}</div>${warn}</div></td>
+        <td><div class="ktv-cell"><img src="${p.ktvImg}" alt=""> ${p.ktv}</div></td>
+        <td style="text-align:right;"><span class="rev-cell">${fmtK(c.earned)}</span></td>
+        <td style="text-align:right;"><span class="defer-cell">${fmtK(c.deferred)}</span></td>
+        <td style="text-align:center;"><span class="badge ${STATUS_BADGE[st]}">${STATUS_LABEL[st]}</span></td>
+        <td onclick="event.stopPropagation()">
+          <div class="row-actions">
+            <button class="row-act blue" title="Xem" onclick="openDetail('${p.id}')"><i class="fa-solid fa-eye"></i></button>
+            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${p.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="row-act amber" title="Chuyển nhượng" onclick="openDetail('${p.id}');setTimeout(openTransfer,50)"><i class="fa-solid fa-right-left"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+
+    const totEarn  = filtered.reduce((a, p) => a + calc(p).earned, 0);
+    const totDefer = filtered.reduce((a, p) => a + calc(p).deferred, 0);
+    document.getElementById('stTotal').textContent = cpackages.length;
+    document.getElementById('stEarned').textContent = fmtK(totEarn);
+    document.getElementById('stDefer').textContent = fmtK(totDefer);
+    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${cpackages.length} liệu trình`;
+    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${cpackages.length} liệu trình`;
+  }
+
+  function updateCounts() {
+    document.getElementById('cnt-all').textContent = cpackages.length;
+    ['active','expiring','lowSessions','expired','reserved','transferred'].forEach(k => {
+      document.getElementById('cnt-' + k).textContent = cpackages.filter(p => effStatus(p) === k).length;
+    });
+  }
+
+  function render() {
+    renderKanban();
+    renderTable();
+    updateCounts();
+  }
+
+  /* ===== VIEW SWITCH ===== */
+  function switchView(v) {
+    document.getElementById('kanbanView').classList.toggle('hidden', v !== 'kanban');
+    document.getElementById('tableView').classList.toggle('active', v === 'table');
+    document.getElementById('vbKanban').classList.toggle('active', v === 'kanban');
+    document.getElementById('vbTable').classList.toggle('active', v === 'table');
+  }
+
+  /* ===== FILTER ===== */
+  function applyFilters() {
+    const q = (document.getElementById('search').value || '').toLowerCase().trim();
+    const ktv = document.getElementById('ktvFilter').value;
+    const status = document.getElementById('statusFilter').value;
+    filtered = cpackages.filter(p => {
+      if (q && !(p.customer.toLowerCase().includes(q) || p.id.toLowerCase().includes(q) || p.phone.includes(q))) return false;
+      if (ktv && p.ktv !== ktv) return false;
+      if (status && effStatus(p) !== status) return false;
+      if (window._catFilter && window._catFilter !== 'all' && effStatus(p) !== window._catFilter) return false;
+      return true;
+    });
+    render();
+  }
+
+  function selectCat(el, key) {
+    document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    window._catFilter = key;
+    applyFilters();
+    showToast('Lọc nhanh: ' + (key === 'all' ? 'Tất cả' : STATUS_LABEL[key]));
+  }
+  function filterCats(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.cat-item').forEach(i => { i.style.display = i.innerText.toLowerCase().includes(q) ? '' : 'none'; });
+  }
+  function toggleSubSidebar() { document.getElementById('subSidebar').classList.toggle('collapsed'); }
+  function toggleAll(cb) { document.querySelectorAll('.rowcb').forEach(c => c.checked = cb.checked); }
+  function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
+
+  /* ===== MODAL CHI TIẾT ===== */
+  let currentId = null;
+  function openDetail(id) {
+    currentId = id;
+    renderDetail();
+    document.getElementById('detailModal').classList.add('open');
+  }
+  function closeDetail() { document.getElementById('detailModal').classList.remove('open'); currentId = null; }
+
+  function renderDetail() {
+    const p = cpackages.find(x => x.id === currentId);
+    if (!p) return;
+    const c = calc(p);
+    const st = effStatus(p);
+
+    const benRows = p.benefits.map((b, i) => {
+      const remain = b.total - b.used;
+      const pct = b.total > 0 ? Math.round(b.used / b.total * 100) : 0;
+      const disabled = remain <= 0;
+      return `
+      <tr>
+        <td class="b-name">${b.svc}</td>
+        <td>${b.used}/${b.total}</td>
+        <td>${remain}</td>
+        <td><div class="mini-bar"><div class="mini-fill" style="width:${pct}%"></div></div></td>
+        <td><button class="btn-checkin" ${disabled ? 'disabled' : ''} onclick="checkIn(${i})">${disabled ? 'Hết buổi' : '<i class=&quot;fa-solid fa-check&quot;></i> Check-in 1 buổi'}</button></td>
+      </tr>`;
+    }).join('');
+
+    const logHtml = (p.transferLog && p.transferLog.length)
+      ? p.transferLog.map(l => `<div class="log-item"><i class="fa-solid fa-right-left"></i> ${l.date}: chuyển từ <b>${l.from}</b> sang <b>${l.to}</b></div>`).join('')
+      : `<div style="font-size:12px;color:#9ca3af;">Chưa có lịch sử chuyển nhượng.</div>`;
+
+    document.getElementById('detailBody').innerHTML = `
+      <div class="det-head">
+        <img src="${p.avatar}" alt="">
+        <div>
+          <div class="dh-name">${p.customer} <span class="badge ${STATUS_BADGE[st]}" style="vertical-align:middle;">${STATUS_LABEL[st]}</span></div>
+          <div class="dh-sub">${p.id} • ${p.phone}</div>
+        </div>
+      </div>
+
+      <div class="sec-title"><i class="fa-solid fa-box"></i> Thông tin gói</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="lbl">Tên gói</div><div class="val">${p.pkgName}</div></div>
+        <div class="info-item"><div class="lbl">Danh mục</div><div class="val">${p.cat}</div></div>
+        <div class="info-item"><div class="lbl">Ngày mua</div><div class="val">${p.buyDate}</div></div>
+        <div class="info-item"><div class="lbl">Ngày kích hoạt</div><div class="val">${p.activateDate}</div></div>
+        <div class="info-item"><div class="lbl">Hạn sử dụng</div><div class="val">${p.expireDate}${c.daysLeft >= 0 ? ' (còn ' + c.daysLeft + ' ngày)' : ' (đã quá hạn)'}</div></div>
+        <div class="info-item"><div class="lbl">KTV phụ trách</div><div class="val">${p.ktv}</div></div>
+      </div>
+
+      <div class="sec-title"><i class="fa-solid fa-list-check"></i> Quyền lợi liệu trình</div>
+      <table class="ben-detail-table">
+        <thead><tr><th>Dịch vụ</th><th>Đã dùng</th><th>Còn lại</th><th>Tiến độ</th><th></th></tr></thead>
+        <tbody>${benRows}</tbody>
+      </table>
+
+      <div class="sec-title"><i class="fa-solid fa-coins"></i> Tài chính</div>
+      <div class="fin-grid">
+        <div class="fin-box paid"><div class="fb-lbl">Đã thu</div><div class="fb-val">${fmtK(p.pkgPrice)}</div></div>
+        <div class="fin-box earn"><div class="fb-lbl">DT đã thực hiện</div><div class="fb-val">${fmtK(c.earned)}</div></div>
+        <div class="fin-box defer"><div class="fb-lbl">DT còn treo</div><div class="fb-val">${fmtK(c.deferred)}</div></div>
+      </div>
+
+      <div class="sec-title"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử chuyển nhượng</div>
+      ${logHtml}`;
+  }
+
+  function checkIn(i) {
+    const p = cpackages.find(x => x.id === currentId);
+    if (!p) return;
+    const b = p.benefits[i];
+    if (b.used >= b.total) { showToast('Quyền lợi này đã hết buổi'); return; }
+    b.used += 1;  // KHÔNG mượn chéo dòng
+    renderDetail();
+    render();
+    showToast(`Đã check-in 1 buổi "${b.svc}" cho ${p.customer}`);
+  }
+
+  function openTransfer() {
+    const p = cpackages.find(x => x.id === currentId);
+    if (!p) { showToast('Chọn một liệu trình trước'); return; }
+    const name = prompt('Chuyển nhượng liệu trình ' + p.id + ' cho ai? (nhập tên người nhận)');
+    if (!name || !name.trim()) return;
+    p.transferLog = p.transferLog || [];
+    p.transferLog.push({ from: p.customer, to: name.trim(), date: TODAY });
+    p.customer = name.trim();
+    p.status = 'transferred';
+    renderDetail();
+    render();
+    showToast('Đã chuyển nhượng cho ' + name.trim());
+  }
+
+  function renewPkg() {
+    const p = cpackages.find(x => x.id === currentId);
+    if (!p) return;
+    showToast('Đã gửi yêu cầu gia hạn cho ' + p.customer + ' (demo)');
+  }
+
+  /* ===== MODAL BÁN GÓI MỚI ===== */
+  function openSell() {
+    document.getElementById('sellForm').reset();
+    document.getElementById('sActivate').value = '15/06/2026';
+    onPkgChange();
+    document.getElementById('sellModal').classList.add('open');
+  }
+  function closeSell() { document.getElementById('sellModal').classList.remove('open'); }
+
+  function onPkgChange() {
+    const name = document.getElementById('sPkg').value;
+    const tpl = PKG_TEMPLATES[name];
+    document.getElementById('sPrice').value = tpl.defaultPrice;
+    document.getElementById('sValidity').value = tpl.validity;
+    document.getElementById('sBenefitsPreview').innerHTML =
+      tpl.benefits.map(b => `<div>• ${b.svc} — <b>${b.total}</b> buổi</div>`).join('');
+  }
+
+  // cộng tháng vào ngày dd/mm/yyyy, trả về dd/mm/yyyy
+  function addMonths(dmy, months) {
+    const d = parseDMY(dmy);
+    const nd = new Date(d.getFullYear(), d.getMonth() + Number(months), d.getDate());
+    const dd = String(nd.getDate()).padStart(2, '0');
+    const mm = String(nd.getMonth() + 1).padStart(2, '0');
+    return `${dd}/${mm}/${nd.getFullYear()}`;
+  }
+
+  function submitSell(e) {
+    e.preventDefault();
+    const g = (id) => document.getElementById(id).value;
+    if (!g('sName').trim()) { showToast('Vui lòng nhập tên khách hàng'); return; }
+    const pkgName = g('sPkg');
+    const tpl = PKG_TEMPLATES[pkgName];
+    const activate = g('sActivate').trim() || TODAY;
+    const validity = Number(g('sValidity')) || tpl.validity;
+    const ktv = g('sKtv');
+    const nextId = 'LT-' + (2401 + cpackages.length);
+    const newPkg = {
+      id: nextId,
+      customer: g('sName').trim(),
+      phone: g('sPhone').trim() || '—',
+      avatar: 'https://i.pravatar.cc/150?img=33',
+      pkgName: pkgName,
+      cat: tpl.cat,
+      benefits: tpl.benefits.map(b => ({ svc: b.svc, used: 0, total: b.total })),
+      buyDate: TODAY,
+      activateDate: activate,
+      expireDate: addMonths(activate, validity),
+      ktv: ktv,
+      ktvImg: ktvImgMap[ktv] || 'https://i.pravatar.cc/150?img=5',
+      pkgPrice: Number(g('sPrice')) || tpl.defaultPrice,
+      status: 'active',
+      transferLog: []
+    };
+    cpackages.unshift(newPkg);
+    closeSell();
+    applyFilters();
+    showToast('Đã bán gói "' + pkgName + '" cho ' + newPkg.customer);
+  }
+
+  /* ===== đóng modal khi bấm nền tối ===== */
+  document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target.id === 'detailModal') closeDetail(); });
+  document.getElementById('sellModal').addEventListener('click', (e) => { if (e.target.id === 'sellModal') closeSell(); });
+
+  document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('collapsed');
+  });
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  render();
+</script>
+</body>
+</html>
