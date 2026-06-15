@@ -2162,7 +2162,7 @@
                 <!-- Left Column -->
                 <div style="flex: 1; display: flex; flex-direction: column; border-right: 1px solid #e5e7eb; overflow: hidden;">
                     <!-- Sub-header info row -->
-                    <div style="padding: 10px 18px; border-bottom: 1px solid #e5e7eb; background: white; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+                    <div id="leadInfoFull" style="padding: 10px 18px; border-bottom: 1px solid #e5e7eb; background: white; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 11px; color: #9ca3af;">Phễu:</span>
                             <span style="font-size: 12px; font-weight: 600; color: #ef4444; letter-spacing: 0.2px;">LEAD CHĂM SÓC LẠI</span>
@@ -2188,7 +2188,26 @@
                     <!-- Tags row -->
                     <div class="lead-info-detail" style="padding: 6px 18px; border-bottom: 1px solid #e5e7eb; background: white; display: flex; align-items: center; gap: 6px;">
                         <span style="font-size: 11px; color: #9ca3af;">Thẻ tag:</span>
-                        <span style="font-size: 12px; color: #9ca3af;">-</span>
+                        <span class="tag tag-yellow" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #fef9c3; color: #ca8a04;">Vinhomes</span>
+                        <span class="tag tag-blue" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #e0e7ff; color: #4338ca;">VIP</span>
+                        <span class="tag tag-green" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #dcfce7; color: #16a34a;">Tiềm năng</span>
+                    </div>
+
+                    <!-- Collapsed info bar (hiện khi thu gọn) -->
+                    <div id="leadInfoCollapsed" style="display: none; padding: 8px 18px; border-bottom: 1px solid #e5e7eb; background: white; align-items: center; justify-content: space-between; gap: 12px;">
+                        <!-- Trái: tags -->
+                        <div style="display: flex; align-items: center; gap: 6px; min-width: 0;">
+                            <span style="font-size: 11px; color: #9ca3af; flex-shrink: 0;">Tag:</span>
+                            <span class="tag tag-yellow" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #fef9c3; color: #ca8a04;">Vinhomes</span>
+                            <span class="tag tag-blue" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; background: #e0e7ff; color: #4338ca;">VIP</span>
+                            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 600; background: #f3f4f6; color: #6b7280;">+1</span>
+                        </div>
+                        <!-- Phải: phụ trách + nút mở rộng -->
+                        <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                            <img src="https://i.pravatar.cc/100?img=10" alt="" style="width: 22px; height: 22px; border-radius: 50%;">
+                            <span style="font-size: 12px; font-weight: 500; color: #374151;">Lê Văn A</span>
+                            <button onclick="toggleLeadInfo()" title="Mở rộng thông tin" style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 11px; color: #6b7280; display: flex; align-items: center; justify-content: center; margin-left: 2px;"><i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
                     </div>
 
                     <!-- Tabs: Tác vụ / Tổng quan / Thảo luận -->
@@ -2675,17 +2694,15 @@
         let leadInfoCollapsed = false;
         function toggleLeadInfo() {
             leadInfoCollapsed = !leadInfoCollapsed;
-            // Ẩn/hiện các phần chi tiết: Nguồn lead, Chi nhánh, hàng Thẻ tag
+            const full = document.getElementById('leadInfoFull');       // hàng đầy đủ (Phễu/Nguồn/Chi nhánh/Nhân sự)
+            const collapsed = document.getElementById('leadInfoCollapsed'); // thanh thu gọn (Tag + Phụ trách)
+            // Tags row đầy đủ: các .lead-info-detail còn lại ngoài leadInfoFull
             document.querySelectorAll('#leadDetailModal .lead-info-detail').forEach(el => {
+                if (full && full.contains(el)) return; // bỏ qua phần con của hàng đầy đủ
                 el.style.display = leadInfoCollapsed ? 'none' : 'flex';
             });
-            const icon = document.getElementById('leadInfoToggleIcon');
-            const btn = document.getElementById('leadInfoToggleBtn');
-            if (icon) {
-                icon.classList.toggle('fa-chevron-up', !leadInfoCollapsed);
-                icon.classList.toggle('fa-chevron-down', leadInfoCollapsed);
-            }
-            if (btn) btn.title = leadInfoCollapsed ? 'Mở rộng thông tin' : 'Thu gọn thông tin';
+            if (full) full.style.display = leadInfoCollapsed ? 'none' : 'flex';
+            if (collapsed) collapsed.style.display = leadInfoCollapsed ? 'flex' : 'none';
         }
 
         function switchLeadTab(tab, btn) {
