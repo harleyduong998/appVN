@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kho Dịch vụ Làm đẹp - CRM</title>
+  <title>Kho Khóa học - Quản lý lớp - CRM</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -24,7 +24,7 @@
     }
     #sidebar.collapsed { width: 64px; min-width: 64px; }
     .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 18px 20px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
-    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #ec4899, #f43f5e); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
+    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--royal), var(--royal-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
     .sidebar-logo .logo-text { font-size: 17px; font-weight: 700; color: #ffffff; white-space: nowrap; }
     #sidebar.collapsed .logo-text { display: none; }
     .sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 0; }
@@ -99,7 +99,7 @@
     .btn-outline.indigo { color: var(--royal); border-color: #bfd0ff; }
     .btn-outline.indigo:hover { background: #eef2ff; }
     .search-wrap { position: relative; }
-    .search-wrap input { background: #f3f4f6; border: none; border-radius: 8px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 190px; }
+    .search-wrap input { background: #f3f4f6; border: none; border-radius: 8px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 180px; }
     .search-wrap input:focus { background: #fff; box-shadow: 0 0 0 2px #bfd0ff; }
     .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 13px; }
     .filter-field { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 12px; }
@@ -115,7 +115,7 @@
     #kanbanView { flex: 1; display: flex; gap: 14px; padding: 16px 20px 20px; overflow-x: auto; }
     #kanbanView::-webkit-scrollbar { height: 7px; }
     #kanbanView::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-    .kanban-col { min-width: 286px; max-width: 286px; background: #f1f3f7; border-radius: 12px; display: flex; flex-direction: column; padding: 12px 10px; max-height: 100%; }
+    .kanban-col { min-width: 282px; max-width: 282px; background: #f1f3f7; border-radius: 12px; display: flex; flex-direction: column; padding: 12px 10px; max-height: 100%; }
     .col-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
     .col-head-left { display: flex; align-items: center; gap: 7px; }
     .col-dot { width: 9px; height: 9px; border-radius: 50%; }
@@ -125,24 +125,22 @@
     .col-cards::-webkit-scrollbar { width: 3px; }
     .col-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
 
-    .scard { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: box-shadow .15s, transform .15s; border: 1px solid transparent; }
-    .scard:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); border-color: #dbe3ff; }
-    .scard.dragging { opacity: .5; }
-    .scard-thumb { position: relative; height: 96px; background: #e5e7eb; overflow: hidden; }
-    .scard-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .scard-dur { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
-    .scard-body { padding: 11px 12px 12px; }
-    .scard-name { font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 7px; line-height: 1.35; }
-    .scard-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
-    .scard-price { font-size: 15px; font-weight: 700; color: #be185d; }
-    .scard-sales { font-size: 11px; color: #6b7280; font-weight: 500; display: flex; align-items: center; gap: 4px; }
-    .scard-sales i { color: #22c55e; font-size: 10px; }
-    .scard-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 9px; border-top: 1px solid #f1f2f4; }
-    .spec-label { font-size: 11px; color: #9ca3af; font-weight: 500; }
-    .avatars { display: flex; }
-    .avatars img { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; margin-left: -7px; }
-    .avatars img:first-child { margin-left: 0; }
-    .avatars .more { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; margin-left: -7px; background: #e8edff; color: var(--royal-dark); font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .ccard { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: box-shadow .15s, transform .15s; border: 1px solid transparent; }
+    .ccard:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); border-color: #dbe3ff; }
+    .ccard.dragging { opacity: .5; }
+    .ccard-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .course-code { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 2px 8px; border-radius: 5px; letter-spacing: .3px; }
+    .ccard-price { font-size: 13px; font-weight: 700; color: #15803d; }
+    .ccard-title { font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 9px; line-height: 1.35; }
+    .ccard-ins { display: flex; align-items: center; gap: 7px; margin-bottom: 9px; }
+    .ccard-ins img { width: 24px; height: 24px; border-radius: 50%; }
+    .ccard-ins span { font-size: 12px; color: #4b5563; font-weight: 500; }
+    .ccard-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #6b7280; margin-bottom: 9px; }
+    .ccard-row i { font-size: 10px; color: #9ca3af; width: 12px; text-align: center; }
+    .seat-wrap { padding-top: 9px; border-top: 1px solid #f1f2f4; }
+    .seat-label { display: flex; justify-content: space-between; font-size: 10px; color: #6b7280; margin-bottom: 3px; font-weight: 600; }
+    .seat-bar { height: 6px; background: #eef0f3; border-radius: 3px; overflow: hidden; }
+    .seat-fill { height: 100%; border-radius: 3px; }
 
     /* ===== TABLE ===== */
     #tableView { flex: 1; padding: 16px 20px 20px; overflow: auto; display: none; }
@@ -156,7 +154,7 @@
     .table-scroll { overflow-x: auto; }
     .table-scroll::-webkit-scrollbar { height: 8px; }
     .table-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-    .data-table { width: 100%; border-collapse: collapse; min-width: 1140px; }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 1180px; }
     .data-table thead th { padding: 12px 16px; font-size: 11px; font-weight: 700; color: #6b7280; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; background: #f9fafb; text-transform: uppercase; letter-spacing: .4px; position: sticky; top: 0; z-index: 2; }
     .data-table thead th.center { text-align: center; }
     .data-table thead th.right { text-align: right; }
@@ -166,23 +164,27 @@
     .data-table tbody tr:hover td { background: #f8fafc; }
     .cb { width: 15px; height: 15px; accent-color: var(--royal); cursor: pointer; }
     .id-pill { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 3px 8px; border-radius: 5px; }
-    .svc-cell { display: flex; align-items: center; gap: 10px; }
-    .svc-thumb { width: 40px; height: 32px; border-radius: 6px; object-fit: cover; flex-shrink: 0; background: #e5e7eb; }
-    .svc-name { font-weight: 600; color: #1f2937; font-size: 13px; }
-    .svc-cat { font-size: 11px; color: #9ca3af; margin-top: 1px; }
-    .price-std { font-weight: 600; color: #374151; }
-    .price-promo { font-weight: 700; color: #be185d; }
-    .price-promo small { display: block; color: #9ca3af; font-weight: 500; font-size: 10px; text-decoration: line-through; }
-    .dur-cell { color: #4b5563; font-weight: 500; }
-    .cost-cell { color: #6b7280; font-weight: 500; }
+    .course-name-cell { font-weight: 600; color: #1f2937; }
+    .course-name-cell small { display: block; font-weight: 500; color: #9ca3af; font-size: 11px; }
+    .ins-cell { display: flex; align-items: center; gap: 7px; }
+    .ins-cell img { width: 26px; height: 26px; border-radius: 50%; }
+    .ins-cell span { font-size: 12px; color: #4b5563; font-weight: 500; }
+    .date-cell { font-weight: 600; color: #1f2937; }
+    .date-cell small { display: block; font-weight: 500; color: #9ca3af; font-size: 11px; }
+    .cap-cell { font-weight: 600; color: #374151; text-align: center; }
+    .tbl-prog { display: flex; align-items: center; gap: 8px; min-width: 130px; }
+    .tbl-prog .seat-bar { flex: 1; }
+    .tbl-prog span { font-size: 11px; font-weight: 700; min-width: 36px; }
+    .fee-cell { font-weight: 600; color: #374151; }
     .rev-cell { font-weight: 700; color: #15803d; }
     .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
     .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
-    .bg-green { background: #dcfce7; color: #15803d; } .bg-green::before { background: #22c55e; }
-    .bg-pink { background: #fce7f3; color: #be185d; } .bg-pink::before { background: #ec4899; }
+    .bg-gray { background: #f1f2f4; color: #4b5563; } .bg-gray::before { background: #9ca3af; }
     .bg-blue { background: #dbeafe; color: #1d4ed8; } .bg-blue::before { background: #3b82f6; }
     .bg-amber { background: #fef3c7; color: #b45309; } .bg-amber::before { background: #f59e0b; }
-    .bg-gray { background: #f1f2f4; color: #4b5563; } .bg-gray::before { background: #9ca3af; }
+    .bg-green { background: #dcfce7; color: #15803d; } .bg-green::before { background: #22c55e; }
+    .bg-purple { background: #ede9fe; color: #7c3aed; } .bg-purple::before { background: #9333ea; }
+    .bg-red { background: #fee2e2; color: #b91c1c; } .bg-red::before { background: #ef4444; }
     .row-actions { display: flex; align-items: center; gap: 4px; justify-content: center; }
     .row-act { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; color: #9ca3af; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
     .row-act:hover { background: #f1f2f4; color: #374151; }
@@ -207,7 +209,7 @@
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-icon"><i class="fa-solid fa-spa"></i></div>
+    <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
     <span class="logo-text">AppVN CRM</span>
   </div>
   <nav class="sidebar-nav">
@@ -217,8 +219,8 @@
     <a href="Task.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>Task</span></a>
     <a href="Order.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Đơn hàng</span></a>
     <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
-    <a href="Course2.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
-    <a href="BeautyService3.html" class="nav-item active"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+    <a href="Course2.html" class="nav-item active"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
+    <a href="BeautyService3.html" class="nav-item"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
     <a href="Tour2.html" class="nav-item"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
     <a href="Land2.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
     <div class="nav-group-title">Vận hành &amp; Dịch vụ</div>
@@ -242,7 +244,7 @@
 <!-- SUB SIDEBAR -->
 <div id="subSidebar">
   <div class="sub-sidebar-header">
-    <span class="sub-sidebar-title">Danh mục dịch vụ</span>
+    <span class="sub-sidebar-title">Danh mục học thuật</span>
     <button class="sub-sidebar-add"><i class="fa-solid fa-plus"></i></button>
   </div>
   <div class="sub-search">
@@ -253,23 +255,23 @@
   </div>
   <div class="sub-sidebar-nav" id="catList">
     <div class="sub-group-title">Tất cả</div>
-    <div class="cat-item active" onclick="selectCat(this,'Tất cả')"><div class="cat-left"><span class="cat-dot" style="background:var(--royal)"></span><span>Tất cả dịch vụ</span></div><span class="cat-count">48</span></div>
-    <div class="sub-group-title">Theo nhóm</div>
-    <div class="cat-item" onclick="selectCat(this,'Facial')"><div class="cat-left"><span class="cat-dot" style="background:#22c55e"></span><span>Chăm sóc da (Facial)</span></div><span class="cat-count">16</span></div>
-    <div class="cat-item" onclick="selectCat(this,'Body')"><div class="cat-left"><span class="cat-dot" style="background:#3b82f6"></span><span>Body Treatment</span></div><span class="cat-count">12</span></div>
-    <div class="cat-item" onclick="selectCat(this,'Laser')"><div class="cat-left"><span class="cat-dot" style="background:#f59e0b"></span><span>Laser &amp; Công nghệ</span></div><span class="cat-count">11</span></div>
-    <div class="cat-item" onclick="selectCat(this,'VIP')"><div class="cat-left"><span class="cat-dot" style="background:#9333ea"></span><span>Gói VIP</span></div><span class="cat-count">9</span></div>
+    <div class="cat-item active" onclick="selectCat(this,'Tất cả')"><div class="cat-left"><span class="cat-dot" style="background:var(--royal)"></span><span>Tất cả khóa học</span></div><span class="cat-count">52</span></div>
+    <div class="sub-group-title">Lĩnh vực</div>
+    <div class="cat-item" onclick="selectCat(this,'Ngoại ngữ')"><div class="cat-left"><span class="cat-dot" style="background:#ec4899"></span><span>Ngoại ngữ (Languages)</span></div><span class="cat-count">18</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Lập trình')"><div class="cat-left"><span class="cat-dot" style="background:#3b82f6"></span><span>Lập trình (Programming)</span></div><span class="cat-count">15</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Kỹ năng mềm')"><div class="cat-left"><span class="cat-dot" style="background:#f59e0b"></span><span>Kỹ năng mềm (Soft Skills)</span></div><span class="cat-count">11</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Thiết kế')"><div class="cat-left"><span class="cat-dot" style="background:#9333ea"></span><span>Thiết kế (Design)</span></div><span class="cat-count">8</span></div>
   </div>
 </div>
 
 <!-- MAIN -->
 <div id="mainContent">
   <div class="top-header">
-    <div class="top-header-left"><h1><i class="fa-solid fa-clipboard-list"></i>Kho Dịch vụ Làm đẹp</h1></div>
+    <div class="top-header-left"><h1><i class="fa-solid fa-layer-group"></i>Kho Khóa học &amp; Lớp học</h1></div>
     <div class="top-header-right">
       <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
       <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
-      <button class="btn-primary" onclick="showToast('Mở form thêm dịch vụ mới')"><i class="fa-solid fa-plus"></i> Thêm dịch vụ</button>
+      <button class="btn-primary" onclick="showToast('Mở form tạo khóa học mới')"><i class="fa-solid fa-plus"></i> Tạo khóa học</button>
     </div>
   </div>
 
@@ -277,7 +279,7 @@
   <div class="toolbar">
     <div class="toolbar-left">
       <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Danh mục</button>
-      <a class="btn-outline indigo" href="BeautyService.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
+      <a class="btn-outline indigo" href="Course.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
       <div class="view-switch">
         <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
         <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
@@ -286,36 +288,37 @@
     <div class="toolbar-right">
       <div class="search-wrap">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="search" placeholder="Tìm tên dịch vụ..." oninput="applyFilters()">
+        <input type="text" id="search" placeholder="Tìm mã khóa học..." oninput="applyFilters()">
       </div>
       <div class="filter-field">
-        <label>Khoảng giá</label>
-        <select id="priceFilter" onchange="applyFilters()">
+        <label>Giảng viên</label>
+        <select id="insFilter" onchange="applyFilters()">
           <option value="">Tất cả</option>
-          <option value="0-500">Dưới 500K</option>
-          <option value="500-1000">500K - 1tr</option>
-          <option value="1000-3000">1tr - 3tr</option>
-          <option value="3000-99999">Trên 3tr</option>
+          <option value="Lê Quang Vinh">Lê Quang Vinh</option>
+          <option value="Trần Thu Hương">Trần Thu Hương</option>
+          <option value="Nguyễn Đức Anh">Nguyễn Đức Anh</option>
+          <option value="Phạm Mai Chi">Phạm Mai Chi</option>
         </select>
       </div>
       <div class="filter-field">
-        <label>KTV yêu cầu</label>
-        <select id="techFilter" onchange="applyFilters()">
+        <label>Phòng/CN</label>
+        <select id="roomFilter" onchange="applyFilters()">
           <option value="">Tất cả</option>
-          <option value="1">1 KTV</option>
-          <option value="2">2 KTV</option>
-          <option value="3">3+ KTV</option>
+          <option value="CN Hà Nội">CN Hà Nội</option>
+          <option value="CN HCM">CN HCM</option>
+          <option value="Online">Online</option>
         </select>
       </div>
       <div class="filter-field">
-        <label>Thiết bị</label>
-        <select id="equipFilter" onchange="applyFilters()">
+        <label>Trình độ</label>
+        <select id="levelFilter" onchange="applyFilters()">
           <option value="">Tất cả</option>
-          <option value="yes">Cần máy móc</option>
-          <option value="no">Thủ công</option>
+          <option value="Cơ bản">Cơ bản</option>
+          <option value="Trung cấp">Trung cấp</option>
+          <option value="Nâng cao">Nâng cao</option>
         </select>
       </div>
-      <button class="btn-outline" onclick="exportPrice()"><i class="fa-solid fa-file-export"></i> Xuất bảng giá</button>
+      <button class="btn-outline" onclick="exportRevenue()"><i class="fa-solid fa-file-export"></i> Báo cáo doanh thu</button>
     </div>
   </div>
 
@@ -326,8 +329,8 @@
   <div id="tableView">
     <div class="table-card">
       <div class="table-summary">
-        <div class="summary-stat">Tổng dịch vụ: <b id="stTotal">0</b></div>
-        <div class="summary-stat green">Tổng doanh thu/tháng: <b id="stRev">—</b></div>
+        <div class="summary-stat">Tổng khóa học: <b id="stTotal">0</b></div>
+        <div class="summary-stat green">Tổng doanh thu: <b id="stRev">—</b></div>
         <div class="summary-stat" id="stVisible"></div>
       </div>
       <div class="table-scroll">
@@ -335,13 +338,14 @@
           <thead>
             <tr>
               <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
-              <th>Mã DV</th>
-              <th>Tên dịch vụ</th>
-              <th class="right">Giá chuẩn</th>
-              <th class="right">Giá KM</th>
-              <th class="center">Thời lượng</th>
-              <th class="right">Chi phí VT</th>
-              <th class="right">Doanh thu/tháng</th>
+              <th>Mã KH</th>
+              <th>Tên khóa học</th>
+              <th>Giảng viên</th>
+              <th>Khai giảng / Kết thúc</th>
+              <th class="center">Sĩ số</th>
+              <th>Tỷ lệ ghi danh</th>
+              <th class="right">Học phí</th>
+              <th class="right">Tổng doanh thu</th>
               <th class="center">Trạng thái</th>
               <th class="center" style="width:96px;">Thao tác</th>
             </tr>
@@ -357,7 +361,7 @@
           <button class="pg-btn">2</button>
           <button class="pg-btn">3</button>
           <button class="pg-btn">…</button>
-          <button class="pg-btn">5</button>
+          <button class="pg-btn">6</button>
           <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </div>
@@ -369,51 +373,42 @@
 
 <script>
   const STAGES = [
-    { key:'active',   name:'Đang kinh doanh', dot:'#22c55e', badge:'bg-green' },
-    { key:'hot',      name:'Khuyến mãi HOT',  dot:'#ec4899', badge:'bg-pink' },
-    { key:'soon',     name:'Sắp ra mắt',      dot:'#3b82f6', badge:'bg-blue' },
-    { key:'hold',     name:'Bảo trì / Tạm dừng', dot:'#f59e0b', badge:'bg-amber' },
-    { key:'stopped',  name:'Ngừng cung cấp',  dot:'#9ca3af', badge:'bg-gray' }
+    { key:'draft',     name:'Nháp / Soạn thảo', dot:'#9ca3af', badge:'bg-gray' },
+    { key:'enroll',    name:'Đang tuyển sinh',  dot:'#3b82f6', badge:'bg-blue' },
+    { key:'closing',   name:'Sắp đóng lớp',     dot:'#f59e0b', badge:'bg-amber' },
+    { key:'active',    name:'Đang học',         dot:'#22c55e', badge:'bg-green' },
+    { key:'done',      name:'Hoàn thành',       dot:'#9333ea', badge:'bg-purple' },
+    { key:'hold',      name:'Tạm hoãn',         dot:'#ef4444', badge:'bg-red' }
   ];
-  const STAGE_LABEL = { active:'Đang kinh doanh', hot:'Khuyến mãi HOT', soon:'Sắp ra mắt', hold:'Bảo trì', stopped:'Ngừng cung cấp' };
-  const STAGE_BADGE = { active:'bg-green', hot:'bg-pink', soon:'bg-blue', hold:'bg-amber', stopped:'bg-gray' };
+  const STAGE_LABEL = { draft:'Nháp', enroll:'Đang tuyển sinh', closing:'Sắp đóng lớp', active:'Đang học', done:'Hoàn thành', hold:'Tạm hoãn' };
+  const STAGE_BADGE = { draft:'bg-gray', enroll:'bg-blue', closing:'bg-amber', active:'bg-green', done:'bg-purple', hold:'bg-red' };
 
-  // service product. price/promo/cost/revenue đơn vị nghìn đồng
-  const specs = [
-    { name:'Thu Hà',     img:'https://i.pravatar.cc/150?img=5' },
-    { name:'Minh Anh',   img:'https://i.pravatar.cc/150?img=9' },
-    { name:'Thị Phương', img:'https://i.pravatar.cc/150?img=16' },
-    { name:'Thanh Loan', img:'https://i.pravatar.cc/150?img=20' }
-  ];
-  const services = [
-    { id:'SV-001', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop', name:'Hydrating Facial cấp ẩm chuyên sâu', cat:'Facial', dur:60, price:850, promo:0, cost:120, rev:42500, sales:50, tech:1, equip:'no', spec:[0,1], stage:'active' },
-    { id:'SV-002', img:'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=300&h=200&fit=crop', name:'Trị mụn chuyên sâu y khoa', cat:'Facial', dur:75, price:990, promo:0, cost:160, rev:35640, sales:36, tech:1, equip:'yes', spec:[2], stage:'active' },
-    { id:'SV-003', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop', name:'Massage đá nóng thư giãn', cat:'Body', dur:90, price:1200, promo:0, cost:90, rev:30000, sales:25, tech:1, equip:'no', spec:[1,3], stage:'active' },
-    { id:'SV-004', img:'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=300&h=200&fit=crop', name:'Peel da AHA/BHA tái tạo', cat:'Facial', dur:60, price:1100, promo:880, cost:140, rev:26400, sales:30, tech:1, equip:'yes', spec:[0], stage:'hot' },
-    { id:'SV-005', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop', name:'Triệt lông Laser Diode toàn thân', cat:'Laser', dur:120, price:3500, promo:2490, cost:300, rev:74700, sales:30, tech:2, equip:'yes', spec:[2,3], stage:'hot' },
-    { id:'SV-006', img:'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=300&h=200&fit=crop', name:'Nâng cơ RF trẻ hóa da', cat:'Laser', dur:75, price:1800, promo:1490, cost:200, rev:35760, sales:24, tech:1, equip:'yes', spec:[0,2], stage:'hot' },
-    { id:'SV-007', img:'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=200&fit=crop', name:'Liệu trình Carbon Laser mới', cat:'Laser', dur:60, price:1600, promo:0, cost:180, rev:0, sales:0, tech:1, equip:'yes', spec:[2], stage:'soon' },
-    { id:'SV-008', img:'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=300&h=200&fit=crop', name:'Gói chăm sóc Mẹ bầu cao cấp', cat:'VIP', dur:120, price:2500, promo:0, cost:250, rev:0, sales:0, tech:2, equip:'no', spec:[1,3], stage:'soon' },
-    { id:'SV-009', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=300&h=200&fit=crop', name:'Tắm trắng phi thuyền', cat:'Body', dur:90, price:1400, promo:0, cost:170, rev:0, sales:0, tech:2, equip:'yes', spec:[3], stage:'hold' },
-    { id:'SV-010', img:'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=300&h=200&fit=crop', name:'Gói cưới trọn gói Bridal Glow', cat:'VIP', dur:180, price:6800, promo:0, cost:600, rev:0, sales:0, tech:3, equip:'yes', spec:[0,1,2], stage:'hold' },
-    { id:'SV-011', img:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&h=200&fit=crop', name:'Thải độc da bằng tế bào gốc (cũ)', cat:'Facial', dur:75, price:1300, promo:0, cost:200, rev:0, sales:0, tech:1, equip:'no', spec:[0], stage:'stopped' },
+  // course product / class batch. fee đơn vị nghìn đồng
+  const courses = [
+    { id:'ENG-B1-JUN', name:'Tiếng Anh giao tiếp B1', cat:'Ngoại ngữ', level:'Trung cấp', room:'CN Hà Nội', ins:'Trần Thu Hương', insImg:'https://i.pravatar.cc/150?img=5', start:'25/06/2026', end:'25/09/2026', enrolled:18, cap:25, fee:5900, stage:'enroll' },
+    { id:'IELTS-65-JUL', name:'Luyện thi IELTS 6.5+', cat:'Ngoại ngữ', level:'Nâng cao', room:'CN HCM', ins:'Trần Thu Hương', insImg:'https://i.pravatar.cc/150?img=5', start:'05/07/2026', end:'05/10/2026', enrolled:9, cap:20, fee:8900, stage:'enroll' },
+    { id:'PY-BASIC-JUN', name:'Python cho người mới', cat:'Lập trình', level:'Cơ bản', room:'Online', ins:'Lê Quang Vinh', insImg:'https://i.pravatar.cc/150?img=51', start:'20/06/2026', end:'20/08/2026', enrolled:23, cap:25, fee:4500, stage:'closing' },
+    { id:'WEB-FS-JUN', name:'Lập trình Web Fullstack', cat:'Lập trình', level:'Nâng cao', room:'CN Hà Nội', ins:'Nguyễn Đức Anh', insImg:'https://i.pravatar.cc/150?img=15', start:'18/06/2026', end:'18/12/2026', enrolled:19, cap:20, fee:12000, stage:'closing' },
+    { id:'UIUX-B-MAY', name:'UI/UX Design Cơ bản', cat:'Thiết kế', level:'Cơ bản', room:'CN HCM', ins:'Phạm Mai Chi', insImg:'https://i.pravatar.cc/150?img=9', start:'15/05/2026', end:'15/08/2026', enrolled:22, cap:24, fee:7500, stage:'active' },
+    { id:'COMM-SK-MAY', name:'Kỹ năng giao tiếp & thuyết trình', cat:'Kỹ năng mềm', level:'Cơ bản', room:'CN Hà Nội', ins:'Phạm Mai Chi', insImg:'https://i.pravatar.cc/150?img=9', start:'10/05/2026', end:'10/07/2026', enrolled:30, cap:30, fee:3500, stage:'active' },
+    { id:'ENG-A2-MAR', name:'Tiếng Anh giao tiếp A2', cat:'Ngoại ngữ', level:'Cơ bản', room:'CN HCM', ins:'Trần Thu Hương', insImg:'https://i.pravatar.cc/150?img=5', start:'01/03/2026', end:'01/06/2026', enrolled:25, cap:25, fee:4900, stage:'done' },
+    { id:'PY-DATA-FEB', name:'Python Data Science', cat:'Lập trình', level:'Nâng cao', room:'Online', ins:'Lê Quang Vinh', insImg:'https://i.pravatar.cc/150?img=51', start:'10/02/2026', end:'10/06/2026', enrolled:18, cap:18, fee:9900, stage:'done' },
+    { id:'LDR-SK-JUL', name:'Kỹ năng lãnh đạo nhóm', cat:'Kỹ năng mềm', level:'Trung cấp', room:'CN Hà Nội', ins:'Phạm Mai Chi', insImg:'https://i.pravatar.cc/150?img=9', start:'15/07/2026', end:'15/09/2026', enrolled:0, cap:25, fee:4200, stage:'draft' },
+    { id:'JP-N5-JUL', name:'Tiếng Nhật sơ cấp N5', cat:'Ngoại ngữ', level:'Cơ bản', room:'CN HCM', ins:'Trần Thu Hương', insImg:'https://i.pravatar.cc/150?img=5', start:'01/07/2026', end:'01/11/2026', enrolled:0, cap:20, fee:6500, stage:'draft' },
+    { id:'WEB-FE-APR', name:'Frontend React chuyên sâu', cat:'Lập trình', level:'Nâng cao', room:'Online', ins:'Nguyễn Đức Anh', insImg:'https://i.pravatar.cc/150?img=15', start:'05/04/2026', end:'05/08/2026', enrolled:12, cap:22, fee:10500, stage:'hold' },
   ];
 
-  let filtered = [...services];
+  let filtered = [...courses];
 
-  const fmtK = (n) => n >= 1000 ? (n/1000).toLocaleString('vi-VN',{maximumFractionDigits:1}) + 'tr' : n + 'K';
-
-  function avatarsHtml(idx) {
-    const shown = idx.slice(0, 3).map(i => `<img src="${specs[i].img}" title="${specs[i].name}" alt="">`).join('');
-    const more = idx.length > 3 ? `<div class="more">+${idx.length-3}</div>` : '';
-    return shown + more;
-  }
+  const fmtVnd = (n) => (n*1000).toLocaleString('vi-VN') + 'đ';
+  const pct = (c) => Math.round(c.enrolled / c.cap * 100);
+  const seatColor = (c) => { const r = c.enrolled/c.cap; if (r >= 1) return '#ef4444'; if (r >= 0.8) return '#f59e0b'; return '#22c55e'; };
 
   /* ===== KANBAN ===== */
   function renderKanban() {
     const board = document.getElementById('kanbanView');
     board.innerHTML = STAGES.map(stg => {
-      const items = filtered.filter(s => s.stage === stg.key);
+      const items = filtered.filter(c => c.stage === stg.key);
       return `
       <div class="kanban-col" data-stage="${stg.key}" ondragover="event.preventDefault()" ondrop="dropCard(event,'${stg.key}')">
         <div class="col-head">
@@ -421,27 +416,17 @@
           <span class="col-count">${items.length}</span>
         </div>
         <div class="col-cards">
-          ${items.map(s => {
-            const price = s.promo ? s.promo : s.price;
-            return `
-            <div class="scard" draggable="true" data-id="${s.id}" ondragstart="dragStart(event,'${s.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở dịch vụ ${s.name}')">
-              <div class="scard-thumb">
-                <img src="${s.img}" alt="">
-                <span class="scard-dur"><i class="fa-regular fa-clock"></i> ${s.dur} phút</span>
+          ${items.map(c => `
+            <div class="ccard" draggable="true" data-id="${c.id}" ondragstart="dragStart(event,'${c.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở khóa học ${c.id}')">
+              <div class="ccard-head"><span class="course-code">${c.id}</span><span class="ccard-price">${fmtVnd(c.fee)}</span></div>
+              <div class="ccard-title">${c.name}</div>
+              <div class="ccard-ins"><img src="${c.insImg}" alt=""><span>${c.ins}</span></div>
+              <div class="ccard-row"><i class="fa-regular fa-calendar"></i> Khai giảng: ${c.start}</div>
+              <div class="seat-wrap">
+                <div class="seat-label"><span>Ghi danh</span><span>${c.enrolled}/${c.cap} chỗ</span></div>
+                <div class="seat-bar"><div class="seat-fill" style="width:${pct(c)}%;background:${seatColor(c)}"></div></div>
               </div>
-              <div class="scard-body">
-                <div class="scard-name">${s.name}</div>
-                <div class="scard-meta">
-                  <span class="scard-price">${fmtK(price)}${s.promo ? ' <small style="font-size:10px;color:#9ca3af;text-decoration:line-through;font-weight:500;">'+fmtK(s.price)+'</small>' : ''}</span>
-                  <span class="scard-sales"><i class="fa-solid fa-arrow-trend-up"></i> ${s.sales} lượt/tháng</span>
-                </div>
-                <div class="scard-foot">
-                  <span class="spec-label">KTV phụ trách</span>
-                  <div class="avatars">${avatarsHtml(s.spec)}</div>
-                </div>
-              </div>
-            </div>`;
-          }).join('')}
+            </div>`).join('')}
         </div>
       </div>`;
     }).join('');
@@ -452,37 +437,43 @@
   function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
   function dropCard(e, stage) {
     e.preventDefault();
-    const s = services.find(x => x.id === dragId);
-    if (s) { s.stage = stage; applyFilters(); showToast(`Chuyển ${s.name} → ${STAGE_LABEL[stage]}`); }
+    const c = courses.find(x => x.id === dragId);
+    if (c) { c.stage = stage; applyFilters(); showToast(`Chuyển ${c.id} → ${STAGE_LABEL[stage]}`); }
   }
 
   /* ===== TABLE ===== */
   function renderTable() {
     const tb = document.getElementById('tableBody');
-    tb.innerHTML = filtered.map(s => `
-      <tr onclick="showToast('Mở dịch vụ ${s.name}')">
+    tb.innerHTML = filtered.map(c => {
+      const p = pct(c);
+      const pColor = p >= 100 ? '#b91c1c' : (p >= 80 ? '#b45309' : '#15803d');
+      const rev = c.enrolled * c.fee;
+      return `
+      <tr onclick="showToast('Mở khóa học ${c.id}')">
         <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
-        <td><span class="id-pill">${s.id}</span></td>
-        <td><div class="svc-cell"><img class="svc-thumb" src="${s.img}" alt=""><div><div class="svc-name">${s.name}</div><div class="svc-cat">${s.cat}</div></div></div></td>
-        <td style="text-align:right;"><span class="price-std">${fmtK(s.price)}</span></td>
-        <td style="text-align:right;">${s.promo ? `<span class="price-promo">${fmtK(s.promo)}<small>${fmtK(s.price)}</small></span>` : '<span style="color:#d1d5db;">—</span>'}</td>
-        <td style="text-align:center;"><span class="dur-cell">${s.dur}'</span></td>
-        <td style="text-align:right;"><span class="cost-cell">${fmtK(s.cost)}</span></td>
-        <td style="text-align:right;"><span class="rev-cell">${s.rev ? fmtK(s.rev) : '—'}</span></td>
-        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[s.stage]}">${STAGE_LABEL[s.stage]}</span></td>
+        <td><span class="id-pill">${c.id}</span></td>
+        <td><div class="course-name-cell">${c.name}<small>${c.cat} · ${c.level} · ${c.room}</small></div></td>
+        <td><div class="ins-cell"><img src="${c.insImg}" alt=""><span>${c.ins}</span></div></td>
+        <td><div class="date-cell">${c.start}<small>đến ${c.end}</small></div></td>
+        <td class="cap-cell">${c.enrolled}/${c.cap}</td>
+        <td><div class="tbl-prog"><div class="seat-bar"><div class="seat-fill" style="width:${p}%;background:${seatColor(c)}"></div></div><span style="color:${pColor}">${p}%</span></div></td>
+        <td style="text-align:right;"><span class="fee-cell">${fmtVnd(c.fee)}</span></td>
+        <td style="text-align:right;"><span class="rev-cell">${rev ? fmtVnd(rev) : '—'}</span></td>
+        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[c.stage]}">${STAGE_LABEL[c.stage]}</span></td>
         <td onclick="event.stopPropagation()">
           <div class="row-actions">
-            <button class="row-act blue" title="Xem" onclick="showToast('Xem ${s.id}')"><i class="fa-solid fa-eye"></i></button>
-            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${s.id}')"><i class="fa-solid fa-pen"></i></button>
-            <button class="row-act red" title="Xóa" onclick="showToast('Xóa ${s.id}')"><i class="fa-solid fa-trash"></i></button>
+            <button class="row-act blue" title="Xem" onclick="showToast('Xem ${c.id}')"><i class="fa-solid fa-eye"></i></button>
+            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${c.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="row-act red" title="Xóa" onclick="showToast('Xóa ${c.id}')"><i class="fa-solid fa-trash"></i></button>
           </div>
         </td>
-      </tr>`).join('');
-    const rev = filtered.reduce((a, s) => a + s.rev, 0);
-    document.getElementById('stTotal').textContent = services.length;
-    document.getElementById('stRev').textContent = fmtK(rev);
-    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${services.length} dịch vụ`;
-    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${services.length} dịch vụ`;
+      </tr>`;
+    }).join('');
+    const totalRev = filtered.reduce((a, c) => a + c.enrolled * c.fee, 0);
+    document.getElementById('stTotal').textContent = courses.length;
+    document.getElementById('stRev').textContent = fmtVnd(totalRev);
+    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${courses.length} khóa học`;
+    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${courses.length} khóa học`;
   }
 
   function render() { renderKanban(); renderTable(); }
@@ -498,14 +489,14 @@
   /* ===== FILTER ===== */
   function applyFilters() {
     const q = (document.getElementById('search').value || '').toLowerCase().trim();
-    const priceR = document.getElementById('priceFilter').value;
-    const tech = document.getElementById('techFilter').value;
-    const equip = document.getElementById('equipFilter').value;
-    filtered = services.filter(s => {
-      if (q && !s.name.toLowerCase().includes(q)) return false;
-      if (priceR) { const [a,b] = priceR.split('-').map(Number); const p = s.promo || s.price; if (p < a || p >= b) return false; }
-      if (tech) { if (tech === '3' ? s.tech < 3 : String(s.tech) !== tech) return false; }
-      if (equip && s.equip !== equip) return false;
+    const ins = document.getElementById('insFilter').value;
+    const room = document.getElementById('roomFilter').value;
+    const level = document.getElementById('levelFilter').value;
+    filtered = courses.filter(c => {
+      if (q && !(c.id.toLowerCase().includes(q) || c.name.toLowerCase().includes(q))) return false;
+      if (ins && c.ins !== ins) return false;
+      if (room && c.room !== room) return false;
+      if (level && c.level !== level) return false;
       return true;
     });
     render();
@@ -523,7 +514,7 @@
   function toggleSubSidebar() { document.getElementById('subSidebar').classList.toggle('collapsed'); }
   function toggleAll(cb) { document.querySelectorAll('.rowcb').forEach(c => c.checked = cb.checked); }
   function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
-  function exportPrice() { showToast('Đang xuất bảng giá ' + filtered.length + ' dịch vụ ra file...'); }
+  function exportRevenue() { showToast('Đang xuất báo cáo doanh thu ' + filtered.length + ' khóa học...'); }
 
   document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('collapsed');
