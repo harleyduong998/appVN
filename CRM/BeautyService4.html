@@ -265,7 +265,7 @@
     <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
     <a href="Course2.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
     <a href="BeautyService4.html" class="nav-item active"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
-    <a href="CustomerPackage.html" class="nav-item"><i class="fa-solid fa-clipboard-user"></i><span>Liệu trình khách</span></a>
+    <!-- <a href="CustomerPackage.html" class="nav-item"><i class="fa-solid fa-clipboard-user"></i><span>Liệu trình khách</span></a> -->
     <a href="Tour2.html" class="nav-item"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
     <a href="Land2.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
     <div class="nav-group-title">Vận hành &amp; Dịch vụ</div>
@@ -504,13 +504,24 @@
         </div>
 
         <div class="form-group full">
-          <label>Ảnh đại diện (URL)</label>
-          <input type="url" id="pImg" placeholder="https://...">
+          <label>Sản phẩm upsale</label>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <select id="pUpsellType" onchange="fillUpsellItems('p')">
+              <option value="product" selected>Sản phẩm</option>
+              <option value="combo">Combo</option>
+              <option value="course">Khóa học / sự kiện</option>
+              <option value="beauty">Dịch vụ làm đẹp</option>
+              <option value="prepaid">Thẻ trả trước</option>
+            </select>
+            <select id="pUpsell" disabled>
+              <option value="">Chọn sản phẩm</option>
+            </select>
+          </div>
         </div>
 
         <div class="form-group full">
-          <label>KTV phụ trách</label>
-          <div class="spec-picker" id="pSpecPicker"></div>
+          <label>Ảnh đại diện (URL)</label>
+          <input type="url" id="pImg" placeholder="https://...">
         </div>
       </div>
     </form>
@@ -844,22 +855,6 @@
   function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
   function exportPrice() { showToast('Đang xuất bảng giá ' + filtered.length + ' dịch vụ ra file...'); }
 
-  /* ===== ADD MODAL (2 chế độ) ===== */
-  let pickedSpecs = [];
-  function specPickerHtml(targetId) {
-    return specs.map((s, i) =>
-      `<div class="spec-opt${pickedSpecs.includes(i) ? ' sel' : ''}" data-i="${i}" onclick="toggleSpec(${i})">
-         <img src="${s.img}" alt=""> ${s.name}
-       </div>`).join('');
-  }
-  function renderSpecPicker() {
-    document.getElementById('pSpecPicker').innerHTML = specPickerHtml();
-  }
-  function toggleSpec(i) {
-    const at = pickedSpecs.indexOf(i);
-    if (at >= 0) pickedSpecs.splice(at, 1); else pickedSpecs.push(i);
-    renderSpecPicker();
-  }
   /* ===== UPSALE: loại SP -> danh sách sản phẩm ===== */
   const UPSELL_ITEMS = {
     product: ['Serum HA cấp ẩm', 'Kem chống nắng SPF50', 'Mặt nạ phục hồi (hộp 10)', 'Tinh chất trị mụn', 'Sữa rửa mặt dịu nhẹ'],
@@ -868,9 +863,11 @@
     beauty: ['Hydrating Facial cấp ẩm chuyên sâu', 'Massage đá nóng thư giãn', 'Peel da AHA/BHA tái tạo', 'Nâng cơ RF trẻ hóa da'],
     prepaid: ['Thẻ trả trước 5 triệu', 'Thẻ trả trước 10 triệu', 'Thẻ thành viên VIP 20 triệu']
   };
-  function fillUpsellItems() {
-    const type = document.getElementById('fUpsellType').value;
-    const sel = document.getElementById('fUpsell');
+  function fillUpsellItems(prefix) {
+    const typeId = prefix === 'p' ? 'pUpsellType' : 'fUpsellType';
+    const selId = prefix === 'p' ? 'pUpsell' : 'fUpsell';
+    const type = document.getElementById(typeId).value;
+    const sel = document.getElementById(selId);
     if (!type) {
       sel.innerHTML = '<option value="">Chọn sản phẩm</option>';
       sel.disabled = true;
@@ -884,8 +881,6 @@
   function openAdd() { if (mode === 'package') openAddPackage(); else openAddModal(); }
   function openAddModal() {
     document.getElementById('addForm').reset();
-    pickedSpecs = [];
-    renderSpecPicker();
     document.getElementById('singleGrid').style.display = '';
     document.getElementById('packageGrid').style.display = 'none';
     document.getElementById('addModalTitle').textContent = 'Thêm dịch vụ mới';
@@ -895,12 +890,11 @@
   }
   function openAddPackage() {
     document.getElementById('addForm').reset();
-    pickedSpecs = [];
-    renderSpecPicker();
     document.getElementById('singleGrid').style.display = 'none';
     document.getElementById('packageGrid').style.display = '';
     document.getElementById('addModalTitle').textContent = 'Thêm gói liệu trình mới';
     document.getElementById('saveBtnLabel').textContent = 'Lưu gói';
+    fillUpsellItems('p');
     document.getElementById('addModal').classList.add('open');
   }
   function closeAddModal() { document.getElementById('addModal').classList.remove('open'); }
@@ -958,7 +952,9 @@
       validityMonths: Number(g('pValidity')) || 6,
       sold: 0,
       deferred: 0,
-      spec: pickedSpecs.length ? [...pickedSpecs] : [0],
+      spec: [0],
+      upsellType: g('pUpsellType') || '',
+      upsell: g('pUpsell') || '',
       stage: g('pStage'),
       tag: ''
     };
