@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dịch Vụ Làm Đẹp - CRM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { display: flex; height: 100vh; overflow: hidden; background: #f9fafb; }
+
+    /* SIDEBAR */
+    #sidebar {
+      width: 240px; min-width: 240px; background: #ffffff; border-right: 1px solid #e5e7eb;
+      display: flex; flex-direction: column; position: relative; transition: width 0.25s, min-width 0.25s; overflow: hidden; z-index: 100;
+    }
+    #sidebar.collapsed { width: 64px; min-width: 64px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 18px 20px 14px; border-bottom: 1px solid #f3f4f6; }
+    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #ec4899, #f43f5e); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 15px; flex-shrink: 0; }
+    .sidebar-logo .logo-text { font-size: 17px; font-weight: 700; color: #1f2937; white-space: nowrap; }
+    #sidebar.collapsed .logo-text { display: none; }
+    .sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 0; }
+    .sidebar-nav::-webkit-scrollbar { width: 4px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+    .nav-group-title { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 20px 4px; white-space: nowrap; overflow: hidden; }
+    #sidebar.collapsed .nav-group-title { padding: 10px 0 4px; text-align: center; font-size: 8px; letter-spacing: 0; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 20px; font-size: 14px; color: #374151; cursor: pointer; text-decoration: none; border-left: 3px solid transparent; transition: all 0.15s; white-space: nowrap; }
+    .nav-item:hover { color: #1e3a8a; background: #eff6ff; border-left-color: #3b82f6; font-weight: 500; }
+    .nav-item.active { color: #1e3a8a; background: #eff6ff; border-left-color: #3b82f6; font-weight: 500; }
+    .nav-item i { width: 18px; text-align: center; font-size: 15px; flex-shrink: 0; }
+    .nav-item span { white-space: nowrap; overflow: hidden; }
+    #sidebar.collapsed .nav-item { padding: 9px 0; justify-content: center; }
+    #sidebar.collapsed .nav-item span { display: none; }
+    #sidebar.collapsed .nav-item { gap: 0; }
+    .sidebar-toggle-btn {
+      position: absolute; right: -14px; bottom: 80px; width: 28px; height: 28px;
+      background: white; border: 1px solid #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 101; color: #6b7280; font-size: 11px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); transition: all 0.2s;
+    }
+    .sidebar-toggle-btn:hover { background: #f3f4f6; }
+    #sidebar.collapsed .sidebar-toggle-btn i { transform: rotate(180deg); }
+    .sidebar-bottom { padding: 12px 16px; border-top: 1px solid #f3f4f6; display: flex; align-items: center; gap: 10px; }
+    .sidebar-bottom img { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-bottom .user-info { overflow: hidden; }
+    .sidebar-bottom .user-name { font-size: 13px; font-weight: 600; color: #1f2937; white-space: nowrap; }
+    .sidebar-bottom .user-role { font-size: 11px; color: #6b7280; white-space: nowrap; }
+    #sidebar.collapsed .sidebar-bottom { padding: 12px 0; justify-content: center; }
+    #sidebar.collapsed .user-info { display: none; }
+
+    /* SUB SIDEBAR */
+    #subSidebar {
+      width: 220px; min-width: 220px; background: #ffffff; border-right: 1px solid #e5e7eb;
+      display: flex; flex-direction: column; transition: width 0.25s, min-width 0.25s; overflow: hidden; z-index: 99;
+    }
+    #subSidebar.collapsed { width: 0; min-width: 0; }
+    .sub-sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px 10px; border-bottom: 1px solid #f3f4f6; }
+    .sub-sidebar-title { font-size: 13px; font-weight: 600; color: #1f2937; white-space: nowrap; }
+    .sub-sidebar-add { width: 22px; height: 22px; border-radius: 50%; background: #1e3a8a; color: white; border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .sub-search { padding: 8px 12px; border-bottom: 1px solid #f3f4f6; }
+    .sub-search-wrap { position: relative; }
+    .sub-search-wrap input { width: 100%; background: #f3f4f6; border: none; border-radius: 6px; padding: 6px 10px 6px 28px; font-size: 12px; color: #374151; outline: none; }
+    .sub-search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 11px; }
+    .sub-sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0; }
+    .sub-sidebar-nav::-webkit-scrollbar { width: 3px; }
+    .sub-sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; }
+    .tree-group { }
+    .tree-group-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; cursor: pointer; user-select: none; }
+    .tree-group-header:hover { background: #f9fafb; }
+    .tree-group-label { font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.4px; }
+    .tree-group-chevron { color: #9ca3af; font-size: 10px; transition: transform 0.2s; }
+    .tree-group.collapsed .tree-group-chevron { transform: rotate(-90deg); }
+    .tree-group-items { }
+    .tree-group.collapsed .tree-group-items { display: none; }
+    .tree-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 15px; font-size: 13px; color: #374151; cursor: pointer; border-left: 3px solid transparent; transition: all 0.12s; text-decoration: none; }
+    .tree-item:hover { background: #f9fafb; }
+    .tree-item.active { background: #eff6ff; border-left-color: #3b82f6; color: #1e3a8a; font-weight: 500; }
+    .tree-item-count { font-size: 10px; background: #e5e7eb; color: #6b7280; padding: 1px 6px; border-radius: 10px; font-weight: 500; }
+    .tree-item.active .tree-item-count { background: #dbeafe; color: #1e3a8a; }
+
+    /* MAIN */
+    #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* TOP HEADER */
+    .top-header { height: 60px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+    .top-header-left h1 { font-size: 18px; font-weight: 600; color: #1f2937; }
+    .top-header-right { display: flex; align-items: center; gap: 10px; }
+    .icon-btn { width: 34px; height: 34px; border: 1px solid #e5e7eb; border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6b7280; font-size: 15px; transition: all 0.15s; }
+    .icon-btn:hover { background: #f3f4f6; color: #374151; }
+    .btn-primary { background: #1e3a8a; color: white; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    /* TOOLBAR */
+    .toolbar { padding: 10px 20px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; }
+    .toolbar-right { display: flex; align-items: center; gap: 10px; }
+    .btn-outline { background: white; border: 1px solid #e5e7eb; border-radius: 20px; padding: 6px 14px; font-size: 13px; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; }
+    .btn-outline:hover { background: #f9fafb; border-color: #d1d5db; }
+    .date-nav { display: flex; align-items: center; gap: 4px; }
+    .date-nav button { background: white; border: 1px solid #e5e7eb; width: 26px; height: 26px; border-radius: 6px; cursor: pointer; color: #6b7280; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+    .date-nav button:hover { background: #f3f4f6; }
+    .date-display { font-size: 13px; font-weight: 500; color: #1f2937; padding: 0 6px; white-space: nowrap; }
+    .ktv-filter { display: flex; align-items: center; gap: 6px; }
+    .ktv-label { font-size: 13px; color: #6b7280; }
+    .ktv-chips { display: flex; align-items: center; gap: 5px; }
+    .ktv-chip { display: flex; align-items: center; gap: 5px; background: #f3f4f6; border-radius: 20px; padding: 3px 8px 3px 3px; cursor: pointer; border: 1px solid transparent; transition: all 0.12s; }
+    .ktv-chip:hover { border-color: #d1d5db; background: #e5e7eb; }
+    .ktv-chip.active { background: #eff6ff; border-color: #93c5fd; }
+    .ktv-chip img { width: 22px; height: 22px; border-radius: 50%; }
+    .ktv-chip span { font-size: 11px; color: #374151; }
+    .ktv-more { background: #f3f4f6; border-radius: 20px; padding: 3px 9px; font-size: 11px; color: #6b7280; cursor: pointer; }
+    .search-wrap { position: relative; }
+    .search-wrap input { background: #f3f4f6; border: none; border-radius: 20px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 200px; }
+    .search-wrap input:focus { background: white; box-shadow: 0 0 0 2px #bfdbfe; }
+    .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 13px; }
+
+    /* KANBAN */
+    #kanbanBoard { display: flex; gap: 15px; padding: 15px 20px 20px; overflow-x: auto; flex: 1; align-items: flex-start; }
+    #kanbanBoard::-webkit-scrollbar { height: 6px; }
+    #kanbanBoard::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    .kanban-col { min-width: 270px; max-width: 270px; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; transition: box-shadow 0.2s; }
+    .kanban-col.drag-over { box-shadow: 0 0 0 2px #3b82f6; outline: 2px dashed #3b82f6; outline-offset: 2px; }
+    .col-amber { background: #fffbeb; }
+    .col-blue { background: #eff6ff; }
+    .col-purple { background: #f5f3ff; }
+    .col-pink { background: #fdf2f8; }
+    .col-green { background: #f0fdf4; }
+    .col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
+    .col-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #1f2937; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-amber { background: #f59e0b; }
+    .dot-blue { background: #3b82f6; }
+    .dot-purple { background: #8b5cf6; }
+    .dot-pink { background: #ec4899; }
+    .dot-green { background: #22c55e; }
+    .col-count { font-size: 11px; background: rgba(0,0,0,0.06); padding: 2px 7px; border-radius: 10px; font-weight: 600; color: #374151; }
+    .col-menu-btn { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 14px; padding: 3px 6px; border-radius: 4px; }
+    .col-menu-btn:hover { background: rgba(0,0,0,0.06); }
+    .col-cards { flex: 1; min-height: 60px; }
+    .col-add-btn { display: flex; align-items: center; gap: 6px; padding: 8px 4px; color: #9ca3af; font-size: 12px; cursor: pointer; border-radius: 6px; transition: all 0.12s; margin-top: 4px; }
+    .col-add-btn:hover { color: #6b7280; background: rgba(0,0,0,0.04); }
+
+    /* SERVICE CARD */
+    .service-card {
+      background: white; border-radius: 10px; padding: 13px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 10px; cursor: pointer; transition: all 0.18s; border: 1px solid transparent;
+    }
+    .service-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); border-color: #e5e7eb; }
+    .service-card.dragging { opacity: 0.5; transform: rotate(1deg); }
+    .card-row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+    .card-avatar { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; }
+    .card-cust { flex: 1; min-width: 0; }
+    .card-cust-name { font-size: 13px; font-weight: 600; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-cust-phone { font-size: 11px; color: #9ca3af; }
+    .card-time { text-align: right; flex-shrink: 0; }
+    .card-time-main { font-size: 13px; font-weight: 600; color: #1e3a8a; }
+    .card-time-date { font-size: 10px; color: #9ca3af; }
+    .card-row2 { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; gap: 8px; }
+    .card-service-name { font-size: 13px; font-weight: 500; color: #1f2937; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-duration { font-size: 11px; background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+    .card-progress-bar { height: 3px; background: #f3f4f6; border-radius: 2px; margin-bottom: 7px; overflow: hidden; }
+    .card-progress-fill { height: 100%; background: #ec4899; border-radius: 2px; transition: width 0.3s; }
+    .card-row3 { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+    .card-ktv { display: flex; align-items: center; gap: 5px; }
+    .card-ktv img { width: 20px; height: 20px; border-radius: 50%; }
+    .card-ktv span { font-size: 12px; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
+    .card-room { font-size: 11px; background: #f3f4f6; color: #6b7280; padding: 2px 7px; border-radius: 6px; }
+    .card-row4 { display: flex; align-items: center; justify-content: space-between; }
+    .card-price { font-size: 13px; font-weight: 600; color: #059669; }
+    .card-row5 { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f3f4f6; }
+    .card-status { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+    .status-amber { background: #fef3c7; color: #d97706; }
+    .status-blue { background: #dbeafe; color: #1d4ed8; }
+    .status-purple { background: #ede9fe; color: #7c3aed; }
+    .status-pink { background: #fce7f3; color: #be185d; }
+    .status-green { background: #dcfce7; color: #15803d; }
+    .card-actions { display: flex; align-items: center; gap: 4px; }
+    .card-menu-btn { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 13px; padding: 2px 5px; border-radius: 4px; }
+    .card-menu-btn:hover { background: #f3f4f6; color: #374151; }
+    .card-stars { font-size: 12px; color: #f59e0b; }
+    .card-done-time { font-size: 11px; color: #9ca3af; }
+
+    /* MODAL OVERLAY */
+    #bookingDetailModal {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1005;
+      align-items: center; justify-content: center;
+    }
+    #bookingDetailModal.open { display: flex; }
+    .modal-inner {
+      width: 1100px; max-width: 95%; height: 85vh; background: white; border-radius: 12px;
+      overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .modal-header { height: 52px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; gap: 12px; }
+    .modal-header-left { display: flex; align-items: center; gap: 8px; min-width: 160px; }
+    .modal-header-left i { color: #ec4899; font-size: 16px; }
+    .modal-header-left span { font-size: 15px; font-weight: 600; color: #1f2937; }
+    .modal-pipeline { display: flex; align-items: center; gap: 4px; flex: 1; justify-content: center; }
+    .pipeline-step { font-size: 12px; padding: 4px 12px; border-radius: 20px; background: #f3f4f6; color: #6b7280; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+    .pipeline-step:hover { background: #e5e7eb; }
+    .pipeline-step.active { background: #dbeafe; color: #1d4ed8; font-weight: 600; }
+    .pipeline-step.done { background: #dcfce7; color: #15803d; font-weight: 600; }
+    .pipeline-arrow { color: #d1d5db; font-size: 10px; }
+    .modal-close { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #e5e7eb; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6b7280; font-size: 14px; flex-shrink: 0; }
+    .modal-close:hover { background: #f3f4f6; }
+    .modal-body { flex: 1; display: flex; overflow: hidden; }
+    .modal-left { flex: 1; display: flex; flex-direction: column; border-right: 1px solid #e5e7eb; overflow: hidden; }
+    .modal-right { width: 340px; flex-shrink: 0; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* Modal Left */
+    .modal-info-bar { padding: 12px 16px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .info-chip { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #374151; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+    .info-chip:hover { background: #f3f4f6; }
+    .info-chip i { color: #9ca3af; font-size: 12px; }
+    .modal-tags-row { padding: 8px 16px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center; gap: 6px; }
+    .tag-pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+    .tag-new { background: #fef3c7; color: #d97706; }
+    .tag-loyal { background: #dcfce7; color: #15803d; }
+    .tag-add { background: none; border: 1px dashed #d1d5db; color: #9ca3af; font-size: 11px; padding: 3px 10px; border-radius: 20px; cursor: pointer; }
+    .tag-add:hover { border-color: #9ca3af; color: #6b7280; }
+    .modal-tabs { display: flex; border-bottom: 1px solid #e5e7eb; padding: 0 16px; }
+    .modal-tab { font-size: 13px; padding: 10px 14px; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.12s; }
+    .modal-tab:hover { color: #374151; }
+    .modal-tab.active { color: #1e3a8a; font-weight: 600; border-bottom-color: #1e3a8a; }
+    .modal-tab-content { flex: 1; overflow-y: auto; padding: 16px; }
+    .modal-tab-content::-webkit-scrollbar { width: 4px; }
+    .modal-tab-content::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 3px; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Overview grid */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .info-item label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 3px; }
+    .info-item .info-val { font-size: 13px; color: #1f2937; font-weight: 500; }
+    .info-item .info-val.price { color: #059669; font-weight: 600; font-size: 15px; }
+    .info-note { grid-column: 1/-1; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #92400e; }
+
+    /* Chat */
+    .chat-messages { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .chat-msg { display: flex; gap: 8px; }
+    .chat-msg-avatar { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; }
+    .chat-msg-body { flex: 1; }
+    .chat-msg-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+    .chat-msg-name { font-size: 12px; font-weight: 600; color: #1f2937; }
+    .chat-msg-time { font-size: 11px; color: #9ca3af; }
+    .chat-msg-text { font-size: 13px; color: #374151; background: #f9fafb; border-radius: 8px; padding: 8px 12px; line-height: 1.5; }
+    .chat-input-wrap { border-top: 1px solid #e5e7eb; padding-top: 12px; }
+    .chat-input-box { display: flex; align-items: flex-end; gap: 8px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 8px 12px; }
+    .chat-input-box textarea { flex: 1; border: none; background: none; font-size: 13px; color: #374151; resize: none; outline: none; min-height: 36px; font-family: 'Inter', sans-serif; }
+    .chat-input-actions { display: flex; align-items: center; gap: 6px; }
+    .chat-action-btn { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 15px; padding: 4px; border-radius: 4px; }
+    .chat-action-btn:hover { color: #6b7280; background: #e5e7eb; }
+    .chat-send-btn { background: #1e3a8a; color: white; border: none; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; font-weight: 500; }
+    .chat-send-btn:hover { background: #1d4ed8; }
+
+    /* Tasks */
+    .task-list { display: flex; flex-direction: column; gap: 8px; }
+    .task-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; }
+    .task-item input[type=checkbox] { width: 15px; height: 15px; accent-color: #1e3a8a; cursor: pointer; flex-shrink: 0; }
+    .task-item .task-text { flex: 1; font-size: 13px; color: #1f2937; }
+    .task-item.done .task-text { text-decoration: line-through; color: #9ca3af; }
+    .task-item .task-due { font-size: 11px; color: #9ca3af; }
+    .task-item .task-assignee { width: 22px; height: 22px; border-radius: 50%; }
+
+    /* Modal Right */
+    .modal-right-tabs { display: flex; border-bottom: 1px solid #e5e7eb; padding: 0 16px; }
+    .modal-right-tab { font-size: 13px; padding: 10px 12px; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.12s; }
+    .modal-right-tab:hover { color: #374151; }
+    .modal-right-tab.active { color: #1e3a8a; font-weight: 600; border-bottom-color: #1e3a8a; }
+    .modal-right-content { flex: 1; overflow-y: auto; padding: 16px; }
+    .modal-right-content::-webkit-scrollbar { width: 4px; }
+    .modal-right-content::-webkit-scrollbar-thumb { background: #e5e7eb; }
+    .right-tab-pane { display: none; }
+    .right-tab-pane.active { display: block; }
+
+    /* Metrics Grid */
+    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .metric-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; }
+    .metric-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+    .metric-value { font-size: 18px; font-weight: 700; color: #1f2937; line-height: 1.2; }
+    .metric-badge { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 10px; margin-top: 3px; font-weight: 600; }
+    .badge-silver { background: #e5e7eb; color: #6b7280; }
+    .badge-freq { background: #dbeafe; color: #1d4ed8; }
+    .badge-sub { font-size: 10px; color: #9ca3af; margin-top: 2px; }
+
+    .section-title-sm { font-size: 12px; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; }
+    .fav-services { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .fav-pill { font-size: 11px; background: #eff6ff; color: #1e3a8a; padding: 4px 10px; border-radius: 20px; border: 1px solid #bfdbfe; }
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+    .history-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; }
+    .history-date { font-size: 11px; color: #6b7280; white-space: nowrap; }
+    .history-service { flex: 1; font-size: 12px; color: #1f2937; font-weight: 500; }
+    .history-status { font-size: 10px; padding: 2px 7px; border-radius: 10px; }
+    .history-done { background: #dcfce7; color: #15803d; }
+
+    /* Right pane history */
+    .right-tab-pane.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><i class="fa-solid fa-spa"></i></div>
+    <span class="logo-text">CRM</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group-title">BÁN HÀNG &amp; CRM</div>
+    <a href="Customer.html" class="nav-item"><i class="fa-solid fa-user-tag"></i><span>Khách hàng</span></a>
+    <a href="Lead.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i><span>Leads</span></a>
+    <a href="Task.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>Task</span></a>
+    <a href="Order.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Đơn hàng</span></a>
+    <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
+    <a href="Course.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
+    <a href="BeautyService.html" class="nav-item active"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+    <a href="Tour.html" class="nav-item"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
+    <a href="Land.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
+
+    <div class="nav-group-title">VẬN HÀNH &amp; DỊCH VỤ</div>
+    <a href="Project.html" class="nav-item"><i class="fa-solid fa-diagram-project"></i><span>Dự Án</span></a>
+
+    <div class="nav-group-title">QUẢN TRỊ &amp; MARKETING</div>
+    <a href="Marketing.html" class="nav-item"><i class="fa-solid fa-bullhorn"></i><span>Marketing</span></a>
+    <a href="Meta.html" class="nav-item"><i class="fa-brands fa-meta"></i><span>Meta</span></a>
+    <a href="Staff.html" class="nav-item"><i class="fa-solid fa-id-badge"></i><span>Nhân viên</span></a>
+    <a href="Finan.html" class="nav-item"><i class="fa-solid fa-sack-dollar"></i><span>Tài Chính</span></a>
+  </nav>
+
+  <button class="sidebar-toggle-btn" id="toggleSidebarBtn">
+    <i class="fa-solid fa-chevron-left"></i>
+  </button>
+
+  <div class="sidebar-bottom">
+    <img src="https://i.pravatar.cc/150?img=11" alt="avatar">
+    <div class="user-info">
+      <div class="user-name">Phan Hiếu</div>
+      <div class="user-role">Quản trị viên</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUB SIDEBAR -->
+<div id="subSidebar">
+  <div class="sub-sidebar-header">
+    <span class="sub-sidebar-title">Danh mục dịch vụ</span>
+    <button class="sub-sidebar-add"><i class="fa-solid fa-plus"></i></button>
+  </div>
+  <div class="sub-search">
+    <div class="sub-search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Tìm dịch vụ...">
+    </div>
+  </div>
+  <div class="sub-sidebar-nav">
+    <!-- CHĂM SÓC DA -->
+    <div class="tree-group" id="tg1">
+      <div class="tree-group-header" onclick="toggleTreeGroup(this)">
+        <span class="tree-group-label">Chăm sóc da</span>
+        <i class="fa-solid fa-chevron-down tree-group-chevron"></i>
+      </div>
+      <div class="tree-group-items">
+        <a href="#" class="tree-item"><span>Da mặt cơ bản</span><span class="tree-item-count">24</span></a>
+        <a href="#" class="tree-item"><span>Thải độc da</span><span class="tree-item-count">8</span></a>
+        <a href="#" class="tree-item"><span>Trị mụn chuyên sâu</span><span class="tree-item-count">15</span></a>
+        <a href="#" class="tree-item"><span>Nâng cơ RF</span><span class="tree-item-count">6</span></a>
+        <a href="#" class="tree-item active"><span>Hydrating Facial</span><span class="tree-item-count">19</span></a>
+        <a href="#" class="tree-item"><span>Peel da AHA/BHA</span><span class="tree-item-count">11</span></a>
+      </div>
+    </div>
+    <!-- MASSAGE & BODY -->
+    <div class="tree-group" id="tg2">
+      <div class="tree-group-header" onclick="toggleTreeGroup(this)">
+        <span class="tree-group-label">Massage &amp; Body</span>
+        <i class="fa-solid fa-chevron-down tree-group-chevron"></i>
+      </div>
+      <div class="tree-group-items">
+        <a href="#" class="tree-item"><span>Massage thư giãn</span><span class="tree-item-count">32</span></a>
+        <a href="#" class="tree-item"><span>Massage đá nóng</span><span class="tree-item-count">14</span></a>
+        <a href="#" class="tree-item"><span>Massage Shiatsu</span><span class="tree-item-count">9</span></a>
+        <a href="#" class="tree-item"><span>Body Scrub</span><span class="tree-item-count">17</span></a>
+        <a href="#" class="tree-item"><span>Massage bầu</span><span class="tree-item-count">5</span></a>
+        <a href="#" class="tree-item"><span>Chăm sóc lưng</span><span class="tree-item-count">21</span></a>
+      </div>
+    </div>
+    <!-- NAIL & LÀM ĐẸP -->
+    <div class="tree-group" id="tg3">
+      <div class="tree-group-header" onclick="toggleTreeGroup(this)">
+        <span class="tree-group-label">Nail &amp; Làm đẹp</span>
+        <i class="fa-solid fa-chevron-down tree-group-chevron"></i>
+      </div>
+      <div class="tree-group-items">
+        <a href="#" class="tree-item"><span>Sơn gel cơ bản</span><span class="tree-item-count">45</span></a>
+        <a href="#" class="tree-item"><span>Nail art</span><span class="tree-item-count">28</span></a>
+        <a href="#" class="tree-item"><span>Pedicure</span><span class="tree-item-count">33</span></a>
+        <a href="#" class="tree-item"><span>Làm móng tay</span><span class="tree-item-count">19</span></a>
+        <a href="#" class="tree-item"><span>Tẩy lông wax</span><span class="tree-item-count">12</span></a>
+        <a href="#" class="tree-item"><span>Phun xăm lông mày</span><span class="tree-item-count">7</span></a>
+      </div>
+    </div>
+    <!-- GÓI VIP -->
+    <div class="tree-group" id="tg4">
+      <div class="tree-group-header" onclick="toggleTreeGroup(this)">
+        <span class="tree-group-label">Gói VIP</span>
+        <i class="fa-solid fa-chevron-down tree-group-chevron"></i>
+      </div>
+      <div class="tree-group-items">
+        <a href="#" class="tree-item"><span>Gói cưới trọn gói</span><span class="tree-item-count">3</span></a>
+        <a href="#" class="tree-item"><span>Gói VIP tháng</span><span class="tree-item-count">8</span></a>
+        <a href="#" class="tree-item"><span>Gói mẹ bầu</span><span class="tree-item-count">5</span></a>
+        <a href="#" class="tree-item"><span>Gói detox 5 buổi</span><span class="tree-item-count">11</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent">
+
+  <!-- TOP HEADER -->
+  <div class="top-header">
+    <div class="top-header-left">
+      <h1>Dịch vụ Làm đẹp</h1>
+    </div>
+    <div class="top-header-right">
+      <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
+      <button class="btn-primary" onclick="openBookingDetail(null)"><i class="fa-solid fa-plus"></i> Đặt lịch</button>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button class="btn-outline" onclick="toggleSubSidebar()">
+        <i class="fa-solid fa-list-ul"></i> Danh mục
+      </button>
+      <div class="date-nav">
+        <button onclick="prevDay()"><i class="fa-solid fa-chevron-left"></i></button>
+        <span class="date-display" id="dateDisplay">Thứ Hai, 15/06/2026</span>
+        <button onclick="nextDay()"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="ktv-filter">
+        <span class="ktv-label">KTV:</span>
+        <div class="ktv-chips">
+          <div class="ktv-chip active">
+            <img src="https://i.pravatar.cc/150?img=5" alt="">
+            <span>Thu Hà</span>
+          </div>
+          <div class="ktv-chip">
+            <img src="https://i.pravatar.cc/150?img=9" alt="">
+            <span>Minh Anh</span>
+          </div>
+          <div class="ktv-chip">
+            <img src="https://i.pravatar.cc/150?img=16" alt="">
+            <span>Thị Phương</span>
+          </div>
+          <div class="ktv-chip">
+            <img src="https://i.pravatar.cc/150?img=20" alt="">
+            <span>Thanh Loan</span>
+          </div>
+          <div class="ktv-more">+ 3</div>
+        </div>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Tìm khách hàng...">
+      </div>
+      <button class="btn-outline"><i class="fa-solid fa-sliders"></i> Bộ lọc</button>
+      <button class="btn-primary" onclick="openBookingDetail(null)"><i class="fa-solid fa-plus"></i> Đặt lịch mới</button>
+    </div>
+  </div>
+
+  <!-- KANBAN BOARD -->
+  <div id="kanbanBoard">
+
+    <!-- COL 1: CHỜ XÁC NHẬN -->
+    <div class="kanban-col col-amber" id="col-cho-xac-nhan" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+      <div class="col-header">
+        <div class="col-title">
+          <div class="dot dot-amber"></div>
+          Chờ xác nhận
+          <span class="col-count" id="count-cho-xac-nhan">4</span>
+        </div>
+        <button class="col-menu-btn"><i class="fa-solid fa-ellipsis"></i></button>
+      </div>
+      <div class="col-cards" id="cards-cho-xac-nhan">
+
+        <!-- Card 1 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=47" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Nguyễn Thị Lan</div>
+              <div class="card-cust-phone">0901 234 567</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">14:30</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Hydrating Facial</span>
+            <span class="card-duration">75 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=5" alt="">
+              <span>KTV: Nguyễn Thu Hà</span>
+            </div>
+            <span class="card-room">Phòng 2</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">450.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-amber">Chờ xác nhận</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=48" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Trần Thị Mai</div>
+              <div class="card-cust-phone">0912 345 678</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">15:00</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Massage đá nóng</span>
+            <span class="card-duration">90 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=9" alt="">
+              <span>KTV: Trần Minh Anh</span>
+            </div>
+            <span class="card-room">VIP Suite</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">780.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-amber">Chờ xác nhận</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=49" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Lê Thu Hương</div>
+              <div class="card-cust-phone">0923 456 789</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">16:30</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Nail art Ombre</span>
+            <span class="card-duration">60 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=16" alt="">
+              <span>KTV: Lê Thị Phương</span>
+            </div>
+            <span class="card-room">Phòng Nail</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">350.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-amber">Chờ xác nhận</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=50" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Phạm Thị Ngọc</div>
+              <div class="card-cust-phone">0934 567 890</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">17:00</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Peel da AHA/BHA</span>
+            <span class="card-duration">45 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=5" alt="">
+              <span>KTV: Nguyễn Thu Hà</span>
+            </div>
+            <span class="card-room">Phòng 1</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">280.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-amber">Chờ xác nhận</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-add-btn"><i class="fa-solid fa-plus"></i> Thêm lịch</div>
+    </div>
+
+    <!-- COL 2: ĐÃ ĐẶT LỊCH -->
+    <div class="kanban-col col-blue" id="col-da-dat-lich" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+      <div class="col-header">
+        <div class="col-title">
+          <div class="dot dot-blue"></div>
+          Đã đặt lịch
+          <span class="col-count" id="count-da-dat-lich">3</span>
+        </div>
+        <button class="col-menu-btn"><i class="fa-solid fa-ellipsis"></i></button>
+      </div>
+      <div class="col-cards" id="cards-da-dat-lich">
+
+        <!-- Card 1 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=32" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Hoàng Thị Linh</div>
+              <div class="card-cust-phone">0945 678 901</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">09:00</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Massage thư giãn</span>
+            <span class="card-duration">90 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=20" alt="">
+              <span>KTV: Phạm Thanh Loan</span>
+            </div>
+            <span class="card-room">Phòng 4</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">380.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-blue">Đã đặt lịch</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=33" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Vũ Thị Hoa</div>
+              <div class="card-cust-phone">0956 789 012</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">10:30</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Trị mụn chuyên sâu</span>
+            <span class="card-duration">60 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=5" alt="">
+              <span>KTV: Nguyễn Thu Hà</span>
+            </div>
+            <span class="card-room">Phòng 3</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">520.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-blue">Đã đặt lịch</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=35" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Đặng Thị Thu</div>
+              <div class="card-cust-phone">0967 890 123</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">11:00</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Body Scrub Muối Hồng</span>
+            <span class="card-duration">75 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=9" alt="">
+              <span>KTV: Trần Minh Anh</span>
+            </div>
+            <span class="card-room">Phòng 5</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">650.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-blue">Đã đặt lịch</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-add-btn"><i class="fa-solid fa-plus"></i> Thêm lịch</div>
+    </div>
+
+    <!-- COL 3: ĐÃ CHECK-IN -->
+    <div class="kanban-col col-purple" id="col-da-check-in" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+      <div class="col-header">
+        <div class="col-title">
+          <div class="dot dot-purple"></div>
+          Đã check-in
+          <span class="col-count" id="count-da-check-in">3</span>
+        </div>
+        <button class="col-menu-btn"><i class="fa-solid fa-ellipsis"></i></button>
+      </div>
+      <div class="col-cards" id="cards-da-check-in">
+
+        <!-- Card 1 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=40" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Bùi Thị Hạnh</div>
+              <div class="card-cust-phone">0978 901 234</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">09:15</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Nâng cơ RF</span>
+            <span class="card-duration">60 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=16" alt="">
+              <span>KTV: Lê Thị Phương</span>
+            </div>
+            <span class="card-room">Phòng VIP 1</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">920.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-purple">Đã check-in</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=41" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Ngô Thị Xuân</div>
+              <div class="card-cust-phone">0989 012 345</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">10:00</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Sơn gel cơ bản</span>
+            <span class="card-duration">45 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=25" alt="">
+              <span>KTV: Hoàng Thị Tú</span>
+            </div>
+            <span class="card-room">Phòng Nail</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">180.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-purple">Đã check-in</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=42" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Dương Thị Yến</div>
+              <div class="card-cust-phone">0990 123 456</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">10:30</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Massage Shiatsu</span>
+            <span class="card-duration">90 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=20" alt="">
+              <span>KTV: Phạm Thanh Loan</span>
+            </div>
+            <span class="card-room">Phòng 4</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">560.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-purple">Đã check-in</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-add-btn"><i class="fa-solid fa-plus"></i> Thêm lịch</div>
+    </div>
+
+    <!-- COL 4: ĐANG THỰC HIỆN -->
+    <div class="kanban-col col-pink" id="col-dang-thuc-hien" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+      <div class="col-header">
+        <div class="col-title">
+          <div class="dot dot-pink"></div>
+          Đang thực hiện
+          <span class="col-count" id="count-dang-thuc-hien">3</span>
+        </div>
+        <button class="col-menu-btn"><i class="fa-solid fa-ellipsis"></i></button>
+      </div>
+      <div class="col-cards" id="cards-dang-thuc-hien">
+
+        <!-- Card 1 — with progress bar -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=55" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Lý Thị Kim</div>
+              <div class="card-cust-phone">0901 111 222</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">08:30</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Thải độc da</span>
+            <span class="card-duration">90 phút</span>
+          </div>
+          <div class="card-progress-bar"><div class="card-progress-fill" style="width:50%"></div></div>
+          <div style="font-size:10px;color:#9ca3af;margin-bottom:7px;">Đã 45/90 phút</div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=5" alt="">
+              <span>KTV: Nguyễn Thu Hà</span>
+            </div>
+            <span class="card-room">Phòng 2</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">680.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-pink">Đang thực hiện</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=56" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Phan Thị Châu</div>
+              <div class="card-cust-phone">0912 222 333</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">09:00</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Phun xăm lông mày</span>
+            <span class="card-duration">120 phút</span>
+          </div>
+          <div class="card-progress-bar"><div class="card-progress-fill" style="width:50%"></div></div>
+          <div style="font-size:10px;color:#9ca3af;margin-bottom:7px;">Đã 60/120 phút</div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=16" alt="">
+              <span>KTV: Lê Thị Phương</span>
+            </div>
+            <span class="card-room">Phòng 1</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">1.200.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-pink">Đang thực hiện</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=57" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Cao Thị Diễm</div>
+              <div class="card-cust-phone">0923 333 444</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">09:30</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Gói VIP tháng</span>
+            <span class="card-duration">120 phút</span>
+          </div>
+          <div class="card-progress-bar"><div class="card-progress-fill" style="width:25%"></div></div>
+          <div style="font-size:10px;color:#9ca3af;margin-bottom:7px;">Đã 30/120 phút</div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=9" alt="">
+              <span>KTV: Trần Minh Anh</span>
+            </div>
+            <span class="card-room">VIP Suite</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">1.500.000đ</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-pink">Đang thực hiện</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-add-btn"><i class="fa-solid fa-plus"></i> Thêm lịch</div>
+    </div>
+
+    <!-- COL 5: HOÀN THÀNH -->
+    <div class="kanban-col col-green" id="col-hoan-thanh" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+      <div class="col-header">
+        <div class="col-title">
+          <div class="dot dot-green"></div>
+          Hoàn thành
+          <span class="col-count" id="count-hoan-thanh">3</span>
+        </div>
+        <button class="col-menu-btn"><i class="fa-solid fa-ellipsis"></i></button>
+      </div>
+      <div class="col-cards" id="cards-hoan-thanh">
+
+        <!-- Card 1 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)" style="opacity:0.9;">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=60" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Trịnh Thị Bảo</div>
+              <div class="card-cust-phone">0934 444 555</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">08:00</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Massage thư giãn</span>
+            <span class="card-duration">90 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=20" alt="">
+              <span>KTV: Phạm Thanh Loan</span>
+            </div>
+            <span class="card-done-time">Xong 09:30</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">380.000đ</span>
+            <span class="card-stars">⭐⭐⭐⭐⭐</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-green">Hoàn thành</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)" style="opacity:0.9;">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=61" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Lê Thị Cúc</div>
+              <div class="card-cust-phone">0945 555 666</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">08:30</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Hydrating Facial</span>
+            <span class="card-duration">75 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=5" alt="">
+              <span>KTV: Nguyễn Thu Hà</span>
+            </div>
+            <span class="card-done-time">Xong 09:45</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">450.000đ</span>
+            <span class="card-stars">⭐⭐⭐⭐⭐</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-green">Hoàn thành</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card" draggable="true" onclick="openBookingDetail(this)" style="opacity:0.9;">
+          <div class="card-row1">
+            <img class="card-avatar" src="https://i.pravatar.cc/150?img=62" alt="">
+            <div class="card-cust">
+              <div class="card-cust-name">Võ Thị Dung</div>
+              <div class="card-cust-phone">0956 666 777</div>
+            </div>
+            <div class="card-time">
+              <div class="card-time-main">09:00</div>
+              <div class="card-time-date">hôm nay</div>
+            </div>
+          </div>
+          <div class="card-row2">
+            <span class="card-service-name">Nail art</span>
+            <span class="card-duration">60 phút</span>
+          </div>
+          <div class="card-row3">
+            <div class="card-ktv">
+              <img src="https://i.pravatar.cc/150?img=25" alt="">
+              <span>KTV: Hoàng Thị Tú</span>
+            </div>
+            <span class="card-done-time">Xong 10:00</span>
+          </div>
+          <div class="card-row4">
+            <span class="card-price">350.000đ</span>
+            <span class="card-stars">⭐⭐⭐⭐</span>
+          </div>
+          <div class="card-row5">
+            <span class="card-status status-green">Hoàn thành</span>
+            <div class="card-actions">
+              <button class="card-menu-btn" onclick="event.stopPropagation()"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-add-btn"><i class="fa-solid fa-plus"></i> Thêm lịch</div>
+    </div>
+
+  </div><!-- end kanbanBoard -->
+</div><!-- end mainContent -->
+
+<!-- BOOKING DETAIL MODAL -->
+<div id="bookingDetailModal" onclick="handleModalBackdropClick(event)">
+  <div class="modal-inner" onclick="event.stopPropagation()">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <i class="fa-solid fa-spa"></i>
+        <span>Nguyễn Thị Lan</span>
+      </div>
+      <div class="modal-pipeline">
+        <span class="pipeline-step">Chờ XN</span>
+        <span class="pipeline-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        <span class="pipeline-step active">Đặt lịch</span>
+        <span class="pipeline-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        <span class="pipeline-step">Check-in</span>
+        <span class="pipeline-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        <span class="pipeline-step">Thực hiện</span>
+        <span class="pipeline-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        <span class="pipeline-step done">Hoàn thành</span>
+      </div>
+      <button class="modal-close" onclick="closeBookingDetail()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+
+      <!-- LEFT PANEL -->
+      <div class="modal-left">
+        <div class="modal-info-bar">
+          <div class="info-chip"><i class="fa-solid fa-tag"></i> Chăm sóc da</div>
+          <div class="info-chip"><i class="fa-brands fa-line"></i> Zalo</div>
+          <div class="info-chip"><i class="fa-solid fa-store"></i> Smax Demo</div>
+          <div class="info-chip">
+            <img src="https://i.pravatar.cc/150?img=5" style="width:18px;height:18px;border-radius:50%;" alt="">
+            Nguyễn Thu Hà
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px;">
+            <button class="icon-btn" style="width:28px;height:28px;font-size:13px;" title="Gọi điện"><i class="fa-solid fa-phone"></i></button>
+            <button class="icon-btn" style="width:28px;height:28px;font-size:13px;" title="Nhắn tin"><i class="fa-solid fa-comment"></i></button>
+            <button class="icon-btn" style="width:28px;height:28px;font-size:13px;" title="Email"><i class="fa-solid fa-envelope"></i></button>
+            <button class="btn-primary" style="padding:5px 12px;font-size:12px;border-radius:6px;"><i class="fa-solid fa-check"></i> Xác nhận</button>
+          </div>
+        </div>
+
+        <div class="modal-tags-row">
+          <span class="tag-pill tag-loyal">Khách thân thiết</span>
+          <span class="tag-pill" style="background:#fce7f3;color:#be185d;">Khách VIP</span>
+          <button class="tag-add"><i class="fa-solid fa-plus"></i> Thêm nhãn</button>
+        </div>
+
+        <div class="modal-tabs">
+          <div class="modal-tab" onclick="switchBookingTab('tac-vu', this)">Tác vụ</div>
+          <div class="modal-tab" onclick="switchBookingTab('tong-quan', this)">Tổng quan</div>
+          <div class="modal-tab active" onclick="switchBookingTab('thao-luan', this)">Thảo luận</div>
+        </div>
+
+        <div class="modal-tab-content">
+
+          <!-- TAB: TỔNG QUAN -->
+          <div class="tab-pane" id="tab-tong-quan">
+            <div class="info-grid">
+              <div class="info-item">
+                <label>Dịch vụ</label>
+                <div class="info-val">Hydrating Facial</div>
+              </div>
+              <div class="info-item">
+                <label>Thời gian</label>
+                <div class="info-val">75 phút</div>
+              </div>
+              <div class="info-item">
+                <label>Ngày hẹn</label>
+                <div class="info-val">15/06/2026 — 14:30</div>
+              </div>
+              <div class="info-item">
+                <label>Phòng</label>
+                <div class="info-val">Phòng 2</div>
+              </div>
+              <div class="info-item">
+                <label>KTV phụ trách</label>
+                <div class="info-val" style="display:flex;align-items:center;gap:6px;">
+                  <img src="https://i.pravatar.cc/150?img=5" style="width:20px;height:20px;border-radius:50%;" alt="">
+                  Nguyễn Thu Hà
+                </div>
+              </div>
+              <div class="info-item">
+                <label>Giá dịch vụ</label>
+                <div class="info-val price">450.000đ</div>
+              </div>
+              <div class="info-item">
+                <label>Nguồn</label>
+                <div class="info-val">Zalo</div>
+              </div>
+              <div class="info-item">
+                <label>Chi nhánh</label>
+                <div class="info-val">Smax Demo</div>
+              </div>
+              <div class="info-note">
+                <strong>Ghi chú:</strong> Khách da nhạy cảm, dị ứng nhẹ với paraben. Dùng sản phẩm dịu nhẹ, không chứa hương liệu mạnh.
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: THẢO LUẬN -->
+          <div class="tab-pane active" id="tab-thao-luan">
+            <div class="chat-messages">
+              <div class="chat-msg">
+                <img class="chat-msg-avatar" src="https://i.pravatar.cc/150?img=5" alt="">
+                <div class="chat-msg-body">
+                  <div class="chat-msg-header">
+                    <span class="chat-msg-name">Nguyễn Thu Hà</span>
+                    <span class="chat-msg-time">10:15 sáng nay</span>
+                  </div>
+                  <div class="chat-msg-text">Khách đã xác nhận lịch qua Zalo. Yêu cầu dùng sản phẩm hữu cơ cho da nhạy cảm, tránh các thành phần paraben và cồn.</div>
+                </div>
+              </div>
+              <div class="chat-msg">
+                <img class="chat-msg-avatar" src="https://i.pravatar.cc/150?img=11" alt="">
+                <div class="chat-msg-body">
+                  <div class="chat-msg-header">
+                    <span class="chat-msg-name">Phan Hiếu</span>
+                    <span class="chat-msg-time">10:32 sáng nay</span>
+                  </div>
+                  <div class="chat-msg-text">Đã chuẩn bị bộ sản phẩm Organic Hydrating line cho khách. Phòng 2 đã được setup xong, có thêm nến thơm lavender theo yêu cầu khách VIP.</div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-wrap">
+              <div class="chat-input-box">
+                <textarea placeholder="Nhập tin nhắn nội bộ..."></textarea>
+                <div class="chat-input-actions">
+                  <button class="chat-action-btn" title="Đính kèm file"><i class="fa-solid fa-paperclip"></i></button>
+                  <button class="chat-action-btn" title="Hình ảnh"><i class="fa-solid fa-image"></i></button>
+                  <button class="chat-send-btn">Gửi</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: TÁC VỤ -->
+          <div class="tab-pane" id="tab-tac-vu">
+            <div class="task-list">
+              <div class="task-item done">
+                <input type="checkbox" checked onchange="toggleTask(this)">
+                <span class="task-text">Gửi tin nhắn xác nhận lịch hẹn qua Zalo</span>
+                <span class="task-due">14/06</span>
+                <img class="task-assignee" src="https://i.pravatar.cc/150?img=5" alt="">
+              </div>
+              <div class="task-item done">
+                <input type="checkbox" checked onchange="toggleTask(this)">
+                <span class="task-text">Chuẩn bị phòng và sản phẩm hữu cơ cho khách nhạy cảm</span>
+                <span class="task-due">15/06</span>
+                <img class="task-assignee" src="https://i.pravatar.cc/150?img=11" alt="">
+              </div>
+              <div class="task-item">
+                <input type="checkbox" onchange="toggleTask(this)">
+                <span class="task-text">Thu thập feedback sau khi hoàn thành dịch vụ</span>
+                <span class="task-due">15/06</span>
+                <img class="task-assignee" src="https://i.pravatar.cc/150?img=9" alt="">
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end modal-tab-content -->
+      </div><!-- end modal-left -->
+
+      <!-- RIGHT PANEL -->
+      <div class="modal-right">
+        <div class="modal-right-tabs">
+          <div class="modal-right-tab active" onclick="switchRightTab('chan-dung', this)">Chân dung khách</div>
+          <div class="modal-right-tab" onclick="switchRightTab('lich-su', this)">Lịch sử</div>
+        </div>
+
+        <div class="modal-right-content">
+
+          <!-- CHÂN DUNG -->
+          <div class="right-tab-pane active" id="rtab-chan-dung">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+              <img src="https://i.pravatar.cc/150?img=47" style="width:44px;height:44px;border-radius:50%;" alt="">
+              <div>
+                <div style="font-size:14px;font-weight:600;color:#1f2937;">Nguyễn Thị Lan</div>
+                <div style="font-size:12px;color:#6b7280;">0901 234 567 · Hà Nội</div>
+              </div>
+            </div>
+
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-label">Điểm Loyalty</div>
+                <div class="metric-value">1.250</div>
+                <span class="metric-badge badge-silver">BẠC</span>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">RFM Score</div>
+                <div class="metric-value">234</div>
+                <span class="metric-badge badge-freq">FREQUENT</span>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Tổng chi tiêu</div>
+                <div class="metric-value" style="font-size:15px;">2.150.000đ</div>
+                <div class="badge-sub">Gần nhất: 10/06</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Số lần đặt</div>
+                <div class="metric-value">5</div>
+                <div class="badge-sub">AOV: 430.000đ</div>
+              </div>
+            </div>
+
+            <div class="section-title-sm">Dịch vụ yêu thích</div>
+            <div class="fav-services">
+              <span class="fav-pill">Hydrating Facial</span>
+              <span class="fav-pill">Massage thư giãn</span>
+              <span class="fav-pill">Nail art</span>
+            </div>
+
+            <div class="section-title-sm">Lịch sử đặt lịch</div>
+            <div class="history-list">
+              <div class="history-item">
+                <div class="history-date">10/06/2026</div>
+                <div class="history-service">Hydrating Facial</div>
+                <span class="history-status history-done">Hoàn thành</span>
+              </div>
+              <div class="history-item">
+                <div class="history-date">25/05/2026</div>
+                <div class="history-service">Massage thư giãn</div>
+                <span class="history-status history-done">Hoàn thành</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- LỊCH SỬ -->
+          <div class="right-tab-pane" id="rtab-lich-su">
+            <div class="section-title-sm" style="margin-bottom:10px;">Toàn bộ lịch sử</div>
+            <div class="history-list">
+              <div class="history-item">
+                <div class="history-date">10/06/2026</div>
+                <div class="history-service">Hydrating Facial · 450.000đ</div>
+                <span class="history-status history-done">Xong</span>
+              </div>
+              <div class="history-item">
+                <div class="history-date">25/05/2026</div>
+                <div class="history-service">Massage thư giãn · 380.000đ</div>
+                <span class="history-status history-done">Xong</span>
+              </div>
+              <div class="history-item">
+                <div class="history-date">10/05/2026</div>
+                <div class="history-service">Nail art · 350.000đ</div>
+                <span class="history-status history-done">Xong</span>
+              </div>
+              <div class="history-item">
+                <div class="history-date">22/04/2026</div>
+                <div class="history-service">Peel da AHA/BHA · 280.000đ</div>
+                <span class="history-status history-done">Xong</span>
+              </div>
+              <div class="history-item">
+                <div class="history-date">05/04/2026</div>
+                <div class="history-service">Hydrating Facial · 450.000đ</div>
+                <span class="history-status history-done">Xong</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- end modal-right -->
+
+    </div><!-- end modal-body -->
+  </div><!-- end modal-inner -->
+</div><!-- end modal -->
+
+<script>
+  // 1. Sidebar collapse
+  const sidebar = document.getElementById('sidebar');
+  document.getElementById('toggleSidebarBtn').addEventListener('click', function() {
+    sidebar.classList.toggle('collapsed');
+    const icon = this.querySelector('i');
+    if (sidebar.classList.contains('collapsed')) {
+      icon.style.transform = 'rotate(180deg)';
+    } else {
+      icon.style.transform = '';
+    }
+  });
+
+  // 2. Sub sidebar toggle
+  const subSidebar = document.getElementById('subSidebar');
+  function toggleSubSidebar() {
+    subSidebar.classList.toggle('collapsed');
+  }
+
+  // 3. Tree group collapse
+  function toggleTreeGroup(headerEl) {
+    headerEl.closest('.tree-group').classList.toggle('collapsed');
+  }
+
+  // 4. Date navigation
+  const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+  let currentDate = new Date(2026, 5, 15);
+
+  function updateDateDisplay() {
+    const d = currentDate;
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    const dayName = days[d.getDay()];
+    document.getElementById('dateDisplay').textContent = `${dayName}, ${dd}/${mm}/${yyyy}`;
+  }
+
+  function prevDay() {
+    currentDate.setDate(currentDate.getDate() - 1);
+    updateDateDisplay();
+  }
+
+  function nextDay() {
+    currentDate.setDate(currentDate.getDate() + 1);
+    updateDateDisplay();
+  }
+
+  // 5. Kanban drag & drop
+  let draggedCard = null;
+
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('dragstart', function(e) {
+      draggedCard = this;
+      setTimeout(() => this.classList.add('dragging'), 0);
+    });
+    card.addEventListener('dragend', function() {
+      this.classList.remove('dragging');
+      draggedCard = null;
+      document.querySelectorAll('.kanban-col').forEach(col => col.classList.remove('drag-over'));
+    });
+  });
+
+  function dragOver(e) {
+    e.preventDefault();
+    const col = e.currentTarget;
+    col.classList.add('drag-over');
+  }
+
+  function dragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+  }
+
+  function drop(e) {
+    e.preventDefault();
+    const col = e.currentTarget;
+    col.classList.remove('drag-over');
+    if (!draggedCard) return;
+    const cardsContainer = col.querySelector('.col-cards');
+    const afterEl = getDragAfterElement(cardsContainer, e.clientY);
+    if (afterEl == null) {
+      cardsContainer.appendChild(draggedCard);
+    } else {
+      cardsContainer.insertBefore(draggedCard, afterEl);
+    }
+    updateColCounts();
+  }
+
+  function getDragAfterElement(container, y) {
+    const draggableEls = [...container.querySelectorAll('.service-card:not(.dragging)')];
+    return draggableEls.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset, element: child };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+
+  function updateColCounts() {
+    const cols = ['cho-xac-nhan', 'da-dat-lich', 'da-check-in', 'dang-thuc-hien', 'hoan-thanh'];
+    cols.forEach(id => {
+      const cards = document.getElementById('cards-' + id).querySelectorAll('.service-card').length;
+      document.getElementById('count-' + id).textContent = cards;
+    });
+  }
+
+  // 6. Modal
+  function openBookingDetail(card) {
+    document.getElementById('bookingDetailModal').classList.add('open');
+  }
+
+  function closeBookingDetail() {
+    document.getElementById('bookingDetailModal').classList.remove('open');
+  }
+
+  function handleModalBackdropClick(e) {
+    if (e.target === document.getElementById('bookingDetailModal')) {
+      closeBookingDetail();
+    }
+  }
+
+  // 7. Tab switching (left modal)
+  function switchBookingTab(tabId, btn) {
+    document.querySelectorAll('#bookingDetailModal .tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('#bookingDetailModal .modal-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // 8. Tab switching (right modal)
+  function switchRightTab(tabId, btn) {
+    document.querySelectorAll('#bookingDetailModal .right-tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('#bookingDetailModal .modal-right-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('rtab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // 9. Task toggle
+  function toggleTask(checkbox) {
+    const item = checkbox.closest('.task-item');
+    if (checkbox.checked) {
+      item.classList.add('done');
+    } else {
+      item.classList.remove('done');
+    }
+  }
+
+  // 10. KTV chip toggle
+  document.querySelectorAll('.ktv-chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+      this.classList.toggle('active');
+    });
+  });
+
+  // 11. ESC key close modal
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeBookingDetail();
+  });
+</script>
+</body>
+</html>
