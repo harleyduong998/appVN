@@ -30,8 +30,8 @@
         /* ==================== SIDEBAR ==================== */
         .sidebar {
             width: var(--sidebar-width);
-            background: #ffffff;
-            border-right: 1px solid var(--border-color);
+            background: linear-gradient(160deg, #1b3da1 0%, #17234e 100%);
+            border-right: none;
             display: flex;
             flex-direction: column;
             padding: 20px 0 0;
@@ -85,13 +85,13 @@
             padding-bottom: 10px;
         }
         .menu-items::-webkit-scrollbar { width: 3px; }
-        .menu-items::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+        .menu-items::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
 
         .menu-group { display: flex; flex-direction: column; gap: 2px; }
 
         .menu-group-title {
             font-size: 10px; font-weight: 700;
-            color: #9ca3af;
+            color: rgba(255,255,255,0.55);
             text-transform: uppercase;
             letter-spacing: 0.6px;
             padding: 0 16px 4px;
@@ -100,7 +100,7 @@
         .menu-item {
             display: flex;
             align-items: center;
-            color: #374151;
+            color: rgba(255,255,255,0.75);
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
@@ -111,27 +111,27 @@
             transition: all 0.15s;
         }
 
-        .menu-item i { font-size: 15px; width: 18px; text-align: center; color: #6b7280; flex-shrink: 0; }
+        .menu-item i { font-size: 15px; width: 18px; text-align: center; color: rgba(255,255,255,0.6); flex-shrink: 0; }
 
         .menu-item:hover {
-            color: #1e3a8a;
-            background: #eff6ff;
-            border-left-color: #93c5fd;
+            color: #ffffff;
+            background: rgba(255,255,255,0.15);
+            border-left-color: #ffffff;
         }
-        .menu-item:hover i { color: #3b82f6; }
+        .menu-item:hover i { color: #ffffff; }
 
         .menu-item.active {
-            color: #1e3a8a;
-            background: #e0f0ff;
-            border-left-color: #3b82f6;
+            color: #ffffff;
+            background: rgba(255,255,255,0.2);
+            border-left-color: #ffffff;
             font-weight: 600;
         }
-        .menu-item.active i { color: #3b82f6; }
+        .menu-item.active i { color: #ffffff; }
 
         .sidebar-bottom {
             margin-top: auto;
             padding: 14px 16px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid rgba(255,255,255,0.15);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -150,8 +150,8 @@
         }
 
         .user-info { display: flex; flex-direction: column; }
-        .user-name { font-size: 13px; font-weight: 600; color: #1f2937; }
-        .user-role { font-size: 11px; color: #9ca3af; }
+        .user-name { font-size: 13px; font-weight: 600; color: #ffffff; }
+        .user-role { font-size: 11px; color: rgba(255,255,255,0.6); }
 
         .collapse-toggle {
             position: absolute;
