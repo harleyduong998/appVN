@@ -196,6 +196,38 @@
     .pg-btn.active { background: var(--royal); color: #fff; border-color: var(--royal); }
     .pg-btn:disabled { opacity: .4; cursor: default; }
 
+    /* ===== MODAL ===== */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: center; justify-content: center; z-index: 400; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 14px; width: 560px; max-width: 100%; max-height: 92vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.25); overflow: hidden; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f1f2f4; }
+    .modal-header h3 { font-size: 16px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+    .modal-header h3 i { color: var(--royal); }
+    .modal-close { width: 30px; height: 30px; border-radius: 8px; border: none; background: #f1f2f4; color: #6b7280; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .modal-close:hover { background: #e5e7eb; color: #374151; }
+    .modal-body { padding: 18px 20px; overflow-y: auto; }
+    .modal-body::-webkit-scrollbar { width: 5px; }
+    .modal-body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 12px; font-weight: 600; color: #374151; }
+    .form-group label .req { color: #ef4444; }
+    .form-group input, .form-group select, .form-group textarea {
+      border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; font-size: 13px; color: #1f2937; outline: none; background: #fff; transition: all .15s; font-family: 'Inter', sans-serif;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--royal); box-shadow: 0 0 0 3px rgba(37,69,211,.12); }
+    .form-group textarea { resize: vertical; min-height: 64px; }
+    .input-suffix { position: relative; }
+    .input-suffix input { width: 100%; padding-right: 42px; }
+    .input-suffix .suffix { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #9ca3af; font-weight: 500; }
+    .spec-picker { display: flex; flex-wrap: wrap; gap: 8px; }
+    .spec-opt { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 5px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 12px; color: #4b5563; transition: all .15s; user-select: none; }
+    .spec-opt img { width: 22px; height: 22px; border-radius: 50%; }
+    .spec-opt:hover { border-color: #bfd0ff; }
+    .spec-opt.sel { background: #eef2ff; border-color: var(--royal); color: var(--royal-dark); font-weight: 600; }
+    .modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid #f1f2f4; }
+
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1e293b; color: #fff; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.2); display: flex; align-items: center; gap: 8px; opacity: 0; transition: all .3s; z-index: 300; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast i { color: #4ade80; }
@@ -269,7 +301,7 @@
     <div class="top-header-right">
       <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
       <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
-      <button class="btn-primary" onclick="showToast('Mở form thêm dịch vụ mới')"><i class="fa-solid fa-plus"></i> Thêm dịch vụ</button>
+      <button class="btn-primary" onclick="openAddModal()"><i class="fa-solid fa-plus"></i> Thêm dịch vụ</button>
     </div>
   </div>
 
@@ -361,6 +393,92 @@
           <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Thêm dịch vụ mới -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-plus"></i> Thêm dịch vụ mới</h3>
+      <button class="modal-close" onclick="closeAddModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="modal-body" id="addForm" onsubmit="submitService(event)">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Tên dịch vụ <span class="req">*</span></label>
+          <input type="text" id="fName" placeholder="VD: Hydrating Facial cấp ẩm chuyên sâu" required>
+        </div>
+
+        <div class="form-group">
+          <label>Danh mục <span class="req">*</span></label>
+          <select id="fCat" required>
+            <option value="Facial">Chăm sóc da (Facial)</option>
+            <option value="Body">Body Treatment</option>
+            <option value="Laser">Laser &amp; Công nghệ</option>
+            <option value="VIP">Gói VIP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Trạng thái</label>
+          <select id="fStage">
+            <option value="active">Đang kinh doanh</option>
+            <option value="hot">Khuyến mãi HOT</option>
+            <option value="soon">Sắp ra mắt</option>
+            <option value="hold">Bảo trì / Tạm dừng</option>
+            <option value="stopped">Ngừng cung cấp</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Thời lượng <span class="req">*</span></label>
+          <div class="input-suffix"><input type="number" id="fDur" min="5" step="5" placeholder="60" required><span class="suffix">phút</span></div>
+        </div>
+        <div class="form-group">
+          <label>Số KTV cần</label>
+          <select id="fTech">
+            <option value="1">1 KTV</option>
+            <option value="2">2 KTV</option>
+            <option value="3">3+ KTV</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Giá chuẩn <span class="req">*</span></label>
+          <div class="input-suffix"><input type="number" id="fPrice" min="0" step="10" placeholder="850" required><span class="suffix">K</span></div>
+        </div>
+        <div class="form-group">
+          <label>Giá khuyến mãi</label>
+          <div class="input-suffix"><input type="number" id="fPromo" min="0" step="10" placeholder="0"><span class="suffix">K</span></div>
+        </div>
+
+        <div class="form-group">
+          <label>Chi phí vật tư</label>
+          <div class="input-suffix"><input type="number" id="fCost" min="0" step="10" placeholder="120"><span class="suffix">K</span></div>
+        </div>
+        <div class="form-group">
+          <label>Yêu cầu thiết bị</label>
+          <select id="fEquip">
+            <option value="no">Thủ công</option>
+            <option value="yes">Cần máy móc</option>
+          </select>
+        </div>
+
+        <div class="form-group full">
+          <label>Ảnh đại diện (URL)</label>
+          <input type="url" id="fImg" placeholder="https://...">
+        </div>
+
+        <div class="form-group full">
+          <label>KTV phụ trách</label>
+          <div class="spec-picker" id="specPicker"></div>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeAddModal()">Hủy</button>
+      <button class="btn-primary" type="submit" form="addForm"><i class="fa-solid fa-check"></i> Lưu dịch vụ</button>
     </div>
   </div>
 </div>
@@ -524,6 +642,57 @@
   function toggleAll(cb) { document.querySelectorAll('.rowcb').forEach(c => c.checked = cb.checked); }
   function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
   function exportPrice() { showToast('Đang xuất bảng giá ' + filtered.length + ' dịch vụ ra file...'); }
+
+  /* ===== ADD SERVICE MODAL ===== */
+  let pickedSpecs = [];
+  function renderSpecPicker() {
+    document.getElementById('specPicker').innerHTML = specs.map((s, i) =>
+      `<div class="spec-opt${pickedSpecs.includes(i) ? ' sel' : ''}" data-i="${i}" onclick="toggleSpec(${i})">
+         <img src="${s.img}" alt=""> ${s.name}
+       </div>`).join('');
+  }
+  function toggleSpec(i) {
+    const at = pickedSpecs.indexOf(i);
+    if (at >= 0) pickedSpecs.splice(at, 1); else pickedSpecs.push(i);
+    renderSpecPicker();
+  }
+  function openAddModal() {
+    document.getElementById('addForm').reset();
+    pickedSpecs = [];
+    renderSpecPicker();
+    document.getElementById('addModal').classList.add('open');
+  }
+  function closeAddModal() { document.getElementById('addModal').classList.remove('open'); }
+
+  function submitService(e) {
+    e.preventDefault();
+    const g = (id) => document.getElementById(id).value;
+    const nextId = 'SV-' + String(services.length + 1).padStart(3, '0');
+    const svc = {
+      id: nextId,
+      img: g('fImg') || 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop',
+      name: g('fName').trim(),
+      cat: g('fCat'),
+      dur: Number(g('fDur')) || 60,
+      price: Number(g('fPrice')) || 0,
+      promo: Number(g('fPromo')) || 0,
+      cost: Number(g('fCost')) || 0,
+      rev: 0, sales: 0,
+      tech: Number(g('fTech')) || 1,
+      equip: g('fEquip'),
+      spec: pickedSpecs.length ? [...pickedSpecs] : [0],
+      stage: g('fStage')
+    };
+    services.unshift(svc);
+    closeAddModal();
+    applyFilters();
+    showToast('Đã thêm dịch vụ: ' + svc.name);
+  }
+
+  // đóng modal khi bấm nền tối
+  document.getElementById('addModal').addEventListener('click', (e) => {
+    if (e.target.id === 'addModal') closeAddModal();
+  });
 
   document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('collapsed');
