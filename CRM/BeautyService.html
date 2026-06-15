@@ -114,6 +114,11 @@
     .search-wrap input:focus { background: white; box-shadow: 0 0 0 2px #bfdbfe; }
     .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 13px; }
 
+    /* VIEW SWITCH */
+    .view-switch { display: flex; background: #f3f4f6; border-radius: 20px; padding: 3px; gap: 2px; }
+    .view-btn { padding: 6px 14px; border-radius: 16px; border: none; font-size: 12px; font-weight: 500; cursor: pointer; color: #6b7280; background: transparent; display: flex; align-items: center; gap: 5px; transition: all 0.15s; text-decoration: none; }
+    .view-btn.active { background: #fff; color: #1e3a8a; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
     /* KANBAN */
     #kanbanBoard { display: flex; gap: 15px; padding: 15px 20px 20px; overflow-x: auto; flex: 1; align-items: flex-start; }
     #kanbanBoard::-webkit-scrollbar { height: 6px; }
@@ -439,6 +444,10 @@
         <button onclick="prevDay()"><i class="fa-solid fa-chevron-left"></i></button>
         <span class="date-display" id="dateDisplay">Thứ Hai, 15/06/2026</span>
         <button onclick="nextDay()"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="view-switch">
+        <span class="view-btn active"><i class="fa-solid fa-table-columns"></i> Kanban</span>
+        <a class="view-btn" href="BeautyService2.html"><i class="fa-solid fa-table-list"></i> Bảng</a>
       </div>
       <div class="ktv-filter">
         <span class="ktv-label">KTV:</span>
