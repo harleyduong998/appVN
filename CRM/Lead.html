@@ -637,14 +637,22 @@
         /* Sub Sidebar for Funnels */
         .sub-sidebar {
             width: 240px;
-            background-color: #fafafa;
+            background-color: #ffffff;
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            padding: 20px 15px;
+            padding: 0;
             z-index: 9;
-            overflow-y: auto;
+            overflow: hidden;
             transition: all 0.3s ease;
+        }
+        .funnel-item:hover {
+            background: #f3f4f6 !important;
+        }
+        .funnel-item.active-funnel {
+            background: #e0f0ff !important;
+            color: #1e3a8a !important;
+            border-left: 3px solid #3b82f6 !important;
         }
 
         .sub-sidebar.collapsed {
@@ -658,9 +666,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding: 0 5px;
+            margin-bottom: 0;
+            padding: 16px 15px 12px 15px;
             white-space: nowrap;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .sub-sidebar-title {
@@ -1282,7 +1291,7 @@
                     <i class="fa-solid fa-plane-departure"></i>
                     <span>Quản lý Tour</span>
                 </a>
-                <a href="Land.html" class="menu-item ">
+                <a href="Land2.html" class="menu-item ">
                     <i class="fa-solid fa-building"></i>
                     <span>Bất động sản</span>
                 </a>
@@ -1337,42 +1346,66 @@
         <div class="sub-sidebar-header">
             <div class="sub-sidebar-title">Quản lý Phễu</div>
             <button class="btn-icon" title="Thêm phễu"
-                style="width: 28px; height: 28px; font-size: 12px; background: #e5e7eb; color: #4b5563;"><i
-                    class="fa-solid fa-plus"></i></button>
+                style="width: 28px; height: 28px; font-size: 14px; background: none; border: none; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 6px;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='none'"><i class="fa-solid fa-plus"></i></button>
         </div>
 
-        
-        <div class="tree-group">
-            <div class="tree-group-title" onclick="toggleTreeGroup(this)"><i class="fa-solid fa-chevron-down"></i> Phễu theo ngành</div>
-            <div class="tree-list">
-                <div class="tree-item active" onclick="changeIndustryFunnel('ban_hang', this)">
-                    <span style="display:flex; align-items:center; gap:8px;">
-                        <i class="fa-solid fa-box-open" style="color:#3b82f6; width:16px; text-align:center;"></i> Bán hàng
-                    </span> <span class="count">48</span>
-                </div>
-                <div class="tree-item" onclick="changeIndustryFunnel('khoa_hoc', this)">
-                    <span style="display:flex; align-items:center; gap:8px;">
-                        <i class="fa-solid fa-graduation-cap" style="color:#f97316; width:16px; text-align:center;"></i> Khóa học
-                    </span> <span class="count">12</span>
-                </div>
-                <div class="tree-item" onclick="changeIndustryFunnel('lam_dep', this)">
-                    <span style="display:flex; align-items:center; gap:8px;">
-                        <i class="fa-solid fa-spa" style="color:#ec4899; width:16px; text-align:center;"></i> Làm đẹp
-                    </span> <span class="count">25</span>
-                </div>
-                <div class="tree-item" onclick="changeIndustryFunnel('tour', this)">
-                    <span style="display:flex; align-items:center; gap:8px;">
-                        <i class="fa-solid fa-plane-departure" style="color:#14b8a6; width:16px; text-align:center;"></i> Tour du lịch
-                    </span> <span class="count">8</span>
-                </div>
-                <div class="tree-item" onclick="changeIndustryFunnel('bds', this)">
-                    <span style="display:flex; align-items:center; gap:8px;">
-                        <i class="fa-solid fa-building" style="color:#eab308; width:16px; text-align:center;"></i> Bất động sản
-                    </span> <span class="count">15</span>
-                </div>
+        <!-- Search box -->
+        <div style="padding: 0 10px 12px 10px;">
+            <div style="display: flex; align-items: center; gap: 8px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 7px 10px;">
+                <i class="fa-solid fa-magnifying-glass" style="color: #9ca3af; font-size: 12px;"></i>
+                <input type="text" placeholder="Tìm phễu..." style="border: none; background: transparent; outline: none; font-size: 13px; color: #374151; width: 100%; font-family: 'Inter', sans-serif;" oninput="filterFunnels(this.value)">
             </div>
         </div>
-</div>
+
+        <!-- Funnel list -->
+        <div style="flex: 1; overflow-y: auto;" id="funnel-list-container">
+
+            <!-- Group: KHÁC -->
+            <div class="tree-group" id="funnel-group-khac">
+                <div class="tree-group-title" onclick="toggleTreeGroup(this)" style="font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 15px 4px 15px; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                    <i class="fa-solid fa-chevron-down" style="font-size: 9px; transition: transform 0.2s;"></i> Khác
+                </div>
+                <div class="tree-list" style="padding-left: 0;">
+                    <div class="funnel-item" onclick="changeFunnel('khach_chua_dung', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Khách chưa từng dùng Smax</span>
+                    </div>
+                    <div class="funnel-item" onclick="changeFunnel('data_am', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Data Ấm</span>
+                    </div>
+                    <div class="funnel-item" onclick="changeFunnel('data_nong', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Data Nóng</span>
+                    </div>
+                    <div class="funnel-item" onclick="changeFunnel('can_tai_ban', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Cần tái bán</span>
+                    </div>
+                    <div class="funnel-item" onclick="changeFunnel('landipage', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">LandiPage</span>
+                    </div>
+                    <div class="funnel-item" onclick="changeFunnel('facebook', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Facebook</span>
+                    </div>
+                    <div class="funnel-item" onclick="changeFunnel('khac', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Khác</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Group: PHỄU TỰ DO -->
+            <div class="tree-group" id="funnel-group-tu-do" style="margin-top: 8px;">
+                <div class="tree-group-title" onclick="toggleTreeGroup(this)" style="font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 15px 4px 15px; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                    <i class="fa-solid fa-chevron-down" style="font-size: 9px; transition: transform 0.2s;"></i> Phễu tự do
+                </div>
+                <div class="tree-list" style="padding-left: 0;">
+                    <div class="funnel-item active-funnel" onclick="changeFunnel('su_kien_lead', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #1e3a8a; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s; background: #e0f0ff; border-left: 3px solid #3b82f6;">
+                        <span style="flex: 1;">Phễu Sự kiện Lead</span>
+                    </div>
+                    <div class="funnel-item" onclick="changeFunnel('ban_hang_online', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s; border-left: 3px solid transparent;">
+                        <span style="flex: 1;">Phễu Bán Hàng Online</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -3143,6 +3176,22 @@
     </script>
 
     <script>
+        function changeFunnel(key, el) {
+            document.querySelectorAll('.funnel-item').forEach(item => {
+                item.classList.remove('active-funnel');
+                item.style.borderLeft = '3px solid transparent';
+            });
+            el.classList.add('active-funnel');
+        }
+
+        function filterFunnels(query) {
+            const q = query.toLowerCase();
+            document.querySelectorAll('.funnel-item').forEach(item => {
+                const text = item.innerText.toLowerCase();
+                item.style.display = text.includes(q) ? '' : 'none';
+            });
+        }
+
         function toggleDrawerLayoutMenu() {
             const menu = document.getElementById('drawer-layout-menu');
             menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
