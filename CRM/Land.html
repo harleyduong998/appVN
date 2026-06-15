@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kho hàng Bất động sản - CRM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 240px;
+            --header-height: 60px;
+            --border-color: #e5e7eb;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --primary: #3b82f6;
+            --primary-dark: #1e3a8a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background: #f3f4f6;
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ==================== SIDEBAR ==================== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0 0;
+            z-index: 20;
+            position: relative;
+            transition: width 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .sidebar.collapsed { width: 64px; }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            padding: 0 16px 20px;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .logo-icon i { color: #fff; font-size: 14px; }
+
+        .logo-text {
+            font-weight: 700; font-size: 16px;
+            color: #1e3a8a;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed .logo-text { display: none; }
+        .sidebar.collapsed .menu-group-title { display: none; }
+        .sidebar.collapsed .menu-item span { display: none; }
+        .sidebar.collapsed .menu-item { justify-content: center; padding: 10px 0; }
+        .sidebar.collapsed .menu-item i { margin: 0; }
+        .sidebar.collapsed .sidebar-bottom { padding: 16px 0; justify-content: center; }
+        .sidebar.collapsed .sidebar-bottom-user .user-info { display: none; }
+        .sidebar.collapsed .sidebar-bottom-user { justify-content: center; }
+        .sidebar.collapsed .collapse-toggle { right: -14px; }
+
+        .menu-items {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding-bottom: 10px;
+        }
+        .menu-items::-webkit-scrollbar { width: 3px; }
+        .menu-items::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+        .menu-group { display: flex; flex-direction: column; gap: 2px; }
+
+        .menu-group-title {
+            font-size: 10px; font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 0 16px 4px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            color: #374151;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            gap: 10px;
+            padding: 9px 16px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .menu-item i { font-size: 15px; width: 18px; text-align: center; color: #6b7280; flex-shrink: 0; }
+
+        .menu-item:hover {
+            color: #1e3a8a;
+            background: #eff6ff;
+            border-left-color: #93c5fd;
+        }
+        .menu-item:hover i { color: #3b82f6; }
+
+        .menu-item.active {
+            color: #1e3a8a;
+            background: #e0f0ff;
+            border-left-color: #3b82f6;
+            font-weight: 600;
+        }
+        .menu-item.active i { color: #3b82f6; }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 14px 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .sidebar-bottom-user { display: flex; align-items: center; gap: 10px; }
+
+        .user-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 700; font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .user-info { display: flex; flex-direction: column; }
+        .user-name { font-size: 13px; font-weight: 600; color: #1f2937; }
+        .user-role { font-size: 11px; color: #9ca3af; }
+
+        .collapse-toggle {
+            position: absolute;
+            right: -14px; bottom: 40px;
+            width: 28px; height: 28px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            z-index: 30;
+            transition: all 0.2s;
+        }
+        .collapse-toggle:hover { background: #eff6ff; }
+        .collapse-toggle i { font-size: 10px; color: #6b7280; transition: transform 0.3s; }
+        .sidebar.collapsed .collapse-toggle i { transform: rotate(180deg); }
+
+        /* ==================== SUB SIDEBAR ==================== */
+        .sub-sidebar {
+            width: 220px;
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 9;
+            transition: width 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .sub-sidebar.hidden { width: 0; opacity: 0; pointer-events: none; }
+
+        .sub-sidebar-header {
+            padding: 16px 14px 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .sub-sidebar-title { font-size: 15px; font-weight: 700; color: #111; white-space: nowrap; }
+
+        .sub-add-btn {
+            width: 26px; height: 26px;
+            border-radius: 6px;
+            background: #eff6ff;
+            border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: #3b82f6; font-size: 14px;
+        }
+
+        .sub-search {
+            padding: 10px 14px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .sub-search-inner {
+            display: flex; align-items: center; gap: 6px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 6px 10px;
+        }
+        .sub-search-inner i { font-size: 12px; color: #9ca3af; }
+        .sub-search-inner input {
+            border: none; background: none; outline: none;
+            font-size: 12px; color: #374151; width: 100%;
+        }
+
+        .sub-sidebar-body {
+            flex: 1; overflow-y: auto; padding: 12px 0;
+        }
+        .sub-sidebar-body::-webkit-scrollbar { width: 3px; }
+        .sub-sidebar-body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+        .sub-group { margin-bottom: 16px; }
+
+        .sub-group-title {
+            font-size: 10px; font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 0 14px 6px;
+        }
+
+        .sub-item {
+            padding: 9px 14px;
+            font-size: 13px; font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.15s;
+        }
+        .sub-item:hover { background: #f9fafb; color: #111; }
+        .sub-item.active {
+            background: #e0f0ff;
+            color: #1e3a8a;
+            border-left-color: #3b82f6;
+            font-weight: 600;
+        }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .main-header {
+            height: var(--header-height);
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px;
+            flex-shrink: 0;
+        }
+
+        .main-header h1 { font-size: 17px; font-weight: 700; color: #1e3a8a; }
+
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+
+        .btn-icon {
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: #6b7280; font-size: 15px;
+            transition: all 0.15s;
+        }
+        .btn-icon:hover { background: #f9fafb; color: #374151; }
+
+        /* ==================== TOOLBAR ==================== */
+        .toolbar {
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .toolbar-left { display: flex; align-items: center; gap: 8px; }
+        .toolbar-center { display: flex; align-items: center; }
+        .toolbar-right { display: flex; align-items: center; gap: 8px; }
+
+        .btn-project-toggle {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #fff;
+            font-size: 13px; font-weight: 500; color: #374151;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .btn-project-toggle:hover { background: #f9fafb; }
+        .btn-project-toggle.active { background: #eff6ff; border-color: #93c5fd; color: #1e3a8a; }
+
+        .view-switch {
+            display: flex;
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 3px;
+            gap: 2px;
+        }
+        .view-btn {
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: none;
+            font-size: 12px; font-weight: 500;
+            cursor: pointer;
+            color: #6b7280; background: transparent;
+            display: flex; align-items: center; gap: 5px;
+            transition: all 0.15s;
+        }
+        .view-btn.active { background: #fff; color: #1e3a8a; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+        .search-unit {
+            display: flex; align-items: center; gap: 6px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 6px 12px;
+        }
+        .search-unit i { font-size: 12px; color: #9ca3af; }
+        .search-unit input { border: none; background: none; outline: none; font-size: 12px; color: #374151; width: 140px; }
+
+        .btn-filter-drop {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #fff;
+            font-size: 12px; font-weight: 500; color: #374151;
+            cursor: pointer; transition: all 0.15s; position: relative;
+        }
+        .btn-filter-drop:hover { background: #f9fafb; }
+
+        .filter-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px); left: 0;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 8px;
+            min-width: 180px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .filter-dropdown.open { display: block; }
+
+        .filter-opt {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px; font-weight: 500; color: #374151;
+            cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+        .filter-opt:hover { background: #f3f4f6; }
+        .filter-opt i { width: 14px; color: #9ca3af; }
+
+        .btn-add {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 16px;
+            background: #3b82f6;
+            color: #fff;
+            border: none; border-radius: 8px;
+            font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .btn-add:hover { background: #2563eb; }
+
+        /* ==================== BOARD ==================== */
+        .board-area {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .board {
+            flex: 1;
+            padding: 16px 20px;
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        .board::-webkit-scrollbar { height: 6px; }
+        .board::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+        .board-column {
+            min-width: 272px;
+            max-width: 272px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            padding: 12px 10px;
+        }
+
+        .col-blue { background: #f0f4ff; }
+        .col-yellow { background: #fefce8; }
+        .col-orange { background: #fff5eb; }
+        .col-green { background: #f0fdf4; }
+        .col-purple { background: #f3e8ff; }
+        .col-red { background: #fef2f2; }
+
+        .column-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 12px; padding: 0 4px;
+        }
+
+        .column-title-wrap { display: flex; align-items: center; gap: 7px; }
+
+        .col-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+        .dot-blue { background: #3b82f6; }
+        .dot-yellow { background: #eab308; }
+        .dot-orange { background: #f97316; }
+        .dot-green { background: #22c55e; }
+        .dot-purple { background: #9333ea; }
+        .dot-red { background: #ef4444; }
+
+        .col-name { font-size: 13px; font-weight: 700; color: #1f2937; }
+
+        .col-count {
+            font-size: 11px; font-weight: 600;
+            background: rgba(0,0,0,0.07);
+            padding: 2px 7px; border-radius: 10px;
+            color: #374151;
+        }
+
+        .col-menu { background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 14px; padding: 2px 4px; border-radius: 4px; }
+        .col-menu:hover { background: rgba(0,0,0,0.06); color: #374151; }
+
+        .column-cards {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 2px;
+        }
+        .column-cards::-webkit-scrollbar { width: 3px; }
+        .column-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+        /* ==================== APARTMENT CARD ==================== */
+        .apt-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 13px 13px 11px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: box-shadow 0.15s, transform 0.15s;
+            border: 1px solid transparent;
+        }
+        .apt-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-1px); border-color: #e0e7ff; }
+        .apt-card.dragging { opacity: 0.5; transform: scale(0.97); }
+
+        .card-row1 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .unit-code { font-size: 14px; font-weight: 700; color: #1e3a8a; letter-spacing: 0.3px; }
+        .card-time { font-size: 10px; color: #9ca3af; }
+
+        .card-price { font-size: 18px; font-weight: 700; color: #2563eb; margin-bottom: 7px; display: flex; align-items: center; gap: 4px; }
+        .card-price span { font-size: 11px; font-weight: 500; color: #6b7280; margin-left: 2px; }
+
+        .card-details {
+            display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;
+        }
+        .card-detail-item {
+            display: flex; align-items: center; gap: 4px;
+            font-size: 11px; color: #6b7280; font-weight: 500;
+        }
+        .card-detail-item i { font-size: 10px; color: #9ca3af; }
+
+        .card-tags { display: flex; gap: 5px; margin-bottom: 9px; flex-wrap: wrap; }
+        .ctag {
+            font-size: 10px; font-weight: 600;
+            padding: 2px 7px; border-radius: 4px;
+        }
+        .ctag-blue { background: #e0f0ff; color: #1d4ed8; }
+        .ctag-green { background: #dcfce7; color: #15803d; }
+        .ctag-yellow { background: #fef9c3; color: #a16207; }
+        .ctag-orange { background: #ffedd5; color: #c2410c; }
+        .ctag-purple { background: #ede9fe; color: #7c3aed; }
+        .ctag-red { background: #fee2e2; color: #b91c1c; }
+        .ctag-gray { background: #f3f4f6; color: #4b5563; }
+
+        .card-footer {
+            display: flex; align-items: center; gap: 7px;
+            padding-top: 8px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .sale-avatar {
+            width: 22px; height: 22px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sale-name { font-size: 11px; color: #6b7280; flex: 1; }
+
+        .card-action {
+            display: flex; align-items: center; gap: 3px;
+            font-size: 10px; font-weight: 500;
+            background: none; border: none; cursor: pointer;
+            padding: 3px 6px; border-radius: 4px; transition: all 0.15s;
+        }
+        .card-action.green { color: #15803d; }
+        .card-action.green:hover { background: #dcfce7; }
+        .card-action.blue { color: #2563eb; }
+        .card-action.blue:hover { background: #e0f0ff; }
+        .card-action.orange { color: #c2410c; }
+        .card-action.orange:hover { background: #ffedd5; }
+
+        /* ==================== TABLE VIEW ==================== */
+        .table-view {
+            flex: 1;
+            padding: 16px 20px;
+            overflow: auto;
+            display: none;
+        }
+        .table-view.active { display: block; }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .data-table thead th {
+            padding: 12px 14px;
+            font-size: 12px; font-weight: 600; color: #6b7280;
+            border-bottom: 1px solid #f3f4f6;
+            text-align: left; white-space: nowrap; background: #f9fafb;
+        }
+        .data-table tbody td {
+            padding: 12px 14px;
+            font-size: 13px; color: #374151;
+            border-bottom: 1px solid #f9fafb;
+        }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+        .data-table tbody tr:hover td { background: #f9fafb; }
+
+        /* ==================== MODAL ==================== */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.35);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: #fff;
+            border-radius: 14px;
+            width: 92vw;
+            max-width: 960px;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .modal-unit-code { font-size: 18px; font-weight: 700; color: #1e3a8a; }
+        .modal-project-tag { font-size: 12px; font-weight: 500; color: #6b7280; background: #f3f4f6; padding: 3px 10px; border-radius: 6px; margin-left: 10px; }
+
+        .modal-pipeline {
+            display: flex; align-items: center; gap: 0;
+            margin: 0 16px; flex: 1; overflow-x: auto;
+        }
+
+        .pipeline-step {
+            display: flex; align-items: center; gap: 0;
+            flex-shrink: 0;
+        }
+
+        .pipeline-step-btn {
+            padding: 5px 12px;
+            font-size: 11px; font-weight: 600;
+            border-radius: 0;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .pipeline-step-btn:first-child { border-radius: 6px 0 0 6px; }
+        .pipeline-step-btn:last-child { border-radius: 0 6px 6px 0; }
+        .pipeline-step-btn.done { background: #2563eb; color: #fff; border-color: #2563eb; }
+        .pipeline-step-btn.current { background: #eff6ff; color: #1d4ed8; border-color: #93c5fd; }
+
+        .btn-complete {
+            padding: 7px 16px;
+            background: #22c55e;
+            color: #fff;
+            border: none; border-radius: 8px;
+            font-size: 12px; font-weight: 700;
+            cursor: pointer; white-space: nowrap;
+        }
+        .btn-complete:hover { background: #16a34a; }
+
+        .modal-close {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            cursor: pointer; color: #6b7280; font-size: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin-left: 10px;
+        }
+        .modal-close:hover { background: #f3f4f6; }
+
+        .modal-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .modal-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 20px;
+            flex-shrink: 0;
+        }
+        .modal-tab {
+            padding: 12px 16px;
+            font-size: 13px; font-weight: 500; color: #6b7280;
+            cursor: pointer; border-bottom: 2px solid transparent;
+            transition: all 0.15s; white-space: nowrap;
+        }
+        .modal-tab.active { color: #1e3a8a; border-bottom-color: #3b82f6; font-weight: 600; }
+        .modal-tab:hover { color: #374151; }
+
+        .modal-tab-content { flex: 1; overflow-y: auto; padding: 18px 20px; }
+        .modal-tab-content::-webkit-scrollbar { width: 4px; }
+        .modal-tab-content::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+
+        /* Task list */
+        .task-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .task-checkbox {
+            width: 16px; height: 16px; border-radius: 4px;
+            border: 2px solid #d1d5db;
+            flex-shrink: 0; margin-top: 2px; cursor: pointer;
+        }
+        .task-title { font-size: 13px; font-weight: 500; color: #1f2937; }
+        .task-meta { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+
+        /* Overview */
+        .info-section { margin-bottom: 18px; }
+        .info-section-title { font-size: 12px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+        .info-field { display: flex; flex-direction: column; gap: 2px; }
+        .info-label { font-size: 11px; color: #9ca3af; font-weight: 500; }
+        .info-value { font-size: 13px; color: #1f2937; font-weight: 500; }
+        .info-value.blue { color: #2563eb; font-weight: 700; }
+
+        /* Discussion */
+        .discussion-msg { display: flex; gap: 10px; margin-bottom: 14px; }
+        .discussion-avatar { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
+        .discussion-bubble { background: #f3f4f6; border-radius: 10px; padding: 8px 12px; flex: 1; }
+        .discussion-author { font-size: 12px; font-weight: 600; color: #374151; }
+        .discussion-text { font-size: 13px; color: #4b5563; margin-top: 2px; }
+        .discussion-time { font-size: 10px; color: #9ca3af; margin-top: 3px; }
+
+        /* Modal Right */
+        .modal-right {
+            width: 280px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            padding: 18px 16px;
+        }
+        .modal-right::-webkit-scrollbar { width: 4px; }
+        .modal-right::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+        .right-section { margin-bottom: 20px; }
+        .right-section-title { font-size: 12px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+
+        .metric-card {
+            background: #f9fafb;
+            border-radius: 8px; padding: 10px 12px;
+            margin-bottom: 8px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .metric-label { font-size: 11px; color: #6b7280; font-weight: 500; }
+        .metric-value { font-size: 14px; font-weight: 700; color: #1f2937; }
+        .metric-value.green { color: #15803d; }
+        .metric-value.blue { color: #2563eb; }
+        .metric-value.orange { color: #c2410c; }
+
+        .rfm-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        .rfm-badge {
+            padding: 3px 9px; border-radius: 12px;
+            font-size: 11px; font-weight: 600;
+        }
+
+        .interest-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 7px 0; border-bottom: 1px solid #f3f4f6;
+            font-size: 12px;
+        }
+        .interest-name { color: #374151; font-weight: 500; }
+        .interest-pct { color: #2563eb; font-weight: 700; }
+
+        .loyalty-bar { margin-bottom: 6px; }
+        .loyalty-label { display: flex; justify-content: space-between; font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+        .bar-track { height: 6px; background: #e5e7eb; border-radius: 3px; }
+        .bar-fill { height: 100%; border-radius: 3px; }
+
+        /* Drag indicator */
+        .col-drop-zone {
+            min-height: 60px;
+            border: 2px dashed transparent;
+            border-radius: 8px;
+            transition: all 0.15s;
+        }
+        .col-drop-zone.over { border-color: #3b82f6; background: rgba(59,130,246,0.05); }
+    </style>
+</head>
+<body>
+
+<!-- ==================== SIDEBAR ==================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <span class="logo-text">AppVN CRM</span>
+    </div>
+
+    <div class="menu-items">
+        <div class="menu-group">
+            <div class="menu-group-title">Bán hàng &amp; CRM</div>
+            <a class="menu-item" href="#"><i class="fa-regular fa-address-book"></i><span>Customer</span></a>
+            <a class="menu-item" href="Lead.html"><i class="fa-solid fa-filter"></i><span>Leads</span></a>
+            <a class="menu-item" href="#"><i class="fa-regular fa-circle-check"></i><span>Task</span></a>
+            <a class="menu-item" href="#"><i class="fa-solid fa-file-invoice"></i><span>Đơn hàng</span></a>
+            <a class="menu-item" href="#"><i class="fa-solid fa-box"></i><span>Sản phẩm</span></a>
+            <a class="menu-item" href="#"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
+            <a class="menu-item" href="#"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+            <a class="menu-item" href="#"><i class="fa-solid fa-map-location-dot"></i><span>Quản lý Tour</span></a>
+            <a class="menu-item active" href="Land.html"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
+        </div>
+
+        <div class="menu-group">
+            <div class="menu-group-title">Vận hành &amp; Dịch vụ</div>
+            <a class="menu-item" href="#"><i class="fa-solid fa-diagram-project"></i><span>Dự Án</span></a>
+        </div>
+
+        <div class="menu-group">
+            <div class="menu-group-title">Quản trị &amp; Marketing</div>
+            <a class="menu-item" href="#"><i class="fa-solid fa-bullhorn"></i><span>Marketing</span></a>
+            <a class="menu-item" href="#"><i class="fa-brands fa-meta"></i><span>Meta</span></a>
+            <a class="menu-item" href="#"><i class="fa-solid fa-users"></i><span>Nhân viên</span></a>
+            <a class="menu-item" href="#"><i class="fa-solid fa-coins"></i><span>Tài Chính</span></a>
+        </div>
+    </div>
+
+    <div class="sidebar-bottom">
+        <div class="sidebar-bottom-user">
+            <div class="user-avatar">PH</div>
+            <div class="user-info">
+                <span class="user-name">Phan Hiếu</span>
+                <span class="user-role">Admin</span>
+            </div>
+        </div>
+        <button class="collapse-toggle" id="collapseToggle" title="Thu gọn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    </div>
+</aside>
+
+<!-- ==================== SUB SIDEBAR ==================== -->
+<aside class="sub-sidebar" id="subSidebar">
+    <div class="sub-sidebar-header">
+        <span class="sub-sidebar-title">Dự án BĐS</span>
+        <button class="sub-add-btn" title="Thêm dự án"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    <div class="sub-search">
+        <div class="sub-search-inner">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Tìm dự án...">
+        </div>
+    </div>
+    <div class="sub-sidebar-body">
+        <div class="sub-group">
+            <div class="sub-group-title">Dự án nổi bật</div>
+            <div class="sub-item active">Vinhomes Ocean Park</div>
+            <div class="sub-item">The Matrix One</div>
+            <div class="sub-item">Masteri West Heights</div>
+            <div class="sub-item">Ecopark Grand</div>
+        </div>
+        <div class="sub-group">
+            <div class="sub-group-title">Dự án đang mở bán</div>
+            <div class="sub-item">Lumière Boulevard</div>
+            <div class="sub-item">Imperia Smart City</div>
+            <div class="sub-item">ParkCity Hanoi</div>
+        </div>
+    </div>
+</aside>
+
+<!-- ==================== MAIN CONTENT ==================== -->
+<div class="main-content">
+    <!-- Header -->
+    <div class="main-header">
+        <h1><i class="fa-solid fa-building" style="margin-right:8px;color:#3b82f6;"></i>Kho hàng Bất động sản</h1>
+        <div class="header-actions">
+            <button class="btn-icon" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
+            <button class="btn-icon" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <button class="btn-project-toggle active" id="subSidebarToggle">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Dự án</span>
+                <i class="fa-solid fa-chevron-left" style="font-size:10px;margin-left:2px;"></i>
+            </button>
+        </div>
+
+        <div class="toolbar-center">
+            <div class="view-switch">
+                <button class="view-btn active" id="viewKanban" onclick="switchView('kanban')">
+                    <i class="fa-solid fa-table-columns"></i> Kanban
+                </button>
+                <button class="view-btn" id="viewTable" onclick="switchView('table')">
+                    <i class="fa-solid fa-table-list"></i> Bảng
+                </button>
+            </div>
+        </div>
+
+        <div class="toolbar-right">
+            <div class="search-unit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Tìm mã căn...">
+            </div>
+
+            <div style="position:relative;">
+                <button class="btn-filter-drop" id="filterDropBtn" onclick="toggleFilterDrop()">
+                    <i class="fa-solid fa-sliders"></i> Bộ lọc
+                    <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
+                </button>
+                <div class="filter-dropdown" id="filterDropdown">
+                    <div class="filter-opt"><i class="fa-solid fa-tag"></i>Giá</div>
+                    <div class="filter-opt"><i class="fa-solid fa-bed"></i>Số phòng ngủ</div>
+                    <div class="filter-opt"><i class="fa-solid fa-scale-balanced"></i>Pháp lý</div>
+                    <div class="filter-opt"><i class="fa-solid fa-compass"></i>Hướng</div>
+                    <div class="filter-opt"><i class="fa-solid fa-building"></i>Tầng</div>
+                </div>
+            </div>
+
+            <button class="btn-add">
+                <i class="fa-solid fa-plus"></i> Thêm căn hộ
+            </button>
+        </div>
+    </div>
+
+    <!-- Board Area -->
+    <div class="board-area">
+        <!-- Kanban Board -->
+        <div class="board" id="kanbanBoard">
+
+            <!-- Column 1: Sẵn sàng -->
+            <div class="board-column col-blue" id="col-san-sang" ondragover="onDragOver(event)" ondrop="onDrop(event,'col-san-sang')">
+                <div class="column-header">
+                    <div class="column-title-wrap">
+                        <span class="col-dot dot-blue"></span>
+                        <span class="col-name">Sẵn sàng</span>
+                        <span class="col-count" id="cnt-san-sang">12</span>
+                    </div>
+                    <button class="col-menu"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="column-cards col-drop-zone" id="cards-san-sang">
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-san-sang')"
+                         onclick="openModal('A1.20.05','Vinhomes Ocean Park','4.2','20','85','Đông Nam','Sẵn sàng','Nguyễn Thu Hà','NH','#7c3aed','Sổ hồng riêng','3PN','5 giờ trước','green','Liên hệ KH')">
+                        <div class="card-row1">
+                            <span class="unit-code">A1.20.05</span>
+                            <span class="card-time">5 giờ trước</span>
+                        </div>
+                        <div class="card-price">4.2 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 20</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 85m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Đông Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-blue">Sẵn sàng</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">3PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#7c3aed;">NH</div>
+                            <span class="sale-name">Nguyễn Thu Hà</span>
+                            <button class="card-action green"><i class="fa-solid fa-phone-flip"></i> Liên hệ</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-san-sang')"
+                         onclick="openModal('B3.15.08','Vinhomes Ocean Park','6.8','15','110','Tây Nam','Sẵn sàng','Trần Minh Khoa','TK','#0d9488','Sổ hồng riêng','4PN','1 ngày trước','blue','Đặt lịch xem')">
+                        <div class="card-row1">
+                            <span class="unit-code">B3.15.08</span>
+                            <span class="card-time">1 ngày trước</span>
+                        </div>
+                        <div class="card-price">6.8 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 15</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 110m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Tây Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-blue">Sẵn sàng</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">4PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#0d9488;">TK</div>
+                            <span class="sale-name">Trần Minh Khoa</span>
+                            <button class="card-action blue"><i class="fa-regular fa-calendar"></i> Xem</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-san-sang')"
+                         onclick="openModal('C2.28.12','The Matrix One','9.5','28','130','Đông','Sẵn sàng','Lê Phương Linh','PL','#2563eb','Đang làm sổ','4PN','2 ngày trước','blue','Gửi brochure')">
+                        <div class="card-row1">
+                            <span class="unit-code">C2.28.12</span>
+                            <span class="card-time">2 ngày trước</span>
+                        </div>
+                        <div class="card-price">9.5 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 28</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 130m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Đông</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-blue">Sẵn sàng</span>
+                            <span class="ctag ctag-yellow">Đang làm sổ</span>
+                            <span class="ctag ctag-gray">4PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#2563eb;">PL</div>
+                            <span class="sale-name">Lê Phương Linh</span>
+                            <button class="card-action blue"><i class="fa-solid fa-paper-plane"></i> Gửi</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Column 2: Giữ chỗ -->
+            <div class="board-column col-yellow" id="col-giu-cho" ondragover="onDragOver(event)" ondrop="onDrop(event,'col-giu-cho')">
+                <div class="column-header">
+                    <div class="column-title-wrap">
+                        <span class="col-dot dot-yellow"></span>
+                        <span class="col-name">Giữ chỗ</span>
+                        <span class="col-count" id="cnt-giu-cho">5</span>
+                    </div>
+                    <button class="col-menu"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="column-cards col-drop-zone" id="cards-giu-cho">
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-giu-cho')"
+                         onclick="openModal('D4.10.03','Masteri West Heights','3.8','10','72','Nam','Giữ chỗ','Phạm Quốc Bảo','QB','#f59e0b','Sổ hồng riêng','2PN','3 giờ trước','orange','Xác nhận cọc')">
+                        <div class="card-row1">
+                            <span class="unit-code">D4.10.03</span>
+                            <span class="card-time">3 giờ trước</span>
+                        </div>
+                        <div class="card-price">3.8 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 10</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 72m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-yellow">Giữ chỗ</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">2PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#f59e0b;">QB</div>
+                            <span class="sale-name">Phạm Quốc Bảo</span>
+                            <button class="card-action orange"><i class="fa-solid fa-hand-holding-dollar"></i> Cọc</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-giu-cho')"
+                         onclick="openModal('A5.22.07','Ecopark Grand','5.6','22','95','Tây','Giữ chỗ','Vũ Thanh Tùng','VT','#16a34a','Sổ hồng riêng','3PN','1 ngày trước','orange','Xác nhận cọc')">
+                        <div class="card-row1">
+                            <span class="unit-code">A5.22.07</span>
+                            <span class="card-time">1 ngày trước</span>
+                        </div>
+                        <div class="card-price">5.6 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 22</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 95m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Tây</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-yellow">Giữ chỗ</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">3PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#16a34a;">VT</div>
+                            <span class="sale-name">Vũ Thanh Tùng</span>
+                            <button class="card-action orange"><i class="fa-solid fa-hand-holding-dollar"></i> Cọc</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-giu-cho')"
+                         onclick="openModal('B1.35.02','Lumière Boulevard','12.3','35','150','Đông Nam','Giữ chỗ','Đinh Thị Mai','DM','#db2777','Đang làm sổ','Penthouse','30 phút trước','orange','Xác nhận cọc')">
+                        <div class="card-row1">
+                            <span class="unit-code">B1.35.02</span>
+                            <span class="card-time">30 phút trước</span>
+                        </div>
+                        <div class="card-price">12.3 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 35</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 150m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Đông Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-yellow">Giữ chỗ</span>
+                            <span class="ctag ctag-yellow">Đang làm sổ</span>
+                            <span class="ctag ctag-purple">Penthouse</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#db2777;">DM</div>
+                            <span class="sale-name">Đinh Thị Mai</span>
+                            <button class="card-action orange"><i class="fa-solid fa-hand-holding-dollar"></i> Cọc</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Column 3: Đặt cọc -->
+            <div class="board-column col-orange" id="col-dat-coc" ondragover="onDragOver(event)" ondrop="onDrop(event,'col-dat-coc')">
+                <div class="column-header">
+                    <div class="column-title-wrap">
+                        <span class="col-dot dot-orange"></span>
+                        <span class="col-name">Đặt cọc</span>
+                        <span class="col-count" id="cnt-dat-coc">4</span>
+                    </div>
+                    <button class="col-menu"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="column-cards col-drop-zone" id="cards-dat-coc">
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-dat-coc')"
+                         onclick="openModal('E2.18.09','Imperia Smart City','7.2','18','105','Bắc','Đặt cọc','Hoàng Văn Đức','HD','#ea580c','Sổ hồng riêng','3PN','2 ngày trước','blue','Soạn HĐ')">
+                        <div class="card-row1">
+                            <span class="unit-code">E2.18.09</span>
+                            <span class="card-time">2 ngày trước</span>
+                        </div>
+                        <div class="card-price">7.2 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 18</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 105m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Bắc</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-orange">Đặt cọc</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">3PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#ea580c;">HD</div>
+                            <span class="sale-name">Hoàng Văn Đức</span>
+                            <button class="card-action blue"><i class="fa-solid fa-file-contract"></i> HĐ</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-dat-coc')"
+                         onclick="openModal('F1.25.06','ParkCity Hanoi','8.9','25','120','Đông','Đặt cọc','Ngô Thị Lan','NL','#7c3aed','Sổ hồng riêng','4PN','3 ngày trước','blue','Soạn HĐ')">
+                        <div class="card-row1">
+                            <span class="unit-code">F1.25.06</span>
+                            <span class="card-time">3 ngày trước</span>
+                        </div>
+                        <div class="card-price">8.9 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 25</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 120m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Đông</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-orange">Đặt cọc</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">4PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#7c3aed;">NL</div>
+                            <span class="sale-name">Ngô Thị Lan</span>
+                            <button class="card-action blue"><i class="fa-solid fa-file-contract"></i> HĐ</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-dat-coc')"
+                         onclick="openModal('G3.12.11','Masteri West Heights','5.1','12','88','Tây Nam','Đặt cọc','Bùi Công Thành','BT','#0891b2','Đang làm sổ','3PN','1 tuần trước','blue','Soạn HĐ')">
+                        <div class="card-row1">
+                            <span class="unit-code">G3.12.11</span>
+                            <span class="card-time">1 tuần trước</span>
+                        </div>
+                        <div class="card-price">5.1 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 12</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 88m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Tây Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-orange">Đặt cọc</span>
+                            <span class="ctag ctag-yellow">Đang làm sổ</span>
+                            <span class="ctag ctag-gray">3PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#0891b2;">BT</div>
+                            <span class="sale-name">Bùi Công Thành</span>
+                            <button class="card-action blue"><i class="fa-solid fa-file-contract"></i> HĐ</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Column 4: Đã ký HĐ -->
+            <div class="board-column col-green" id="col-ky-hd" ondragover="onDragOver(event)" ondrop="onDrop(event,'col-ky-hd')">
+                <div class="column-header">
+                    <div class="column-title-wrap">
+                        <span class="col-dot dot-green"></span>
+                        <span class="col-name">Đã ký HĐ</span>
+                        <span class="col-count" id="cnt-ky-hd">8</span>
+                    </div>
+                    <button class="col-menu"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="column-cards col-drop-zone" id="cards-ky-hd">
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-ky-hd')"
+                         onclick="openModal('H2.30.04','The Matrix One','11.5','30','135','Đông Nam','Đã ký HĐ','Lý Thị Bích Hạnh','LH','#16a34a','Sổ hồng riêng','4PN','5 ngày trước','green','Theo dõi TT')">
+                        <div class="card-row1">
+                            <span class="unit-code">H2.30.04</span>
+                            <span class="card-time">5 ngày trước</span>
+                        </div>
+                        <div class="card-price">11.5 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 30</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 135m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Đông Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-green">Ký HĐ</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">4PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#16a34a;">LH</div>
+                            <span class="sale-name">Lý Thị Bích Hạnh</span>
+                            <button class="card-action green"><i class="fa-solid fa-circle-check"></i> Theo dõi</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-ky-hd')"
+                         onclick="openModal('K1.07.15','Ecopark Grand','2.9','7','65','Nam','Đã ký HĐ','Trịnh Quang Huy','TH','#d97706','Sổ hồng riêng','2PN','1 tuần trước','green','Theo dõi TT')">
+                        <div class="card-row1">
+                            <span class="unit-code">K1.07.15</span>
+                            <span class="card-time">1 tuần trước</span>
+                        </div>
+                        <div class="card-price">2.9 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 7</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 65m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-green">Ký HĐ</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">2PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#d97706;">TH</div>
+                            <span class="sale-name">Trịnh Quang Huy</span>
+                            <button class="card-action green"><i class="fa-solid fa-circle-check"></i> Theo dõi</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-ky-hd')"
+                         onclick="openModal('M3.14.08','Imperia Smart City','6.4','14','98','Tây','Đã ký HĐ','Phan Xuân Thịnh','XT','#0284c7','Đang làm sổ','3PN','2 tuần trước','green','Theo dõi TT')">
+                        <div class="card-row1">
+                            <span class="unit-code">M3.14.08</span>
+                            <span class="card-time">2 tuần trước</span>
+                        </div>
+                        <div class="card-price">6.4 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 14</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 98m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Tây</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-green">Ký HĐ</span>
+                            <span class="ctag ctag-yellow">Đang làm sổ</span>
+                            <span class="ctag ctag-gray">3PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#0284c7;">XT</div>
+                            <span class="sale-name">Phan Xuân Thịnh</span>
+                            <button class="card-action green"><i class="fa-solid fa-circle-check"></i> Theo dõi</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Column 5: Đã bán -->
+            <div class="board-column col-purple" id="col-da-ban" ondragover="onDragOver(event)" ondrop="onDrop(event,'col-da-ban')">
+                <div class="column-header">
+                    <div class="column-title-wrap">
+                        <span class="col-dot dot-purple"></span>
+                        <span class="col-name">Đã bán</span>
+                        <span class="col-count" id="cnt-da-ban">23</span>
+                    </div>
+                    <button class="col-menu"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="column-cards col-drop-zone" id="cards-da-ban">
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-da-ban')"
+                         onclick="openModal('N2.32.01','Vinhomes Ocean Park','14.8','32','145','Đông Nam','Đã bán','Đỗ Thị Kim Chi','KC','#9333ea','Sổ hồng riêng','Penthouse','1 tháng trước','green','Bàn giao')">
+                        <div class="card-row1">
+                            <span class="unit-code">N2.32.01</span>
+                            <span class="card-time">1 tháng trước</span>
+                        </div>
+                        <div class="card-price">14.8 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 32</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 145m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Đông Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-purple">Đã bán</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-purple">Penthouse</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#9333ea;">KC</div>
+                            <span class="sale-name">Đỗ Thị Kim Chi</span>
+                            <button class="card-action green"><i class="fa-solid fa-key"></i> Bàn giao</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-da-ban')"
+                         onclick="openModal('P1.08.13','ParkCity Hanoi','3.5','8','70','Bắc','Đã bán','Cao Minh Nhật','MN','#7c3aed','Sổ hồng riêng','2PN','3 tuần trước','green','Bàn giao')">
+                        <div class="card-row1">
+                            <span class="unit-code">P1.08.13</span>
+                            <span class="card-time">3 tuần trước</span>
+                        </div>
+                        <div class="card-price">3.5 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 8</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 70m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Bắc</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-purple">Đã bán</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">2PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#7c3aed;">MN</div>
+                            <span class="sale-name">Cao Minh Nhật</span>
+                            <button class="card-action green"><i class="fa-solid fa-key"></i> Bàn giao</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-da-ban')"
+                         onclick="openModal('Q4.19.05','Lumière Boulevard','8.3','19','112','Đông','Đã bán','Lưu Thị Thanh Thảo','TT','#9333ea','Sổ hồng riêng','3PN','2 tháng trước','green','Bàn giao')">
+                        <div class="card-row1">
+                            <span class="unit-code">Q4.19.05</span>
+                            <span class="card-time">2 tháng trước</span>
+                        </div>
+                        <div class="card-price">8.3 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 19</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 112m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Đông</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-purple">Đã bán</span>
+                            <span class="ctag ctag-green">Sổ hồng</span>
+                            <span class="ctag ctag-gray">3PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#9333ea;">TT</div>
+                            <span class="sale-name">Lưu Thị Thanh Thảo</span>
+                            <button class="card-action green"><i class="fa-solid fa-key"></i> Bàn giao</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Column 6: Khóa/Giữ hàng -->
+            <div class="board-column col-red" id="col-khoa" ondragover="onDragOver(event)" ondrop="onDrop(event,'col-khoa')">
+                <div class="column-header">
+                    <div class="column-title-wrap">
+                        <span class="col-dot dot-red"></span>
+                        <span class="col-name">Khóa/Giữ hàng</span>
+                        <span class="col-count" id="cnt-khoa">3</span>
+                    </div>
+                    <button class="col-menu"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="column-cards col-drop-zone" id="cards-khoa">
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-khoa')"
+                         onclick="openModal('R3.05.02','Masteri West Heights','2.5','5','55','Tây Bắc','Khóa/Giữ hàng','Nguyễn Văn Long','NL','#dc2626','Tranh chấp','Studio','6 giờ trước','orange','Xử lý')">
+                        <div class="card-row1">
+                            <span class="unit-code">R3.05.02</span>
+                            <span class="card-time">6 giờ trước</span>
+                        </div>
+                        <div class="card-price">2.5 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 5</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 55m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Tây Bắc</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-red">Khóa hàng</span>
+                            <span class="ctag ctag-red">Tranh chấp</span>
+                            <span class="ctag ctag-gray">Studio</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#dc2626;">NL</div>
+                            <span class="sale-name">Nguyễn Văn Long</span>
+                            <button class="card-action orange"><i class="fa-solid fa-lock-open"></i> Mở khóa</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-khoa')"
+                         onclick="openModal('S2.16.10','Vinhomes Ocean Park','7.6','16','100','Đông Bắc','Khóa/Giữ hàng','Trần Thị Minh Anh','MA','#dc2626','Giữ theo YC','3PN','2 ngày trước','orange','Xử lý')">
+                        <div class="card-row1">
+                            <span class="unit-code">S2.16.10</span>
+                            <span class="card-time">2 ngày trước</span>
+                        </div>
+                        <div class="card-price">7.6 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 16</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 100m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Đông Bắc</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-red">Khóa hàng</span>
+                            <span class="ctag ctag-yellow">Giữ theo YC</span>
+                            <span class="ctag ctag-gray">3PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#dc2626;">MA</div>
+                            <span class="sale-name">Trần Thị Minh Anh</span>
+                            <button class="card-action orange"><i class="fa-solid fa-lock-open"></i> Mở khóa</button>
+                        </div>
+                    </div>
+
+                    <div class="apt-card" draggable="true"
+                         ondragstart="onDragStart(event,this,'col-khoa')"
+                         onclick="openModal('T4.27.14','The Matrix One','10.2','27','125','Nam','Khóa/Giữ hàng','Mai Đức Hải','MH','#dc2626','Bảo trì','4PN','4 ngày trước','orange','Xử lý')">
+                        <div class="card-row1">
+                            <span class="unit-code">T4.27.14</span>
+                            <span class="card-time">4 ngày trước</span>
+                        </div>
+                        <div class="card-price">10.2 tỷ <span>VNĐ</span></div>
+                        <div class="card-details">
+                            <div class="card-detail-item"><i class="fa-solid fa-building"></i> Tầng 27</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-ruler-combined"></i> 125m²</div>
+                            <div class="card-detail-item"><i class="fa-solid fa-compass"></i> Nam</div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="ctag ctag-red">Khóa hàng</span>
+                            <span class="ctag ctag-gray">Bảo trì</span>
+                            <span class="ctag ctag-gray">4PN</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sale-avatar" style="background:#dc2626;">MH</div>
+                            <span class="sale-name">Mai Đức Hải</span>
+                            <button class="card-action orange"><i class="fa-solid fa-lock-open"></i> Mở khóa</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Table View -->
+        <div class="table-view" id="tableView">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>Mã căn</th>
+                        <th>Dự án</th>
+                        <th>Tầng</th>
+                        <th>Diện tích</th>
+                        <th>Hướng</th>
+                        <th>Giá (tỷ)</th>
+                        <th>Pháp lý</th>
+                        <th>Trạng thái</th>
+                        <th>Sale phụ trách</th>
+                        <th>Cập nhật</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="openModal('A1.20.05','Vinhomes Ocean Park','4.2','20','85','Đông Nam','Sẵn sàng','Nguyễn Thu Hà','NH','#7c3aed','Sổ hồng riêng','3PN','5 giờ trước','green','Liên hệ KH')" style="cursor:pointer;">
+                        <td><input type="checkbox"></td>
+                        <td><strong style="color:#1e3a8a;">A1.20.05</strong></td>
+                        <td>Vinhomes Ocean Park</td>
+                        <td>20</td>
+                        <td>85m²</td>
+                        <td>Đông Nam</td>
+                        <td style="color:#2563eb;font-weight:700;">4.2</td>
+                        <td><span class="ctag ctag-green">Sổ hồng</span></td>
+                        <td><span class="ctag ctag-blue">Sẵn sàng</span></td>
+                        <td>Nguyễn Thu Hà</td>
+                        <td style="color:#9ca3af;">5 giờ trước</td>
+                    </tr>
+                    <tr onclick="openModal('B3.15.08','Vinhomes Ocean Park','6.8','15','110','Tây Nam','Sẵn sàng','Trần Minh Khoa','TK','#0d9488','Sổ hồng riêng','4PN','1 ngày trước','blue','Đặt lịch xem')" style="cursor:pointer;">
+                        <td><input type="checkbox"></td>
+                        <td><strong style="color:#1e3a8a;">B3.15.08</strong></td>
+                        <td>Vinhomes Ocean Park</td>
+                        <td>15</td>
+                        <td>110m²</td>
+                        <td>Tây Nam</td>
+                        <td style="color:#2563eb;font-weight:700;">6.8</td>
+                        <td><span class="ctag ctag-green">Sổ hồng</span></td>
+                        <td><span class="ctag ctag-blue">Sẵn sàng</span></td>
+                        <td>Trần Minh Khoa</td>
+                        <td style="color:#9ca3af;">1 ngày trước</td>
+                    </tr>
+                    <tr style="cursor:pointer;">
+                        <td><input type="checkbox"></td>
+                        <td><strong style="color:#1e3a8a;">D4.10.03</strong></td>
+                        <td>Masteri West Heights</td>
+                        <td>10</td>
+                        <td>72m²</td>
+                        <td>Nam</td>
+                        <td style="color:#2563eb;font-weight:700;">3.8</td>
+                        <td><span class="ctag ctag-green">Sổ hồng</span></td>
+                        <td><span class="ctag ctag-yellow">Giữ chỗ</span></td>
+                        <td>Phạm Quốc Bảo</td>
+                        <td style="color:#9ca3af;">3 giờ trước</td>
+                    </tr>
+                    <tr style="cursor:pointer;">
+                        <td><input type="checkbox"></td>
+                        <td><strong style="color:#1e3a8a;">E2.18.09</strong></td>
+                        <td>Imperia Smart City</td>
+                        <td>18</td>
+                        <td>105m²</td>
+                        <td>Bắc</td>
+                        <td style="color:#2563eb;font-weight:700;">7.2</td>
+                        <td><span class="ctag ctag-green">Sổ hồng</span></td>
+                        <td><span class="ctag ctag-orange">Đặt cọc</span></td>
+                        <td>Hoàng Văn Đức</td>
+                        <td style="color:#9ca3af;">2 ngày trước</td>
+                    </tr>
+                    <tr style="cursor:pointer;">
+                        <td><input type="checkbox"></td>
+                        <td><strong style="color:#1e3a8a;">H2.30.04</strong></td>
+                        <td>The Matrix One</td>
+                        <td>30</td>
+                        <td>135m²</td>
+                        <td>Đông Nam</td>
+                        <td style="color:#2563eb;font-weight:700;">11.5</td>
+                        <td><span class="ctag ctag-green">Sổ hồng</span></td>
+                        <td><span class="ctag ctag-green">Ký HĐ</span></td>
+                        <td>Lý Thị Bích Hạnh</td>
+                        <td style="color:#9ca3af;">5 ngày trước</td>
+                    </tr>
+                    <tr style="cursor:pointer;">
+                        <td><input type="checkbox"></td>
+                        <td><strong style="color:#1e3a8a;">N2.32.01</strong></td>
+                        <td>Vinhomes Ocean Park</td>
+                        <td>32</td>
+                        <td>145m²</td>
+                        <td>Đông Nam</td>
+                        <td style="color:#2563eb;font-weight:700;">14.8</td>
+                        <td><span class="ctag ctag-green">Sổ hồng</span></td>
+                        <td><span class="ctag ctag-purple">Đã bán</span></td>
+                        <td>Đỗ Thị Kim Chi</td>
+                        <td style="color:#9ca3af;">1 tháng trước</td>
+                    </tr>
+                    <tr style="cursor:pointer;">
+                        <td><input type="checkbox"></td>
+                        <td><strong style="color:#1e3a8a;">R3.05.02</strong></td>
+                        <td>Masteri West Heights</td>
+                        <td>5</td>
+                        <td>55m²</td>
+                        <td>Tây Bắc</td>
+                        <td style="color:#2563eb;font-weight:700;">2.5</td>
+                        <td><span class="ctag ctag-red">Tranh chấp</span></td>
+                        <td><span class="ctag ctag-red">Khóa hàng</span></td>
+                        <td>Nguyễn Văn Long</td>
+                        <td style="color:#9ca3af;">6 giờ trước</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== MODAL ==================== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+    <div class="modal" id="mainModal">
+        <div class="modal-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span class="modal-unit-code" id="modalUnitCode">A1.20.05</span>
+                <span class="modal-project-tag" id="modalProject">Vinhomes Ocean Park</span>
+            </div>
+
+            <div class="modal-pipeline">
+                <button class="pipeline-step-btn done">Tiếp nhận</button>
+                <button class="pipeline-step-btn done">Tư vấn</button>
+                <button class="pipeline-step-btn current">Xem căn</button>
+                <button class="pipeline-step-btn">Giữ chỗ</button>
+                <button class="pipeline-step-btn">Đặt cọc</button>
+                <button class="pipeline-step-btn">Ký HĐ</button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+                <button class="btn-complete">Hoàn thành bước</button>
+                <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <!-- Left Panel -->
+            <div class="modal-left">
+                <div class="modal-tabs">
+                    <div class="modal-tab active" onclick="switchTab('tacvu')"><i class="fa-regular fa-circle-check" style="margin-right:4px;"></i>Tác vụ</div>
+                    <div class="modal-tab" onclick="switchTab('tongquan')"><i class="fa-solid fa-chart-bar" style="margin-right:4px;"></i>Tổng quan</div>
+                    <div class="modal-tab" onclick="switchTab('thaoluan')"><i class="fa-regular fa-comment-dots" style="margin-right:4px;"></i>Thảo luận</div>
+                </div>
+
+                <div class="modal-tab-content">
+                    <!-- Tác vụ -->
+                    <div class="tab-pane active" id="tab-tacvu">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <span style="font-size:13px;font-weight:600;color:#374151;">Tác vụ hiện tại</span>
+                            <button style="font-size:12px;color:#3b82f6;background:none;border:none;cursor:pointer;font-weight:600;">+ Thêm tác vụ</button>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-checkbox" style="border-color:#22c55e;background:#22c55e;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-check" style="font-size:9px;color:#fff;"></i></div>
+                            <div>
+                                <div class="task-title" style="text-decoration:line-through;color:#9ca3af;">Gọi điện tư vấn sơ bộ</div>
+                                <div class="task-meta">Hoàn thành 2 giờ trước · Nguyễn Thu Hà</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-checkbox" style="border-color:#22c55e;background:#22c55e;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-check" style="font-size:9px;color:#fff;"></i></div>
+                            <div>
+                                <div class="task-title" style="text-decoration:line-through;color:#9ca3af;">Gửi brochure & video căn hộ</div>
+                                <div class="task-meta">Hoàn thành · Nguyễn Thu Hà</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div>
+                                <div class="task-title">Đặt lịch xem thực tế tại dự án</div>
+                                <div class="task-meta">Hạn: Hôm nay 15:00 · Nguyễn Thu Hà</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div>
+                                <div class="task-title">Gửi bảng tính toán tài chính & vay ngân hàng</div>
+                                <div class="task-meta">Hạn: Ngày mai 10:00 · Nguyễn Thu Hà</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div>
+                                <div class="task-title">Xác nhận đặt cọc &amp; chuẩn bị hợp đồng</div>
+                                <div class="task-meta">Hạn: 20/06/2026 · Phan Hiếu</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tổng quan -->
+                    <div class="tab-pane" id="tab-tongquan">
+                        <div class="info-section">
+                            <div class="info-section-title">Thông tin căn hộ</div>
+                            <div class="info-grid">
+                                <div class="info-field"><span class="info-label">Mã căn</span><span class="info-value" id="ovUnitCode">A1.20.05</span></div>
+                                <div class="info-field"><span class="info-label">Dự án</span><span class="info-value" id="ovProject">Vinhomes Ocean Park</span></div>
+                                <div class="info-field"><span class="info-label">Tầng</span><span class="info-value" id="ovFloor">Tầng 20</span></div>
+                                <div class="info-field"><span class="info-label">Diện tích</span><span class="info-value" id="ovArea">85m²</span></div>
+                                <div class="info-field"><span class="info-label">Hướng</span><span class="info-value" id="ovDir">Đông Nam</span></div>
+                                <div class="info-field"><span class="info-label">Số phòng ngủ</span><span class="info-value" id="ovRooms">3 phòng ngủ</span></div>
+                                <div class="info-field"><span class="info-label">Giá bán</span><span class="info-value blue" id="ovPrice">4.2 tỷ VNĐ</span></div>
+                                <div class="info-field"><span class="info-label">Giá/m²</span><span class="info-value blue" id="ovPriceM2">49.4 tr/m²</span></div>
+                                <div class="info-field"><span class="info-label">Pháp lý</span><span class="info-value" id="ovLegal">Sổ hồng riêng</span></div>
+                                <div class="info-field"><span class="info-label">Trạng thái</span><span class="info-value" id="ovStatus">Sẵn sàng</span></div>
+                            </div>
+                        </div>
+                        <div class="info-section">
+                            <div class="info-section-title">Thông tin khách hàng quan tâm</div>
+                            <div class="info-grid">
+                                <div class="info-field"><span class="info-label">Họ tên</span><span class="info-value">Nguyễn Thị Bảo Châu</span></div>
+                                <div class="info-field"><span class="info-label">SĐT</span><span class="info-value">0912 345 678</span></div>
+                                <div class="info-field"><span class="info-label">Nguồn lead</span><span class="info-value">Facebook Ads</span></div>
+                                <div class="info-field"><span class="info-label">Ngân sách</span><span class="info-value">4–5 tỷ VNĐ</span></div>
+                                <div class="info-field"><span class="info-label">Nhu cầu</span><span class="info-value">Mua để ở</span></div>
+                                <div class="info-field"><span class="info-label">Vay NH</span><span class="info-value">70% giá trị</span></div>
+                            </div>
+                        </div>
+                        <div class="info-section">
+                            <div class="info-section-title">Tiến độ thanh toán dự kiến</div>
+                            <div style="display:flex;flex-direction:column;gap:8px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9fafb;border-radius:8px;">
+                                    <span style="font-size:13px;color:#374151;">Đặt cọc (10%)</span>
+                                    <span style="font-size:13px;font-weight:700;color:#2563eb;">420 triệu</span>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9fafb;border-radius:8px;">
+                                    <span style="font-size:13px;color:#374151;">Ký HĐMB (20%)</span>
+                                    <span style="font-size:13px;font-weight:700;color:#2563eb;">840 triệu</span>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9fafb;border-radius:8px;">
+                                    <span style="font-size:13px;color:#374151;">Vay ngân hàng (70%)</span>
+                                    <span style="font-size:13px;font-weight:700;color:#2563eb;">2.94 tỷ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thảo luận -->
+                    <div class="tab-pane" id="tab-thaoluan">
+                        <div class="discussion-msg">
+                            <div class="discussion-avatar" style="background:#7c3aed;">NH</div>
+                            <div class="discussion-bubble">
+                                <div class="discussion-author">Nguyễn Thu Hà</div>
+                                <div class="discussion-text">Khách đã xác nhận quan tâm căn A1.20.05, tầng view đẹp hướng Đông Nam, nhìn ra hồ. Khách muốn xem thực tế vào chiều thứ 6.</div>
+                                <div class="discussion-time">Hôm nay lúc 10:30</div>
+                            </div>
+                        </div>
+                        <div class="discussion-msg">
+                            <div class="discussion-avatar" style="background:#1e3a8a;">PH</div>
+                            <div class="discussion-bubble">
+                                <div class="discussion-author">Phan Hiếu</div>
+                                <div class="discussion-text">OK. Nhớ chuẩn bị bảng so sánh với các căn cùng tầng. Giá đang tốt, push khách chốt sớm trước khi giá tăng đợt mới.</div>
+                                <div class="discussion-time">Hôm nay lúc 11:05</div>
+                            </div>
+                        </div>
+                        <div class="discussion-msg">
+                            <div class="discussion-avatar" style="background:#7c3aed;">NH</div>
+                            <div class="discussion-bubble">
+                                <div class="discussion-author">Nguyễn Thu Hà</div>
+                                <div class="discussion-text">Khách hỏi về chính sách vay VCB. Em đã gửi link hỗ trợ vay 70% lãi suất ưu đãi 6.5%/năm 2 năm đầu.</div>
+                                <div class="discussion-time">Hôm nay lúc 14:22</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:16px;display:flex;gap:8px;align-items:flex-end;">
+                            <div style="flex:1;background:#f3f4f6;border-radius:10px;padding:10px 14px;">
+                                <textarea style="width:100%;background:none;border:none;outline:none;resize:none;font-size:13px;font-family:Inter,sans-serif;color:#374151;min-height:60px;" placeholder="Nhập ghi chú hoặc thảo luận..."></textarea>
+                            </div>
+                            <button style="padding:8px 16px;background:#3b82f6;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">Gửi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="modal-right">
+                <div class="right-section">
+                    <div class="right-section-title">Chân dung khách</div>
+
+                    <div style="padding:10px 12px;background:#f9fafb;border-radius:8px;margin-bottom:10px;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                            <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;">BC</div>
+                            <div>
+                                <div style="font-size:13px;font-weight:600;color:#1f2937;">Nguyễn Thị Bảo Châu</div>
+                                <div style="font-size:11px;color:#9ca3af;">Khách hàng tiềm năng</div>
+                            </div>
+                        </div>
+                        <div class="rfm-badges">
+                            <span class="rfm-badge" style="background:#fef9c3;color:#a16207;">R: 3 ngày</span>
+                            <span class="rfm-badge" style="background:#dcfce7;color:#15803d;">F: 5 lần</span>
+                            <span class="rfm-badge" style="background:#e0f0ff;color:#1d4ed8;">M: 4.2 tỷ</span>
+                        </div>
+                    </div>
+
+                    <div class="loyalty-bar">
+                        <div class="loyalty-label"><span>Mức độ quan tâm</span><span style="color:#3b82f6;font-weight:700;">78%</span></div>
+                        <div class="bar-track"><div class="bar-fill" style="width:78%;background:linear-gradient(90deg,#3b82f6,#6366f1);"></div></div>
+                    </div>
+                    <div class="loyalty-bar" style="margin-top:8px;">
+                        <div class="loyalty-label"><span>Khả năng tài chính</span><span style="color:#22c55e;font-weight:700;">85%</span></div>
+                        <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#22c55e,#16a34a);"></div></div>
+                    </div>
+                </div>
+
+                <div class="right-section">
+                    <div class="right-section-title">Chỉ số giao dịch</div>
+                    <div class="metric-card">
+                        <span class="metric-label">Tổng giá trị quan tâm</span>
+                        <span class="metric-value blue">4.2 tỷ</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Số lần liên hệ</span>
+                        <span class="metric-value">12 lần</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Lần xem gần nhất</span>
+                        <span class="metric-value green">Hôm nay</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Thời gian trong pipeline</span>
+                        <span class="metric-value orange">5 ngày</span>
+                    </div>
+                </div>
+
+                <div class="right-section">
+                    <div class="right-section-title">Sản phẩm quan tâm</div>
+                    <div class="interest-item">
+                        <span class="interest-name">Căn 3PN tầng cao</span>
+                        <span class="interest-pct">92%</span>
+                    </div>
+                    <div class="interest-item">
+                        <span class="interest-name">View hồ / công viên</span>
+                        <span class="interest-pct">88%</span>
+                    </div>
+                    <div class="interest-item">
+                        <span class="interest-name">Diện tích 80–100m²</span>
+                        <span class="interest-pct">75%</span>
+                    </div>
+                    <div class="interest-item">
+                        <span class="interest-name">Ngân sách 4–5 tỷ</span>
+                        <span class="interest-pct">70%</span>
+                    </div>
+                    <div class="interest-item">
+                        <span class="interest-name">Hướng Đông / Đông Nam</span>
+                        <span class="interest-pct">65%</span>
+                    </div>
+                </div>
+
+                <div class="right-section">
+                    <div class="right-section-title">Thông tin bổ sung</div>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                        <div style="font-size:12px;color:#6b7280;"><i class="fa-solid fa-phone" style="width:14px;color:#9ca3af;margin-right:4px;"></i>0912 345 678</div>
+                        <div style="font-size:12px;color:#6b7280;"><i class="fa-regular fa-envelope" style="width:14px;color:#9ca3af;margin-right:4px;"></i>baochau@gmail.com</div>
+                        <div style="font-size:12px;color:#6b7280;"><i class="fa-solid fa-location-dot" style="width:14px;color:#9ca3af;margin-right:4px;"></i>Quận Cầu Giấy, Hà Nội</div>
+                        <div style="font-size:12px;color:#6b7280;"><i class="fa-brands fa-facebook" style="width:14px;color:#9ca3af;margin-right:4px;"></i>Nguồn: Facebook Ads</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+    // --- Sidebar collapse ---
+    const sidebar = document.getElementById('sidebar');
+    const collapseToggle = document.getElementById('collapseToggle');
+
+    collapseToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+    });
+
+    // --- Sub sidebar toggle ---
+    const subSidebar = document.getElementById('subSidebar');
+    const subToggleBtn = document.getElementById('subSidebarToggle');
+
+    subToggleBtn.addEventListener('click', () => {
+        subSidebar.classList.toggle('hidden');
+        subToggleBtn.classList.toggle('active');
+    });
+
+    // Sub sidebar item click
+    document.querySelectorAll('.sub-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.sub-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+        });
+    });
+
+    // --- View switch ---
+    function switchView(view) {
+        const kanbanBoard = document.getElementById('kanbanBoard');
+        const tableView = document.getElementById('tableView');
+        const btnKanban = document.getElementById('viewKanban');
+        const btnTable = document.getElementById('viewTable');
+
+        if (view === 'kanban') {
+            kanbanBoard.style.display = 'flex';
+            tableView.classList.remove('active');
+            btnKanban.classList.add('active');
+            btnTable.classList.remove('active');
+        } else {
+            kanbanBoard.style.display = 'none';
+            tableView.classList.add('active');
+            btnKanban.classList.remove('active');
+            btnTable.classList.add('active');
+        }
+    }
+
+    // --- Filter dropdown ---
+    function toggleFilterDrop() {
+        document.getElementById('filterDropdown').classList.toggle('open');
+    }
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#filterDropBtn')) {
+            document.getElementById('filterDropdown').classList.remove('open');
+        }
+    });
+
+    // --- Modal ---
+    let currentDragCard = null;
+    let currentDragCol = null;
+
+    function openModal(unitCode, project, price, floor, area, dir, status, saleName, saleInitial, saleColor, legal, rooms, timeAgo, actionType, actionLabel) {
+        document.getElementById('modalUnitCode').textContent = unitCode;
+        document.getElementById('modalProject').textContent = project;
+        document.getElementById('ovUnitCode').textContent = unitCode;
+        document.getElementById('ovProject').textContent = project;
+        document.getElementById('ovFloor').textContent = 'Tầng ' + floor;
+        document.getElementById('ovArea').textContent = area + 'm²';
+        document.getElementById('ovDir').textContent = dir;
+        document.getElementById('ovRooms').textContent = rooms === 'Penthouse' || rooms === 'Studio' ? rooms : rooms.replace('PN','') + ' phòng ngủ';
+        document.getElementById('ovPrice').textContent = price + ' tỷ VNĐ';
+        const pricePerM2 = (parseFloat(price) * 1000 / parseFloat(area)).toFixed(1);
+        document.getElementById('ovPriceM2').textContent = pricePerM2 + ' tr/m²';
+        document.getElementById('ovLegal').textContent = legal;
+        document.getElementById('ovStatus').textContent = status;
+
+        document.getElementById('modalOverlay').classList.add('open');
+        // default to first tab
+        switchTab('tacvu');
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    function closeModalOutside(e) {
+        if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    // --- Tab switching in modal ---
+    function switchTab(tabId) {
+        document.querySelectorAll('.modal-tab').forEach((t, i) => {
+            const ids = ['tacvu','tongquan','thaoluan'];
+            t.classList.toggle('active', ids[i] === tabId);
+        });
+        document.querySelectorAll('.tab-pane').forEach(p => {
+            p.classList.toggle('active', p.id === 'tab-' + tabId);
+        });
+    }
+
+    // --- Drag & Drop ---
+    function onDragStart(event, card, colId) {
+        currentDragCard = card;
+        currentDragCol = colId;
+        event.dataTransfer.setData('text/plain', colId);
+        setTimeout(() => card.classList.add('dragging'), 0);
+    }
+
+    function onDragOver(event) {
+        event.preventDefault();
+        const colCards = event.currentTarget.querySelector('.col-drop-zone');
+        if (colCards) colCards.classList.add('over');
+    }
+
+    function onDrop(event, targetColId) {
+        event.preventDefault();
+        const col = document.getElementById(event.currentTarget.id);
+        if (col) col.querySelector('.col-drop-zone').classList.remove('over');
+
+        if (!currentDragCard || currentDragCol === targetColId) {
+            if (currentDragCard) currentDragCard.classList.remove('dragging');
+            return;
+        }
+
+        const targetCards = document.getElementById('cards-' + targetColId.replace('col-',''));
+        targetCards.appendChild(currentDragCard);
+        currentDragCard.classList.remove('dragging');
+
+        updateCount(currentDragCol);
+        updateCount(targetColId);
+
+        currentDragCard = null;
+        currentDragCol = null;
+    }
+
+    document.addEventListener('dragend', () => {
+        document.querySelectorAll('.col-drop-zone').forEach(z => z.classList.remove('over'));
+        if (currentDragCard) {
+            currentDragCard.classList.remove('dragging');
+            currentDragCard = null;
+        }
+    });
+
+    function updateCount(colId) {
+        const colKey = colId.replace('col-','');
+        const colMap = {
+            'san-sang': 'cnt-san-sang',
+            'giu-cho': 'cnt-giu-cho',
+            'dat-coc': 'cnt-dat-coc',
+            'ky-hd': 'cnt-ky-hd',
+            'da-ban': 'cnt-da-ban',
+            'khoa': 'cnt-khoa'
+        };
+        const cardsEl = document.getElementById('cards-' + colKey);
+        const countEl = document.getElementById(colMap[colKey]);
+        if (cardsEl && countEl) {
+            countEl.textContent = cardsEl.querySelectorAll('.apt-card').length;
+        }
+    }
+
+    // Stop card click propagation from drag
+    document.querySelectorAll('.apt-card').forEach(card => {
+        card.addEventListener('dragstart', e => e.stopPropagation());
+    });
+</script>
+</body>
+</html>
