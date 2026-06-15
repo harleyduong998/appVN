@@ -1058,7 +1058,8 @@
             display: block;
         }
 
-        .board.hidden {
+        .board.hidden,
+        #boardsContainer.hidden {
             display: none !important;
         }
 
@@ -1370,26 +1371,26 @@
                     <i class="fa-solid fa-chevron-down" style="font-size: 9px; transition: transform 0.2s;"></i> Khác
                 </div>
                 <div class="tree-list" style="padding-left: 0;">
-                    <div class="funnel-item" onclick="changeFunnel('khach_chua_dung', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
-                        <span style="flex: 1;">Khách chưa từng dùng Smax</span>
+                    <div class="funnel-item" onclick="changeFunnel('bds', this); showBoardForFunnel('bds')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Bất động sản</span>
                     </div>
-                    <div class="funnel-item" onclick="changeFunnel('data_am', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
-                        <span style="flex: 1;">Data Ấm</span>
+                    <div class="funnel-item" onclick="changeFunnel('lam_dep', this); showBoardForFunnel('lam_dep')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Dịch vụ - làm đẹp</span>
                     </div>
-                    <div class="funnel-item" onclick="changeFunnel('data_nong', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
-                        <span style="flex: 1;">Data Nóng</span>
+                    <div class="funnel-item" onclick="changeFunnel('khoa_hoc', this); showBoardForFunnel('khoa_hoc')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Khóa học sự kiện</span>
                     </div>
-                    <div class="funnel-item" onclick="changeFunnel('can_tai_ban', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
-                        <span style="flex: 1;">Cần tái bán</span>
+                    <div class="funnel-item" onclick="changeFunnel('tour', this); showBoardForFunnel('tour')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Quản lý Tour</span>
                     </div>
-                    <div class="funnel-item" onclick="changeFunnel('landipage', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                    <div class="funnel-item" onclick="changeFunnel('landipage', this); showBoardForFunnel('ban_hang')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
                         <span style="flex: 1;">LandiPage</span>
                     </div>
-                    <div class="funnel-item" onclick="changeFunnel('facebook', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                    <div class="funnel-item" onclick="changeFunnel('facebook', this); showBoardForFunnel('ban_hang')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
                         <span style="flex: 1;">Facebook</span>
                     </div>
-                    <div class="funnel-item" onclick="changeFunnel('khac', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
-                        <span style="flex: 1;">Khác</span>
+                    <div class="funnel-item" onclick="changeFunnel('khac', this); showBoardForFunnel('ban_hang')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s;">
+                        <span style="flex: 1;">Data Nóng</span>
                     </div>
                 </div>
             </div>
@@ -1400,11 +1401,11 @@
                     <i class="fa-solid fa-chevron-down" style="font-size: 9px; transition: transform 0.2s;"></i> Phễu tự do
                 </div>
                 <div class="tree-list" style="padding-left: 0;">
-                    <div class="funnel-item active-funnel" onclick="changeFunnel('su_kien_lead', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #1e3a8a; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s; background: #e0f0ff; border-left: 3px solid #3b82f6;">
-                        <span style="flex: 1;">Phễu Sự kiện Lead</span>
+                    <div class="funnel-item active-funnel" onclick="changeFunnel('su_kien_lead', this); showBoardForFunnel('ban_hang')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #1e3a8a; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s; background: #e0f0ff; border-left: 3px solid #3b82f6;">
+                        <span style="flex: 1;">Cần tái bán</span>
                     </div>
-                    <div class="funnel-item" onclick="changeFunnel('ban_hang_online', this)" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s; border-left: 3px solid transparent;">
-                        <span style="flex: 1;">Phễu Bán Hàng Online</span>
+                    <div class="funnel-item" onclick="changeFunnel('ban_hang_online', this); showBoardForFunnel('ban_hang')" style="padding: 7px 15px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; border-radius: 0; display: flex; align-items: center; gap: 8px; transition: background 0.15s; border-left: 3px solid transparent;">
+                        <span style="flex: 1;">Khách hàng sắp rời bỏ</span>
                     </div>
                 </div>
             </div>
@@ -1487,11 +1488,49 @@
 
             <!-- Board: BĐS -->
             <div class="board" id="board-bds" style="display: none;">
-                <div class="board-column col-blue"><div class="column-header"><div class="column-title"><div class="dot dot-blue"></div>Tiềm năng <span class="count text-blue">20</span></div></div><div class="column-cards" onclick="openLeadDetail(this, 'bds')"><div class="card"><div class="card-name">Nhà đầu tư X</div><div class="card-tags"><span class="tag tag-yellow" style="background:#fefce8; color:#eab308;">Vinhome</span></div></div></div></div>
-                <div class="board-column col-orange"><div class="column-header"><div class="column-title"><div class="dot dot-orange"></div>Hẹn xem nhà <span class="count text-orange">5</span></div></div></div>
-                <div class="board-column col-yellow" style="background:#fefce8;"><div class="column-header"><div class="column-title"><div class="dot" style="background:#eab308;"></div>Đặt cọc <span class="count text-yellow" style="color:#eab308;">2</span></div></div></div>
-                <div class="board-column col-teal"><div class="column-header"><div class="column-title"><div class="dot dot-teal"></div>Làm thủ tục <span class="count text-teal">1</span></div></div></div>
-                <div class="board-column col-green"><div class="column-header"><div class="column-title"><div class="dot dot-green"></div>Bàn giao <span class="count text-green">10</span></div></div></div>
+                <!-- 1. Lead mới -->
+                <div class="board-column col-blue">
+                    <div class="column-header"><div class="column-title"><div class="dot dot-blue"></div>Lead mới <span class="count text-blue">2</span></div></div>
+                    <div class="column-cards" onclick="openLeadDetail(this, 'bds')">
+                        <div class="card"><div class="card-name">Nguyễn Thị Bảo Châu</div><div class="card-tags"><span class="tag tag-blue">Vinhomes Ocean Park</span></div></div>
+                        <div class="card"><div class="card-name">Trần Minh Khoa</div><div class="card-tags"><span class="tag tag-blue">The Matrix One</span></div></div>
+                    </div>
+                </div>
+                <!-- 2. Đã liên hệ -->
+                <div class="board-column col-orange">
+                    <div class="column-header"><div class="column-title"><div class="dot dot-orange"></div>Đã liên hệ <span class="count text-orange">1</span></div></div>
+                    <div class="column-cards" onclick="openLeadDetail(this, 'bds')">
+                        <div class="card"><div class="card-name">Lê Phương Linh</div><div class="card-tags"><span class="tag tag-yellow">Masteri</span></div></div>
+                    </div>
+                </div>
+                <!-- 3. Đặt lịch hẹn -->
+                <div class="board-column" style="background:#f3e8ff;">
+                    <div class="column-header"><div class="column-title"><div class="dot" style="background:#9333ea;"></div>Đặt lịch hẹn <span class="count" style="color:#9333ea;">1</span></div></div>
+                    <div class="column-cards" onclick="openLeadDetail(this, 'bds')">
+                        <div class="card"><div class="card-name">Phạm Quốc Bảo</div><div class="card-tags"><span class="tag tag-blue">Vinhomes Ocean Park</span></div></div>
+                    </div>
+                </div>
+                <!-- 4. Xem thực tế -->
+                <div class="board-column col-teal">
+                    <div class="column-header"><div class="column-title"><div class="dot dot-teal"></div>Xem thực tế <span class="count text-teal">1</span></div></div>
+                    <div class="column-cards" onclick="openLeadDetail(this, 'bds')">
+                        <div class="card"><div class="card-name">Vũ Thanh Tùng</div><div class="card-tags"><span class="tag tag-green">Masteri</span></div></div>
+                    </div>
+                </div>
+                <!-- 5. Đặt cọc -->
+                <div class="board-column col-yellow" style="background:#fefce8;">
+                    <div class="column-header"><div class="column-title"><div class="dot" style="background:#eab308;"></div>Đặt cọc <span class="count" style="color:#eab308;">1</span></div></div>
+                    <div class="column-cards" onclick="openLeadDetail(this, 'bds')">
+                        <div class="card"><div class="card-name">Đinh Thị Mai</div><div class="card-tags"><span class="tag tag-yellow">The Matrix One</span></div></div>
+                    </div>
+                </div>
+                <!-- 6. Hoàn tất -->
+                <div class="board-column col-green">
+                    <div class="column-header"><div class="column-title"><div class="dot dot-green"></div>Hoàn tất <span class="count text-green">1</span></div></div>
+                    <div class="column-cards" onclick="openLeadDetail(this, 'bds')">
+                        <div class="card"><div class="card-name">Hoàng Gia Huy</div><div class="card-tags"><span class="tag tag-green">Vinhomes Ocean Park</span></div></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -2128,11 +2167,11 @@
                             <span style="font-size: 11px; color: #9ca3af;">Phễu:</span>
                             <span style="font-size: 12px; font-weight: 600; color: #ef4444; letter-spacing: 0.2px;">LEAD CHĂM SÓC LẠI</span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
+                        <div class="lead-info-detail" style="display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 11px; color: #9ca3af;">Nguồn lead:</span>
                             <span style="font-size: 12px; color: #374151; display: flex; align-items: center; gap: 4px;">Nguồn đơn <i class="fa-solid fa-grip-dots" style="color: #9ca3af; font-size: 10px;"></i></span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
+                        <div class="lead-info-detail" style="display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 11px; color: #9ca3af;">Chi nhánh:</span>
                             <span style="font-size: 12px; color: #374151; display: flex; align-items: center; gap: 4px;">Smax Demo <i class="fa-solid fa-chevron-down" style="font-size: 9px; color: #9ca3af;"></i></span>
                         </div>
@@ -2142,10 +2181,12 @@
                             <button style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 12px; color: #374151; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-phone"></i></button>
                             <button style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 12px; color: #374151; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-bullhorn"></i></button>
                             <button style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 12px; color: #374151; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-table-cells"></i></button>
+                            <!-- Toggle thu gọn / mở rộng khối thông tin -->
+                            <button id="leadInfoToggleBtn" onclick="toggleLeadInfo()" title="Thu gọn thông tin" style="width: 24px; height: 24px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 11px; color: #6b7280; display: flex; align-items: center; justify-content: center; margin-left: 4px;"><i class="fa-solid fa-chevron-up" id="leadInfoToggleIcon"></i></button>
                         </div>
                     </div>
                     <!-- Tags row -->
-                    <div style="padding: 6px 18px; border-bottom: 1px solid #e5e7eb; background: white; display: flex; align-items: center; gap: 6px;">
+                    <div class="lead-info-detail" style="padding: 6px 18px; border-bottom: 1px solid #e5e7eb; background: white; display: flex; align-items: center; gap: 6px;">
                         <span style="font-size: 11px; color: #9ca3af;">Thẻ tag:</span>
                         <span style="font-size: 12px; color: #9ca3af;">-</span>
                     </div>
@@ -2630,6 +2671,23 @@
             document.getElementById('leadDetailModal').classList.remove('active');
         }
 
+        // Trạng thái thu gọn khối thông tin lead (mặc định: mở rộng)
+        let leadInfoCollapsed = false;
+        function toggleLeadInfo() {
+            leadInfoCollapsed = !leadInfoCollapsed;
+            // Ẩn/hiện các phần chi tiết: Nguồn lead, Chi nhánh, hàng Thẻ tag
+            document.querySelectorAll('#leadDetailModal .lead-info-detail').forEach(el => {
+                el.style.display = leadInfoCollapsed ? 'none' : 'flex';
+            });
+            const icon = document.getElementById('leadInfoToggleIcon');
+            const btn = document.getElementById('leadInfoToggleBtn');
+            if (icon) {
+                icon.classList.toggle('fa-chevron-up', !leadInfoCollapsed);
+                icon.classList.toggle('fa-chevron-down', leadInfoCollapsed);
+            }
+            if (btn) btn.title = leadInfoCollapsed ? 'Mở rộng thông tin' : 'Thu gọn thông tin';
+        }
+
         function switchLeadTab(tab, btn) {
             ['tacvu','tongquan','thaoluan'].forEach(t => {
                 const c = document.getElementById('lead-content-' + t);
@@ -2657,7 +2715,7 @@
         }
 
         function switchView(view) {
-            const boardView = document.getElementById('boardView');
+            const boardView = document.getElementById('boardsContainer');
             const tableView = document.getElementById('tableView');
             const btnBoard = document.getElementById('btnBoardView');
             const btnTable = document.getElementById('btnTableView');
@@ -2715,23 +2773,15 @@
             currentIndustry = industry;
         }
 
-        // Override openLeadDetail to show correct 360 info
-        const originalOpenLeadDetail = openLeadDetail;
-        openLeadDetail = function(elem, industryOverride) {
-            originalOpenLeadDetail(elem); // Ensure name and avatar are populated
-
-            let ind = industryOverride || currentIndustry;
-            
-            // Hide all 360 views
-            document.querySelectorAll('.industry-360').forEach(el => el.style.display = 'none');
-            
-            // Show the correct 360 view
-            const target360 = document.getElementById('360-' + ind);
-            if(target360) target360.style.display = 'block';
-
-            // Show modal
-            document.getElementById('leadDetailModal').classList.add('active');
-        };
+        // Đổi board hiển thị theo phễu được chọn ở sub-sidebar trái.
+        // Ẩn tất cả .board trong #boardsContainer rồi hiện board tương ứng.
+        function showBoardForFunnel(industry) {
+            const target = document.getElementById('board-' + industry);
+            if (!target) return;
+            document.querySelectorAll('#boardsContainer .board').forEach(board => board.style.display = 'none');
+            target.style.display = 'flex';
+            currentIndustry = industry;
+        }
 
 
 
