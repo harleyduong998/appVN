@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Khóa học & Học viên - CRM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --royal: #2545d3;
+      --royal-dark: #1b3aa8;
+      --border: #e5e7eb;
+      --text: #1f2937;
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { display: flex; height: 100vh; overflow: hidden; background: #f7f8fa; color: var(--text); }
+
+    /* ===== SIDEBAR (white) ===== */
+    #sidebar {
+      width: 240px; min-width: 240px; background: #ffffff; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; position: relative; transition: width .25s, min-width .25s; overflow: hidden; z-index: 100;
+    }
+    #sidebar.collapsed { width: 64px; min-width: 64px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 18px 20px 14px; border-bottom: 1px solid #f1f2f4; }
+    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--royal), var(--royal-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
+    .sidebar-logo .logo-text { font-size: 17px; font-weight: 700; color: var(--royal-dark); white-space: nowrap; }
+    #sidebar.collapsed .logo-text { display: none; }
+    .sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 0; }
+    .sidebar-nav::-webkit-scrollbar { width: 4px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .nav-group-title { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: .5px; padding: 10px 20px 4px; white-space: nowrap; overflow: hidden; font-weight: 600; }
+    #sidebar.collapsed .nav-group-title { padding: 10px 0 4px; text-align: center; font-size: 8px; letter-spacing: 0; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 20px; font-size: 14px; color: #374151; cursor: pointer; text-decoration: none; border-left: 3px solid transparent; transition: all .15s; white-space: nowrap; }
+    .nav-item:hover { color: var(--royal-dark); background: #eef2ff; border-left-color: #93a7ee; }
+    .nav-item.active { color: var(--royal-dark); background: #e8edff; border-left-color: var(--royal); font-weight: 600; }
+    .nav-item i { width: 18px; text-align: center; font-size: 15px; flex-shrink: 0; color: #9ca3af; }
+    .nav-item:hover i, .nav-item.active i { color: var(--royal); }
+    .nav-item span { white-space: nowrap; overflow: hidden; }
+    #sidebar.collapsed .nav-item { padding: 9px 0; justify-content: center; gap: 0; }
+    #sidebar.collapsed .nav-item span { display: none; }
+    .sidebar-toggle-btn {
+      position: absolute; right: -14px; bottom: 80px; width: 28px; height: 28px;
+      background: #fff; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 101; color: var(--muted); font-size: 11px; box-shadow: 0 1px 4px rgba(0,0,0,.1); transition: all .2s;
+    }
+    .sidebar-toggle-btn:hover { background: #eef2ff; }
+    #sidebar.collapsed .sidebar-toggle-btn i { transform: rotate(180deg); }
+    .sidebar-bottom { padding: 12px 16px; border-top: 1px solid #f1f2f4; display: flex; align-items: center; gap: 10px; }
+    .sidebar-bottom img { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-bottom .user-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .sidebar-bottom .user-role { font-size: 11px; color: var(--muted); white-space: nowrap; }
+    #sidebar.collapsed .sidebar-bottom { padding: 12px 0; justify-content: center; }
+    #sidebar.collapsed .user-info { display: none; }
+
+    /* ===== SUB SIDEBAR (white) ===== */
+    #subSidebar {
+      width: 220px; min-width: 220px; background: #ffffff; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; transition: width .25s, min-width .25s; overflow: hidden; z-index: 99;
+    }
+    #subSidebar.collapsed { width: 0; min-width: 0; }
+    .sub-sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px 10px; border-bottom: 1px solid #f1f2f4; }
+    .sub-sidebar-title { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .sub-sidebar-add { width: 22px; height: 22px; border-radius: 6px; background: #eef2ff; color: var(--royal); border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .sub-search { padding: 8px 12px; border-bottom: 1px solid #f1f2f4; }
+    .sub-search-wrap { position: relative; }
+    .sub-search-wrap input { width: 100%; background: #f3f4f6; border: none; border-radius: 6px; padding: 6px 10px 6px 28px; font-size: 12px; color: #374151; outline: none; }
+    .sub-search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 11px; }
+    .sub-sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
+    .sub-sidebar-nav::-webkit-scrollbar { width: 3px; }
+    .sub-sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; }
+    .sub-group-title { font-size: 10px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .6px; padding: 6px 15px; }
+    .cat-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 15px; font-size: 13px; color: #374151; cursor: pointer; border-left: 3px solid transparent; transition: all .12s; }
+    .cat-item:hover { background: #f7f8fa; }
+    .cat-item.active { background: #e8edff; border-left-color: var(--royal); color: var(--royal-dark); font-weight: 600; }
+    .cat-left { display: flex; align-items: center; gap: 9px; }
+    .cat-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+    .cat-count { font-size: 10px; background: #f1f2f4; color: #6b7280; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+    .cat-item.active .cat-count { background: #d4ddff; color: var(--royal-dark); }
+
+    /* ===== MAIN ===== */
+    #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .top-header { height: 60px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+    .top-header-left h1 { font-size: 18px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+    .top-header-left h1 i { color: var(--royal); }
+    .top-header-right { display: flex; align-items: center; gap: 10px; }
+    .icon-btn { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); font-size: 15px; transition: all .15s; }
+    .icon-btn:hover { background: #f3f4f6; color: #374151; }
+    .btn-primary { background: var(--royal); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background .15s; }
+    .btn-primary:hover { background: var(--royal-dark); }
+
+    /* ===== TOOLBAR ===== */
+    .toolbar { padding: 10px 20px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn-outline { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .15s; }
+    .btn-outline:hover { background: #f7f8fa; border-color: #d1d5db; }
+    .btn-outline.green { color: #15803d; border-color: #bbf7d0; }
+    .btn-outline.green:hover { background: #f0fdf4; }
+    .date-pick { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; }
+    .date-pick i { color: var(--royal); font-size: 13px; }
+    .search-wrap { position: relative; }
+    .search-wrap input { background: #f3f4f6; border: none; border-radius: 8px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 190px; }
+    .search-wrap input:focus { background: #fff; box-shadow: 0 0 0 2px #bfd0ff; }
+    .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 13px; }
+    .filter-field { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 12px; }
+    .filter-field label { color: #9ca3af; font-size: 11px; }
+    .filter-field select { border: none; background: none; outline: none; font-size: 12px; font-weight: 600; color: var(--royal-dark); cursor: pointer; }
+
+    /* ===== VIEW SWITCH ===== */
+    .view-switch { display: flex; background: #f1f2f4; border-radius: 8px; padding: 3px; gap: 2px; }
+    .view-btn { padding: 6px 14px; border-radius: 6px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; color: #6b7280; background: transparent; display: flex; align-items: center; gap: 5px; transition: all .15s; }
+    .view-btn.active { background: #fff; color: var(--royal-dark); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+    /* ===== KANBAN ===== */
+    #kanbanView { flex: 1; display: flex; gap: 14px; padding: 16px 20px 20px; overflow-x: auto; }
+    #kanbanView::-webkit-scrollbar { height: 7px; }
+    #kanbanView::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .kanban-col { min-width: 280px; max-width: 280px; background: #f1f3f7; border-radius: 12px; display: flex; flex-direction: column; padding: 12px 10px; max-height: 100%; }
+    .col-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
+    .col-head-left { display: flex; align-items: center; gap: 7px; }
+    .col-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .col-name { font-size: 13px; font-weight: 700; color: #1f2937; }
+    .col-count { font-size: 11px; font-weight: 600; background: rgba(0,0,0,.07); padding: 2px 7px; border-radius: 10px; color: #374151; }
+    .col-cards { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 2px; }
+    .col-cards::-webkit-scrollbar { width: 3px; }
+    .col-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+    .scard { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: box-shadow .15s, transform .15s; border: 1px solid transparent; }
+    .scard:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); border-color: #dbe3ff; }
+    .scard.dragging { opacity: .5; }
+    .scard-top { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+    .scard-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .scard-name { font-size: 13px; font-weight: 700; color: #1f2937; }
+    .scard-course { font-size: 11px; color: var(--royal); font-weight: 600; margin-top: 1px; }
+    .scard-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #6b7280; margin-bottom: 6px; }
+    .scard-row i { font-size: 10px; color: #9ca3af; width: 12px; text-align: center; }
+    .prog-wrap { margin: 8px 0; }
+    .prog-label { display: flex; justify-content: space-between; font-size: 10px; color: #6b7280; margin-bottom: 3px; font-weight: 600; }
+    .prog-bar { height: 5px; background: #eef0f3; border-radius: 3px; overflow: hidden; }
+    .prog-fill { height: 100%; background: linear-gradient(90deg, var(--royal), #4f6ef0); border-radius: 3px; }
+    .scard-foot { display: flex; align-items: center; gap: 6px; padding-top: 8px; border-top: 1px solid #f1f2f4; font-size: 11px; color: #4b5563; }
+    .scard-foot i { color: var(--royal); font-size: 11px; }
+
+    /* ===== TABLE ===== */
+    #tableView { flex: 1; padding: 16px 20px 20px; overflow: auto; display: none; }
+    #tableView.active { display: block; }
+    #kanbanView.hidden { display: none; }
+    .table-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); overflow: hidden; }
+    .table-summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid #f1f2f4; flex-wrap: wrap; gap: 10px; }
+    .summary-stat { font-size: 12px; color: #6b7280; }
+    .summary-stat b { font-size: 15px; font-weight: 700; color: var(--royal-dark); }
+    .table-scroll { overflow-x: auto; }
+    .table-scroll::-webkit-scrollbar { height: 8px; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 1080px; }
+    .data-table thead th { padding: 12px 16px; font-size: 11px; font-weight: 700; color: #6b7280; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; background: #f9fafb; text-transform: uppercase; letter-spacing: .4px; position: sticky; top: 0; z-index: 2; }
+    .data-table thead th.center { text-align: center; }
+    .data-table tbody td { padding: 11px 16px; font-size: 13px; color: #374151; border-bottom: 1px solid #f1f2f4; white-space: nowrap; }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr { cursor: pointer; transition: background .12s; }
+    .data-table tbody tr:hover td { background: #f8fafc; }
+    .cb { width: 15px; height: 15px; accent-color: var(--royal); cursor: pointer; }
+    .stu-cell { display: flex; align-items: center; gap: 10px; }
+    .stu-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .stu-name { font-weight: 600; color: #1f2937; font-size: 13px; }
+    .stu-id { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+    .course-name { font-weight: 600; color: #374151; }
+    .ins-cell { display: flex; align-items: center; gap: 7px; }
+    .ins-cell img { width: 26px; height: 26px; border-radius: 50%; }
+    .ins-cell span { font-size: 12px; color: #4b5563; font-weight: 500; }
+    .sched-cell { font-size: 12px; color: #4b5563; }
+    .sched-cell small { display: block; color: #9ca3af; font-size: 11px; }
+    .tbl-prog { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+    .tbl-prog .prog-bar { flex: 1; }
+    .tbl-prog span { font-size: 11px; font-weight: 700; color: var(--royal-dark); min-width: 34px; }
+    .fee-cell { font-weight: 700; color: #15803d; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .bg-blue { background: #dbeafe; color: #1d4ed8; } .bg-blue::before { background: #3b82f6; }
+    .bg-green { background: #dcfce7; color: #15803d; } .bg-green::before { background: #22c55e; }
+    .bg-amber { background: #fef3c7; color: #b45309; } .bg-amber::before { background: #f59e0b; }
+    .bg-purple { background: #ede9fe; color: #7c3aed; } .bg-purple::before { background: #9333ea; }
+    .bg-teal { background: #ccfbf1; color: #0f766e; } .bg-teal::before { background: #14b8a6; }
+    .row-actions { display: flex; align-items: center; gap: 4px; justify-content: center; }
+    .row-act { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; color: #9ca3af; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .row-act:hover { background: #f1f2f4; color: #374151; }
+    .row-act.blue:hover { background: #eef2ff; color: var(--royal); }
+    .row-act.red:hover { background: #fee2e2; color: #b91c1c; }
+    .table-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-top: 1px solid #f1f2f4; flex-wrap: wrap; gap: 10px; }
+    .ftr-info { font-size: 12px; color: #6b7280; }
+    .pagination { display: flex; align-items: center; gap: 4px; }
+    .pg-btn { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid var(--border); background: #fff; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 500; color: #374151; display: flex; align-items: center; justify-content: center; }
+    .pg-btn:hover { background: #f7f8fa; }
+    .pg-btn.active { background: var(--royal); color: #fff; border-color: var(--royal); }
+    .pg-btn:disabled { opacity: .4; cursor: default; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1e293b; color: #fff; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.2); display: flex; align-items: center; gap: 8px; opacity: 0; transition: all .3s; z-index: 300; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast i { color: #4ade80; }
+    @media (max-width: 1100px) { #subSidebar { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+    <span class="logo-text">AppVN CRM</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-title">Bán hàng &amp; CRM</div>
+    <a href="Customer.html" class="nav-item"><i class="fa-solid fa-user-tag"></i><span>Khách hàng</span></a>
+    <a href="Lead.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i><span>Leads</span></a>
+    <a href="Task.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>Task</span></a>
+    <a href="Order.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Đơn hàng</span></a>
+    <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
+    <a href="Course.html" class="nav-item active"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
+    <a href="BeautyService.html" class="nav-item"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+    <a href="Tour.html" class="nav-item"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
+    <a href="Land2.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
+    <div class="nav-group-title">Vận hành &amp; Dịch vụ</div>
+    <a href="Project.html" class="nav-item"><i class="fa-solid fa-diagram-project"></i><span>Dự Án</span></a>
+    <div class="nav-group-title">Quản trị &amp; Marketing</div>
+    <a href="Marketing.html" class="nav-item"><i class="fa-solid fa-bullhorn"></i><span>Marketing</span></a>
+    <a href="Meta.html" class="nav-item"><i class="fa-brands fa-meta"></i><span>Meta</span></a>
+    <a href="Staff.html" class="nav-item"><i class="fa-solid fa-id-badge"></i><span>Nhân viên</span></a>
+    <a href="Finan.html" class="nav-item"><i class="fa-solid fa-sack-dollar"></i><span>Tài Chính</span></a>
+  </nav>
+  <button class="sidebar-toggle-btn" id="toggleSidebarBtn"><i class="fa-solid fa-chevron-left"></i></button>
+  <div class="sidebar-bottom">
+    <img src="https://i.pravatar.cc/150?img=11" alt="avatar">
+    <div class="user-info">
+      <div class="user-name">Phan Hiếu</div>
+      <div class="user-role">Quản trị viên</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUB SIDEBAR -->
+<div id="subSidebar">
+  <div class="sub-sidebar-header">
+    <span class="sub-sidebar-title">Danh mục khóa học</span>
+    <button class="sub-sidebar-add"><i class="fa-solid fa-plus"></i></button>
+  </div>
+  <div class="sub-search">
+    <div class="sub-search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="catSearch" placeholder="Tìm danh mục..." oninput="filterCats(this.value)">
+    </div>
+  </div>
+  <div class="sub-sidebar-nav" id="catList">
+    <div class="sub-group-title">Tất cả khóa học</div>
+    <div class="cat-item active" onclick="selectCat(this,'Tất cả')"><div class="cat-left"><span class="cat-dot" style="background:var(--royal)"></span><span>Tất cả khóa học</span></div><span class="cat-count">126</span></div>
+    <div class="sub-group-title">Theo lĩnh vực</div>
+    <div class="cat-item" onclick="selectCat(this,'Marketing')"><div class="cat-left"><span class="cat-dot" style="background:#f59e0b"></span><span>Marketing</span></div><span class="cat-count">38</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Lập trình')"><div class="cat-left"><span class="cat-dot" style="background:#3b82f6"></span><span>Lập trình (Coding)</span></div><span class="cat-count">45</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Thiết kế')"><div class="cat-left"><span class="cat-dot" style="background:#9333ea"></span><span>Thiết kế (Design)</span></div><span class="cat-count">22</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Kinh doanh')"><div class="cat-left"><span class="cat-dot" style="background:#14b8a6"></span><span>Kinh doanh</span></div><span class="cat-count">14</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Ngoại ngữ')"><div class="cat-left"><span class="cat-dot" style="background:#ec4899"></span><span>Ngoại ngữ</span></div><span class="cat-count">7</span></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="mainContent">
+  <div class="top-header">
+    <div class="top-header-left"><h1><i class="fa-solid fa-graduation-cap"></i>Khóa học &amp; Học viên</h1></div>
+    <div class="top-header-right">
+      <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
+      <button class="btn-primary" onclick="showToast('Mở form ghi danh học viên mới')"><i class="fa-solid fa-user-plus"></i> Ghi danh</button>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Danh mục</button>
+      <div class="date-pick" onclick="showToast('Mở lịch chọn ngày')"><i class="fa-regular fa-calendar"></i> Tháng 06/2026</div>
+      <div class="view-switch">
+        <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
+        <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search" placeholder="Tìm học viên / khóa học..." oninput="applyFilters()">
+      </div>
+      <div class="filter-field">
+        <label>Giảng viên</label>
+        <select id="insFilter" onchange="applyFilters()">
+          <option value="">Tất cả</option>
+          <option value="Lê Quang Vinh">Lê Quang Vinh</option>
+          <option value="Trần Thu Hương">Trần Thu Hương</option>
+          <option value="Nguyễn Đức Anh">Nguyễn Đức Anh</option>
+          <option value="Phạm Mai Chi">Phạm Mai Chi</option>
+        </select>
+      </div>
+      <button class="btn-outline green" onclick="exportExcel()"><i class="fa-solid fa-file-export"></i> Xuất Excel</button>
+    </div>
+  </div>
+
+  <!-- KANBAN VIEW -->
+  <div id="kanbanView"></div>
+
+  <!-- TABLE VIEW -->
+  <div id="tableView">
+    <div class="table-card">
+      <div class="table-summary">
+        <div class="summary-stat">Tổng học viên: <b id="stTotal">0</b></div>
+        <div class="summary-stat" id="stVisible"></div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
+              <th>Học viên</th>
+              <th>Khóa học</th>
+              <th>Giảng viên</th>
+              <th>Lịch học</th>
+              <th>Tiến độ</th>
+              <th style="text-align:right;">Học phí</th>
+              <th class="center">Trạng thái</th>
+              <th class="center" style="width:96px;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <div class="ftr-info" id="ftrInfo"></div>
+        <div class="pagination">
+          <button class="pg-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn">2</button>
+          <button class="pg-btn">3</button>
+          <button class="pg-btn">…</button>
+          <button class="pg-btn">11</button>
+          <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg"></span></div>
+
+<script>
+  const STAGES = [
+    { key:'new',      name:'Mới ghi danh',  dot:'#3b82f6', badge:'bg-blue' },
+    { key:'active',   name:'Đang học',      dot:'#22c55e', badge:'bg-green' },
+    { key:'hold',     name:'Tạm hoãn',      dot:'#f59e0b', badge:'bg-amber' },
+    { key:'done',     name:'Hoàn thành',    dot:'#9333ea', badge:'bg-purple' },
+    { key:'grad',     name:'Tốt nghiệp',    dot:'#14b8a6', badge:'bg-teal' }
+  ];
+  const STAGE_LABEL = { new:'Mới ghi danh', active:'Đang học', hold:'Tạm hoãn', done:'Hoàn thành', grad:'Tốt nghiệp' };
+  const STAGE_BADGE = { new:'bg-blue', active:'bg-green', hold:'bg-amber', done:'bg-purple', grad:'bg-teal' };
+
+  const students = [
+    { img:'https://i.pravatar.cc/150?img=32', name:'Nguyễn Thị Bảo Châu', id:'HV2401', course:'Digital Marketing Pro', ins:'Trần Thu Hương', insImg:'https://i.pravatar.cc/150?img=5', sched:'T2-4-6 · 19:00', next:'Thứ 4, 19:00', done:2, total:12, fee:'5.900.000đ', stage:'new' },
+    { img:'https://i.pravatar.cc/150?img=12', name:'Lê Hoàng Anh', id:'HV2402', course:'Lập trình Web Fullstack', ins:'Nguyễn Đức Anh', insImg:'https://i.pravatar.cc/150?img=15', sched:'T3-5 · 18:30', next:'Thứ 5, 18:30', done:1, total:24, fee:'12.000.000đ', stage:'new' },
+    { img:'https://i.pravatar.cc/150?img=45', name:'Trần Mỹ Linh', id:'HV2310', course:'UI/UX Design Cơ bản', ins:'Phạm Mai Chi', insImg:'https://i.pravatar.cc/150?img=9', sched:'T7-CN · 09:00', next:'Thứ 7, 09:00', done:5, total:12, fee:'7.500.000đ', stage:'active' },
+    { img:'https://i.pravatar.cc/150?img=25', name:'Vũ Khánh Vy', id:'HV2311', course:'Digital Marketing Pro', ins:'Trần Thu Hương', insImg:'https://i.pravatar.cc/150?img=5', sched:'T2-4-6 · 19:00', next:'Thứ 6, 19:00', done:8, total:12, fee:'5.900.000đ', stage:'active' },
+    { img:'https://i.pravatar.cc/150?img=33', name:'Đỗ Quỳnh Như', id:'HV2312', course:'Python cho người mới', ins:'Lê Quang Vinh', insImg:'https://i.pravatar.cc/150?img=51', sched:'T3-5 · 20:00', next:'Thứ 3, 20:00', done:6, total:16, fee:'4.500.000đ', stage:'active' },
+    { img:'https://i.pravatar.cc/150?img=48', name:'Phạm Thu Trang', id:'HV2208', course:'UI/UX Design Cơ bản', ins:'Phạm Mai Chi', insImg:'https://i.pravatar.cc/150?img=9', sched:'T7-CN · 14:00', next:'Tạm hoãn', done:4, total:12, fee:'7.500.000đ', stage:'hold' },
+    { img:'https://i.pravatar.cc/150?img=15', name:'Bùi Minh Tuấn', id:'HV2209', course:'Lập trình Web Fullstack', ins:'Nguyễn Đức Anh', insImg:'https://i.pravatar.cc/150?img=15', sched:'T3-5 · 18:30', next:'Tạm hoãn', done:10, total:24, fee:'12.000.000đ', stage:'hold' },
+    { img:'https://i.pravatar.cc/150?img=5',  name:'Hoàng Lan Phương', id:'HV2105', course:'Digital Marketing Pro', ins:'Trần Thu Hương', insImg:'https://i.pravatar.cc/150?img=5', sched:'Đã kết thúc', next:'—', done:12, total:12, fee:'5.900.000đ', stage:'done' },
+    { img:'https://i.pravatar.cc/150?img=60', name:'Lý Thị Cẩm Tú', id:'HV2106', course:'Python cho người mới', ins:'Lê Quang Vinh', insImg:'https://i.pravatar.cc/150?img=51', sched:'Đã kết thúc', next:'—', done:16, total:16, fee:'4.500.000đ', stage:'done' },
+    { img:'https://i.pravatar.cc/150?img=44', name:'Ngô Thị Hồng', id:'HV2001', course:'UI/UX Design Cơ bản', ins:'Phạm Mai Chi', insImg:'https://i.pravatar.cc/150?img=9', sched:'Đã tốt nghiệp', next:'—', done:12, total:12, fee:'7.500.000đ', stage:'grad' },
+    { img:'https://i.pravatar.cc/150?img=20', name:'Đặng Thị Mai', id:'HV2002', course:'Lập trình Web Fullstack', ins:'Nguyễn Đức Anh', insImg:'https://i.pravatar.cc/150?img=15', sched:'Đã tốt nghiệp', next:'—', done:24, total:24, fee:'12.000.000đ', stage:'grad' },
+    { img:'https://i.pravatar.cc/150?img=51', name:'Trương Bích Ngọc', id:'HV2003', course:'Digital Marketing Pro', ins:'Trần Thu Hương', insImg:'https://i.pravatar.cc/150?img=5', sched:'Đã tốt nghiệp', next:'—', done:12, total:12, fee:'5.900.000đ', stage:'grad' },
+  ];
+
+  let filtered = [...students];
+  let currentView = 'kanban';
+
+  function pct(s) { return Math.round(s.done / s.total * 100); }
+
+  /* ===== KANBAN ===== */
+  function renderKanban() {
+    const board = document.getElementById('kanbanView');
+    board.innerHTML = STAGES.map(stg => {
+      const items = filtered.filter(s => s.stage === stg.key);
+      return `
+      <div class="kanban-col" data-stage="${stg.key}" ondragover="event.preventDefault()" ondrop="dropCard(event,'${stg.key}')">
+        <div class="col-head">
+          <div class="col-head-left"><span class="col-dot" style="background:${stg.dot}"></span><span class="col-name">${stg.name}</span></div>
+          <span class="col-count">${items.length}</span>
+        </div>
+        <div class="col-cards">
+          ${items.map(s => `
+            <div class="scard" draggable="true" data-id="${s.id}" ondragstart="dragStart(event,'${s.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở hồ sơ ${s.name}')">
+              <div class="scard-top">
+                <img class="scard-avatar" src="${s.img}" alt="">
+                <div><div class="scard-name">${s.name}</div><div class="scard-course">${s.course}</div></div>
+              </div>
+              <div class="scard-row"><i class="fa-solid fa-chalkboard-user"></i> GV: ${s.ins}</div>
+              <div class="prog-wrap">
+                <div class="prog-label"><span>Tiến độ</span><span>${s.done}/${s.total} buổi</span></div>
+                <div class="prog-bar"><div class="prog-fill" style="width:${pct(s)}%"></div></div>
+              </div>
+              <div class="scard-foot"><i class="fa-regular fa-clock"></i> Buổi tới: ${s.next}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  let dragId = null;
+  function dragStart(e, id) { dragId = id; e.target.classList.add('dragging'); }
+  function dragEnd(e) { e.target.classList.remove('dragging'); }
+  function dropCard(e, stage) {
+    e.preventDefault();
+    const s = students.find(x => x.id === dragId);
+    if (s) { s.stage = stage; applyFilters(); showToast(`Chuyển ${s.name} → ${STAGE_LABEL[stage]}`); }
+  }
+
+  /* ===== TABLE ===== */
+  function renderTable() {
+    const tb = document.getElementById('tableBody');
+    tb.innerHTML = filtered.map(s => `
+      <tr onclick="showToast('Mở hồ sơ ${s.name}')">
+        <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
+        <td><div class="stu-cell"><img class="stu-avatar" src="${s.img}" alt=""><div><div class="stu-name">${s.name}</div><div class="stu-id">${s.id}</div></div></div></td>
+        <td><span class="course-name">${s.course}</span></td>
+        <td><div class="ins-cell"><img src="${s.insImg}" alt=""><span>${s.ins}</span></div></td>
+        <td><div class="sched-cell">${s.sched}<small>Buổi tới: ${s.next}</small></div></td>
+        <td><div class="tbl-prog"><div class="prog-bar"><div class="prog-fill" style="width:${pct(s)}%"></div></div><span>${pct(s)}%</span></div></td>
+        <td style="text-align:right;"><span class="fee-cell">${s.fee}</span></td>
+        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[s.stage]}">${STAGE_LABEL[s.stage]}</span></td>
+        <td onclick="event.stopPropagation()">
+          <div class="row-actions">
+            <button class="row-act blue" title="Xem" onclick="showToast('Xem ${s.name}')"><i class="fa-solid fa-eye"></i></button>
+            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${s.name}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="row-act red" title="Xóa" onclick="showToast('Xóa ${s.name}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`).join('');
+    document.getElementById('stTotal').textContent = students.length;
+    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${students.length} học viên`;
+    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${students.length} học viên`;
+  }
+
+  function render() { renderKanban(); renderTable(); }
+
+  /* ===== VIEW SWITCH ===== */
+  function switchView(v) {
+    currentView = v;
+    document.getElementById('kanbanView').classList.toggle('hidden', v !== 'kanban');
+    document.getElementById('tableView').classList.toggle('active', v === 'table');
+    document.getElementById('vbKanban').classList.toggle('active', v === 'kanban');
+    document.getElementById('vbTable').classList.toggle('active', v === 'table');
+  }
+
+  /* ===== FILTER ===== */
+  function applyFilters() {
+    const q = (document.getElementById('search').value || '').toLowerCase().trim();
+    const ins = document.getElementById('insFilter').value;
+    filtered = students.filter(s => {
+      if (q && !(s.name.toLowerCase().includes(q) || s.course.toLowerCase().includes(q))) return false;
+      if (ins && s.ins !== ins) return false;
+      return true;
+    });
+    render();
+  }
+
+  function selectCat(el, name) {
+    document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    showToast('Lọc theo danh mục: ' + name);
+  }
+  function filterCats(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.cat-item').forEach(i => { i.style.display = i.innerText.toLowerCase().includes(q) ? '' : 'none'; });
+  }
+  function toggleSubSidebar() { document.getElementById('subSidebar').classList.toggle('collapsed'); }
+  function toggleAll(cb) { document.querySelectorAll('.rowcb').forEach(c => c.checked = cb.checked); }
+  function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
+  function exportExcel() { showToast('Đang xuất ' + filtered.length + ' học viên ra file Excel...'); }
+
+  document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('collapsed');
+  });
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  render();
+</script>
+</body>
+</html>
