@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Tour & Du lịch - CRM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --royal: #2545d3;
+      --royal-dark: #1b3aa8;
+      --border: #e5e7eb;
+      --text: #1f2937;
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { display: flex; height: 100vh; overflow: hidden; background: #f7f8fa; color: var(--text); }
+
+    /* ===== SIDEBAR (gradient blue) ===== */
+    #sidebar {
+      width: 240px; min-width: 240px; background: linear-gradient(160deg, #1b3da1 0%, #17234e 100%); border-right: none;
+      display: flex; flex-direction: column; position: relative; transition: width .25s, min-width .25s; overflow: hidden; z-index: 100;
+    }
+    #sidebar.collapsed { width: 64px; min-width: 64px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 18px 20px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--royal), var(--royal-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; flex-shrink: 0; }
+    .sidebar-logo .logo-text { font-size: 17px; font-weight: 700; color: #ffffff; white-space: nowrap; }
+    #sidebar.collapsed .logo-text { display: none; }
+    .sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 0; }
+    .sidebar-nav::-webkit-scrollbar { width: 4px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+    .nav-group-title { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: .5px; padding: 10px 20px 4px; white-space: nowrap; overflow: hidden; font-weight: 600; }
+    #sidebar.collapsed .nav-group-title { padding: 10px 0 4px; text-align: center; font-size: 8px; letter-spacing: 0; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 20px; font-size: 14px; color: rgba(255,255,255,0.75); cursor: pointer; text-decoration: none; border-left: 3px solid transparent; transition: all .15s; white-space: nowrap; }
+    .nav-item:hover { color: #ffffff; background: rgba(255,255,255,0.15); border-left-color: #ffffff; }
+    .nav-item.active { color: #ffffff; background: rgba(255,255,255,0.2); border-left-color: #ffffff; font-weight: 600; }
+    .nav-item i { width: 18px; text-align: center; font-size: 15px; flex-shrink: 0; color: rgba(255,255,255,0.6); }
+    .nav-item:hover i, .nav-item.active i { color: #ffffff; }
+    .nav-item span { white-space: nowrap; overflow: hidden; }
+    #sidebar.collapsed .nav-item { padding: 9px 0; justify-content: center; gap: 0; }
+    #sidebar.collapsed .nav-item span { display: none; }
+    .sidebar-toggle-btn {
+      position: absolute; right: -14px; bottom: 80px; width: 28px; height: 28px;
+      background: #fff; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 101; color: var(--muted); font-size: 11px; box-shadow: 0 1px 4px rgba(0,0,0,.1); transition: all .2s;
+    }
+    .sidebar-toggle-btn:hover { background: #eef2ff; }
+    #sidebar.collapsed .sidebar-toggle-btn i { transform: rotate(180deg); }
+    .sidebar-bottom { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 10px; }
+    .sidebar-bottom img { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-bottom .user-name { font-size: 13px; font-weight: 600; color: #ffffff; white-space: nowrap; }
+    .sidebar-bottom .user-role { font-size: 11px; color: rgba(255,255,255,0.6); white-space: nowrap; }
+    #sidebar.collapsed .sidebar-bottom { padding: 12px 0; justify-content: center; }
+    #sidebar.collapsed .user-info { display: none; }
+
+    /* ===== SUB SIDEBAR (white) ===== */
+    #subSidebar {
+      width: 220px; min-width: 220px; background: #ffffff; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; transition: width .25s, min-width .25s; overflow: hidden; z-index: 99;
+    }
+    #subSidebar.collapsed { width: 0; min-width: 0; }
+    .sub-sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px 10px; border-bottom: 1px solid #f1f2f4; }
+    .sub-sidebar-title { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .sub-sidebar-add { width: 22px; height: 22px; border-radius: 6px; background: #eef2ff; color: var(--royal); border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .sub-search { padding: 8px 12px; border-bottom: 1px solid #f1f2f4; }
+    .sub-search-wrap { position: relative; }
+    .sub-search-wrap input { width: 100%; background: #f3f4f6; border: none; border-radius: 6px; padding: 6px 10px 6px 28px; font-size: 12px; color: #374151; outline: none; }
+    .sub-search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 11px; }
+    .sub-sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
+    .sub-sidebar-nav::-webkit-scrollbar { width: 3px; }
+    .sub-sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; }
+    .sub-group-title { font-size: 10px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .6px; padding: 6px 15px; }
+    .cat-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 15px; font-size: 13px; color: #374151; cursor: pointer; border-left: 3px solid transparent; transition: all .12s; }
+    .cat-item:hover { background: #f7f8fa; }
+    .cat-item.active { background: #e8edff; border-left-color: var(--royal); color: var(--royal-dark); font-weight: 600; }
+    .cat-left { display: flex; align-items: center; gap: 9px; }
+    .cat-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+    .cat-count { font-size: 10px; background: #f1f2f4; color: #6b7280; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+    .cat-item.active .cat-count { background: #d4ddff; color: var(--royal-dark); }
+
+    /* ===== MAIN ===== */
+    #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .top-header { height: 60px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+    .top-header-left h1 { font-size: 18px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+    .top-header-left h1 i { color: var(--royal); }
+    .top-header-right { display: flex; align-items: center; gap: 10px; }
+    .icon-btn { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); font-size: 15px; transition: all .15s; }
+    .icon-btn:hover { background: #f3f4f6; color: #374151; }
+    .btn-primary { background: var(--royal); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background .15s; }
+    .btn-primary:hover { background: var(--royal-dark); }
+
+    /* ===== TOOLBAR ===== */
+    .toolbar { padding: 10px 20px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn-outline { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .15s; }
+    .btn-outline:hover { background: #f7f8fa; border-color: #d1d5db; }
+    .btn-outline.green { color: #15803d; border-color: #bbf7d0; }
+    .btn-outline.green:hover { background: #f0fdf4; }
+    .date-pick { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; }
+    .date-pick i { color: var(--royal); font-size: 13px; }
+    .search-wrap { position: relative; }
+    .search-wrap input { background: #f3f4f6; border: none; border-radius: 8px; padding: 7px 14px 7px 34px; font-size: 13px; color: #374151; outline: none; width: 180px; }
+    .search-wrap input:focus { background: #fff; box-shadow: 0 0 0 2px #bfd0ff; }
+    .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 13px; }
+    .filter-field { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 12px; }
+    .filter-field label { color: #9ca3af; font-size: 11px; }
+    .filter-field select { border: none; background: none; outline: none; font-size: 12px; font-weight: 600; color: var(--royal-dark); cursor: pointer; }
+
+    /* ===== VIEW SWITCH ===== */
+    .view-switch { display: flex; background: #f1f2f4; border-radius: 8px; padding: 3px; gap: 2px; }
+    .view-btn { padding: 6px 14px; border-radius: 6px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; color: #6b7280; background: transparent; display: flex; align-items: center; gap: 5px; transition: all .15s; }
+    .view-btn.active { background: #fff; color: var(--royal-dark); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+    /* ===== KANBAN ===== */
+    #kanbanView { flex: 1; display: flex; gap: 14px; padding: 16px 20px 20px; overflow-x: auto; }
+    #kanbanView::-webkit-scrollbar { height: 7px; }
+    #kanbanView::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .kanban-col { min-width: 284px; max-width: 284px; background: #f1f3f7; border-radius: 12px; display: flex; flex-direction: column; padding: 12px 10px; max-height: 100%; }
+    .col-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
+    .col-head-left { display: flex; align-items: center; gap: 7px; }
+    .col-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .col-name { font-size: 13px; font-weight: 700; color: #1f2937; }
+    .col-count { font-size: 11px; font-weight: 600; background: rgba(0,0,0,.07); padding: 2px 7px; border-radius: 10px; color: #374151; }
+    .col-cards { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 2px; }
+    .col-cards::-webkit-scrollbar { width: 3px; }
+    .col-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+    .tcard { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: box-shadow .15s, transform .15s; border: 1px solid transparent; }
+    .tcard:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); border-color: #dbe3ff; }
+    .tcard.dragging { opacity: .5; }
+    .tcard-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .tour-code { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 2px 8px; border-radius: 5px; letter-spacing: .3px; }
+    .flag { font-size: 14px; }
+    .tcard-cust { font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 2px; }
+    .tcard-tour { font-size: 12px; color: #4b5563; margin-bottom: 9px; }
+    .tcard-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #6b7280; margin-bottom: 6px; }
+    .tcard-row i { font-size: 10px; color: #9ca3af; width: 12px; text-align: center; }
+    .tcard-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 9px; border-top: 1px solid #f1f2f4; margin-top: 3px; }
+    .guide-cell { display: flex; align-items: center; gap: 6px; }
+    .guide-cell img { width: 24px; height: 24px; border-radius: 50%; }
+    .guide-cell span { font-size: 11px; color: #4b5563; font-weight: 500; }
+    .guests-pill { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--royal-dark); background: #eef2ff; padding: 3px 8px; border-radius: 6px; }
+
+    /* ===== TABLE ===== */
+    #tableView { flex: 1; padding: 16px 20px 20px; overflow: auto; display: none; }
+    #tableView.active { display: block; }
+    #kanbanView.hidden { display: none; }
+    .table-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); overflow: hidden; }
+    .table-summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid #f1f2f4; flex-wrap: wrap; gap: 10px; }
+    .summary-stat { font-size: 12px; color: #6b7280; }
+    .summary-stat b { font-size: 15px; font-weight: 700; color: var(--royal-dark); }
+    .table-scroll { overflow-x: auto; }
+    .table-scroll::-webkit-scrollbar { height: 8px; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 1120px; }
+    .data-table thead th { padding: 12px 16px; font-size: 11px; font-weight: 700; color: #6b7280; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; background: #f9fafb; text-transform: uppercase; letter-spacing: .4px; position: sticky; top: 0; z-index: 2; }
+    .data-table thead th.center { text-align: center; }
+    .data-table tbody td { padding: 11px 16px; font-size: 13px; color: #374151; border-bottom: 1px solid #f1f2f4; white-space: nowrap; }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr { cursor: pointer; transition: background .12s; }
+    .data-table tbody tr:hover td { background: #f8fafc; }
+    .cb { width: 15px; height: 15px; accent-color: var(--royal); cursor: pointer; }
+    .stu-cell { display: flex; align-items: center; gap: 10px; }
+    .stu-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .stu-name { font-weight: 600; color: #1f2937; font-size: 13px; }
+    .stu-id { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+    .tour-name-cell { font-weight: 600; color: #374151; }
+    .tour-name-cell small { display: block; font-weight: 500; color: #9ca3af; font-size: 11px; }
+    .code-pill { font-size: 11px; font-weight: 700; color: var(--royal); background: #eef2ff; padding: 3px 8px; border-radius: 5px; }
+    .ins-cell { display: flex; align-items: center; gap: 7px; }
+    .ins-cell img { width: 26px; height: 26px; border-radius: 50%; }
+    .ins-cell span { font-size: 12px; color: #4b5563; font-weight: 500; }
+    .date-cell { font-weight: 600; color: #1f2937; }
+    .date-cell small { display: block; font-weight: 500; color: #9ca3af; font-size: 11px; }
+    .seats-cell { font-weight: 600; }
+    .seats-cell .avail { color: #15803d; }
+    .seats-cell .full { color: #b91c1c; }
+    .seats-cell small { color: #9ca3af; font-weight: 500; }
+    .price-cell { font-weight: 700; color: #15803d; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .bg-gray { background: #f1f2f4; color: #4b5563; } .bg-gray::before { background: #9ca3af; }
+    .bg-blue { background: #dbeafe; color: #1d4ed8; } .bg-blue::before { background: #3b82f6; }
+    .bg-amber { background: #fef3c7; color: #b45309; } .bg-amber::before { background: #f59e0b; }
+    .bg-teal { background: #ccfbf1; color: #0f766e; } .bg-teal::before { background: #14b8a6; }
+    .bg-green { background: #dcfce7; color: #15803d; } .bg-green::before { background: #22c55e; }
+    .row-actions { display: flex; align-items: center; gap: 4px; justify-content: center; }
+    .row-act { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; color: #9ca3af; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .row-act:hover { background: #f1f2f4; color: #374151; }
+    .row-act.blue:hover { background: #eef2ff; color: var(--royal); }
+    .row-act.red:hover { background: #fee2e2; color: #b91c1c; }
+    .table-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-top: 1px solid #f1f2f4; flex-wrap: wrap; gap: 10px; }
+    .ftr-info { font-size: 12px; color: #6b7280; }
+    .pagination { display: flex; align-items: center; gap: 4px; }
+    .pg-btn { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid var(--border); background: #fff; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 500; color: #374151; display: flex; align-items: center; justify-content: center; }
+    .pg-btn:hover { background: #f7f8fa; }
+    .pg-btn.active { background: var(--royal); color: #fff; border-color: var(--royal); }
+    .pg-btn:disabled { opacity: .4; cursor: default; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1e293b; color: #fff; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.2); display: flex; align-items: center; gap: 8px; opacity: 0; transition: all .3s; z-index: 300; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast i { color: #4ade80; }
+    @media (max-width: 1100px) { #subSidebar { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><i class="fa-solid fa-plane-departure"></i></div>
+    <span class="logo-text">AppVN CRM</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-title">Bán hàng &amp; CRM</div>
+    <a href="Customer.html" class="nav-item"><i class="fa-solid fa-user-tag"></i><span>Khách hàng</span></a>
+    <a href="Lead.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i><span>Leads</span></a>
+    <a href="Task.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>Task</span></a>
+    <a href="Order.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Đơn hàng</span></a>
+    <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
+    <a href="Course.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
+    <a href="BeautyService.html" class="nav-item"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+    <a href="Tour.html" class="nav-item active"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
+    <a href="Land2.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
+    <div class="nav-group-title">Vận hành &amp; Dịch vụ</div>
+    <a href="Project.html" class="nav-item"><i class="fa-solid fa-diagram-project"></i><span>Dự Án</span></a>
+    <div class="nav-group-title">Quản trị &amp; Marketing</div>
+    <a href="Marketing.html" class="nav-item"><i class="fa-solid fa-bullhorn"></i><span>Marketing</span></a>
+    <a href="Meta.html" class="nav-item"><i class="fa-brands fa-meta"></i><span>Meta</span></a>
+    <a href="Staff.html" class="nav-item"><i class="fa-solid fa-id-badge"></i><span>Nhân viên</span></a>
+    <a href="Finan.html" class="nav-item"><i class="fa-solid fa-sack-dollar"></i><span>Tài Chính</span></a>
+  </nav>
+  <button class="sidebar-toggle-btn" id="toggleSidebarBtn"><i class="fa-solid fa-chevron-left"></i></button>
+  <div class="sidebar-bottom">
+    <img src="https://i.pravatar.cc/150?img=11" alt="avatar">
+    <div class="user-info">
+      <div class="user-name">Phan Hiếu</div>
+      <div class="user-role">Quản trị viên</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUB SIDEBAR -->
+<div id="subSidebar">
+  <div class="sub-sidebar-header">
+    <span class="sub-sidebar-title">Danh mục Tour</span>
+    <button class="sub-sidebar-add"><i class="fa-solid fa-plus"></i></button>
+  </div>
+  <div class="sub-search">
+    <div class="sub-search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="catSearch" placeholder="Tìm danh mục..." oninput="filterCats(this.value)">
+    </div>
+  </div>
+  <div class="sub-sidebar-nav" id="catList">
+    <div class="sub-group-title">Tất cả tour</div>
+    <div class="cat-item active" onclick="selectCat(this,'Tất cả')"><div class="cat-left"><span class="cat-dot" style="background:var(--royal)"></span><span>Tất cả tour</span></div><span class="cat-count">86</span></div>
+    <div class="sub-group-title">Theo loại hình</div>
+    <div class="cat-item" onclick="selectCat(this,'Trong nước')"><div class="cat-left"><span class="cat-dot" style="background:#22c55e"></span><span>Trong nước (Domestic)</span></div><span class="cat-count">41</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Quốc tế')"><div class="cat-left"><span class="cat-dot" style="background:#3b82f6"></span><span>Quốc tế (International)</span></div><span class="cat-count">32</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Cao cấp')"><div class="cat-left"><span class="cat-dot" style="background:#f59e0b"></span><span>Cao cấp (Luxury)</span></div><span class="cat-count">9</span></div>
+    <div class="cat-item" onclick="selectCat(this,'Hành hương')"><div class="cat-left"><span class="cat-dot" style="background:#9333ea"></span><span>Hành hương</span></div><span class="cat-count">4</span></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="mainContent">
+  <div class="top-header">
+    <div class="top-header-left"><h1><i class="fa-solid fa-plane-departure"></i>Quản lý Tour &amp; Du lịch</h1></div>
+    <div class="top-header-right">
+      <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
+      <button class="btn-primary" onclick="showToast('Mở form tạo booking mới')"><i class="fa-solid fa-plus"></i> Tạo Booking</button>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Danh mục</button>
+      <div class="date-pick" onclick="showToast('Mở chọn khoảng ngày')"><i class="fa-regular fa-calendar"></i> 01/06 – 30/06/2026</div>
+      <div class="view-switch">
+        <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
+        <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search" placeholder="Tìm khách / mã tour..." oninput="applyFilters()">
+      </div>
+      <div class="filter-field">
+        <label>HDV</label>
+        <select id="guideFilter" onchange="applyFilters()">
+          <option value="">Tất cả</option>
+          <option value="Lê Quang Vinh">Lê Quang Vinh</option>
+          <option value="Trần Thu Hương">Trần Thu Hương</option>
+          <option value="Nguyễn Đức Anh">Nguyễn Đức Anh</option>
+          <option value="Phạm Mai Chi">Phạm Mai Chi</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label>Điểm đến</label>
+        <select id="destFilter" onchange="applyFilters()">
+          <option value="">Tất cả</option>
+          <option value="Nhật Bản">Nhật Bản</option>
+          <option value="Hàn Quốc">Hàn Quốc</option>
+          <option value="Thái Lan">Thái Lan</option>
+          <option value="Đà Nẵng">Đà Nẵng</option>
+          <option value="Phú Quốc">Phú Quốc</option>
+          <option value="Châu Âu">Châu Âu</option>
+        </select>
+      </div>
+      <button class="btn-outline green" onclick="exportExcel()"><i class="fa-solid fa-file-export"></i> Xuất Excel</button>
+    </div>
+  </div>
+
+  <!-- KANBAN VIEW -->
+  <div id="kanbanView"></div>
+
+  <!-- TABLE VIEW -->
+  <div id="tableView">
+    <div class="table-card">
+      <div class="table-summary">
+        <div class="summary-stat">Tổng booking: <b id="stTotal">0</b></div>
+        <div class="summary-stat" id="stVisible"></div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"><input type="checkbox" class="cb" id="cbAll" onclick="toggleAll(this)"></th>
+              <th>Khách hàng</th>
+              <th>Tên Tour</th>
+              <th>Mã Tour</th>
+              <th>HDV</th>
+              <th>Ngày khởi hành</th>
+              <th class="center">Chỗ (Trống/Tổng)</th>
+              <th style="text-align:right;">Giá</th>
+              <th class="center">Trạng thái</th>
+              <th class="center" style="width:96px;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <div class="ftr-info" id="ftrInfo"></div>
+        <div class="pagination">
+          <button class="pg-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn">2</button>
+          <button class="pg-btn">3</button>
+          <button class="pg-btn">…</button>
+          <button class="pg-btn">7</button>
+          <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg"></span></div>
+
+<script>
+  const STAGES = [
+    { key:'inquiry', name:'Hỏi / Đặt chỗ',    dot:'#9ca3af', badge:'bg-gray' },
+    { key:'deposit', name:'Đã đặt cọc',       dot:'#3b82f6', badge:'bg-blue' },
+    { key:'visa',    name:'Visa & Hồ sơ',     dot:'#f59e0b', badge:'bg-amber' },
+    { key:'ontour',  name:'Đang đi tour',     dot:'#14b8a6', badge:'bg-teal' },
+    { key:'done',    name:'Hoàn thành',       dot:'#22c55e', badge:'bg-green' }
+  ];
+  const STAGE_LABEL = { inquiry:'Hỏi / Đặt chỗ', deposit:'Đã đặt cọc', visa:'Visa & Hồ sơ', ontour:'Đang đi tour', done:'Hoàn thành' };
+  const STAGE_BADGE = { inquiry:'bg-gray', deposit:'bg-blue', visa:'bg-amber', ontour:'bg-teal', done:'bg-green' };
+
+  const bookings = [
+    { img:'https://i.pravatar.cc/150?img=32', name:'Nguyễn Thị Bảo Châu', id:'BK2401', code:'JP-OSAKA-01', flag:'🇯🇵', tour:'Nhật Bản: Osaka - Kyoto 5N4Đ', dest:'Nhật Bản', guide:'Trần Thu Hương', guideImg:'https://i.pravatar.cc/150?img=5', depart:'18/07/2026', departSub:'6 ngày tới', seatsLeft:4, seatsTotal:20, guests:2, price:'32.900.000đ', stage:'inquiry' },
+    { img:'https://i.pravatar.cc/150?img=12', name:'Lê Hoàng Anh', id:'BK2402', code:'KR-SEOUL-03', flag:'🇰🇷', tour:'Hàn Quốc: Seoul - Nami 5N4Đ', dest:'Hàn Quốc', guide:'Nguyễn Đức Anh', guideImg:'https://i.pravatar.cc/150?img=15', depart:'22/07/2026', departSub:'10 ngày tới', seatsLeft:8, seatsTotal:25, guests:4, price:'21.500.000đ', stage:'inquiry' },
+    { img:'https://i.pravatar.cc/150?img=45', name:'Trần Mỹ Linh', id:'BK2310', code:'TH-BKK-07', flag:'🇹🇭', tour:'Thái Lan: Bangkok - Pattaya 5N4Đ', dest:'Thái Lan', guide:'Phạm Mai Chi', guideImg:'https://i.pravatar.cc/150?img=9', depart:'12/07/2026', departSub:'Tuần này', seatsLeft:2, seatsTotal:30, guests:6, price:'8.990.000đ', stage:'deposit' },
+    { img:'https://i.pravatar.cc/150?img=25', name:'Vũ Khánh Vy', id:'BK2311', code:'VN-DN-12', flag:'🇻🇳', tour:'Đà Nẵng - Hội An - Bà Nà 4N3Đ', dest:'Đà Nẵng', guide:'Lê Quang Vinh', guideImg:'https://i.pravatar.cc/150?img=51', depart:'15/07/2026', departSub:'3 ngày tới', seatsLeft:10, seatsTotal:35, guests:3, price:'5.490.000đ', stage:'deposit' },
+    { img:'https://i.pravatar.cc/150?img=33', name:'Đỗ Quỳnh Như', id:'BK2312', code:'JP-TOKYO-02', flag:'🇯🇵', tour:'Nhật Bản: Tokyo - Phú Sĩ 6N5Đ', dest:'Nhật Bản', guide:'Trần Thu Hương', guideImg:'https://i.pravatar.cc/150?img=5', depart:'25/07/2026', departSub:'13 ngày tới', seatsLeft:0, seatsTotal:20, guests:2, price:'38.900.000đ', stage:'visa' },
+    { img:'https://i.pravatar.cc/150?img=48', name:'Phạm Thu Trang', id:'BK2208', code:'EU-PARIS-01', flag:'🇪🇺', tour:'Châu Âu: Pháp - Ý - Thụy Sĩ 9N8Đ', dest:'Châu Âu', guide:'Nguyễn Đức Anh', guideImg:'https://i.pravatar.cc/150?img=15', depart:'02/08/2026', departSub:'3 tuần tới', seatsLeft:6, seatsTotal:18, guests:2, price:'78.900.000đ', stage:'visa' },
+    { img:'https://i.pravatar.cc/150?img=15', name:'Bùi Minh Tuấn', id:'BK2209', code:'VN-PQ-05', flag:'🇻🇳', tour:'Phú Quốc nghỉ dưỡng 4N3Đ', dest:'Phú Quốc', guide:'Lê Quang Vinh', guideImg:'https://i.pravatar.cc/150?img=51', depart:'14/06/2026', departSub:'Đang diễn ra', seatsLeft:0, seatsTotal:28, guests:5, price:'6.290.000đ', stage:'ontour' },
+    { img:'https://i.pravatar.cc/150?img=44', name:'Ngô Thị Hồng', id:'BK2210', code:'TH-PHUKET-02', flag:'🇹🇭', tour:'Thái Lan: Phuket - Krabi 5N4Đ', dest:'Thái Lan', guide:'Phạm Mai Chi', guideImg:'https://i.pravatar.cc/150?img=9', depart:'13/06/2026', departSub:'Đang diễn ra', seatsLeft:3, seatsTotal:30, guests:4, price:'11.900.000đ', stage:'ontour' },
+    { img:'https://i.pravatar.cc/150?img=5',  name:'Hoàng Lan Phương', id:'BK2105', code:'KR-JEJU-04', flag:'🇰🇷', tour:'Hàn Quốc: Jeju - Seoul 6N5Đ', dest:'Hàn Quốc', guide:'Nguyễn Đức Anh', guideImg:'https://i.pravatar.cc/150?img=15', depart:'28/05/2026', departSub:'Đã về', seatsLeft:0, seatsTotal:25, guests:2, price:'24.900.000đ', stage:'done' },
+    { img:'https://i.pravatar.cc/150?img=60', name:'Lý Thị Cẩm Tú', id:'BK2106', code:'VN-DN-09', flag:'🇻🇳', tour:'Đà Nẵng - Hội An 4N3Đ', dest:'Đà Nẵng', guide:'Lê Quang Vinh', guideImg:'https://i.pravatar.cc/150?img=51', depart:'20/05/2026', departSub:'Đã về', seatsLeft:0, seatsTotal:35, guests:8, price:'5.490.000đ', stage:'done' },
+    { img:'https://i.pravatar.cc/150?img=51', name:'Trương Bích Ngọc', id:'BK2107', code:'JP-OSAKA-01', flag:'🇯🇵', tour:'Nhật Bản: Osaka - Kyoto 5N4Đ', dest:'Nhật Bản', guide:'Trần Thu Hương', guideImg:'https://i.pravatar.cc/150?img=5', depart:'15/05/2026', departSub:'Đã về', seatsLeft:0, seatsTotal:20, guests:2, price:'32.900.000đ', stage:'done' },
+  ];
+
+  let filtered = [...bookings];
+
+  /* ===== KANBAN ===== */
+  function renderKanban() {
+    const board = document.getElementById('kanbanView');
+    board.innerHTML = STAGES.map(stg => {
+      const items = filtered.filter(b => b.stage === stg.key);
+      return `
+      <div class="kanban-col" data-stage="${stg.key}" ondragover="event.preventDefault()" ondrop="dropCard(event,'${stg.key}')">
+        <div class="col-head">
+          <div class="col-head-left"><span class="col-dot" style="background:${stg.dot}"></span><span class="col-name">${stg.name}</span></div>
+          <span class="col-count">${items.length}</span>
+        </div>
+        <div class="col-cards">
+          ${items.map(b => `
+            <div class="tcard" draggable="true" data-id="${b.id}" ondragstart="dragStart(event,'${b.id}')" ondragend="dragEnd(event)" onclick="showToast('Mở booking ${b.code}')">
+              <div class="tcard-head">
+                <span class="tour-code">${b.code}</span>
+                <span class="flag">${b.flag}</span>
+              </div>
+              <div class="tcard-cust">${b.name}</div>
+              <div class="tcard-tour">${b.tour}</div>
+              <div class="tcard-row"><i class="fa-regular fa-calendar"></i> Khởi hành: ${b.depart} · ${b.departSub}</div>
+              <div class="tcard-foot">
+                <div class="guide-cell"><img src="${b.guideImg}" alt=""><span>${b.guide}</span></div>
+                <span class="guests-pill"><i class="fa-solid fa-users"></i> ${b.guests} khách</span>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  let dragId = null;
+  function dragStart(e, id) { dragId = id; e.target.classList.add('dragging'); }
+  function dragEnd(e) { e.target.classList.remove('dragging'); }
+  function dropCard(e, stage) {
+    e.preventDefault();
+    const b = bookings.find(x => x.id === dragId);
+    if (b) { b.stage = stage; applyFilters(); showToast(`Chuyển ${b.code} → ${STAGE_LABEL[stage]}`); }
+  }
+
+  /* ===== TABLE ===== */
+  function renderTable() {
+    const tb = document.getElementById('tableBody');
+    tb.innerHTML = filtered.map(b => {
+      const seatCls = b.seatsLeft === 0 ? 'full' : 'avail';
+      return `
+      <tr onclick="showToast('Mở booking ${b.code}')">
+        <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
+        <td><div class="stu-cell"><img class="stu-avatar" src="${b.img}" alt=""><div><div class="stu-name">${b.name}</div><div class="stu-id">${b.id} · ${b.guests} khách</div></div></div></td>
+        <td><div class="tour-name-cell">${b.tour}<small>${b.flag} ${b.dest}</small></div></td>
+        <td><span class="code-pill">${b.code}</span></td>
+        <td><div class="ins-cell"><img src="${b.guideImg}" alt=""><span>${b.guide}</span></div></td>
+        <td><div class="date-cell">${b.depart}<small>${b.departSub}</small></div></td>
+        <td style="text-align:center;"><span class="seats-cell"><span class="${seatCls}">${b.seatsLeft}</span><small> / ${b.seatsTotal}</small></span></td>
+        <td style="text-align:right;"><span class="price-cell">${b.price}</span></td>
+        <td style="text-align:center;"><span class="badge ${STAGE_BADGE[b.stage]}">${STAGE_LABEL[b.stage]}</span></td>
+        <td onclick="event.stopPropagation()">
+          <div class="row-actions">
+            <button class="row-act blue" title="Xem" onclick="showToast('Xem ${b.code}')"><i class="fa-solid fa-eye"></i></button>
+            <button class="row-act" title="Sửa" onclick="showToast('Sửa ${b.code}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="row-act red" title="Hủy" onclick="showToast('Hủy ${b.code}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+    document.getElementById('stTotal').textContent = bookings.length;
+    document.getElementById('stVisible').textContent = `Đang hiển thị ${filtered.length} / ${bookings.length} booking`;
+    document.getElementById('ftrInfo').textContent = `Hiển thị 1–${filtered.length} trong ${bookings.length} booking`;
+  }
+
+  function render() { renderKanban(); renderTable(); }
+
+  /* ===== VIEW SWITCH ===== */
+  function switchView(v) {
+    document.getElementById('kanbanView').classList.toggle('hidden', v !== 'kanban');
+    document.getElementById('tableView').classList.toggle('active', v === 'table');
+    document.getElementById('vbKanban').classList.toggle('active', v === 'kanban');
+    document.getElementById('vbTable').classList.toggle('active', v === 'table');
+  }
+
+  /* ===== FILTER ===== */
+  function applyFilters() {
+    const q = (document.getElementById('search').value || '').toLowerCase().trim();
+    const guide = document.getElementById('guideFilter').value;
+    const dest = document.getElementById('destFilter').value;
+    filtered = bookings.filter(b => {
+      if (q && !(b.name.toLowerCase().includes(q) || b.code.toLowerCase().includes(q) || b.tour.toLowerCase().includes(q))) return false;
+      if (guide && b.guide !== guide) return false;
+      if (dest && b.dest !== dest) return false;
+      return true;
+    });
+    render();
+  }
+
+  function selectCat(el, name) {
+    document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    showToast('Lọc theo danh mục: ' + name);
+  }
+  function filterCats(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.cat-item').forEach(i => { i.style.display = i.innerText.toLowerCase().includes(q) ? '' : 'none'; });
+  }
+  function toggleSubSidebar() { document.getElementById('subSidebar').classList.toggle('collapsed'); }
+  function toggleAll(cb) { document.querySelectorAll('.rowcb').forEach(c => c.checked = cb.checked); }
+  function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
+  function exportExcel() { showToast('Đang xuất ' + filtered.length + ' booking ra file Excel...'); }
+
+  document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('collapsed');
+  });
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  render();
+</script>
+</body>
+</html>
