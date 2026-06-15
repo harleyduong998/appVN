@@ -264,7 +264,7 @@
     <a href="Order.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Đơn hàng</span></a>
     <a href="Product.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
     <a href="Course2.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Khóa học</span></a>
-    <a href="BeautyService3.html" class="nav-item active"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
+    <a href="BeautyService4.html" class="nav-item active"><i class="fa-solid fa-spa"></i><span>Dịch Vụ Làm Đẹp</span></a>
     <a href="CustomerPackage.html" class="nav-item"><i class="fa-solid fa-clipboard-user"></i><span>Liệu trình khách</span></a>
     <a href="Tour2.html" class="nav-item"><i class="fa-solid fa-plane-departure"></i><span>Quản lý Tour</span></a>
     <a href="Land2.html" class="nav-item"><i class="fa-solid fa-building"></i><span>Bất động sản</span></a>
@@ -324,7 +324,7 @@
   <div class="toolbar">
     <div class="toolbar-left">
       <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Danh mục</button>
-      <a class="btn-outline indigo" href="BeautyService.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
+      <!-- <a class="btn-outline indigo" href="BeautyService.html"><i class="fa-solid fa-chart-simple"></i> Lead</a> -->
       <div class="view-switch">
         <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
         <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
@@ -553,9 +553,7 @@
   ];
   const services = [
     { id:'SV-001', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop', name:'Hydrating Facial cấp ẩm chuyên sâu', cat:'Facial', dur:60, price:850, promo:0, cost:120, rev:42500, sales:50, tech:1, equip:'no', spec:[0,1], stage:'active', tag:'best' },
-    { id:'SV-002', img:'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=300&h=200&fit=crop', name:'Trị mụn chuyên sâu y khoa', cat:'Facial', dur:75, price:990, promo:0, cost:160, rev:35640, sales:36, tech:1, equip:'yes', spec:[2], stage:'active', tag:'best' },
-    { id:'SV-003', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop', name:'Massage đá nóng thư giãn', cat:'Body', dur:90, price:1200, promo:0, cost:90, rev:30000, sales:25, tech:1, equip:'no', spec:[1,3], stage:'active', tag:'' },
-    { id:'SV-004', img:'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=300&h=200&fit=crop', name:'Peel da AHA/BHA tái tạo', cat:'Facial', dur:60, price:1100, promo:880, cost:140, rev:26400, sales:30, tech:1, equip:'yes', spec:[0], stage:'active', tag:'hot' },
+
     { id:'SV-005', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop', name:'Triệt lông Laser Diode toàn thân', cat:'Laser', dur:120, price:3500, promo:2490, cost:300, rev:74700, sales:30, tech:2, equip:'yes', spec:[2,3], stage:'active', tag:'hot' },
     { id:'SV-006', img:'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=300&h=200&fit=crop', name:'Nâng cơ RF trẻ hóa da', cat:'Laser', dur:75, price:1800, promo:1490, cost:200, rev:35760, sales:24, tech:1, equip:'yes', spec:[0,2], stage:'active', tag:'hot' },
     { id:'SV-007', img:'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=200&fit=crop', name:'Liệu trình Carbon Laser mới', cat:'Laser', dur:60, price:1600, promo:0, cost:180, rev:0, sales:0, tech:1, equip:'yes', spec:[2], stage:'draft', tag:'new' },
