@@ -316,7 +316,6 @@
     <div class="top-header-right">
       <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
       <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
-      <button class="btn-primary" id="addBtn" onclick="openAdd()"><i class="fa-solid fa-plus"></i> <span id="addBtnLabel">Thêm dịch vụ</span></button>
     </div>
   </div>
 
@@ -345,8 +344,7 @@
           <option value="3000-99999">Ngừng hẳn</option>
         </select>
       </div>
- 
-  
+      <button class="btn-primary" id="addBtn" onclick="openAdd()"><i class="fa-solid fa-plus"></i> <span id="addBtnLabel">Thêm dịch vụ</span></button>
     </div>
   </div>
 
@@ -552,8 +550,7 @@
     { name:'Thanh Loan', img:'https://i.pravatar.cc/150?img=20' }
   ];
   const services = [
-    { id:'SV-001', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=200&fit=crop', name:'Hydrating Facial cấp ẩm chuyên sâu', cat:'Facial', dur:60, price:850, promo:0, cost:120, rev:42500, sales:50, tech:1, equip:'no', spec:[0,1], stage:'active', tag:'best' },
-    { id:'SV-002', img:'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=300&h=200&fit=crop', name:'Trị mụn chuyên sâu y khoa', cat:'Facial', dur:75, price:990, promo:0, cost:160, rev:35640, sales:36, tech:1, equip:'yes', spec:[2], stage:'active', tag:'best' },
+
     { id:'SV-003', img:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=300&h=200&fit=crop', name:'Massage đá nóng thư giãn', cat:'Body', dur:90, price:1200, promo:0, cost:90, rev:30000, sales:25, tech:1, equip:'no', spec:[1,3], stage:'active', tag:'' },
     { id:'SV-004', img:'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=300&h=200&fit=crop', name:'Peel da AHA/BHA tái tạo', cat:'Facial', dur:60, price:1100, promo:880, cost:140, rev:26400, sales:30, tech:1, equip:'yes', spec:[0], stage:'active', tag:'hot' },
     { id:'SV-005', img:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=200&fit=crop', name:'Triệt lông Laser Diode toàn thân', cat:'Laser', dur:120, price:3500, promo:2490, cost:300, rev:74700, sales:30, tech:2, equip:'yes', spec:[2,3], stage:'active', tag:'hot' },
