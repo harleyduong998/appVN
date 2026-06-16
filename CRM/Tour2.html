@@ -203,7 +203,29 @@
     .pg-btn.active { background: var(--royal); color: #fff; border-color: var(--royal); }
     .pg-btn:disabled { opacity: .4; cursor: default; }
 
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1e293b; color: #fff; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.2); display: flex; align-items: center; gap: 8px; opacity: 0; transition: all .3s; z-index: 300; }
+    /* ===== MODAL ===== */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.5); display: none; align-items: center; justify-content: center; z-index: 400; }
+    .modal-overlay.show { display: flex; }
+    .modal-box { background: #fff; width: 560px; max-width: 94%; max-height: 92vh; border-radius: 14px; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,.25); overflow: hidden; }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .modal-head h2 { font-size: 16px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+    .modal-head h2 i { color: var(--royal); }
+    .modal-close { width: 30px; height: 30px; border: none; background: #f3f4f6; border-radius: 8px; cursor: pointer; color: #6b7280; font-size: 14px; }
+    .modal-close:hover { background: #e5e7eb; color: #374151; }
+    .modal-body { padding: 18px 20px; overflow-y: auto; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-field { display: flex; flex-direction: column; gap: 5px; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label { font-size: 12px; font-weight: 600; color: #374151; }
+    .form-field label .req { color: #ef4444; }
+    .form-field input, .form-field select { border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 13px; color: #374151; outline: none; background: #fff; width: 100%; }
+    .form-field input:focus, .form-field select:focus { border-color: var(--royal); box-shadow: 0 0 0 2px #bfd0ff; }
+    .modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--border); }
+    .field-err { font-size: 11px; color: #ef4444; display: none; }
+    .form-field.invalid input, .form-field.invalid select { border-color: #ef4444; }
+    .form-field.invalid .field-err { display: block; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1e293b; color: #fff; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.2); display: flex; align-items: center; gap: 8px; opacity: 0; transition: all .3s; z-index: 500; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast i { color: #4ade80; }
     @media (max-width: 1100px) { #subSidebar { display: none; } }
@@ -281,7 +303,7 @@
     <div class="top-header-right">
       <button class="icon-btn" title="Thông báo"><i class="fa-regular fa-bell"></i></button>
       <button class="icon-btn" title="Cài đặt"><i class="fa-solid fa-gear"></i></button>
-      <button class="btn-primary" onclick="showToast('Mở form tạo chuyến khởi hành mới')"><i class="fa-solid fa-plus"></i> Tạo chuyến mới</button>
+      <button class="btn-primary" onclick="openTourModal()"><i class="fa-solid fa-plus"></i> Tạo chuyến mới</button>
     </div>
   </div>
 
@@ -289,7 +311,7 @@
   <div class="toolbar">
     <div class="toolbar-left">
       <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Điểm đến</button>
-      <a class="btn-outline indigo" href="Tour.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
+      <!-- <a class="btn-outline indigo" href="Tour.html"><i class="fa-solid fa-chart-simple"></i> Lead</a> -->
       <div class="view-switch">
         <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
         <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
@@ -379,6 +401,96 @@
           <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Thêm chuyến khởi hành mới -->
+<div class="modal-overlay" id="tourModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2><i class="fa-solid fa-plane-departure"></i> Tạo chuyến khởi hành mới</h2>
+      <button class="modal-close" onclick="closeTourModal()"><i class="fa-solid fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Tên Tour <span class="req">*</span></label>
+          <input type="text" id="tfName" placeholder="VD: Nhật Bản: Osaka - Kyoto - Tokyo">
+          <span class="field-err">Vui lòng nhập tên tour</span>
+        </div>
+        <div class="form-field">
+          <label>Mã Tour <span class="req">*</span></label>
+          <input type="text" id="tfCode" placeholder="VD: JP-OSAKA-AUG10">
+          <span class="field-err">Vui lòng nhập mã tour</span>
+        </div>
+        <div class="form-field">
+          <label>Điểm đến <span class="req">*</span></label>
+          <select id="tfDest">
+            <option value="">-- Chọn điểm đến --</option>
+            <option value="Nhật Bản">🇯🇵 Nhật Bản</option>
+            <option value="Hàn Quốc">🇰🇷 Hàn Quốc</option>
+            <option value="Thái Lan">🇹🇭 Thái Lan</option>
+            <option value="Dubai">🇦🇪 Dubai - UAE</option>
+            <option value="Châu Âu">🇪🇺 Châu Âu</option>
+            <option value="Đà Nẵng">🇻🇳 Đà Nẵng</option>
+            <option value="Phú Quốc">🇻🇳 Phú Quốc</option>
+          </select>
+          <span class="field-err">Vui lòng chọn điểm đến</span>
+        </div>
+        <div class="form-field">
+          <label>Ngày khởi hành <span class="req">*</span></label>
+          <input type="date" id="tfDepart">
+          <span class="field-err">Vui lòng chọn ngày</span>
+        </div>
+        <div class="form-field">
+          <label>Thời lượng</label>
+          <input type="text" id="tfDur" placeholder="VD: 5N4Đ">
+        </div>
+        <div class="form-field">
+          <label>Tổng số chỗ <span class="req">*</span></label>
+          <input type="number" id="tfTotal" min="1" placeholder="VD: 30">
+          <span class="field-err">Nhập số chỗ hợp lệ</span>
+        </div>
+        <div class="form-field">
+          <label>Đã bán</label>
+          <input type="number" id="tfSold" min="0" value="0" placeholder="0">
+        </div>
+        <div class="form-field">
+          <label>Giá vốn (triệu) <span class="req">*</span></label>
+          <input type="number" id="tfCost" min="0" step="0.1" placeholder="VD: 24.5">
+          <span class="field-err">Nhập giá vốn</span>
+        </div>
+        <div class="form-field">
+          <label>Giá bán (triệu) <span class="req">*</span></label>
+          <input type="number" id="tfSell" min="0" step="0.1" placeholder="VD: 32.9">
+          <span class="field-err">Nhập giá bán</span>
+        </div>
+        <div class="form-field">
+          <label>Hướng dẫn viên</label>
+          <select id="tfGuide">
+            <option value="Lê Quang Vinh">Lê Quang Vinh</option>
+            <option value="Trần Thu Hương">Trần Thu Hương</option>
+            <option value="Nguyễn Đức Anh">Nguyễn Đức Anh</option>
+            <option value="Phạm Mai Chi">Phạm Mai Chi</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Trạng thái</label>
+          <select id="tfStage">
+            <option value="opening">Đang mở bán</option>
+            <option value="nearly">Sắp đầy</option>
+            <option value="confirmed">Đã chốt đoàn</option>
+            <option value="running">Đang chạy</option>
+            <option value="finished">Đã kết thúc</option>
+            <option value="cancelled">Đã hủy</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeTourModal()">Hủy</button>
+      <button class="btn-primary" onclick="saveTour()"><i class="fa-solid fa-check"></i> Lưu chuyến</button>
     </div>
   </div>
 </div>
@@ -542,6 +654,74 @@
   function syncHeader() { const all = [...document.querySelectorAll('.rowcb')]; document.getElementById('cbAll').checked = all.length > 0 && all.every(c => c.checked); }
   function exportExcel() { showToast('Đang xuất ' + filtered.length + ' chuyến ra file Excel...'); }
   function importList() { showToast('Mở hộp thoại nhập danh sách Tour từ file...'); }
+
+  /* ===== MODAL: Thêm Tour mới ===== */
+  const DEST_FLAG = { 'Nhật Bản':'🇯🇵', 'Hàn Quốc':'🇰🇷', 'Thái Lan':'🇹🇭', 'Dubai':'🇦🇪', 'Châu Âu':'🇪🇺', 'Đà Nẵng':'🇻🇳', 'Phú Quốc':'🇻🇳' };
+  const GUIDE_IMG = { 'Lê Quang Vinh':'https://i.pravatar.cc/150?img=51', 'Trần Thu Hương':'https://i.pravatar.cc/150?img=5', 'Nguyễn Đức Anh':'https://i.pravatar.cc/150?img=15', 'Phạm Mai Chi':'https://i.pravatar.cc/150?img=9' };
+
+  function openTourModal() {
+    // Reset form
+    ['tfName','tfCode','tfDur','tfTotal','tfSold','tfCost','tfSell'].forEach(id => document.getElementById(id).value = id === 'tfSold' ? '0' : '');
+    document.getElementById('tfDest').value = '';
+    document.getElementById('tfDepart').value = '';
+    document.getElementById('tfGuide').value = 'Lê Quang Vinh';
+    document.getElementById('tfStage').value = 'opening';
+    document.querySelectorAll('#tourModal .form-field.invalid').forEach(f => f.classList.remove('invalid'));
+    document.getElementById('tourModal').classList.add('show');
+    setTimeout(() => document.getElementById('tfName').focus(), 50);
+  }
+  function closeTourModal() { document.getElementById('tourModal').classList.remove('show'); }
+
+  // Chuyển yyyy-mm-dd (input date) -> dd/mm/yyyy
+  function toVnDate(iso) {
+    if (!iso) return '';
+    const [y, m, d] = iso.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  function saveTour() {
+    const fields = {
+      tfName: document.getElementById('tfName'),
+      tfCode: document.getElementById('tfCode'),
+      tfDest: document.getElementById('tfDest'),
+      tfDepart: document.getElementById('tfDepart'),
+      tfTotal: document.getElementById('tfTotal'),
+      tfCost: document.getElementById('tfCost'),
+      tfSell: document.getElementById('tfSell'),
+    };
+    let ok = true;
+    Object.values(fields).forEach(el => {
+      const wrap = el.closest('.form-field');
+      if (!el.value.trim()) { wrap.classList.add('invalid'); ok = false; }
+      else wrap.classList.remove('invalid');
+    });
+    const total = Number(fields.tfTotal.value);
+    if (total <= 0) { fields.tfTotal.closest('.form-field').classList.add('invalid'); ok = false; }
+    if (!ok) { showToast('Vui lòng điền đủ các trường bắt buộc'); return; }
+
+    const dest = fields.tfDest.value;
+    const guide = document.getElementById('tfGuide').value;
+    const sold = Math.min(Number(document.getElementById('tfSold').value) || 0, total);
+
+    tours.unshift({
+      code: fields.tfCode.value.trim(),
+      flag: DEST_FLAG[dest] || '🌏',
+      name: fields.tfName.value.trim(),
+      dest: dest,
+      depart: toVnDate(fields.tfDepart.value),
+      dur: document.getElementById('tfDur').value.trim() || '—',
+      sold: sold,
+      total: total,
+      cost: Number(fields.tfCost.value) || 0,
+      sell: Number(fields.tfSell.value) || 0,
+      guide: guide,
+      guideImg: GUIDE_IMG[guide] || 'https://i.pravatar.cc/150?img=12',
+      stage: document.getElementById('tfStage').value,
+    });
+    closeTourModal();
+    applyFilters();
+    showToast('Đã thêm chuyến ' + fields.tfCode.value.trim());
+  }
 
   document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('collapsed');
