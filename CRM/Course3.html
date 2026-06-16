@@ -280,7 +280,7 @@
   <div class="toolbar">
     <div class="toolbar-left">
       <button class="btn-outline" onclick="toggleSubSidebar()"><i class="fa-solid fa-list-ul"></i> Danh mục</button>
-      <a class="btn-outline indigo" href="Course.html"><i class="fa-solid fa-chart-simple"></i> Lead</a>
+      <!-- <a class="btn-outline indigo" href="Course.html"><i class="fa-solid fa-chart-simple"></i> Lead</a> -->
       <div class="view-switch">
         <button class="view-btn active" id="vbKanban" onclick="switchView('kanban')"><i class="fa-solid fa-table-columns"></i> Kanban</button>
         <button class="view-btn" id="vbTable" onclick="switchView('table')"><i class="fa-solid fa-table-list"></i> Bảng</button>
@@ -291,27 +291,9 @@
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" id="search" placeholder="Tìm mã khóa học..." oninput="applyFilters()">
       </div>
+ 
       <div class="filter-field">
-        <label>Giảng viên</label>
-        <select id="insFilter" onchange="applyFilters()">
-          <option value="">Tất cả</option>
-          <option value="Lê Quang Vinh">Lê Quang Vinh</option>
-          <option value="Trần Thu Hương">Trần Thu Hương</option>
-          <option value="Nguyễn Đức Anh">Nguyễn Đức Anh</option>
-          <option value="Phạm Mai Chi">Phạm Mai Chi</option>
-        </select>
-      </div>
-      <div class="filter-field">
-        <label>Phòng/CN</label>
-        <select id="roomFilter" onchange="applyFilters()">
-          <option value="">Tất cả</option>
-          <option value="CN Hà Nội">CN Hà Nội</option>
-          <option value="CN HCM">CN HCM</option>
-          <option value="Online">Online</option>
-        </select>
-      </div>
-      <div class="filter-field">
-        <label>Trình độ</label>
+        <label>Trạng thái</label>
         <select id="levelFilter" onchange="applyFilters()">
           <option value="">Tất cả</option>
           <option value="Cơ bản">Cơ bản</option>
@@ -319,7 +301,7 @@
           <option value="Nâng cao">Nâng cao</option>
         </select>
       </div>
-      <button class="btn-outline" onclick="exportRevenue()"><i class="fa-solid fa-file-export"></i> Báo cáo doanh thu</button>
+      
     </div>
   </div>
 
