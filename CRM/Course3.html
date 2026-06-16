@@ -343,8 +343,7 @@
               <th>Tên khóa học</th>
               <th>Giảng viên</th>
               <th>Khai giảng / Kết thúc</th>
-              <th class="center">Sĩ số</th>
-              <th>Tỷ lệ ghi danh</th>
+              <th class="center">Số lượt ghi danh</th>
               <th class="right">Học phí</th>
               <th class="right">Tổng doanh thu</th>
               <th class="center">Trạng thái</th>
@@ -424,8 +423,7 @@
               <div class="ccard-ins"><img src="${c.insImg}" alt=""><span>${c.ins}</span></div>
               <div class="ccard-row"><i class="fa-regular fa-calendar"></i> Khai giảng: ${c.start}</div>
               <div class="seat-wrap">
-                <div class="seat-label"><span>Ghi danh</span><span>${c.enrolled}/${c.cap} chỗ</span></div>
-                <div class="seat-bar"><div class="seat-fill" style="width:${pct(c)}%;background:${seatColor(c)}"></div></div>
+                <div class="seat-label"><span>Số lượt ghi danh</span><span style="font-weight:700;color:#1f2937;">${c.enrolled}</span></div>
               </div>
             </div>`).join('')}
         </div>
@@ -453,11 +451,10 @@
       <tr onclick="showToast('Mở khóa học ${c.id}')">
         <td onclick="event.stopPropagation()"><input type="checkbox" class="cb rowcb" onclick="syncHeader()"></td>
         <td><span class="id-pill">${c.id}</span></td>
-        <td><div class="course-name-cell">${c.name}<small>${c.cat} · ${c.level} · ${c.room}</small></div></td>
+        <td><div class="course-name-cell">${c.name}</div></td>
         <td><div class="ins-cell"><img src="${c.insImg}" alt=""><span>${c.ins}</span></div></td>
         <td><div class="date-cell">${c.start}<small>đến ${c.end}</small></div></td>
-        <td class="cap-cell">${c.enrolled}/${c.cap}</td>
-        <td><div class="tbl-prog"><div class="seat-bar"><div class="seat-fill" style="width:${p}%;background:${seatColor(c)}"></div></div><span style="color:${pColor}">${p}%</span></div></td>
+        <td class="cap-cell">${c.enrolled}</td>
         <td style="text-align:right;"><span class="fee-cell">${fmtVnd(c.fee)}</span></td>
         <td style="text-align:right;"><span class="rev-cell">${rev ? fmtVnd(rev) : '—'}</span></td>
         <td style="text-align:center;"><span class="badge ${STAGE_BADGE[c.stage]}">${STAGE_LABEL[c.stage]}</span></td>
