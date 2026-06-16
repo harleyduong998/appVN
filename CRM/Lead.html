@@ -2421,26 +2421,9 @@
                             </div>
                         </div>
 
-                        <!-- Metric: Tổng / Số đơn -->
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
-                            <div style="border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px; background: #f0fdf4;">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
-                                    <span style="font-size: 12px; font-weight: 600; color: #16a34a;">Tổng</span>
-                                    <span style="font-size: 15px; font-weight: 700; color: #16a34a;">552,25M</span>
-                                </div>
-                                <div style="font-size: 11px; color: #6b7280;">AOV: 55,23M</div>
-                            </div>
-                            <div style="border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px; background: #eff6ff;">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
-                                    <span style="font-size: 12px; font-weight: 600; color: #1d4ed8;">Số đơn</span>
-                                    <span style="font-size: 15px; font-weight: 700; color: #1d4ed8;">10</span>
-                                </div>
-                                <div style="font-size: 11px; color: #6b7280;">Gần nhất: 40 ngày</div>
-                            </div>
-                        </div>
 
                         <!-- Khách hàng (profile) -->
-                        <div style="border: 1px solid #fecaca; border-radius: 4px; padding: 12px; margin-bottom: 16px;">
+                        <div style="border: 1px solid #e5e7eb; border-radius: 4px; padding: 12px; margin-bottom: 16px;">
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                                 <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 5px;">Khách hàng <i class="fa-regular fa-circle-question" style="font-size: 11px; color: #9ca3af;"></i></span>
                                 <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
@@ -2901,7 +2884,8 @@
                         <button style="width: 22px; height: 22px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 10px; color: #6b7280; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-chevron-up"></i></button>
                     </div>
                 </div>
-                <div style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; background: white; width: 150px;">
+                <div style="display: flex; justify-content: center;">
+                    <div style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; background: white; width: 150px;">
                     <div style="height: 110px; overflow: hidden;">
                         <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=220&fit=crop" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
@@ -2910,11 +2894,12 @@
                         <div style="font-size: 11px; color: #9ca3af; margin-bottom: 4px;">Combo 10 buổi · 90 phút</div>
                         <div style="font-size: 13px; font-weight: 700; color: #be185d;">12.000.000đ</div>
                     </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Metric -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+            <div style="margin-bottom: 16px;">
                 <div style="border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px; background: #f0fdf4;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
                         <span style="font-size: 12px; font-weight: 600; color: #16a34a;">Tổng chi tiêu</span>
@@ -2922,13 +2907,7 @@
                     </div>
                     <div style="font-size: 11px; color: #6b7280;">AOV: 4,6M</div>
                 </div>
-                <div style="border: 1px solid #fbcfe8; border-radius: 10px; padding: 12px; background: #fdf2f8;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
-                        <span style="font-size: 12px; font-weight: 600; color: #be185d;">Buổi còn lại</span>
-                        <span style="font-size: 15px; font-weight: 700; color: #be185d;">7 / 10</span>
-                    </div>
-                    <div style="font-size: 11px; color: #6b7280;">Gần nhất: 6 ngày</div>
-                </div>
+              
             </div>
 
             <!-- Khách hàng -->
@@ -3059,6 +3038,216 @@
             </div>`;
         }
 
+        // ---- Nội dung Khóa học - Sự kiện cho modal lead ----
+        const COURSE_FANPAGE_HTML = `
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #eff6ff; border-bottom: 1px solid #bfdbfe;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="https://i.pravatar.cc/100?img=15" alt="" style="width: 34px; height: 34px; border-radius: 50%;">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1d4ed8; text-transform: uppercase;">Sự kiện tạo lead từ Fanpage</div>
+                        <div style="font-size: 11px; color: #6b7280;">Fanpage: <b style="color:#374151;">Trung tâm Anh ngữ Brightway</b> &nbsp; 290471180022</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; color: #9ca3af;">Bởi:</span>
+                    <span style="font-size: 12px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 4px;"><i class="fa-brands fa-meta" style="color:#1877f2;"></i> Meta Business AI</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0;">
+                <div style="padding: 14px 16px; border-right: 1px solid #f1f2f4;">
+                    <div style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-regular fa-circle-info" style="color:#9ca3af;"></i> Thông tin nguồn</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Fanpage</span>
+                        <span style="font-size: 12px; color: #374151; text-align: right;">Anh ngữ Brightway<br><span style="font-size:10px;color:#9ca3af;">290471180022</span></span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Chiến dịch</span>
+                        <span style="font-size: 12px; color: #374151;">IELTS Cấp tốc 2026</span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Tin nhắn cuối</span>
+                        <span style="font-size: 12px; color: #374151; text-align: right;">Khóa IELTS có học thử không ạ? <i class="fa-solid fa-up-right-from-square" style="font-size:9px;color:#3b82f6;"></i></span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 12px; color: #9ca3af;">Nguồn</span>
+                        <span style="font-size: 12px; color: #374151; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-s" style="background:#1d4ed8;color:#fff;width:14px;height:14px;border-radius:3px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;"></i> SmaxAI</span>
+                    </div>
+                </div>
+                <div style="padding: 14px 16px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-sliders" style="color:#9ca3af;"></i> Thông tin thuộc tính</div>
+                    <div style="font-size: 12px; color: #9ca3af; margin-bottom: 6px;">Tóm tắt hội thoại</div>
+                    <div style="font-size: 12px; color: #374151; font-style: italic; line-height: 1.5; margin-bottom: 12px;">"Học viên muốn thi IELTS đạt 6.5 trong 4 tháng để du học. Mất gốc Speaking, đã tự học nhưng không hiệu quả. Hỏi lịch học tối &amp; học thử miễn phí, băn khoăn về học phí."</div>
+                    <div style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Giới tính</div>
+                    <div style="font-size: 12px; color: #374151;">Nam</div>
+                </div>
+            </div>`;
+
+        function courseProfileHTML(name) {
+            const safeName = name || 'Học viên';
+            return `
+            <!-- Khóa học quan tâm -->
+            <div style="margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937;">Khóa học / Sự kiện quan tâm</span>
+                    <div style="display: flex; gap: 6px;">
+                        <button style="width: 22px; height: 22px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 50%; cursor: pointer; font-size: 10px; color: #1d4ed8; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-plus"></i></button>
+                        <button style="width: 22px; height: 22px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 10px; color: #6b7280; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-chevron-up"></i></button>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <div style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; background: white; width: 150px;">
+                    <div style="height: 110px; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=220&fit=crop" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="padding: 8px 10px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #374151; margin-bottom: 2px;">IELTS Cấp tốc 6.5</div>
+                        <div style="font-size: 11px; color: #9ca3af; margin-bottom: 4px;">48 buổi · 4 tháng</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1d4ed8;">9.500.000đ</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metric -->
+            <div style="margin-bottom: 16px;">
+                <div style="border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px; background: #f0fdf4;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #16a34a;">Tổng học phí</span>
+                        <span style="font-size: 15px; font-weight: 700; color: #16a34a;">9,5M</span>
+                    </div>
+                    <div style="font-size: 11px; color: #6b7280;">Buổi đã học: 12/48</div>
+                </div>
+            </div>
+
+            <!-- Học viên -->
+            <div style="border: 1px solid #bfdbfe; border-radius: 4px; padding: 12px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 5px;">Học viên <i class="fa-regular fa-circle-question" style="font-size: 11px; color: #9ca3af;"></i></span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #bfdbfe;">
+                        <i class="fa-solid fa-graduation-cap" style="font-size: 22px; color: #93c5fd;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-size: 13px; font-weight: 600; color: #1d4ed8;">${safeName}</span>
+                            <button style="background: none; border: none; cursor: pointer; color: #9ca3af;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-phone" style="font-size: 11px; color: #9ca3af;"></i>
+                            <span style="font-size: 12px; color: #374151;">0912 480 663</span>
+                            <i class="fa-regular fa-copy" style="font-size: 11px; color: #9ca3af; cursor: pointer;"></i>
+                        </div>
+                        <i class="fa-solid fa-phone-volume" style="font-size: 11px; color: #9ca3af; cursor: pointer;"></i>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-regular fa-envelope" style="font-size: 11px; color: #9ca3af;"></i>
+                        <span style="font-size: 12px; color: #374151;">hocvien1@gmail.com</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-location-dot" style="font-size: 11px; color: #9ca3af;"></i>
+                        <span style="font-size: 12px; color: #374151;">Cầu Giấy, Hà Nội</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nhóm 1: Nhu cầu học tập -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-book-open" style="color: #3b82f6; font-size: 12px;"></i> Nhu cầu học tập</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Khóa quan tâm:</span> IELTS Cấp tốc (mục tiêu 6.5)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Trình độ hiện tại:</span> Mất gốc Speaking, ~4.5 overall</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Lịch học mong muốn:</span> Buổi tối T2-T4-T6</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Hình thức:</span> Offline tại trung tâm + lớp nhỏ</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 2: Tài chính -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-sack-dollar" style="color: #16a34a; font-size: 12px;"></i> Tài chính</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Ngân sách:</span> 8 – 10 triệu cho khóa học</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Người chi trả:</span> Phụ huynh hỗ trợ</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Quan tâm:</span> <b style="color: #f59e0b;">Ưu đãi ghi danh sớm</b> &amp; trả góp</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 3: Động cơ & Thời điểm -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-bullseye" style="color: #f59e0b; font-size: 12px;"></i> Động cơ &amp; Thời điểm</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Mục tiêu:</span> Đạt IELTS 6.5 để nộp hồ sơ du học</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Mức độ cấp bách:</span> <b style="color: #ef4444;">Cao</b> - cần thi trong 4 tháng</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Nỗi lo/Rào cản:</span> Sợ không theo kịp lớp, lo mất gốc</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 4: Lịch trình & Hành động -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-regular fa-calendar-check" style="color: #9333ea; font-size: 12px;"></i> Lịch trình &amp; Hành động</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Lịch test đầu vào:</span> 18:30 Thứ 4, 17/06 (test miễn phí)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Thời điểm gọi lại:</span> Buổi tối (sau 20:00)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Ưu đãi gửi học viên:</span> Học thử 2 buổi + giảm 10% ghi danh sớm</div>
+                </div>
+            </div>
+
+            <!-- Lịch sử đơn hàng -->
+            <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937;">Lịch sử đơn hàng</span>
+                    <span style="font-size: 12px; color: #3b82f6; font-weight: 500; cursor: pointer;">Xem tất cả</span>
+                </div>
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; background: white;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-graduation-cap" style="color: #1d4ed8; font-size: 12px;"></i>
+                            <span style="font-size: 12px; font-weight: 600; color: #1d4ed8;">HD0312</span>
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600; color: #1f2937;">9.500.000đ</span>
+                    </div>
+                    <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Khóa IELTS Cấp tốc 6.5 - 48 buổi</div>
+                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px;">Đã học 12/48 buổi · Lớp tối T2-T4-T6</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Đang học</span>
+                        <span style="font-size: 11px; color: #9ca3af;"><i class="fa-regular fa-clock" style="margin-right: 3px;"></i>19:00 02/06</span>
+                    </div>
+                </div>
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; background: white;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-ticket" style="color: #9333ea; font-size: 12px;"></i>
+                            <span style="font-size: 12px; font-weight: 600; color: #9333ea;">SK0048</span>
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600; color: #1f2937;">Miễn phí</span>
+                    </div>
+                    <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Vé Workshop "Bí quyết IELTS 7.0"</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Đã tham dự</span>
+                        <span style="font-size: 11px; color: #9ca3af;"><i class="fa-regular fa-clock" style="margin-right: 3px;"></i>09:00 25/05</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
         // Lưu HTML gốc (BĐS) của 2 khối động để có thể khôi phục khi chuyển ngành
         let _leadOrigFanpage = null;
         let _leadOrigProfile = null;
@@ -3094,13 +3283,19 @@
             if (_leadOrigFanpage === null) _leadOrigFanpage = fanpage.innerHTML;
             if (_leadOrigProfile === null) _leadOrigProfile = profile.innerHTML;
 
+            const cardName = card && card.querySelector('.card-name')
+                ? card.querySelector('.card-name').innerText : '';
+
             if (industry === 'lam_dep') {
-                const name = card && card.querySelector('.card-name')
-                    ? card.querySelector('.card-name').innerText : 'Khách SPA';
                 fanpage.innerHTML = SPA_FANPAGE_HTML;
-                profile.innerHTML = spaProfileHTML(name);
+                profile.innerHTML = spaProfileHTML(cardName || 'Khách SPA');
                 setLeadTags(['Trị mụn', 'Da nhạy cảm', 'Combo 10 buổi']);
                 setLeadFunnel('SPA - CHĂM SÓC DA');
+            } else if (industry === 'khoa_hoc') {
+                fanpage.innerHTML = COURSE_FANPAGE_HTML;
+                profile.innerHTML = courseProfileHTML(cardName || 'Học viên');
+                setLeadTags(['IELTS', 'Du học', 'Mục tiêu 6.5']);
+                setLeadFunnel('KHÓA HỌC - SỰ KIỆN');
             } else {
                 fanpage.innerHTML = _leadOrigFanpage;
                 profile.innerHTML = _leadOrigProfile;
