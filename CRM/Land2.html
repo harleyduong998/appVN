@@ -526,6 +526,30 @@
         .pg-btn:disabled { opacity: 0.4; cursor: default; }
 
         /* ==================== TOAST ==================== */
+        /* ===== MODAL ===== */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.5); display: none; align-items: center; justify-content: center; z-index: 400; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: #fff; width: 580px; max-width: 94%; max-height: 92vh; border-radius: 14px; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,.25); overflow: hidden; }
+        .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+        .modal-head h2 { font-size: 16px; font-weight: 700; color: var(--royal-dark); display: flex; align-items: center; gap: 8px; }
+        .modal-head h2 i { color: var(--royal); }
+        .modal-close { width: 30px; height: 30px; border: none; background: #f3f4f6; border-radius: 8px; cursor: pointer; color: #6b7280; font-size: 14px; }
+        .modal-close:hover { background: #e5e7eb; color: #374151; }
+        .modal-body { padding: 18px 20px; overflow-y: auto; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-field { display: flex; flex-direction: column; gap: 5px; }
+        .form-field.full { grid-column: 1 / -1; }
+        .form-field label { font-size: 12px; font-weight: 600; color: #374151; }
+        .form-field label .req { color: #ef4444; }
+        .form-field input, .form-field select { border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 13px; color: #374151; outline: none; background: #fff; width: 100%; }
+        .form-field input:focus, .form-field select:focus { border-color: var(--royal); box-shadow: 0 0 0 2px #bfd0ff; }
+        .modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--border); }
+        .field-err { font-size: 11px; color: #ef4444; display: none; }
+        .form-field.invalid input, .form-field.invalid select { border-color: #ef4444; }
+        .form-field.invalid .field-err { display: block; }
+        .btn-cancel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: #374151; cursor: pointer; }
+        .btn-cancel:hover { background: #f7f8fa; }
+
         .toast {
             position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
             background: #1e293b; color: #fff;
@@ -533,7 +557,7 @@
             font-size: 13px; font-weight: 500;
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
             display: flex; align-items: center; gap: 8px;
-            opacity: 0; transition: all 0.3s; z-index: 300;
+            opacity: 0; transition: all 0.3s; z-index: 500;
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .toast i { color: #4ade80; }
@@ -684,7 +708,7 @@
 
             <button class="btn-outline green" onclick="exportExcel()"><i class="fa-solid fa-file-export"></i> Xuất Excel</button>
             <button class="btn-outline blue" onclick="importExcel()"><i class="fa-solid fa-file-import"></i> Nhập Excel</button>
-            <button class="btn-add" onclick="showToast('Mở form thêm sản phẩm mới')"><i class="fa-solid fa-plus"></i> Thêm căn</button>
+            <button class="btn-add" onclick="openUnitModal()"><i class="fa-solid fa-plus"></i> Thêm căn</button>
         </div>
     </div>
 
@@ -737,6 +761,95 @@
 </div>
 
 <!-- Toast -->
+<!-- MODAL: Thêm sản phẩm BĐS mới -->
+<div class="modal-overlay" id="unitModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2><i class="fa-solid fa-building"></i> Thêm sản phẩm BĐS</h2>
+      <button class="modal-close" onclick="closeUnitModal()"><i class="fa-solid fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Mã căn <span class="req">*</span></label>
+          <input type="text" id="uCode" placeholder="VD: A1.20.05">
+          <span class="field-err">Vui lòng nhập mã căn</span>
+        </div>
+        <div class="form-field">
+          <label>Dự án <span class="req">*</span></label>
+          <input type="text" id="uProj" list="projList" placeholder="VD: Vinhomes Ocean Park">
+          <datalist id="projList">
+            <option value="Vinhomes Ocean Park"></option>
+            <option value="The Matrix One"></option>
+            <option value="Masteri Centre Point"></option>
+            <option value="NovaWorld Phan Thiết"></option>
+            <option value="Aqua City"></option>
+            <option value="Eco Green Sài Gòn"></option>
+          </datalist>
+          <span class="field-err">Vui lòng nhập dự án</span>
+        </div>
+        <div class="form-field">
+          <label>Loại phòng <span class="req">*</span></label>
+          <select id="uRooms">
+            <option value="Studio">Studio</option>
+            <option value="1PN">1PN</option>
+            <option value="2PN">2PN</option>
+            <option value="3PN" selected>3PN</option>
+            <option value="4PN">4PN</option>
+            <option value="Penthouse">Penthouse</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Tầng <span class="req">*</span></label>
+          <input type="number" id="uFloor" min="1" placeholder="VD: 20">
+          <span class="field-err">Nhập số tầng</span>
+        </div>
+        <div class="form-field">
+          <label>Giá (tỷ) <span class="req">*</span></label>
+          <input type="number" id="uPrice" min="0" step="0.1" placeholder="VD: 4.2">
+          <span class="field-err">Nhập giá hợp lệ</span>
+        </div>
+        <div class="form-field">
+          <label>Diện tích (m²) <span class="req">*</span></label>
+          <input type="number" id="uArea" min="1" placeholder="VD: 85">
+          <span class="field-err">Nhập diện tích</span>
+        </div>
+        <div class="form-field">
+          <label>Hướng</label>
+          <select id="uDir">
+            <option value="Đông">Đông</option>
+            <option value="Tây">Tây</option>
+            <option value="Nam">Nam</option>
+            <option value="Bắc">Bắc</option>
+            <option value="Đông Nam" selected>Đông Nam</option>
+            <option value="Đông Bắc">Đông Bắc</option>
+            <option value="Tây Nam">Tây Nam</option>
+            <option value="Tây Bắc">Tây Bắc</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Trạng thái</label>
+          <select id="uStatus">
+            <option value="avail" selected>Còn hàng</option>
+            <option value="hold">Giữ chỗ</option>
+            <option value="deposit">Đặt cọc</option>
+            <option value="sold">Đã bán</option>
+            <option value="locked">Khóa hàng</option>
+          </select>
+        </div>
+        <div class="form-field full">
+          <label>Ảnh (URL)</label>
+          <input type="text" id="uImg" placeholder="https://... (để trống dùng ảnh mặc định)">
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeUnitModal()">Hủy</button>
+      <button class="btn-add" onclick="saveUnit()"><i class="fa-solid fa-check"></i> Lưu căn hộ</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg"></span></div>
 
 <script>
@@ -848,6 +961,49 @@
         render();
     }
     function searchUnits() { applyFilters(); }
+
+    // ==================== MODAL: Thêm BĐS ====================
+    const DEFAULT_UNIT_IMG = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=120&h=90&fit=crop';
+
+    function openUnitModal() {
+        ['uCode','uProj','uFloor','uPrice','uArea','uImg'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('uRooms').value = '3PN';
+        document.getElementById('uDir').value = 'Đông Nam';
+        document.getElementById('uStatus').value = 'avail';
+        document.querySelectorAll('#unitModal .form-field.invalid').forEach(f => f.classList.remove('invalid'));
+        document.getElementById('unitModal').classList.add('show');
+        setTimeout(() => document.getElementById('uCode').focus(), 50);
+    }
+    function closeUnitModal() { document.getElementById('unitModal').classList.remove('show'); }
+
+    function saveUnit() {
+        const reqIds = ['uCode','uProj','uFloor','uPrice','uArea'];
+        let ok = true;
+        reqIds.forEach(id => {
+            const el = document.getElementById(id);
+            const wrap = el.closest('.form-field');
+            const bad = !el.value.trim() || (el.type === 'number' && Number(el.value) <= 0);
+            if (bad) { wrap.classList.add('invalid'); ok = false; }
+            else wrap.classList.remove('invalid');
+        });
+        if (!ok) { showToast('Vui lòng điền đủ các trường bắt buộc'); return; }
+
+        const code = document.getElementById('uCode').value.trim();
+        units.unshift({
+            img: document.getElementById('uImg').value.trim() || DEFAULT_UNIT_IMG,
+            code: code,
+            proj: document.getElementById('uProj').value.trim(),
+            floor: Number(document.getElementById('uFloor').value),
+            price: Number(document.getElementById('uPrice').value),
+            area: Number(document.getElementById('uArea').value),
+            rooms: document.getElementById('uRooms').value,
+            dir: document.getElementById('uDir').value,
+            status: document.getElementById('uStatus').value,
+        });
+        closeUnitModal();
+        applyFilters();
+        showToast('Đã thêm căn ' + code);
+    }
 
     // ==================== PROJECT SUB-SIDEBAR ====================
     function selectProject(el, name) {
