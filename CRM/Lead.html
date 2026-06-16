@@ -2211,7 +2211,7 @@
                     </div>
 
                     <!-- Sự kiện tạo lead từ Fanpage (BĐS) -->
-                    <div style="margin: 14px 18px 4px; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;">
+                    <div id="leadFanpageBlock" style="margin: 14px 18px 4px; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;">
                         <!-- Header sự kiện -->
                         <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #f9fafb; border-bottom: 1px solid #f1f2f4;">
                             <div style="display: flex; align-items: center; gap: 10px;">
@@ -2397,6 +2397,8 @@
                             <input type="text" placeholder="Tìm khách theo Họ tên, SĐT hoặc Email..." style="flex: 1; border: none; background: transparent; outline: none; font-size: 12px; color: #374151; font-family: 'Inter', sans-serif;">
                         </div>
 
+                        <!-- Khối nội dung động theo ngành (BĐS / Spa) -->
+                        <div id="leadProfileDynamic">
                         <!-- Bất động sản quan tâm -->
                         <div style="margin-bottom: 16px;">
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
@@ -2567,6 +2569,7 @@
                                 </div>
                             </div>
                         </div>
+                        </div><!-- /leadProfileDynamic -->
                     </div>
 
                     <!-- Lịch sử content -->
@@ -2841,7 +2844,226 @@
             }
         });
 
-        function openLeadDetail(card) {
+        // ---- Nội dung Spa (Dịch vụ làm đẹp) cho modal lead ----
+        const SPA_FANPAGE_HTML = `
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #fdf2f8; border-bottom: 1px solid #fbcfe8;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="https://i.pravatar.cc/100?img=45" alt="" style="width: 34px; height: 34px; border-radius: 50%;">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 700; color: #be185d; text-transform: uppercase;">Sự kiện tạo lead từ Fanpage</div>
+                        <div style="font-size: 11px; color: #6b7280;">Fanpage: <b style="color:#374151;">Spa Lavender - Trị mụn chuyên sâu</b> &nbsp; 178923440021</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; color: #9ca3af;">Bởi:</span>
+                    <span style="font-size: 12px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 4px;"><i class="fa-brands fa-meta" style="color:#1877f2;"></i> Meta Business AI</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0;">
+                <div style="padding: 14px 16px; border-right: 1px solid #f1f2f4;">
+                    <div style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-regular fa-circle-info" style="color:#9ca3af;"></i> Thông tin nguồn</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Fanpage</span>
+                        <span style="font-size: 12px; color: #374151; text-align: right;">Spa Lavender<br><span style="font-size:10px;color:#9ca3af;">178923440021</span></span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Ads ID</span>
+                        <span style="font-size: 12px; color: #374151;">act_55810293471</span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Tin nhắn cuối</span>
+                        <span style="font-size: 12px; color: #374151; text-align: right;">Da em bị mụn ẩn, soi da bao nhiêu ạ? <i class="fa-solid fa-up-right-from-square" style="font-size:9px;color:#3b82f6;"></i></span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 12px; color: #9ca3af;">Nguồn</span>
+                        <span style="font-size: 12px; color: #374151; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-s" style="background:#be185d;color:#fff;width:14px;height:14px;border-radius:3px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;"></i> SmaxAI</span>
+                    </div>
+                </div>
+                <div style="padding: 14px 16px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-sliders" style="color:#9ca3af;"></i> Thông tin thuộc tính</div>
+                    <div style="font-size: 12px; color: #9ca3af; margin-bottom: 6px;">Tóm tắt hội thoại</div>
+                    <div style="font-size: 12px; color: #374151; font-style: italic; line-height: 1.5; margin-bottom: 12px;">"Khách bị mụn ẩn &amp; thâm sau mụn, da nhạy cảm. Hỏi liệu trình trị mụn chuyên sâu, muốn soi da miễn phí. Đắn đo về chi phí và thời gian đi lại."</div>
+                    <div style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Giới tính</div>
+                    <div style="font-size: 12px; color: #374151;">Nữ</div>
+                </div>
+            </div>`;
+
+        function spaProfileHTML(name) {
+            const safeName = name || 'Khách SPA';
+            return `
+            <!-- Dịch vụ quan tâm -->
+            <div style="margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937;">Dịch vụ / Liệu trình quan tâm</span>
+                    <div style="display: flex; gap: 6px;">
+                        <button style="width: 22px; height: 22px; background: #fdf2f8; border: 1px solid #fbcfe8; border-radius: 50%; cursor: pointer; font-size: 10px; color: #be185d; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-plus"></i></button>
+                        <button style="width: 22px; height: 22px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 10px; color: #6b7280; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-chevron-up"></i></button>
+                    </div>
+                </div>
+                <div style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; background: white; width: 150px;">
+                    <div style="height: 110px; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=220&fit=crop" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="padding: 8px 10px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #374151; margin-bottom: 2px;">Trị mụn chuyên sâu</div>
+                        <div style="font-size: 11px; color: #9ca3af; margin-bottom: 4px;">Combo 10 buổi · 90 phút</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #be185d;">12.000.000đ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metric -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+                <div style="border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px; background: #f0fdf4;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #16a34a;">Tổng chi tiêu</span>
+                        <span style="font-size: 15px; font-weight: 700; color: #16a34a;">18,5M</span>
+                    </div>
+                    <div style="font-size: 11px; color: #6b7280;">AOV: 4,6M</div>
+                </div>
+                <div style="border: 1px solid #fbcfe8; border-radius: 10px; padding: 12px; background: #fdf2f8;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #be185d;">Buổi còn lại</span>
+                        <span style="font-size: 15px; font-weight: 700; color: #be185d;">7 / 10</span>
+                    </div>
+                    <div style="font-size: 11px; color: #6b7280;">Gần nhất: 6 ngày</div>
+                </div>
+            </div>
+
+            <!-- Khách hàng -->
+            <div style="border: 1px solid #fbcfe8; border-radius: 4px; padding: 12px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 5px;">Khách hàng <i class="fa-regular fa-circle-question" style="font-size: 11px; color: #9ca3af;"></i></span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: #fdf2f8; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #fbcfe8;">
+                        <i class="fa-solid fa-user" style="font-size: 24px; color: #f9a8d4;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-size: 13px; font-weight: 600; color: #be185d;">${safeName}</span>
+                            <button style="background: none; border: none; cursor: pointer; color: #9ca3af;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-phone" style="font-size: 11px; color: #9ca3af;"></i>
+                            <span style="font-size: 12px; color: #374151;">0938 552 117</span>
+                            <i class="fa-regular fa-copy" style="font-size: 11px; color: #9ca3af; cursor: pointer;"></i>
+                        </div>
+                        <i class="fa-solid fa-phone-volume" style="font-size: 11px; color: #9ca3af; cursor: pointer;"></i>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-regular fa-envelope" style="font-size: 11px; color: #9ca3af;"></i>
+                        <span style="font-size: 12px; color: #9ca3af;">—</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-location-dot" style="font-size: 11px; color: #9ca3af;"></i>
+                        <span style="font-size: 12px; color: #374151;">Quận 7, TP.HCM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nhóm 1: Tình trạng Da & Nhu cầu -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-face-smile" style="color: #ec4899; font-size: 12px;"></i> Tình trạng Da &amp; Nhu cầu</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Vấn đề chính:</span> Mụn ẩn &amp; thâm sau mụn vùng má</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Loại da:</span> Da dầu, nhạy cảm</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Dịch vụ quan tâm:</span> Trị mụn chuyên sâu (combo 10 buổi)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Đã từng điều trị:</span> Tự mua mỹ phẩm, chưa từng làm spa</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 2: Tài chính -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-sack-dollar" style="color: #16a34a; font-size: 12px;"></i> Tài chính</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Ngân sách dự kiến:</span> 10 – 15 triệu cho liệu trình</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Hình thức thanh toán:</span> Quan tâm trả góp 0% / chia 2 đợt</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Nhạy cảm giá:</span> <b style="color: #f59e0b;">Trung bình</b> - cần thấy hiệu quả rõ</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 3: Động cơ & Thời điểm -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-bullseye" style="color: #f59e0b; font-size: 12px;"></i> Động cơ &amp; Thời điểm</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Mục tiêu:</span> Da sạch mụn trước đám cưới (~2 tháng)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Mức độ cấp bách:</span> <b style="color: #ef4444;">Cao</b> - muốn bắt đầu trong tuần</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Nỗi lo/Rào cản:</span> Sợ đau, sợ da bị kích ứng, ngại đi lại</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 4: Lịch trình & Hành động -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-regular fa-calendar-check" style="color: #9333ea; font-size: 12px;"></i> Lịch trình &amp; Hành động</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Lịch hẹn soi da:</span> 15:00 Thứ 5, 18/06 (soi da miễn phí)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Thời điểm gọi lại:</span> Giờ hành chính (11:00 - 13:00)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Ưu đãi gửi khách:</span> Voucher soi da + giảm 15% buổi đầu</div>
+                </div>
+            </div>
+
+            <!-- Lịch sử đơn hàng -->
+            <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937;">Lịch sử đơn hàng</span>
+                    <span style="font-size: 12px; color: #3b82f6; font-weight: 500; cursor: pointer;">Xem tất cả</span>
+                </div>
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; background: white;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-spa" style="color: #be185d; font-size: 12px;"></i>
+                            <span style="font-size: 12px; font-weight: 600; color: #be185d;">HD0207</span>
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600; color: #1f2937;">12.000.000đ</span>
+                    </div>
+                    <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Combo Trị mụn chuyên sâu - 10 buổi</div>
+                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px;">Đã dùng 3/10 buổi · Còn hạn 90 ngày</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Đang sử dụng</span>
+                        <span style="font-size: 11px; color: #9ca3af;"><i class="fa-regular fa-clock" style="margin-right: 3px;"></i>10:20 10/06</span>
+                    </div>
+                </div>
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; background: white;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-spa" style="color: #be185d; font-size: 12px;"></i>
+                            <span style="font-size: 12px; font-weight: 600; color: #be185d;">HD0188</span>
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600; color: #1f2937;">650.000đ</span>
+                    </div>
+                    <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Soi da chuyên sâu + Tư vấn (lẻ)</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Hoàn tất</span>
+                        <span style="font-size: 11px; color: #9ca3af;"><i class="fa-regular fa-clock" style="margin-right: 3px;"></i>15:05 18/06</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // Lưu HTML gốc (BĐS) của 2 khối động để có thể khôi phục khi chuyển ngành
+        let _leadOrigFanpage = null;
+        let _leadOrigProfile = null;
+
+        function openLeadDetail(card, industry) {
             if (card) {
                 const nameNode = card.querySelector('.card-name');
                 if (nameNode) {
@@ -2849,8 +3071,67 @@
                     const el = document.getElementById('leadDetailName');
                     if (el) el.innerText = name;
                 }
+                // Suy ra ngành từ tham số hoặc từ onclick của cột chứa card
+                if (!industry) {
+                    const col = card.closest && card.closest('.column-cards');
+                    const oc = col && col.getAttribute('onclick');
+                    const m = oc && oc.match(/openLeadDetail\(this,\s*'([^']+)'\)/);
+                    if (m) industry = m[1];
+                }
             }
+            applyLeadIndustry(industry || 'bds', card);
             document.getElementById('leadDetailModal').classList.add('active');
+        }
+
+        // Áp dụng nội dung modal theo ngành: 'lam_dep' (Spa) dùng nội dung Spa,
+        // các ngành còn lại giữ nội dung BĐS gốc.
+        function applyLeadIndustry(industry, card) {
+            const fanpage = document.getElementById('leadFanpageBlock');
+            const profile = document.getElementById('leadProfileDynamic');
+            if (!fanpage || !profile) return;
+
+            // Ghi nhớ HTML gốc (BĐS) lần đầu
+            if (_leadOrigFanpage === null) _leadOrigFanpage = fanpage.innerHTML;
+            if (_leadOrigProfile === null) _leadOrigProfile = profile.innerHTML;
+
+            if (industry === 'lam_dep') {
+                const name = card && card.querySelector('.card-name')
+                    ? card.querySelector('.card-name').innerText : 'Khách SPA';
+                fanpage.innerHTML = SPA_FANPAGE_HTML;
+                profile.innerHTML = spaProfileHTML(name);
+                setLeadTags(['Trị mụn', 'Da nhạy cảm', 'Combo 10 buổi']);
+                setLeadFunnel('SPA - CHĂM SÓC DA');
+            } else {
+                fanpage.innerHTML = _leadOrigFanpage;
+                profile.innerHTML = _leadOrigProfile;
+                setLeadTags(['Vinhomes', 'VIP', 'Tiềm năng']);
+                setLeadFunnel('LEAD CHĂM SÓC LẠI');
+            }
+        }
+
+        // Cập nhật phễu trên thanh thông tin
+        function setLeadFunnel(text) {
+            const full = document.getElementById('leadInfoFull');
+            if (!full) return;
+            const span = full.querySelector('div span:nth-child(2)');
+            if (span) span.innerText = text;
+        }
+
+        // Cập nhật danh sách tag (hàng đầy đủ + thanh thu gọn)
+        function setLeadTags(tags) {
+            const palette = [
+                'background:#fef9c3;color:#ca8a04;',
+                'background:#e0e7ff;color:#4338ca;',
+                'background:#dcfce7;color:#16a34a;'
+            ];
+            // Hàng tag đầy đủ là .lead-info-detail có chứa "Thẻ tag:"
+            const rows = document.querySelectorAll('#leadDetailModal .lead-info-detail');
+            rows.forEach(r => {
+                if (r.innerText.trim().startsWith('Thẻ tag')) {
+                    r.innerHTML = '<span style="font-size: 11px; color: #9ca3af;">Thẻ tag:</span>' +
+                        tags.map((t, i) => `<span class="tag" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 500; ${palette[i % palette.length]}">${t}</span>`).join('');
+                }
+            });
         }
 
         function closeLeadDetail() {
