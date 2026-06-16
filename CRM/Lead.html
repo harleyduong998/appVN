@@ -3248,6 +3248,216 @@
             </div>`;
         }
 
+        // ---- Nội dung Quản lý Tour cho modal lead ----
+        const TOUR_FANPAGE_HTML = `
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #f0fdfa; border-bottom: 1px solid #99f6e4;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="https://i.pravatar.cc/100?img=27" alt="" style="width: 34px; height: 34px; border-radius: 50%;">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 700; color: #0d9488; text-transform: uppercase;">Sự kiện tạo lead từ Fanpage</div>
+                        <div style="font-size: 11px; color: #6b7280;">Fanpage: <b style="color:#374151;">Du lịch Vietravel - Tour Đà Lạt</b> &nbsp; 410582937744</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; color: #9ca3af;">Bởi:</span>
+                    <span style="font-size: 12px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 4px;"><i class="fa-brands fa-meta" style="color:#1877f2;"></i> Meta Business AI</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0;">
+                <div style="padding: 14px 16px; border-right: 1px solid #f1f2f4;">
+                    <div style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-regular fa-circle-info" style="color:#9ca3af;"></i> Thông tin nguồn</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Fanpage</span>
+                        <span style="font-size: 12px; color: #374151; text-align: right;">Vietravel Tour<br><span style="font-size:10px;color:#9ca3af;">410582937744</span></span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Chiến dịch</span>
+                        <span style="font-size: 12px; color: #374151;">Tour Đà Lạt Hè 2026</span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: #9ca3af;">Tin nhắn cuối</span>
+                        <span style="font-size: 12px; color: #374151; text-align: right;">Tour Đà Lạt 4N3Đ còn chỗ không ạ? <i class="fa-solid fa-up-right-from-square" style="font-size:9px;color:#3b82f6;"></i></span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 12px; color: #9ca3af;">Nguồn</span>
+                        <span style="font-size: 12px; color: #374151; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-s" style="background:#0d9488;color:#fff;width:14px;height:14px;border-radius:3px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;"></i> SmaxAI</span>
+                    </div>
+                </div>
+                <div style="padding: 14px 16px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-sliders" style="color:#9ca3af;"></i> Thông tin thuộc tính</div>
+                    <div style="font-size: 12px; color: #9ca3af; margin-bottom: 6px;">Tóm tắt hội thoại</div>
+                    <div style="font-size: 12px; color: #374151; font-style: italic; line-height: 1.5; margin-bottom: 12px;">"Khách hỏi tour Đà Lạt 4N3Đ cho gia đình 4 người (2 người lớn, 2 trẻ em) khởi hành dịp hè. Quan tâm khách sạn 4 sao &amp; lịch trình thoải mái. Băn khoăn giá vé trẻ em &amp; vé máy bay."</div>
+                    <div style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Giới tính</div>
+                    <div style="font-size: 12px; color: #374151;">Nữ</div>
+                </div>
+            </div>`;
+
+        function tourProfileHTML(name) {
+            const safeName = name || 'Khách Tour';
+            return `
+            <!-- Tour quan tâm -->
+            <div style="margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937;">Tour / Hành trình quan tâm</span>
+                    <div style="display: flex; gap: 6px;">
+                        <button style="width: 22px; height: 22px; background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 50%; cursor: pointer; font-size: 10px; color: #0d9488; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-plus"></i></button>
+                        <button style="width: 22px; height: 22px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 50%; cursor: pointer; font-size: 10px; color: #6b7280; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-chevron-up"></i></button>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <div style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; background: white; width: 150px;">
+                    <div style="height: 110px; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1528127269322-539801943592?w=300&h=220&fit=crop" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="padding: 8px 10px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #374151; margin-bottom: 2px;">Đà Lạt 4N3Đ</div>
+                        <div style="font-size: 11px; color: #9ca3af; margin-bottom: 4px;">KH 12/07 · KS 4 sao</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #0d9488;">6.500.000đ/khách</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metric -->
+            <div style="margin-bottom: 16px;">
+                <div style="border: 1px solid #99f6e4; border-radius: 10px; padding: 12px; background: #f0fdfa;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #0d9488;">Tổng dự kiến</span>
+                        <span style="font-size: 15px; font-weight: 700; color: #0d9488;">22,75M</span>
+                    </div>
+                    <div style="font-size: 11px; color: #6b7280;">4 khách (2 NL + 2 TE)</div>
+                </div>
+            </div>
+
+            <!-- Khách hàng -->
+            <div style="border: 1px solid #99f6e4; border-radius: 4px; padding: 12px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 5px;">Khách hàng <i class="fa-regular fa-circle-question" style="font-size: 11px; color: #9ca3af;"></i></span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: #f0fdfa; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #99f6e4;">
+                        <i class="fa-solid fa-plane-departure" style="font-size: 20px; color: #5eead4;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-size: 13px; font-weight: 600; color: #0d9488;">${safeName}</span>
+                            <button style="background: none; border: none; cursor: pointer; color: #9ca3af;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-phone" style="font-size: 11px; color: #9ca3af;"></i>
+                            <span style="font-size: 12px; color: #374151;">0907 318 254</span>
+                            <i class="fa-regular fa-copy" style="font-size: 11px; color: #9ca3af; cursor: pointer;"></i>
+                        </div>
+                        <i class="fa-solid fa-phone-volume" style="font-size: 11px; color: #9ca3af; cursor: pointer;"></i>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-regular fa-envelope" style="font-size: 11px; color: #9ca3af;"></i>
+                        <span style="font-size: 12px; color: #374151;">khachtour.a@gmail.com</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-location-dot" style="font-size: 11px; color: #9ca3af;"></i>
+                        <span style="font-size: 12px; color: #374151;">Quận 3, TP.HCM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nhóm 1: Nhu cầu chuyến đi -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-map-location-dot" style="color: #0d9488; font-size: 12px;"></i> Nhu cầu chuyến đi</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Tuyến quan tâm:</span> Đà Lạt 4N3Đ (trọn gói)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Số khách:</span> 4 người (2 người lớn, 2 trẻ em)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Ngày khởi hành:</span> Dịp hè - mong muốn 12/07</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Yêu cầu:</span> Khách sạn 4 sao, lịch trình thong thả, có hướng dẫn viên</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 2: Tài chính -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-sack-dollar" style="color: #16a34a; font-size: 12px;"></i> Tài chính</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Ngân sách:</span> 20 – 25 triệu cho cả đoàn</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Hình thức:</span> Cọc 50% giữ chỗ, thanh toán nốt trước khởi hành</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Quan tâm:</span> <b style="color: #f59e0b;">Giá vé trẻ em</b> &amp; phụ thu vé máy bay</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 3: Động cơ & Thời điểm -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-bullseye" style="color: #f59e0b; font-size: 12px;"></i> Động cơ &amp; Thời điểm</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Mục đích:</span> Du lịch nghỉ dưỡng gia đình dịp hè</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Mức độ cấp bách:</span> <b style="color: #f59e0b;">Trung bình</b> - đang so sánh 2 nhà tour</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Nỗi lo/Rào cản:</span> Sợ đông dịp cao điểm, lo trẻ em mệt</div>
+                </div>
+            </div>
+
+            <!-- Nhóm 4: Lịch trình & Hành động -->
+            <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 6px;"><i class="fa-regular fa-calendar-check" style="color: #9333ea; font-size: 12px;"></i> Lịch trình &amp; Hành động</span>
+                    <button style="background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px;"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Hẹn tư vấn lịch trình:</span> 10:00 Thứ 6, 19/06 (gửi brochure)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Thời điểm gọi lại:</span> Giờ hành chính (sau 14:00)</div>
+                    <div style="font-size: 12px; color: #374151;"><span style="color: #6b7280;">Yêu cầu tài liệu:</span> Lịch trình chi tiết + bảng giá trẻ em &amp; chính sách cọc</div>
+                </div>
+            </div>
+
+            <!-- Lịch sử đơn hàng -->
+            <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #1f2937;">Lịch sử đơn hàng</span>
+                    <span style="font-size: 12px; color: #3b82f6; font-weight: 500; cursor: pointer;">Xem tất cả</span>
+                </div>
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; background: white;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-plane-departure" style="color: #0d9488; font-size: 12px;"></i>
+                            <span style="font-size: 12px; font-weight: 600; color: #0d9488;">TOUR0421</span>
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600; color: #1f2937;">11.375.000đ</span>
+                    </div>
+                    <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Cọc giữ chỗ Tour Đà Lạt 4N3Đ - 4 khách</div>
+                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px;">Cọc 50% · KH 12/07/2026</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 11px; color: #f59e0b; font-weight: 600;">Đã giữ chỗ</span>
+                        <span style="font-size: 11px; color: #9ca3af;"><i class="fa-regular fa-clock" style="margin-right: 3px;"></i>14:30 12/06</span>
+                    </div>
+                </div>
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; background: white;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-umbrella-beach" style="color: #0d9488; font-size: 12px;"></i>
+                            <span style="font-size: 12px; font-weight: 600; color: #0d9488;">TOUR0298</span>
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600; color: #1f2937;">9.800.000đ</span>
+                    </div>
+                    <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Tour Nha Trang 3N2Đ - 2 khách (đã đi)</div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Hoàn tất</span>
+                        <span style="font-size: 11px; color: #9ca3af;"><i class="fa-regular fa-clock" style="margin-right: 3px;"></i>08:00 20/04</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
         // Lưu HTML gốc (BĐS) của 2 khối động để có thể khôi phục khi chuyển ngành
         let _leadOrigFanpage = null;
         let _leadOrigProfile = null;
@@ -3296,6 +3506,11 @@
                 profile.innerHTML = courseProfileHTML(cardName || 'Học viên');
                 setLeadTags(['IELTS', 'Du học', 'Mục tiêu 6.5']);
                 setLeadFunnel('KHÓA HỌC - SỰ KIỆN');
+            } else if (industry === 'tour') {
+                fanpage.innerHTML = TOUR_FANPAGE_HTML;
+                profile.innerHTML = tourProfileHTML(cardName || 'Khách Tour');
+                setLeadTags(['Đà Lạt', 'Gia đình', 'KS 4 sao']);
+                setLeadFunnel('QUẢN LÝ TOUR');
             } else {
                 fanpage.innerHTML = _leadOrigFanpage;
                 profile.innerHTML = _leadOrigProfile;
