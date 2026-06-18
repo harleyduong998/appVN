@@ -425,9 +425,14 @@
           <span class="field-err">Vui lòng nhập mã tour</span>
         </div>
         <div class="form-field">
-          <label> Loại tour</label>
-          <input type="number" id="tfCost" min="0" step="0.1" placeholder="VD: 24.5">
-          <span class="field-err">Nhập giá vốn</span>
+          <label>Loại tour</label>
+          <select id="tfType">
+            <option value="Trong nước">Trong nước</option>
+            <option value="Quốc tế">Quốc tế</option>
+            <option value="Nghỉ dưỡng">Nghỉ dưỡng</option>
+            <option value="Tham quan">Tham quan</option>
+            <option value="Free &amp; Easy">Free &amp; Easy</option>
+          </select>
         </div>
         <div class="form-field">
           <label>Điểm đến <span class="req">*</span></label>
@@ -445,7 +450,7 @@
         </div>
         <div class="form-field">
           <label>Điểm khởi hành</label>
-          <input type="number" id="tfSold" min="0" value="0" placeholder="0">
+          <input type="text" id="tfFrom" placeholder="VD: Hà Nội / TP.HCM">
         </div>
         <div class="form-field">
           <label>Ngày khởi hành <span class="req">*</span></label>
@@ -454,15 +459,22 @@
         </div>
         <div class="form-field">
           <label>Ngày kết thúc</label>
-          <input type="text" id="tfDur" placeholder="VD: Vui lòng chọn ngày">
+          <input type="date" id="tfEnd">
         </div>
         <div class="form-field">
           <label>Tổng số chỗ <span class="req">*</span></label>
           <input type="number" id="tfTotal" min="1" placeholder="VD: 30">
           <span class="field-err">Nhập số chỗ hợp lệ</span>
         </div>
-        
-        
+        <div class="form-field">
+          <label>Đã bán</label>
+          <input type="number" id="tfSold" min="0" value="0" placeholder="0">
+        </div>
+        <div class="form-field">
+          <label>Giá vốn (triệu) <span class="req">*</span></label>
+          <input type="number" id="tfCost" min="0" step="0.1" placeholder="VD: 24.5">
+          <span class="field-err">Nhập giá vốn</span>
+        </div>
         <div class="form-field">
           <label>Giá bán (triệu) <span class="req">*</span></label>
           <input type="number" id="tfSell" min="0" step="0.1" placeholder="VD: 32.9">
@@ -663,9 +675,9 @@
 
   function openTourModal() {
     // Reset form
-    ['tfName','tfCode','tfDur','tfTotal','tfSold','tfCost','tfSell'].forEach(id => document.getElementById(id).value = id === 'tfSold' ? '0' : '');
+    ['tfName','tfCode','tfFrom','tfDepart','tfEnd','tfTotal','tfSold','tfCost','tfSell'].forEach(id => document.getElementById(id).value = id === 'tfSold' ? '0' : '');
+    document.getElementById('tfType').value = 'Trong nước';
     document.getElementById('tfDest').value = '';
-    document.getElementById('tfDepart').value = '';
     document.getElementById('tfGuide').value = 'Lê Quang Vinh';
     document.getElementById('tfStage').value = 'opening';
     document.querySelectorAll('#tourModal .form-field.invalid').forEach(f => f.classList.remove('invalid'));
@@ -679,6 +691,14 @@
     if (!iso) return '';
     const [y, m, d] = iso.split('-');
     return `${d}/${m}/${y}`;
+  }
+
+  // Tính thời lượng "xNyĐ" từ ngày KH -> ngày kết thúc (yyyy-mm-dd)
+  function durFromDates(startIso, endIso) {
+    if (!startIso || !endIso) return '';
+    const days = Math.round((Date.parse(endIso) - Date.parse(startIso)) / 86400000) + 1;
+    if (days < 1) return '';
+    return `${days}N${days - 1}Đ`;
   }
 
   function saveTour() {
@@ -704,14 +724,19 @@
     const dest = fields.tfDest.value;
     const guide = document.getElementById('tfGuide').value;
     const sold = Math.min(Number(document.getElementById('tfSold').value) || 0, total);
+    const endIso = document.getElementById('tfEnd').value;
+    const dur = durFromDates(fields.tfDepart.value, endIso) || '—';
 
     tours.unshift({
       code: fields.tfCode.value.trim(),
       flag: DEST_FLAG[dest] || '🌏',
       name: fields.tfName.value.trim(),
+      type: document.getElementById('tfType').value,
       dest: dest,
+      from: document.getElementById('tfFrom').value.trim(),
       depart: toVnDate(fields.tfDepart.value),
-      dur: document.getElementById('tfDur').value.trim() || '—',
+      end: toVnDate(endIso),
+      dur: dur,
       sold: sold,
       total: total,
       cost: Number(fields.tfCost.value) || 0,
