@@ -1,4 +1,0 @@
-Line 645: <button onclick="openAddLeadModal()"
-Line 4254: function openLeadModal() {
-Line 4437: openLeadModal();
-Line 4824: function openAddLeadModal() {

@@ -81,7 +81,7 @@
         <div class="px-3 mb-6 flex items-center h-10 w-full relative group">
             <div onclick="window.location.href='../index.html'"
                 class="h-10 w-10 min-w-[2.5rem] bg-white rounded-lg flex items-center justify-center text-[#1B3DA1] font-bold text-xl shadow-lg shadow-black/10 z-10 cursor-pointer">
-                <img src="../logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
+                <img src="../assets/img/logo.png" alt="App.vn Logo" class="w-7 h-7 object-contain">
             </div>
             <span class="sidebar-text ml-3 font-bold text-xl text-white pl-1">App.vn</span>
 
@@ -241,7 +241,7 @@
         <!-- Sidebar Navigation (Loyalty Items) -->
         <nav class="w-full flex-1 flex flex-col gap-2 px-3">
             <!-- Tích điểm (Active) -->
-            <a href="#" class="flex items-center h-10 px-2 rounded-lg sidebar-icon-active transition duration-200 group"
+            <a href="#" id="nav-tichdiem" onclick="showLoyaltyScreen('tichdiem', this); return false;" class="loyalty-nav flex items-center h-10 px-2 rounded-lg sidebar-icon-active transition duration-200 group"
                 title="Tích điểm">
                 <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-coins"></i></div>
                 <span class="sidebar-text ml-3 text-sm font-semibold">Tích điểm</span>
@@ -257,8 +257,8 @@
             </a>
 
             <!-- Hạng thành viên -->
-            <a href="#"
-                class="flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
+            <a href="#" id="nav-hang" onclick="showLoyaltyScreen('hang', this); return false;"
+                class="loyalty-nav flex items-center h-10 px-2 rounded-lg hover:bg-white/10 text-blue-200 hover:text-white transition duration-200 group"
                 title="Hạng thành viên">
                 <div class="min-w-[1.5rem] flex items-center justify-center"><i class="fa-solid fa-medal"></i></div>
                 <span class="sidebar-text ml-3 text-sm font-medium">Hạng thành viên</span>
@@ -317,7 +317,7 @@
         </div>
 
         <!-- Hero Section Dashboard -->
-        <div id="hero-section" class="mx-4 mt-4 p-5 rounded-2xl bg-[#F7FAFF] border border-blue-100/50 relative overflow-hidden group shadow-sm hero-banner-watermark transition-all duration-300">
+        <div id="hero-section" class="screen-tichdiem mx-4 mt-4 p-5 rounded-2xl bg-[#F7FAFF] border border-blue-100/50 relative overflow-hidden group shadow-sm hero-banner-watermark transition-all duration-300">
             <!-- Collapse Button -->
             <button onclick="toggleHeroSection()" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-100/50 text-blue-400 hover:text-blue-600 transition-colors z-20" title="Thu gọn/Mở rộng">
                 <i id="hero-toggle-icon" class="fa-solid fa-compress"></i>
@@ -425,9 +425,9 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Đăng ký thành công tài khoản Loyalty</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                         <i class="fa-brands fa-facebook-messenger text-[#0084FF]" style="font-size:15px" title="Messenger"></i>
-                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                        <img src="../assets/img/omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
                                     </div>
                                 </div>
                             </div>
@@ -447,8 +447,8 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Đơn hàng chuyển sang "Hoàn tất"</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
-                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
                                     </div>
                                 </div>
                             </div>
@@ -468,7 +468,7 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Tổng chi tiêu đạt ngưỡng hạng mới</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                     </div>
                                 </div>
                             </div>
@@ -489,7 +489,7 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">24h sau khi đơn hàng giao thành công</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                     </div>
                                 </div>
                             </div>
@@ -509,7 +509,7 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Khách hàng đổi điểm lấy Voucher/Quà tặng</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                     </div>
                                 </div>
                             </div>
@@ -529,8 +529,8 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">30 ngày trước khi kết thúc kỳ xét hạng</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
-                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
                                     </div>
                                 </div>
                             </div>
@@ -552,8 +552,8 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">KH có ngày sinh là ngày hiện tại</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
-                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
                                     </div>
                                 </div>
                             </div>
@@ -573,7 +573,7 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Hạng Bạc trở lên, không đơn > 60 ngày</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                     </div>
                                 </div>
                             </div>
@@ -593,8 +593,8 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">KH có số dư điểm > 0 vào tháng 12</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
-                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
                                     </div>
                                 </div>
                             </div>
@@ -614,7 +614,7 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">KH hạng Kim Cương</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                     </div>
                                 </div>
                             </div>
@@ -634,9 +634,9 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Toàn bộ khách hàng trong CDP</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                         <i class="fa-brands fa-facebook-messenger text-[#0084FF]" style="font-size:15px" title="Messenger"></i>
-                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                        <img src="../assets/img/omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
                                     </div>
                                 </div>
                             </div>
@@ -655,8 +655,8 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Toàn bộ khách hàng</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
-                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
                                     </div>
                                 </div>
                             </div>
@@ -677,9 +677,9 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">KH hạng Đồng/Bạc (nhạy cảm về giá)</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                         <i class="fa-brands fa-facebook-messenger text-[#0084FF]" style="font-size:15px" title="Messenger"></i>
-                                        <img src="../omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
+                                        <img src="../assets/img/omni-channel.png" class="w-4 h-4 object-contain" title="Omni-channel">
                                     </div>
                                 </div>
                             </div>
@@ -699,7 +699,7 @@
                                         <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Toàn bộ khách hàng</div>
                                     </div>
                                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                                        <img src="../Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
+                                        <img src="../assets/img/Icon_of_Zalo.svg.png" class="w-4 h-4 object-contain" title="Zalo cá nhân">
                                     </div>
                                 </div>
                             </div>
@@ -899,7 +899,7 @@
         </div>
 
         <!-- Scrollable Table Container -->
-        <div class="flex-1 overflow-auto px-6 pt-4 pb-6">
+        <div class="screen-tichdiem flex-1 overflow-auto px-6 pt-4 pb-6">
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 <table class="w-full">
                     <thead>
@@ -1139,9 +1139,282 @@
             </div>
         </div>
 
+        <!-- ============ MÀN: HẠNG THÀNH VIÊN ============ -->
+        <div id="screen-hang" class="hidden flex-1 overflow-auto p-6">
+            <!-- Title and Action Buttons -->
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Hạng thành viên</h1>
+                <div class="flex items-center space-x-3">
+                    <button class="flex items-center px-4 py-2 border border-gray-300 bg-white rounded text-sm text-gray-600 hover:bg-gray-50">
+                        <i class="fa-solid fa-rotate mr-2 text-xs"></i> Reload
+                    </button>
+                    <button class="flex items-center px-4 py-2 bg-[#1B3DA1] text-white rounded text-sm font-medium hover:bg-blue-800 transition">
+                        <span class="mr-2 text-lg leading-none">+</span> Thêm hạng
+                    </button>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="bg-white rounded shadow-sm overflow-x-auto border border-gray-200">
+                <table class="w-full border-collapse text-sm" style="min-width:1100px;">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="hang-diagonal relative w-64 h-16 p-0 bg-gray-50/50">
+                                <span class="absolute top-2 right-4 text-[10px] text-gray-400 font-bold uppercase">Nhóm thuộc tính</span>
+                                <span class="absolute bottom-2 left-4 text-[10px] text-gray-400 font-bold uppercase">Cấu hình chi tiết</span>
+                            </th>
+                            <!-- Đồng -->
+                            <th class="border-l border-gray-200 p-4 text-center align-middle" style="min-width:220px;">
+                                <div class="flex items-center justify-center space-x-3">
+                                    <div class="flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-award text-amber-700"></i>
+                                        <span class="font-bold text-gray-700">Hạng Đồng</span>
+                                    </div>
+                                    <button class="p-1 rounded-full text-gray-400 hover:bg-gray-100 transition" onclick="openHangModal('Hạng Đồng')" title="Chỉnh sửa"><i class="fa-solid fa-pen text-xs"></i></button>
+                                </div>
+                            </th>
+                            <!-- Bạc -->
+                            <th class="border-l border-gray-200 p-4 text-center align-middle bg-blue-50/30" style="min-width:220px;">
+                                <div class="flex items-center justify-center space-x-3">
+                                    <div class="flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-award text-gray-400"></i>
+                                        <span class="font-bold text-gray-700">Hạng Bạc</span>
+                                    </div>
+                                    <button class="p-1 rounded-full text-gray-400 hover:bg-gray-100 transition" onclick="openHangModal('Hạng Bạc')" title="Chỉnh sửa"><i class="fa-solid fa-pen text-xs"></i></button>
+                                </div>
+                            </th>
+                            <!-- Vàng -->
+                            <th class="border-l border-gray-200 p-4 text-center align-middle" style="min-width:220px;">
+                                <div class="flex items-center justify-center space-x-3">
+                                    <div class="flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-award text-yellow-500"></i>
+                                        <span class="font-bold text-gray-700">Hạng Vàng</span>
+                                    </div>
+                                    <button class="p-1 rounded-full text-gray-400 hover:bg-gray-100 transition" onclick="openHangModal('Hạng Vàng')" title="Chỉnh sửa"><i class="fa-solid fa-pen text-xs"></i></button>
+                                </div>
+                            </th>
+                            <!-- Kim Cương -->
+                            <th class="border-l border-gray-200 p-4 text-center align-middle" style="min-width:220px;">
+                                <div class="flex items-center justify-center space-x-3">
+                                    <div class="flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-gem text-cyan-500"></i>
+                                        <span class="font-bold text-gray-700">Hạng Kim Cương</span>
+                                    </div>
+                                    <button class="p-1 rounded-full text-gray-400 hover:bg-gray-100 transition" onclick="openHangModal('Hạng Kim Cương')" title="Chỉnh sửa"><i class="fa-solid fa-pen text-xs"></i></button>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-gray-50 border-b border-gray-200">
+                            <td class="p-3 font-bold text-gray-500 text-[11px] uppercase tracking-wider" colspan="5">Điều kiện (Conditions)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-4 font-medium border-r border-gray-200 bg-white">Điểm hạng (Membership Points)</td>
+                            <td class="p-4 text-center border-r border-gray-200">50</td>
+                            <td class="p-4 text-center border-r border-gray-200 bg-blue-50/30">1,000</td>
+                            <td class="p-4 text-center border-r border-gray-200">3,000</td>
+                            <td class="p-4 text-center">5,000</td>
+                        </tr>
+                        <tr class="bg-gray-50 border-b border-gray-200">
+                            <td class="p-3 font-bold text-gray-500 text-[11px] uppercase tracking-wider" colspan="5">Ưu đãi &amp; Đặc quyền (Rewards &amp; Privileges)</td>
+                        </tr>
+                        <!-- Điểm thưởng thêm -->
+                        <tr class="border-b border-gray-200">
+                            <td class="p-4 font-medium border-r border-gray-200 bg-white">Điểm thưởng thêm (Accumulation)</td>
+                            <td class="p-4 border-r border-gray-200">
+                                <div class="flex flex-col text-[12px] text-gray-500 space-y-1">
+                                    <div class="flex justify-between"><span>Điểm hạng:</span> <span class="font-bold text-gray-800">5 %</span></div>
+                                    <div class="flex justify-between"><span>Điểm tích lũy:</span> <span class="font-bold text-gray-800">5 %</span></div>
+                                </div>
+                            </td>
+                            <td class="p-4 border-r border-gray-200 bg-blue-50/30">
+                                <div class="flex flex-col text-[12px] text-gray-500 space-y-1">
+                                    <div class="flex justify-between"><span>Điểm hạng:</span> <span class="font-bold text-gray-800">10 %</span></div>
+                                    <div class="flex justify-between"><span>Điểm tích lũy:</span> <span class="font-bold text-gray-800">10 %</span></div>
+                                </div>
+                            </td>
+                            <td class="p-4 border-r border-gray-200">
+                                <div class="flex flex-col text-[12px] text-gray-500 space-y-1">
+                                    <div class="flex justify-between"><span>Điểm hạng:</span> <span class="font-bold text-gray-800">15 %</span></div>
+                                    <div class="flex justify-between"><span>Điểm tích lũy:</span> <span class="font-bold text-gray-800">15 %</span></div>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <div class="flex flex-col text-[12px] text-gray-500 space-y-1">
+                                    <div class="flex justify-between"><span>Điểm hạng:</span> <span class="font-bold text-gray-800">20 %</span></div>
+                                    <div class="flex justify-between"><span>Điểm tích lũy:</span> <span class="font-bold text-gray-800">20 %</span></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Coupon -->
+                        <tr class="border-b border-gray-200">
+                            <td class="p-4 font-medium border-r border-gray-200 bg-white">
+                                <div class="flex items-center group relative cursor-help">
+                                    <span>Coupon tự tạo khi đạt hạng</span>
+                                    <i class="fa-solid fa-circle-info text-[12px] ml-1 text-gray-400"></i>
+                                    <div class="absolute bottom-full left-0 mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-[10px] rounded shadow-lg z-50 leading-normal">Mã giảm giá hệ thống tự sinh khi khách đạt hạng tương ứng.</div>
+                                </div>
+                            </td>
+                            <td class="p-4 border-r border-gray-200 text-center text-gray-400 italic text-xs">Không có mã</td>
+                            <td class="p-4 border-r border-gray-200 bg-blue-50/30">
+                                <div class="flex items-center text-[10px] text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded bg-blue-50 w-fit"><i class="fa-solid fa-tag text-[11px] mr-1"></i><span>Giảm 10% đơn hàng</span></div>
+                            </td>
+                            <td class="p-4 border-r border-gray-200">
+                                <div class="flex items-center text-[10px] text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded bg-blue-50 w-fit"><i class="fa-solid fa-tag text-[11px] mr-1"></i><span>Giảm 15% đơn hàng</span></div>
+                            </td>
+                            <td class="p-4">
+                                <div class="flex items-center text-[10px] text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded bg-blue-50 w-fit"><i class="fa-solid fa-tag text-[11px] mr-1"></i><span>Giảm 20% đơn hàng</span></div>
+                            </td>
+                        </tr>
+                        <!-- Đặc quyền text -->
+                        <tr>
+                            <td class="p-4 font-medium border-r border-gray-200 bg-white">
+                                <div class="flex items-center group relative cursor-help">
+                                    <span>Đặc quyền thành viên</span>
+                                    <i class="fa-solid fa-circle-info text-[12px] ml-1 text-gray-400"></i>
+                                    <div class="absolute bottom-full left-0 mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-[10px] rounded shadow-lg z-50 leading-normal">Quyền lợi hiển thị cho khách trên Website/App. Hệ thống không tự động áp dụng.</div>
+                                </div>
+                            </td>
+                            <td class="p-4 border-r border-gray-200 text-center text-gray-400 italic text-xs">Không có ưu đãi</td>
+                            <td class="p-4 border-r border-gray-200 bg-blue-50/30">
+                                <div class="flex flex-col space-y-1">
+                                    <div class="flex items-center text-[10px] text-gray-600 border border-gray-200 px-1.5 py-0.5 rounded bg-gray-50 w-fit"><i class="fa-solid fa-circle-check text-[11px] mr-1 text-gray-400"></i><span>Quà tặng sinh nhật</span></div>
+                                    <div class="flex items-center text-[10px] text-gray-600 border border-gray-200 px-1.5 py-0.5 rounded bg-gray-50 w-fit"><i class="fa-solid fa-circle-check text-[11px] mr-1 text-gray-400"></i><span>Miễn phí giao hàng</span></div>
+                                </div>
+                            </td>
+                            <td class="p-4 border-r border-gray-200">
+                                <div class="flex flex-col space-y-1">
+                                    <div class="flex items-center text-[10px] text-gray-600 border border-gray-200 px-1.5 py-0.5 rounded bg-gray-50 w-fit"><i class="fa-solid fa-circle-check text-[11px] mr-1 text-gray-400"></i><span>Quà tặng sinh nhật</span></div>
+                                    <div class="flex items-center text-[10px] text-gray-600 border border-gray-200 px-1.5 py-0.5 rounded bg-gray-50 w-fit"><i class="fa-solid fa-circle-check text-[11px] mr-1 text-gray-400"></i><span>Ưu tiên phục vụ</span></div>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <div class="flex items-center text-[10px] text-gray-600 border border-gray-200 px-1.5 py-0.5 rounded bg-gray-50 w-fit"><i class="fa-solid fa-circle-check text-[11px] mr-1 text-gray-400"></i><span>Trải nghiệm VIP</span></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Edit Modal: Thiết lập Hạng -->
+    <div class="hidden fixed inset-0 z-[999] flex items-center justify-center p-4" id="hang-edit-modal">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeHangModal()"></div>
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-2xl overflow-hidden">
+            <div class="bg-[#1B3DA1] text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center"><i class="fa-solid fa-pen-to-square mr-2"></i><span id="hang-modal-title">Thiết lập Hạng</span></h3>
+                <button class="hover:text-gray-300 transition" onclick="closeHangModal()"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="p-6 max-h-[75vh] overflow-y-auto space-y-6">
+                <div>
+                    <h4 class="text-sm font-bold text-gray-800 uppercase tracking-wide border-b border-gray-100 pb-2 mb-4">Thông tin chung</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-semibold text-gray-500">Tên hạng</label>
+                            <input id="hang-modal-name" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none" type="text" value="Hạng Bạc">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-semibold text-gray-500">Biểu tượng</label>
+                            <div class="flex items-center space-x-3 p-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-50">
+                                <i class="fa-solid fa-award text-gray-400"></i>
+                                <span class="text-sm text-gray-600">Thay đổi icon</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-gray-800 uppercase tracking-wide border-b border-gray-100 pb-2 mb-4">Điều kiện nâng hạng</h4>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-gray-500">Điểm hạng (Membership Points)</label>
+                        <div class="relative">
+                            <input class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none" type="number" value="1000">
+                            <span class="absolute right-3 top-2 text-gray-400 text-xs uppercase font-bold">Points</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-gray-800 uppercase tracking-wide border-b border-gray-100 pb-2 mb-4">Ưu đãi &amp; Đặc quyền</h4>
+                    <div class="mb-4">
+                        <label class="text-xs font-semibold text-gray-500 block mb-2">Điểm thưởng thêm (%)</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center space-x-2 border border-gray-300 rounded px-3 py-2 bg-gray-50/50">
+                                <span class="text-[11px] text-gray-500 whitespace-nowrap">Điểm hạng:</span>
+                                <input class="w-full bg-transparent text-sm font-bold text-right outline-none" type="text" value="10">
+                                <span class="text-gray-400">%</span>
+                            </div>
+                            <div class="flex items-center space-x-2 border border-gray-300 rounded px-3 py-2 bg-gray-50/50">
+                                <span class="text-[11px] text-gray-500 whitespace-nowrap">Điểm tích lũy:</span>
+                                <input class="w-full bg-transparent text-sm font-bold text-right outline-none" type="text" value="10">
+                                <span class="text-gray-400">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-xs font-semibold text-gray-500 block mb-2">Mã giảm giá (Coupons)</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between bg-blue-50 border border-blue-100 px-3 py-2 rounded">
+                                <div class="flex items-center text-sm text-blue-700"><i class="fa-solid fa-ticket mr-2"></i><span>Mã giảm 10% - Đã kích hoạt</span></div>
+                                <button class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-trash text-sm"></i></button>
+                            </div>
+                            <button class="w-full py-2 border border-dashed border-gray-300 rounded text-xs text-gray-500 hover:bg-gray-50 flex items-center justify-center transition"><i class="fa-solid fa-circle-plus text-sm mr-1"></i> Thêm mã giảm giá</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 block mb-2">Ưu đãi dạng text</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="flex-grow flex items-center bg-gray-50 border border-gray-200 px-3 py-2 rounded"><i class="fa-solid fa-note-sticky text-gray-400 mr-2"></i><input class="w-full bg-transparent text-sm outline-none" type="text" value="Quà tặng sinh nhật"></div>
+                                <button class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash text-sm"></i></button>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="flex-grow flex items-center bg-gray-50 border border-gray-200 px-3 py-2 rounded"><i class="fa-solid fa-truck text-gray-400 mr-2"></i><input class="w-full bg-transparent text-sm outline-none" type="text" value="Miễn phí giao hàng"></div>
+                                <button class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash text-sm"></i></button>
+                            </div>
+                            <button class="w-full py-2 border border-dashed border-gray-300 rounded text-xs text-gray-500 hover:bg-gray-50 flex items-center justify-center transition"><i class="fa-solid fa-circle-plus text-sm mr-1"></i> Thêm ưu đãi khác</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3 border-t border-gray-200">
+                <button class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition" onclick="closeHangModal()">Hủy</button>
+                <button class="px-6 py-2 bg-[#1B3DA1] text-white rounded text-sm font-medium hover:bg-blue-800 transition shadow-sm" onclick="closeHangModal()">Lưu cấu hình</button>
+            </div>
+        </div>
     </div>
 
     <script>
+        // ===== Chuyển màn trong Loyalty (sidebar) =====
+        function showLoyaltyScreen(name, el) {
+            // Ẩn/hiện các block nội dung màn Tích điểm
+            document.querySelectorAll('.screen-tichdiem').forEach(s => s.classList.toggle('hidden', name !== 'tichdiem'));
+            // Màn Hạng thành viên
+            const hang = document.getElementById('screen-hang');
+            if (hang) hang.classList.toggle('hidden', name !== 'hang');
+            // Tiêu đề header
+            const title = document.querySelector('.h-14 h1');
+            if (title) title.textContent = (name === 'hang') ? 'Hạng thành viên' : 'Loyalty - tích điểm';
+            // Active state ở sidebar
+            document.querySelectorAll('.loyalty-nav').forEach(a => {
+                a.classList.remove('sidebar-icon-active');
+                a.classList.add('text-blue-200');
+            });
+            if (el) { el.classList.add('sidebar-icon-active'); el.classList.remove('text-blue-200'); }
+        }
+
+        // ===== Modal chỉnh sửa hạng =====
+        function openHangModal(name) {
+            document.getElementById('hang-modal-title').textContent = 'Thiết lập ' + name;
+            const inp = document.getElementById('hang-modal-name');
+            if (inp) inp.value = name;
+            document.getElementById('hang-edit-modal').classList.remove('hidden');
+        }
+        function closeHangModal() {
+            document.getElementById('hang-edit-modal').classList.add('hidden');
+        }
+
         const sidebar = document.getElementById('sidebar');
         const toggleIcon = document.getElementById('toggle-icon');
         const sidebarTexts = document.querySelectorAll('.sidebar-text');
