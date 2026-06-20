@@ -6,17 +6,20 @@ Giao diện dashboard hiện đại cho hệ thống quản lý doanh nghiệp, 
 
 ```
 AppVN/
-├── index.html          # Trang chủ dashboard
-├── logo.png            # Logo App.vn
+├── index.html          # Trang chủ dashboard (mở file này để chạy)
+├── styles.css          # CSS dùng chung
+├── script.js           # JS dùng chung
 ├── DESIGN_SYSTEM.md    # Tài liệu hệ thống thiết kế
 ├── README.md           # File hướng dẫn này
-└── modules/            # Thư mục chứa các trang module
-    ├── sales.html      # Quản lý bán hàng
-    ├── automation.html # Automation workflow
-    ├── customer.html   # Quản lý khách hàng
-    ├── workchat.html   # WorkChat messaging
-    ├── product.html    # Quản lý sản phẩm
-    └── crm.html        # CRM Lead management
+│
+├── modules/            # Các trang module của dashboard (sales, customer, crm, ...)
+├── crm/                # App CRM (đang phát triển: Lead, Land, Tour, BeautyService, ...)
+├── pages/              # Trang HTML lẻ (ABaSegment, aiModalSegment, automation-modal)
+├── reference/          # File mockup tham khảo thiết kế (không phải app chạy)
+├── docs/               # Tài liệu (.md)
+└── assets/             # Tài nguyên dùng chung
+    ├── img/            # Ảnh, logo
+    └── icons/          # Icon SVG (trước đây là iconFa/)
 ```
 
 ## 🚀 Cách sử dụng
